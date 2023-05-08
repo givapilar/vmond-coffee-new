@@ -17,16 +17,26 @@ Route::get('/', function () {
 });
 
 Route::get('/home', function () {
-    $rest_api_url = 'http://management-vmond.test/api/v1/vmond/tokoonline/resto';
-    $rest_api_biliard = 'http://management-vmond.test/api/v1/vmond/tokoonline/biliard';
+    $global_url = 'http://management-vmond.test/api/v1/vmond/tokoonline/';
+    $rest_api_url = $global_url .'resto';
+    $rest_api_biliard = $global_url .'biliard';
+    $rest_api_meeting_room = $global_url .'meetingroom';
     // Reads the JSON file.
-    $json_data = file_get_contents($rest_api_url);
-    $json_data_biliard = file_get_contents($rest_api_biliard);
-    // Decodes the JSON data into a PHP array.
-    $response_data = json_decode($json_data);
-    $response_data_biliard = json_decode($json_data_biliard);
+    try {
+        $json_data = file_get_contents($rest_api_url);
+        $json_data_biliard = file_get_contents($rest_api_biliard);
+        $json_data_meeting_room = file_get_contents($rest_api_meeting_room);
+        // Decodes the JSON data into a PHP array.
+        $response_data = json_decode($json_data);
+        $response_data_biliard = json_decode($json_data_biliard);
+        $response_data_meeting_room = json_decode($json_data_meeting_room);
+    } catch (\Throwable $th) {
+        $response_data = [];
+        $response_data_biliard =[];
+        $response_data_meeting_room =[];
+    }
 
-    return view('homepage.index', compact(['response_data','response_data_biliard']));
+    return view('homepage.index', compact(['response_data','response_data_biliard','response_data_meeting_room']));
 })->name('homepage');
 
 Route::get('/daftarmenu/restaurant', function () {
