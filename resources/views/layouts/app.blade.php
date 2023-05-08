@@ -3,7 +3,7 @@
 <head>
     @include('layouts.partials.head')
 </head>
-<body class="dark:bg-gray-900 xl:max-w-screen-md">
+<body class="dark:bg-gray-900 max-w-3xl mx-auto">
 
 @include('layouts.partials.header')
 
