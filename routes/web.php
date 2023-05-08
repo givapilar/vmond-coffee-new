@@ -17,7 +17,13 @@ Route::get('/', function () {
 });
 
 Route::get('/home', function () {
-    return view('homepage.index');
+    $rest_api_url = 'http://management-vmond.test/api/v1/vmond/tokoonline/resto';
+    // Reads the JSON file.
+    $json_data = file_get_contents($rest_api_url);
+    // Decodes the JSON data into a PHP array.
+    $response_data = json_decode($json_data);
+
+    return view('homepage.index', compact(['response_data']));
 })->name('homepage');
 
 Route::get('/daftarmenu/restaurant', function () {
