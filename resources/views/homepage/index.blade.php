@@ -167,6 +167,7 @@
         </div>
     </div>
 
+    
     <div class="slick1 pt-2">
         <div class="text-base sm:text-sm p-1">
             <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">

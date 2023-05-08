@@ -18,12 +18,15 @@ Route::get('/', function () {
 
 Route::get('/home', function () {
     $rest_api_url = 'http://management-vmond.test/api/v1/vmond/tokoonline/resto';
+    $rest_api_biliard = 'http://management-vmond.test/api/v1/vmond/tokoonline/biliard';
     // Reads the JSON file.
     $json_data = file_get_contents($rest_api_url);
+    $json_data_biliard = file_get_contents($rest_api_biliard);
     // Decodes the JSON data into a PHP array.
     $response_data = json_decode($json_data);
+    $response_data_biliard = json_decode($json_data_biliard);
 
-    return view('homepage.index', compact(['response_data']));
+    return view('homepage.index', compact(['response_data','response_data_biliard']));
 })->name('homepage');
 
 Route::get('/daftarmenu/restaurant', function () {
