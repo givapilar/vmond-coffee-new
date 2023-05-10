@@ -9,20 +9,22 @@
 @endpush
 
 @section('content')
+{{-- {{ dd($getJSON) }} --}}
 <section class="p-3">
-    <div class="max-w-sm bg-white border border-gray-200 rounded-[30px] shadow dark:bg-gray-800 dark:border-gray-700">
-        <a href="#">
-            <img class="rounded-t-[30px] brightness-75" src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80" alt="" />
-        </a>
+    <div class="max-w-full sm:max-w-full mx-auto bg-white border border-gray-200 rounded-[30px] shadow dark:bg-gray-800 dark:border-gray-700">
+        <div class="flex justify-center align-center bg-gray-400 max-h-64 h-64 sm:h-56 rounded-t-[30px]">
+            <img class="rounded-t-[30px] brightness-75 w-full bg-cover bg-center" src="{{ $getJSON->data[0]->image }}" alt="" />
+        </div>
         <div class="p-5">
-            <a href="#">
-                <h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">DETAIL - MENU MAKANAN</h5>
-                <h6 class="mb-3 text-xl font-semibold tracking-tight text-yellow-400">Seafood pasta with shrimps and tomatoes</h6>
-            </a>
-            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Seafood pasta with shrimps and tomatoes is a delicious and easy-to-make pasta dish that is perfect for seafood lovers. The dish typically consists of pasta noodles, cooked shrimp, and diced tomatoes, all tossed together in a flavorful sauce.</p>
-            <a href="#" class="sm:mt-3 inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-full">
+            <div>
+                <h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">DETAIL - {{ $getJSON->data[0]->type ?? 'Not found' }} </h5>
+                <h6 class="mb-0 text-xl font-semibold tracking-tight text-yellow-400">{{ $getJSON->data[0]->nama ?? 'Not found' }}</h6>
+                <p class="mb-3 mt-0 font-normal text-red-600 dark:text-red-600">Rp.{{ $getJSON->data[0]->harga ?? '0-,' }}</p>
+            </div>
+            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ $getJSON->data[0]->description ?? 'Not found' }}</p>
+            <div class="sm:mt-3 inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-full">
                 Add to cart
-            </a>
+            </div>
         </div>
     </div>
 </section>
