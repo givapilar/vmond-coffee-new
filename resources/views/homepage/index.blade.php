@@ -139,10 +139,13 @@
                 <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">{{ $biliard->nama }} #{{ $biliard->no_meja }}</p>
                 <span class="block text-[10px] dark:text-red-500">Rp.{{ $biliard->harga }} / Jam</span>
 
-                <div class="flex gap-1 opacity-75">
-                    <button class="w-8/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" onclick="window.location='{{ route('detail-menu') }}';"><ion-icon name="book-outline" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                    {{-- <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button> --}}
-                </div>
+                <form action="{{ route('cart-biliard',$biliard->id) }}" method="get">
+                    @csrf
+                    <div class="flex gap-1 opacity-75">
+                        <button class="w-8/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" onclick="window.location='{{ route('detail-menu') }}';"><ion-icon name="book-outline" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                        {{-- <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button> --}}
+                    </div>
+                </form>
             </div>
         </div>
         @endforeach
