@@ -6,6 +6,9 @@
                 <span class="block self-center text-xs font-normal whitespace-nowrap dark:text-white">Hi, Nathan Alexander</span>
             </a>
 
+            @php
+                $cart_array = cartArray();
+            @endphp
             <div class="flex items-center sm:order-2">
 
                 <a href="{{ route('reservation') }}" class="flex mr-5">
@@ -14,6 +17,14 @@
 
                 <a href="{{ route('cart') }}" class="flex mr-5">
                     <ion-icon name="cart" class="text-2xl dark:text-white"></ion-icon>
+                    {{-- <p class="text-white">
+                        (<?=count($cart_array)?>)
+                    </p> --}}
+                    @if (Auth::check())
+                        <p class="text-white">({{count(\Cart::session(Auth::user()->id)->getContent())}})</p>
+                    @else
+                        <p class="text-white">(0)</p>
+                    @endif
                 </a>
 
                 <button type="button" class="flex mr-3 text-sm bg-gray-800 rounded-full sm:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
@@ -31,7 +42,7 @@
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Dashboard</a>
                         </li>
                         <li>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Settings</a>
+                            <a href="{{url('users/'.Auth::user()->id.'/edit')}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Profile</a>
                         </li>
                         <li>
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Earnings</a>
