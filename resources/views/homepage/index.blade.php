@@ -112,6 +112,7 @@
             </div>
         </div>
         @endforeach
+    </div>
 </section>
 @endif
 
@@ -126,7 +127,7 @@
             <ion-icon name="chevron-forward-outline" class="dark:text-white"></ion-icon>
         </div>
     </div>
-    
+
     <div class="slick1 pt-2">
         @foreach ($response_data_biliard as $biliard)
         <div class="text-base sm:text-sm p-1">

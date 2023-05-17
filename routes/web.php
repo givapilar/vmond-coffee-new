@@ -57,8 +57,18 @@ Route::get('/daftarmenu/meetingroom', function () {
     return view('daftarmenu.meeting-room');
 })->name('daftar-meeting-room');
 
-Route::get('/detailmenu', function () {
-    return view('detail-menu.index');
+Route::get('/detailmenu/{type}/{slug}', function (Request $request,$type, $slug) {
+    $global_url = 'http://management-vmond.test/api/v1/vmond/tokoonline/detail/';
+    $rest_api_url = $global_url.$type.'/'.$slug;
+    // Belum selesai
+    $getData = file_get_contents($rest_api_url);
+    try {
+        $getJSON = json_decode($getData);
+        // $getJSON = $getJSON->data;
+    } catch (\Throwable $th) {
+        $getJSON = [];
+    }
+    return view('detail-menu.index', compact('getJSON'));
 })->name('detail-menu');
 
 Route::get('/reservation', function () {
