@@ -21,57 +21,38 @@
     <div class="grid grid-cols-2 sm:grid-cols-1 gap-4 sm:gap-1">
         <div class="max-w-sm h-80 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
             @foreach ($data_carts as $item)
+            {{-- {{ dd($item) }} --}}
             <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
-
-                {{-- @php
-                    $cart_array = cartArray();
-                @endphp --}}
-                {{-- {{ dd($data_carts) }} --}}
-                {{-- {{ dd($item) }} --}}
-                    @php
-                        // $images = $item['attributes'][0];
-                        // $images = explode('|',$images);
-                        // $images = $images[0];
-                    @endphp
                 <li class="py-3 sm:py-4">
                     <div class="flex items-start space-x-4">
                         <div class="flex-shrink-0">
-                            {{-- <img class="w-12 h-12 rounded-full" src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80" alt="Neil image"> --}}
-                            {{-- <img src="{{ asset('assetku/img'.$images) }}" alt=""> --}}
-                            {{-- {{ dd($item->model->image) }} --}}
                             <img src="{{ 'http://management-vmond.test/assets/images/restaurant/'.$item->model->image ?? 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80'}} " alt="" class="w-12 h-12 rounded-full">
-                            
+
                         </div>
                         <div class="flex-1 min-w-0">
                             <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                {{-- Nasi Goreng Modern --}}
                                 {{ $item->model->nama }}
-                                {{-- {{ $item['quantity'] }} --}}
                             </p>
                             <p class="text-xs text-gray-500 truncate dark:text-gray-400" id="note">
-                                {{-- Note: Pedas, No Acar Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi minus sunt provident optio, eius hic in modi voluptates est pariatur odio nam laborum fugiat reiciendis ex, ipsam natus quidem magni! --}}
-                                {{-- {{ $item['attributes']['description'] }} --}}
                                 {{ $item->model->description }}
                             </p>
                             <p class="text-xs text-gray-500 truncate dark:text-red-500">
-                                {{-- Rp. 45.000,00 --}}
-                                {{-- {{ $item['price'] }} --}}
                                 {{ $item->model->harga }}
                             </p>
 
-                            
+
                             <div class="rounded-full h-7 w-32 border border-gray-500 mt-2">
                                 <div class="grid h-full w-full grid-cols-3 mx-auto">
-                                    <button type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-l-full hover:bg-gray-50 dark:hover:bg-gray-800 group" id="remove1">
+                                    <button type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-l-full hover:bg-gray-50 dark:hover:bg-gray-800 group" onclick="remove('{{ $item->name }}')">
                                         <ion-icon name="remove" class="w-4 h-3 mb-0.5 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"></ion-icon>
                                         <span class="sr-only">Remove</span>
                                     </button>
 
                                     <div>
-                                        <input type="number" value="{{ $item->quantity }}" name="count-items" id="count-items" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm text-center focus:ring-primary-600 focus:border-primary-600 block w-full py-0.5 h-full px-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 counter1" placeholder="0" required="">
+                                        <input type="number" value="{{ $item->quantity }}" name="count-items" id="count-items" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm text-center focus:ring-primary-600 focus:border-primary-600 block w-full py-0.5 h-full px-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 counter-{{ $item->name }}" placeholder="0" required="">
                                     </div>
 
-                                    <button type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-r-full hover:bg-gray-50 dark:hover:bg-gray-800 group" id="add1">
+                                    <button type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-r-full hover:bg-gray-50 dark:hover:bg-gray-800 group" onclick="add('{{ $item->name }}')">
                                         <ion-icon name="add" class="w-4 h-3 mb-0.5 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"></ion-icon>
                                         <span class="sr-only">Add</span>
                                     </button>
@@ -256,26 +237,27 @@
         }
     })
 
-    let getVar = parseInt($('#add1').val());
 
-    $('#add1').click( function(){
+    function add(slug){
+        let getVar = parseInt($('.counter-'+slug).val());
         if(!getVar || getVar == NaN){
             getVar = 1;
-            $('.counter1').val(getVar);
+            $('.counter-'+slug).val(getVar);
         }else{
             getVar = getVar + 1;
-            $('.counter1').val(getVar);
+            $('.counter-'+slug).val(getVar);
         }
-    })
+    }
 
-    $('#remove1').click( function(){
+    function remove(slug){
+        let getVar = parseInt($('.counter-'+slug).val());
         if(!getVar || getVar == NaN){
             getVar = 0;
-            $('.counter1').val(getVar);
+            $('.counter-'+slug).val(getVar);
         }else{
             getVar = getVar - 1;
-            $('.counter1').val(getVar);
+            $('.counter-'+slug).val(getVar);
         }
-    })
+    }
  </script>
 @endpush

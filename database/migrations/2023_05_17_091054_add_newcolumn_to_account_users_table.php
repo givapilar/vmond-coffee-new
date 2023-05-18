@@ -14,7 +14,17 @@ class AddNewcolumnToAccountUsersTable extends Migration
     public function up()
     {
         Schema::table('account_users', function (Blueprint $table) {
-            //
+            $table->string('username')->default('-');
+            $table->text('avatar')->nullable();
+            $table->double('balance')->default(0);
+            $table->text('address')->nullable();
+            $table->enum('status', ['aktif', 'nonaktif', 'verifikasi'])->default('nonaktif');
+            $table->double('point')->default(0);
+            $table->string('telephone')->default('-');
+            $table->string('history_login')->nullable()->default(date('Y-m-d H:i:s'));
+            $table->string('registration_date')->default(date('Y-m-d H:i:s'));
+            $table->dropColumn('name');
+            $table->string('email')->nullable()->change();
         });
     }
 
@@ -26,7 +36,17 @@ class AddNewcolumnToAccountUsersTable extends Migration
     public function down()
     {
         Schema::table('account_users', function (Blueprint $table) {
-            //
+            $table->dropColumn('username');
+            $table->dropColumn('avatar');
+            $table->dropColumn('balance');
+            $table->dropColumn('address');
+            $table->dropColumn('status');
+            $table->dropColumn('point');
+            $table->dropColumn('telephone');
+            $table->dropColumn('history_login');
+            $table->dropColumn('registration_date');
+            $table->string('name');
+            $table->string('email')->change();
         });
     }
 }
