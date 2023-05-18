@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Biliard;
 use App\Models\CartOrders;
 use App\Models\MeetingRoom;
 use App\Models\Restaurant;
@@ -54,9 +55,9 @@ class CartOrdersController extends Controller
 
     public function editBiliard($id)
     {
-        $data['biliard'] = B::find($id);
+        $data['biliard'] = Biliard::find($id);
         
-        return view('cart.meeting-room',$data);
+        return view('cart.biliard',$data);
     }
 
     public function addCartMeeting(Request $request,$id)

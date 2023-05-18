@@ -20,9 +20,9 @@
             <div class="hidden duration-700 ease-in-out" data-carousel-item>
                 {{-- <img src="https://images.unsplash.com/photo-1563897539633-7374c276c212?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1046&q=80" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..."> --}}
                 <img src="{{ $item->image ?? 'https://images.unsplash.com/photo-1563897539633-7374c276c212?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1046&q=80'}} " alt=""class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-                
+
             </div>
-           
+
             @endforeach
         </div>
         <!-- Slider indicators -->
@@ -105,7 +105,7 @@
                         <input type="hidden" name="quantity" value="1" id="">
                         <input type="hidden" name="image" value="{{ $item->image }}" id="">
                         <input type="hidden" name="id" value="{{ $item->id }}" id="">
-                        <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" onclick="window.location='{{ route('detail-menu') }}';"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                        <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" onclick="window.location='{{ route('detail-menu', ['type' => 'resto', 'slug' => $item->slug]) }}';"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
                         <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
                     </div>
                 </form>
@@ -139,13 +139,10 @@
                 <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">{{ $biliard->nama }} #{{ $biliard->no_meja }}</p>
                 <span class="block text-[10px] dark:text-red-500">Rp.{{ $biliard->harga }} / Jam</span>
 
-                <form action="{{ route('cart-biliard',$biliard->id) }}" method="get">
-                    @csrf
-                    <div class="flex gap-1 opacity-75">
-                        <button class="w-8/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" onclick="window.location='{{ route('detail-menu') }}';"><ion-icon name="book-outline" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                        {{-- <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button> --}}
-                    </div>
-                </form>
+                <div class="flex gap-1 opacity-75">
+                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" onclick="window.location='{{ route('detail-menu', ['type' => 'billiard', 'slug' => $biliard->slug]) }}';"><ion-icon name="book-outline" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                    <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300" onclick="location.href='{{ route('cart-biliard-edit',$biliard->id) }}';"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                </div>
             </div>
         </div>
         @endforeach
@@ -174,16 +171,13 @@
             <div class="px-1">
                 <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">{{ $meeting_room->nama }}</p>
                 <span class="block text-[10px] dark:text-red-500">Rp.{{ $meeting_room->harga }} / Jam</span>
-                
-                <form action="{{ route('cart-meeting-edit',$meeting_room->id) }}" method="get">
-                @csrf
+
                     <div class="flex gap-1 opacity-75">
                         <input type="hidden" name="quantity" value="1" id="">
                         <input type="hidden" name="id" value="{{ $meeting_room->id }}" id="">
-                        <button class="w-8/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" onclick="window.location='{{ route('detail-menu') }}';"><ion-icon name="book-outline" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                        {{-- <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button> --}}
+                        <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" onclick="window.location='{{ route('detail-menu', ['type' => 'meetingroom', 'slug' => $meeting_room->slug]) }}';"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                        <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300" onclick="location.href='{{ route('cart-meeting-edit',$meeting_room->id) }}';"><ion-icon name="book-outline" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
                     </div>
-                </form>
             </div>
         </div>
         @endforeach

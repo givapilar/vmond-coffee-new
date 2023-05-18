@@ -19,7 +19,7 @@
 @endif
 <section class="p-3">
     <div class="grid grid-cols-2 sm:grid-cols-1 gap-4 sm:gap-1">
-        <div class="max-w-sm h-80 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+        <div class="max-w-sm h-60 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
             <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
                 <li class="py-3 sm:py-4">
                     <div class="flex items-start space-x-4">
@@ -35,21 +35,8 @@
                                 {{ $meeting_room->description }}
                             </p>
                             <p class="text-xs text-gray-500 truncate dark:text-red-500">
-                                {{ $meeting_room->harga }}
+                                {{ number_format($meeting_room->harga,2) }}
                             </p>
-                            <div class="">
-                                
-                                <div class="col-span-4 my-4">
-                                    <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dari</label>
-                                    <input type="datetime-local" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
-                                </div>
-                                
-                                <div class="col-span-4 my-4">
-                                    <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sampai</label>
-                                    <input type="datetime-local" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
-                                </div>
-                            </div>
-
 
                         </div>
                         <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
@@ -152,15 +139,143 @@
                 <button class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900" onclick="location.href='{{ route('checkout') }}';">Checkout</button>
             </div>
         </div>
-        <div class="max-w-sm h-80 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
-            <div class="grid grid-cols-6 sm:grid-cols-1 gap-4 sm:gap-1">
-                <div class="bg-white col-span-2 mt-2">01</div>
-                <!-- ... -->
-                <div class="bg-white col-span-2 mt-2">09</div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-1 gap-4 sm:gap-1 mt-2">
+        <div class="max-w-full h-96 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+            <div class="p-3 space-x-4">
+                <p class="text-lg font-semibold text-center dark:text-white">Pilih Jam</p>
+            </div>
+            <div class="grid grid-cols-5 gap-2">
+                <div class="mt-9 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 text-sm rounded-[12px]">
+                        00:00
+                    </button>
+                </div>
+                <div class="mt-9 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        01:00
+                    </button>
+                </div>
+                <div class="mt-9 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        02:00
+                    </button>
+                </div>
+                <div class="mt-9 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        03:00
+                    </button>
+                </div>
+                <div class="mt-9 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        04:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        05:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        06:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        07:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        08:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        09:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        10:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        11:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        12:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        13:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        14:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        15:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        15:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        16:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        17:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        18:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        19:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        20:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        21:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        22:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        23:00
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-
+    
 </section>
 
 
