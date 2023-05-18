@@ -108,7 +108,7 @@ Route::get('/delete-chart/{id}',[CartOrdersController::class, 'deleteCart'])->na
 Route::get('cart_meeting-room/{id}/edit', [CartOrdersController::class, 'editMeeting'])->name('cart-meeting-edit');
 
 // Biliard
-Route::get('cart_biliard/{id}/edit', [CartOrdersController::class, 'editBiliard'])->name('cart-biliard');
+Route::get('cart_biliard/{id}/edit', [CartOrdersController::class, 'editBiliard'])->name('cart-biliard-edit');
 
 
 // Restaurant Cart

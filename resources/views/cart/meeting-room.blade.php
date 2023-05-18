@@ -19,76 +19,24 @@
 @endif
 <section class="p-3">
     <div class="grid grid-cols-2 sm:grid-cols-1 gap-4 sm:gap-1">
-        <div class="max-w-sm h-80 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
-            {{-- {{ dd($meeting_room->sum('harga') ) }} --}}
+        <div class="max-w-sm h-60 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
             <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
-                {{-- @php
-                    $cart_array = cartArray();
-                @endphp --}}
-                {{-- {{ dd($data_carts) }} --}}
-                {{-- {{ dd($item) }} --}}
-                    @php
-                        // $images = $item['attributes'][0];
-                        // $images = explode('|',$images);
-                        // $images = $images[0];
-                    @endphp
                 <li class="py-3 sm:py-4">
                     <div class="flex items-start space-x-4">
                         <div class="flex-shrink-0">
-                            {{-- <img class="w-12 h-12 rounded-full" src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80" alt="Neil image"> --}}
-                            {{-- <img src="{{ asset('assetku/img'.$images) }}" alt=""> --}}
-                            {{-- {{ dd($meeting_room->image) }} --}}
                             <img src="{{ 'http://management-vmond.test/assets/images/meeting-room/'.$meeting_room->image ?? 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80'}} " alt="" class="w-12 h-12 rounded-full">
                             
                         </div>
                         <div class="flex-1 min-w-0">
                             <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                {{-- Nasi Goreng Modern --}}
                                 {{ $meeting_room->nama }}
-                                {{-- {{ $item['quantity'] }} --}}
                             </p>
                             <p class="text-xs text-gray-500 truncate dark:text-gray-400" id="note">
-                                {{-- Note: Pedas, No Acar Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi minus sunt provident optio, eius hic in modi voluptates est pariatur odio nam laborum fugiat reiciendis ex, ipsam natus quidem magni! --}}
-                                {{-- {{ $item['attributes']['description'] }} --}}
                                 {{ $meeting_room->description }}
                             </p>
                             <p class="text-xs text-gray-500 truncate dark:text-red-500">
-                                {{-- Rp. 45.000,00 --}}
-                                {{-- {{ $item['price'] }} --}}
-                                {{ $meeting_room->harga }}
+                                {{ number_format($meeting_room->harga,2) }}
                             </p>
-
-                            
-                            {{-- <div class="rounded-full h-7 w-32 border border-gray-500 mt-2">
-                                <div class="grid h-full w-full grid-cols-3 mx-auto">
-                                    <button type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-l-full hover:bg-gray-50 dark:hover:bg-gray-800 group" id="remove1">
-                                        <ion-icon name="remove" class="w-4 h-3 mb-0.5 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"></ion-icon>
-                                        <span class="sr-only">Remove</span>
-                                    </button>
-
-                                    <div>
-                                        <input type="number" value="{{ $item->quantity }}" name="count-items" id="count-items" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm text-center focus:ring-primary-600 focus:border-primary-600 block w-full py-0.5 h-full px-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 counter1" placeholder="0" required="">
-                                    </div>
-
-                                    <button type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-r-full hover:bg-gray-50 dark:hover:bg-gray-800 group" id="add1">
-                                        <ion-icon name="add" class="w-4 h-3 mb-0.5 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"></ion-icon>
-                                        <span class="sr-only">Add</span>
-                                    </button>
-                                </div>
-                            </div> --}}
-                            <div class="">
-                                
-                                <div class="col-span-4 my-4">
-                                    <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dari</label>
-                                    <input type="datetime-local" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
-                                </div>
-                                
-                                <div class="col-span-4 my-4">
-                                    <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sampai</label>
-                                    <input type="datetime-local" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
-                                </div>
-                            </div>
-
 
                         </div>
                         <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
@@ -192,6 +140,142 @@
             </div>
         </div>
     </div>
+
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-1 gap-4 sm:gap-1 mt-2">
+        <div class="max-w-full h-96 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+            <div class="p-3 space-x-4">
+                <p class="text-lg font-semibold text-center dark:text-white">Pilih Jam</p>
+            </div>
+            <div class="grid grid-cols-5 gap-2">
+                <div class="mt-9 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 text-sm rounded-[12px]">
+                        00:00
+                    </button>
+                </div>
+                <div class="mt-9 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        01:00
+                    </button>
+                </div>
+                <div class="mt-9 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        02:00
+                    </button>
+                </div>
+                <div class="mt-9 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        03:00
+                    </button>
+                </div>
+                <div class="mt-9 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        04:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        05:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        06:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        07:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        08:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        09:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        10:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        11:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        12:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        13:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        14:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        15:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        15:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        16:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        17:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        18:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        19:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        20:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        21:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        22:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        23:00
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 </section>
 
 
