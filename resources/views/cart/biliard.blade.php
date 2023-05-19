@@ -24,18 +24,18 @@
                 <li class="py-3 sm:py-4">
                     <div class="flex items-start space-x-4">
                         <div class="flex-shrink-0">
-                            <img src="{{ 'http://management-vmond.test/assets/images/meeting-room/'.$biliard->image ?? 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80'}} " alt="" class="w-12 h-12 rounded-full">
+                            <img src="{{ 'http://management-vmond.test/assets/images/meeting-room/'.$biliards->image ?? 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80'}} " alt="" class="w-12 h-12 rounded-full">
                             
                         </div>
                         <div class="flex-1 min-w-0">
                             <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                {{ $biliard->nama }}
+                                {{ $biliards->nama }}
                             </p>
                             <p class="text-xs text-gray-500 truncate dark:text-gray-400" id="note">
-                                {{ $biliard->description }}
+                                {{ $biliards->description }}
                             </p>
                             <p class="text-xs text-gray-500 truncate dark:text-red-500">
-                                {{ number_format($biliard->harga,2) }}
+                                {{ number_format($biliards->harga,2) }}
                             </p>
 
                         </div>
@@ -87,8 +87,8 @@
                             </p>
                         </div>
                         <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
-                            {{-- {{ dd(number_format($biliard->sum('harga'),2)) }} --}}
-                            {{ number_format($biliard->harga,2) }}
+                            {{-- {{ dd(number_format($biliards->sum('harga'),2)) }} --}}
+                            {{ number_format($biliards->harga,2) }}
                         </div>
                     </div>
                 </li>
@@ -101,7 +101,7 @@
                         </div>
                         <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
                              {{-- Harga Total * (11/100) --}}
-                            Rp. {{ number_format($biliard->harga *11/100,2 )  }}
+                            Rp. {{ number_format($biliards->harga *11/100,2 )  }}
                         </div>
                     </div>
                 </li>
@@ -129,7 +129,7 @@
                             </p>
                         </div>
                         <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white">
-                            Rp. {{ number_format($biliard->harga *11/100 + $biliard->harga  + $biaya_layanan,2 ) }}
+                            Rp. {{ number_format($biliards->harga *11/100 + $biliards->harga  + $biaya_layanan,2 ) }}
                         </div>
                     </div>
                 </li>
