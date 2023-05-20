@@ -1,6 +1,6 @@
 <header>
-    <nav class="bg-white border-gray-200 dark:bg-gray-900">
-        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <nav class="h-36 p-0" style="background: url('https://images.unsplash.com/photo-1606787366850-de6330128bfc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80') !important;">
+        <div class="max-w-screen-xl h-full flex flex-wrap items-start justify-between mx-auto p-4 backdrop-brightness-50">
             <a href="https://flowbite.com/" class="">
                 <span class="block self-center text-2xl font-semibold whitespace-nowrap dark:text-white">VMOND</span>
                 <span class="block self-center text-xs font-normal whitespace-nowrap dark:text-white">Hi, {{ Auth::user()->name ?? 'Guest' }}</span>
@@ -52,9 +52,6 @@
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" data-modal-toggle="signoutModal">Sign out</a>
                         </li>
                         @endif
-                        {{-- <li>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Earnings</a>
-                        </li> --}}
                     </ul>
                 </div>
             </div>
