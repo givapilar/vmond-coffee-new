@@ -1,5 +1,5 @@
 
-<div class="fixed bottom-0 left-0 z-50 w-full h-16 sm:h-14 bg-white shadow-footer dark:bg-[#111827]">
+<div class="fixed bottom-0 left-0 z-40 w-full h-16 sm:h-14 bg-white shadow-footer dark:bg-[#111827]">
     <div class="grid h-full max-w-lg grid-cols-3 mx-auto font-medium">
         <button type="button" class="inline-flex flex-col items-center justify-center px-5 py-2 group" onclick="location.href='{{ route('homepage') }}';">
             <svg class="w-5 h-5 sm:w-5 sm:h-5 mb-[5px] text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
@@ -14,11 +14,12 @@
             </svg>
             <span class="text-xs text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">Wallet</span>
         </button> --}}
-        <button type="button" class="inline-flex flex-col items-center justify-center px-5 py-2 group">
+        <button type="button" class="inline-flex flex-col items-center justify-center px-5 py-2 group" data-modal-target="vpay-modal" data-modal-toggle="vpay-modal">
             <svg  class="mb-[5px] text-gray-500 dark:text-blue-600 group-hover:text-blue-800 dark:group-hover:text-blue-800 btn-vpay"  fill="currentColor" aria-hidden="true"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                 <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM232 344V280H168c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V168c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H280v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"/>
             </svg>
-            <span class="text-xs mt-[25px] sm:mt-[15px] text-gray-500 dark:text-blue-600 group-hover:text-blue-800 dark:group-hover:text-blue-500">V-Pay</span>
+            <span class="text-xs mt-[20px] md:mt-[10px] sm:mt-[15px] text-gray-500 dark:text-blue-600 group-hover:text-blue-800 dark:group-hover:text-blue-500">V-Pay</span>
+
         </button>
         {{-- <button type="button" class="inline-flex flex-col items-center justify-center px-5 py-2 group">
             <svg class="w-6 h-6 sm:w-5 sm:h-5 mb-[5px] text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

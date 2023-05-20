@@ -53,6 +53,8 @@
         </div>
     </div>
 </div>
+
+@include('modal.vpay')
 </body>
 
 @include('layouts.partials.foot')

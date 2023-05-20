@@ -62,6 +62,11 @@ span{
     height: 50px;
 }
 
+.dropdown-vpay{
+    position: relative !important;
+    transform: none !important;
+}
+
 @media only screen and (max-width: 650px) {
     .btn-vpay{
         position: absolute;
