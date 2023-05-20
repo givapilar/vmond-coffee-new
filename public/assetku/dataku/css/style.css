@@ -27,7 +27,7 @@ span{
     color: transparent;
   }
 
-  
+
 *::-webkit-scrollbar-track
 {
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0);
@@ -46,4 +46,27 @@ span{
 	border-radius: 10px;
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0);
 	background-color: transparent;
+}
+.shadow-footer{
+    box-shadow: 0px -6px 10px 0px rgba(143,143,143,0.40);
+    -webkit-box-shadow: 0px -6px 10px 0px rgba(143,143,143,0.40);
+    -moz-box-shadow: 0px -6px 10px 0px rgba(143,143,143,0.40);
+}
+.btn-vpay{
+    background-color: #111827;
+    padding: 6px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 30px;
+    width: 50px;
+    height: 50px;
+}
+
+@media only screen and (max-width: 650px) {
+    .btn-vpay{
+        position: absolute;
+        bottom: 20px;
+        width: 60px;
+        height: 60px;
+    }
 }
