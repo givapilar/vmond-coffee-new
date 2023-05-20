@@ -53,13 +53,7 @@ class CartOrdersController extends Controller
         return view('cart.meeting-room',$data);
     }
 
-    public function editBiliard($id)
-    {
-        $data['biliard'] = Biliard::find($id);
-        
-        return view('cart.biliard',$data);
-    }
-
+    
     public function addCartMeeting(Request $request,$id)
     {
 
@@ -137,11 +131,19 @@ class CartOrdersController extends Controller
 
     public function viewCartBiliard()
     {
-        $data ['biliard'] = Biliard::get();
+        $data ['biliards'] = Biliard::get();
         
         $data['cart_meeting_room'] = \Cart::session(Auth::user()->id)->getContent();
         return view('cart.meeting-room',$data);
     }
+
+    public function editBiliard($id)
+    {
+        $data['biliards'] = Biliard::find($id);
+        
+        return view('cart.biliard',$data);
+    }
+
 
     public function addCartBiliard(Request $request,$id)
     {

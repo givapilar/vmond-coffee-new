@@ -108,8 +108,8 @@
                             </p>
                         </div>
                         <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
-                            Rp. 45.000,00
                             {{-- {{ dd($data_carts) }} --}}
+                            {{ number_format($item->model->harga,2) }}
                         </div>
                     </div>
                 </li>
@@ -121,7 +121,7 @@
                             </p>
                         </div>
                         <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
-                            Rp. 14.850,00 {{-- Harga Total * (11/100) --}}
+                            Rp. {{ number_format($item->model->harga *11/100,2 )  }}
                         </div>
                     </div>
                 </li>
@@ -133,7 +133,11 @@
                             </p>
                         </div>
                         <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
-                            Rp. 5.000,00
+                            <?php
+                            $biaya_layanan = 5000;
+
+                        ?>
+                        Rp. {{ number_format($biaya_layanan,2) }}
                         </div>
                     </div>
                 </li>
@@ -145,7 +149,8 @@
                             </p>
                         </div>
                         <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white">
-                            Rp. 64.850,00
+                            Rp. {{ number_format($item->model->harga *11/100 + $item->model->harga  + $biaya_layanan,2 ) }}
+
                         </div>
                     </div>
                 </li>
