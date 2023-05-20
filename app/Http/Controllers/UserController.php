@@ -35,7 +35,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->name = $validateData['name'];
         $user->email = $validateData['email'];
-        
+
 
         if ($request->hasFile('avatar')) {
             $image = $request->file('avatar');
@@ -47,7 +47,6 @@ class UserController extends Controller
 
         $user->save();
 
-        $user->save();
         // DB::table('model_has_roles')->where('model_id',$id)->delete();
         // $user->assignRole($validateData['role']);
 

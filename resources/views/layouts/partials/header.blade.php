@@ -3,7 +3,7 @@
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
             <a href="https://flowbite.com/" class="">
                 <span class="block self-center text-2xl font-semibold whitespace-nowrap dark:text-white">VMOND</span>
-                <span class="block self-center text-xs font-normal whitespace-nowrap dark:text-white">Hi, Nathan Alexander</span>
+                <span class="block self-center text-xs font-normal whitespace-nowrap dark:text-white">Hi, {{ Auth::user()->name ?? 'Guest' }}</span>
             </a>
 
             @php
@@ -36,26 +36,25 @@
                     <div class="px-4 py-3">
                         <span class="block text-sm text-gray-900 dark:text-white">{{ Auth::user()->name ?? 'Guest' }}</span>
                         @if (Auth::user() != null)
-                            <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">{{ 'Rp. ' . Auth::user()->balance ?? '' }}</span>
+                            <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">{{ 'Rp. ' . Auth::user()->balance. ',-' ?? '' }}</span>
                         @endif
                     </div>
                     <ul class="py-2" aria-labelledby="user-menu-button">
                         <li>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Dashboard</a>
+                            <a href="{{ route('homepage') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Home</a>
                         </li>
 
                         @if (Auth::user() != null)
                         <li>
                             <a href="{{url('users/'.Auth::user()->id.'/edit')}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Profile</a>
                         </li>
-                        @endif
                         <li>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Earnings</a>
-                        </li>
-                        <li>
-                            {{-- <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" onclick="signout('{{ route('login') }}')">Sign out</a> --}}
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" data-modal-toggle="signoutModal">Sign out</a>
                         </li>
+                        @endif
+                        {{-- <li>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Earnings</a>
+                        </li> --}}
                     </ul>
                 </div>
             </div>
