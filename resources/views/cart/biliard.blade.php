@@ -19,50 +19,30 @@
 @endif
 <section class="p-3">
     <div class="grid grid-cols-2 sm:grid-cols-1 gap-4 sm:gap-1">
-        <div class="max-w-sm h-80 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
-            @foreach ($data_carts as $item)
-            {{-- {{ dd($item) }} --}}
+        <div class="max-w-sm h-60 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
             <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
                 <li class="py-3 sm:py-4">
                     <div class="flex items-start space-x-4">
                         <div class="flex-shrink-0">
-                            <img src="{{ 'http://management-vmond.test/assets/images/restaurant/'.$item->model->image ?? 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80'}} " alt="" class="w-12 h-12 rounded-full">
-
+                            <img src="{{ 'http://management-vmond.test/assets/images/meeting-room/'.$biliards->image ?? 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80'}} " alt="" class="w-12 h-12 rounded-full">
+                            
                         </div>
                         <div class="flex-1 min-w-0">
                             <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                {{ $item->model->nama }}
+                                {{ $biliards->nama }}
                             </p>
                             <p class="text-xs text-gray-500 truncate dark:text-gray-400" id="note">
-                                {{ $item->model->description }}
+                                {{ $biliards->description }}
                             </p>
                             <p class="text-xs text-gray-500 truncate dark:text-red-500">
-                                {{ $item->model->harga }}
+                                {{ number_format($biliards->harga,2) }}
                             </p>
 
-
-                            <div class="rounded-full h-7 w-32 border border-gray-500 mt-2">
-                                <div class="grid h-full w-full grid-cols-3 mx-auto">
-                                    <button type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-l-full hover:bg-gray-50 dark:hover:bg-gray-800 group" onclick="remove('{{ $item->name }}')">
-                                        <ion-icon name="remove" class="w-4 h-3 mb-0.5 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"></ion-icon>
-                                        <span class="sr-only">Remove</span>
-                                    </button>
-
-                                    <div>
-                                        <input type="number" value="{{ $item->quantity }}" name="count-items" id="count-items" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm text-center focus:ring-primary-600 focus:border-primary-600 block w-full py-0.5 h-full px-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 counter-{{ $item->name }}" placeholder="0" required="">
-                                    </div>
-
-                                    <button type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-r-full hover:bg-gray-50 dark:hover:bg-gray-800 group" onclick="add('{{ $item->name }}')">
-                                        <ion-icon name="add" class="w-4 h-3 mb-0.5 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"></ion-icon>
-                                        <span class="sr-only">Add</span>
-                                    </button>
-                                </div>
-                            </div>
                         </div>
                         <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                            <button class="flex justify-center items-center w-10 h-10 rounded-full p-2 bg-red-500 hover:bg-red-600 focus:ring-red-900 focus:ring-4"  data-modal-toggle="deleteModal">
+                            {{-- <button class="flex justify-center items-center w-10 h-10 rounded-full p-2 bg-red-500 hover:bg-red-600 focus:ring-red-900 focus:ring-4"  data-modal-toggle="deleteModal">
                                 <ion-icon name="trash" class=""></ion-icon>
-                            </button>
+                            </button> --}}
 
                             <div id="deleteModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full sm:inset-0 h-full delay-200">
                                 <div class="relative p-4 w-full max-w-md h-auto">
@@ -78,9 +58,9 @@
                                             <button data-modal-toggle="deleteModal" type="button" class="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                                                 No, cancel
                                             </button>
-                                            <a href="{{ route('delete-cart', $item->id)}}" class="btn btn-danger py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
+                                            {{-- <a href="{{ route('delete-cart', $item->id)}}" class="btn btn-danger py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
                                                 Yes, I'm sure
-                                            </a>
+                                            </a> --}}
                                             {{-- <button type="submit" class="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
                                                 Yes, I'm sure
                                             </button> --}}
@@ -91,7 +71,6 @@
                         </div>
                     </div>
                 </li>
-                @endforeach
             </ul>
         </div>
 
@@ -108,8 +87,8 @@
                             </p>
                         </div>
                         <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
-                            {{-- {{ dd($data_carts) }} --}}
-                            Rp. {{ number_format($item->model->harga ?? '0',2 ) }}
+                            {{-- {{ dd(number_format($biliards->sum('harga'),2)) }} --}}
+                            {{ number_format($biliards->harga,2) }}
                         </div>
                     </div>
                 </li>
@@ -121,7 +100,8 @@
                             </p>
                         </div>
                         <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
-                            Rp. {{ number_format($item->model->harga ?? '0' *11/100,2 )  }}
+                             {{-- Harga Total * (11/100) --}}
+                            Rp. {{ number_format($biliards->harga *11/100,2 )  }}
                         </div>
                     </div>
                 </li>
@@ -134,10 +114,10 @@
                         </div>
                         <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
                             <?php
-                            $biaya_layanan = 5000;
+                                $biaya_layanan = 1000;
 
-                        ?>
-                        Rp. {{ number_format($biaya_layanan ?? '0',2) }}
+                            ?>
+                           Rp. {{ number_format($biaya_layanan,2) }}
                         </div>
                     </div>
                 </li>
@@ -149,13 +129,7 @@
                             </p>
                         </div>
                         <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white">
-                            @if ($item->model->harga ?? 0)
-                            
-                            Rp. {{ number_format($item->model->harga *11/100 + $item->model->harga + $biaya_layanan ,2 ) }}
-                            @else
-                            Rp. 0
-                            @endif
-
+                            Rp. {{ number_format($biliards->harga *11/100 + $biliards->harga  + $biaya_layanan,2 ) }}
                         </div>
                     </div>
                 </li>
@@ -166,40 +140,144 @@
             </div>
         </div>
     </div>
-</section>
 
-{{-- @if (count($response_data) != null || count($response_data) != 0)
-<section class="p-3">
-    <div class="flex items-center justify-between">
-        <div class="">
-            <span class="text-lg font-bold dark:text-white ml-1">MENU RESTAURANT</span>
-        </div>
-        <div class="flex items-center">
-            <span class="text-xs dark:text-white">Lihat Semua</span>
-            <ion-icon name="chevron-forward-outline" class="dark:text-white"></ion-icon>
-        </div>
-    </div>
-
-    <div class="slick1 pt-2">
-        @foreach ($response_data as $item)
-        <div class="text-base sm:text-sm p-1">
-            <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                <img src="{{ $item->image ?? 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=780&q=80'}} " alt="" class="object-cover object-center h-full w-full">
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-1 gap-4 sm:gap-1 mt-2">
+        <div class="max-w-full h-96 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+            <div class="p-3 space-x-4">
+                <p class="text-lg font-semibold text-center dark:text-white">Pilih Jam</p>
             </div>
-            <div class="px-1">
-                <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">{{ $item->nama ?? 'Error' }}</p>
-                <span class="block text-[10px] dark:text-red-500">Rp.{{ $item->harga }}</span>
-
-                <div class="flex gap-1 opacity-75">
-                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" onclick="window.location='{{ route('detail-menu', ['type'=>'resto', 'slug'=>$item->slug]) }}';"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                    <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+            <div class="grid grid-cols-5 gap-2">
+                <div class="mt-9 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 text-sm rounded-[12px]">
+                        00:00
+                    </button>
+                </div>
+                <div class="mt-9 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        01:00
+                    </button>
+                </div>
+                <div class="mt-9 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        02:00
+                    </button>
+                </div>
+                <div class="mt-9 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        03:00
+                    </button>
+                </div>
+                <div class="mt-9 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        04:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        05:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        06:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        07:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        08:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        09:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        10:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        11:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        12:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        13:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        14:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        15:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        15:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        16:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        17:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        18:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        19:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        20:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        21:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        22:00
+                    </button>
+                </div>
+                <div class="mt-2 ml-4">
+                    <button class="bg-white hover:bg-slate-900 text-blue-950 hover:text-white font-bold py-2 px-4 rounded-[12px]">
+                        23:00
+                    </button>
                 </div>
             </div>
         </div>
-        @endforeach
     </div>
+    
 </section>
-@endif --}}
+
 
 <div class="pb-[5rem]"></div>
 @endsection
@@ -247,27 +325,26 @@
         }
     })
 
+    let getVar = parseInt($('#add1').val());
 
-    function add(slug){
-        let getVar = parseInt($('.counter-'+slug).val());
+    $('#add1').click( function(){
         if(!getVar || getVar == NaN){
             getVar = 1;
-            $('.counter-'+slug).val(getVar);
+            $('.counter1').val(getVar);
         }else{
             getVar = getVar + 1;
-            $('.counter-'+slug).val(getVar);
+            $('.counter1').val(getVar);
         }
-    }
+    })
 
-    function remove(slug){
-        let getVar = parseInt($('.counter-'+slug).val());
+    $('#remove1').click( function(){
         if(!getVar || getVar == NaN){
             getVar = 0;
-            $('.counter-'+slug).val(getVar);
+            $('.counter1').val(getVar);
         }else{
             getVar = getVar - 1;
-            $('.counter-'+slug).val(getVar);
+            $('.counter1').val(getVar);
         }
-    }
+    })
  </script>
 @endpush

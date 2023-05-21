@@ -6,12 +6,16 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "bumbummen99/shoppingcart": "^4.2",
+        "darryldecode/cart": "^4.2",
+        "doctrine/dbal": "^3.6",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/fortify": "^1.17",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
-        "laravel/tinker": "^2.5"
+        "laravel/tinker": "^2.5",
+        "xendit/xendit-php": "^2.19"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
@@ -31,8 +35,12 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
-        }
+        },
+        "files" :[
+            "app/Helpers/helper.php"
+        ]
     },
+    
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
