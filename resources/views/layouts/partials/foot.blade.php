@@ -6,6 +6,7 @@
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 @stack('script-top')
 
 <script>
@@ -81,5 +82,23 @@
     //     // });
     // }
 </script>
+
+{{-- @if(session()->get('success')) --}}
+<script>
+    Toastify({
+        text: "Berhasil Masuk Ke Keranjang",
+        // text: "{{ session()->get('success') }}",
+        close: true,
+        gravity: "top", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {
+            background: "#D5F3E9",
+            color: "#1f7556"
+        },
+        duration: 3000
+    }).showToast();
+</script>
+{{-- @endif --}}
 
 @stack('script-bot')

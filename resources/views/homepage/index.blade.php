@@ -15,9 +15,11 @@
         <div class="">
             <span class="text-lg font-bold dark:text-white ml-1">MENU UTAMA</span>
         </div>
-        @if (session('message'))
+
+        {{-- @if (session('message'))
             <div class="text-lg font-bold dark:text-white ml-1">{{ session('message') }}</div>
-        @endif
+        @endif --}}
+        
     </div>
 
     <div class="grid grid-cols-3 gap-3">
@@ -100,17 +102,19 @@
                 <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">{{ $item->nama ?? 'Error' }}</p>
                 <span class="block text-[10px] dark:text-red-500">Rp.{{ number_format($item->harga,2) }}</span>
 
-                <form action="{{ route('restaurant-cart',$item->id) }}" method="get">
-                {{-- @csrf --}}
-                    <div class="flex gap-1 opacity-75">
-                        <input type="hidden" name="quantity" value="1" id="">
-                        <input type="hidden" name="image" value="{{ $item->image }}" id="">
-                        <input type="hidden" name="id" value="{{ $item->id }}" id="">
-                        <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" onclick="window.location='{{ route('detail-menu', ['type' => 'resto', 'slug' => $item->slug]) }}';"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                        <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300" onclick="location.href='{{ route('cart-biliard-edit',$item->id) }}';"><ion-icon name="bag-add"onclick="location.href='{{ route('restaurant-cart',$item->id) }}';" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                    </div>
+                <div class="flex justify-center gap-1">
+                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" onclick="window.location='{{ route('detail-menu', ['type' => 'resto', 'slug' => $item->slug]) }}';"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                    <form action="{{ route('restaurant-cart',$item->id) }}" method="get" class=" w-8/12">
+                        {{-- @csrf --}}
+                        <div class="flex gap-1 opacity-75">
+                            <input type="hidden" name="quantity" value="1" id="">
+                            <input type="hidden" name="image" value="{{ $item->image }}" id="">
+                            <input type="hidden" name="id" value="{{ $item->id }}" id="">
+                                <button class="w-full bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                            </div>
+                        </div>
                 </form>
-            </div>
+                </div>
         </div>
         @endforeach
     </div>
@@ -231,5 +235,18 @@
         autoplay: false,
         speed:200,
     });
+
+//     Toastify({
+
+// text: "This is a toast",
+
+// duration: 3000
+
+// }).showToast();
+
  </script>
+
+ 
+
+
 @endpush

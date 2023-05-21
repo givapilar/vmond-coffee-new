@@ -35,7 +35,7 @@ class CartOrdersController extends Controller
             $request->input('quantity'),
             $request->harga/100,
         );
-        return redirect()->route('cart')->with('message','Success Added');
+        return redirect()->route('cart')->with(['success' => 'Cart Berhasil Dimasukkan!']);
     }
 
     public function viewCartMeetingRoom($id)
