@@ -109,7 +109,8 @@
                         </div>
                         <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
                             {{-- {{ dd($data_carts) }} --}}
-                            Rp. {{ number_format($item->model->harga ?? '0',2 ) }}
+                            {{-- Rp. {{ number_format($item->model->harga ?? '0',2 ) }} --}}
+                            Rp. {{ number_format(\Cart::getTotal() ?? '0',2 )  }}
                         </div>
                     </div>
                 </li>
@@ -121,7 +122,7 @@
                             </p>
                         </div>
                         <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
-                            Rp. {{ number_format($item->model->harga ?? '0' *11/100,2 )  }}
+                            Rp. {{ number_format((\Cart::getTotal() ?? '0') * 11/100,2 )  }}
                         </div>
                     </div>
                 </li>
@@ -149,9 +150,9 @@
                             </p>
                         </div>
                         <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white">
-                            @if ($item->model->harga ?? 0)
+                            @if (\Cart::getTotal() ?? 0)
                             
-                            Rp. {{ number_format($item->model->harga *11/100 + $item->model->harga + $biaya_layanan ,2 ) }}
+                            Rp. {{ number_format(\Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan ,2 ) }}
                             @else
                             Rp. 0
                             @endif

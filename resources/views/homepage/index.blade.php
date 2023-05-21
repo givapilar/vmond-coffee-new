@@ -107,7 +107,7 @@
                         <input type="hidden" name="image" value="{{ $item->image }}" id="">
                         <input type="hidden" name="id" value="{{ $item->id }}" id="">
                         <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" onclick="window.location='{{ route('detail-menu', ['type' => 'resto', 'slug' => $item->slug]) }}';"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                        <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                        <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300" onclick="location.href='{{ route('cart-biliard-edit',$item->id) }}';"><ion-icon name="bag-add"onclick="location.href='{{ route('restaurant-cart',$item->id) }}';" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
                     </div>
                 </form>
             </div>
