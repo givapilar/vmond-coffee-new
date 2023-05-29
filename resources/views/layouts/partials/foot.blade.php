@@ -83,10 +83,10 @@
     // }
 </script>
 
-{{-- @if(session()->get('success')) --}}
+{{-- @if(session('message')) --}}
 <script>
     Toastify({
-        text: "Berhasil Masuk Ke Keranjang",
+        text: session('message'),
         // text: "{{ session()->get('success') }}",
         close: true,
         gravity: "top", // `top` or `bottom`

@@ -31,29 +31,29 @@ class CartOrdersController extends Controller
         $restaurant = Restaurant::findOrFail($request->input('restaurant_id'));
         Cart::add(
             $restaurant->id,
-            $restaurant->nama, 
+            $restaurant->nama,
             $request->input('quantity'),
             $request->harga/100,
         );
-        return redirect()->route('cart')->with(['success' => 'Cart Berhasil Dimasukkan!']);
+        return redirect()->route('cart')->with(['message' => 'Cart Berhasil Dimasukkan!']);
     }
 
     public function viewCartMeetingRoom($id)
     {
         $data ['meeting-room'] = MeetingRoom::get();
-        
+
         $data['cart_meeting_room'] = \Cart::session(Auth::user()->id)->getContent();
         return view('cart.meeting-room',$data);
     }
-    
+
     public function editMeeting($id)
     {
         $data['meeting_room'] = MeetingRoom::find($id);
-        
+
         return view('cart.meeting-room',$data);
     }
 
-    
+
     public function addCartMeeting(Request $request,$id)
     {
 
@@ -63,8 +63,8 @@ class CartOrdersController extends Controller
         } else {
             $quantity = 0;
         }
-        
-        
+
+
         // $auth = User::get();
         // dd($auth->id);
 
@@ -82,7 +82,7 @@ class CartOrdersController extends Controller
         } else {
             return redirect()->route('cart-meeting-room')->with('message', 'Harap Login Terlebih Dahulu !');
         }
-        
+
 
     }
 
@@ -101,7 +101,7 @@ class CartOrdersController extends Controller
         } else {
             $quantity = 0;
         }
-        
+
         // $auth = User::get();
         // dd($auth->id);
 
@@ -119,7 +119,7 @@ class CartOrdersController extends Controller
         } else {
             return redirect()->route('homepage')->with('message', 'Harap Login Terlebih Dahulu !');
         }
-        
+
 
     }
 
@@ -132,7 +132,7 @@ class CartOrdersController extends Controller
     public function viewCartBiliard()
     {
         $data ['biliards'] = Biliard::get();
-        
+
         $data['cart_meeting_room'] = \Cart::session(Auth::user()->id)->getContent();
         return view('cart.meeting-room',$data);
     }
@@ -140,7 +140,7 @@ class CartOrdersController extends Controller
     public function editBiliard($id)
     {
         $data['biliards'] = Biliard::find($id);
-        
+
         return view('cart.biliard',$data);
     }
 
@@ -154,8 +154,8 @@ class CartOrdersController extends Controller
         } else {
             $quantity = 0;
         }
-        
-        
+
+
         // $auth = User::get();
         // dd($auth->id);
 
@@ -173,7 +173,7 @@ class CartOrdersController extends Controller
         } else {
             return redirect()->route('cart-meeting-room')->with('message', 'Harap Login Terlebih Dahulu !');
         }
-        
+
 
     }
 

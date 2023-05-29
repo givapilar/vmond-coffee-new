@@ -21,7 +21,7 @@
                 <h6 class="mb-0 text-xl font-semibold tracking-tight text-yellow-400">{{ $getJSON->data[0]->nama ?? 'Not found' }}</h6>
                 <p class="mb-3 mt-0 font-normal text-red-600 dark:text-red-600">Rp.{{ $getJSON->data[0]->harga ?? '0-,' }}</p>
             </div>
-            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ $getJSON->data[0]->description ?? 'Not found' }}</p>
+            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{!! $getJSON->data[0]->description ?? 'Not found' !!}</p>
             <div class="sm:mt-3 inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-full">
                 Add to cart
             </div>
