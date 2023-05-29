@@ -1086,9 +1086,6 @@ input:checked + .toggle-bg {
 .mb-4 {
   margin-bottom: 1rem;
 }
-.mb-5 {
-  margin-bottom: 1.25rem;
-}
 .mb-6 {
   margin-bottom: 1.5rem;
 }
@@ -1475,9 +1472,6 @@ input:checked + .toggle-bg {
 .justify-between {
   justify-content: space-between;
 }
-.justify-items-center {
-  justify-items: center;
-}
 .gap-1 {
   gap: 0.25rem;
 }
@@ -1636,9 +1630,6 @@ input:checked + .toggle-bg {
 .border-b {
   border-bottom-width: 1px;
 }
-.border-b-2 {
-  border-bottom-width: 2px;
-}
 .border-t {
   border-top-width: 1px;
 }
@@ -1668,10 +1659,6 @@ input:checked + .toggle-bg {
 .border-gray-500 {
   --tw-border-opacity: 1;
   border-color: rgb(107 114 128 / var(--tw-border-opacity));
-}
-.border-gray-700 {
-  --tw-border-opacity: 1;
-  border-color: rgb(55 65 81 / var(--tw-border-opacity));
 }
 .border-transparent {
   border-color: transparent;
@@ -1739,6 +1726,10 @@ input:checked + .toggle-bg {
 .bg-sky-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(14 165 233 / var(--tw-bg-opacity));
+}
+.bg-teal-700 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(3 102 114 / var(--tw-bg-opacity));
 }
 .bg-transparent {
   background-color: transparent;
@@ -1889,6 +1880,12 @@ input:checked + .toggle-bg {
 .text-\[40px\] {
   font-size: 40px;
 }
+.text-\[7px\] {
+  font-size: 7px;
+}
+.text-\[8px\] {
+  font-size: 8px;
+}
 .text-base {
   font-size: 1rem;
   line-height: 1.5rem;
@@ -1957,6 +1954,10 @@ input:checked + .toggle-bg {
   --tw-text-opacity: 1;
   color: rgb(23 37 84 / var(--tw-text-opacity));
 }
+.text-emerald-400 {
+  --tw-text-opacity: 1;
+  color: rgb(52 211 153 / var(--tw-text-opacity));
+}
 .text-gray-200 {
   --tw-text-opacity: 1;
   color: rgb(229 231 235 / var(--tw-text-opacity));
@@ -2007,6 +2008,9 @@ input:checked + .toggle-bg {
 }
 .underline {
   text-decoration-line: underline;
+}
+.line-through {
+  text-decoration-line: line-through;
 }
 .antialiased {
   -webkit-font-smoothing: antialiased;
@@ -2146,6 +2150,10 @@ input:checked + .toggle-bg {
   --tw-bg-opacity: 1;
   background-color: rgb(15 23 42 / var(--tw-bg-opacity));
 }
+.hover\:bg-teal-800:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(5 80 92 / var(--tw-bg-opacity));
+}
 .hover\:bg-white:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
@@ -2246,10 +2254,6 @@ input:checked + .toggle-bg {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(125 211 252 / var(--tw-ring-opacity));
 }
-.focus\:ring-slate-600:focus {
-  --tw-ring-opacity: 1;
-  --tw-ring-color: rgb(71 85 105 / var(--tw-ring-opacity));
-}
 .focus\:ring-zinc-300:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(212 212 216 / var(--tw-ring-opacity));
@@ -2345,6 +2349,10 @@ input:checked + .toggle-bg {
   --tw-bg-opacity: 1;
   background-color: rgb(240 82 82 / var(--tw-bg-opacity));
 }
+:is(.dark .dark\:bg-teal-600) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(4 116 129 / var(--tw-bg-opacity));
+}
 :is(.dark .dark\:bg-zinc-600) {
   --tw-bg-opacity: 1;
   background-color: rgb(82 82 91 / var(--tw-bg-opacity));
@@ -2388,6 +2396,10 @@ input:checked + .toggle-bg {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
+:is(.dark .dark\:text-yellow-300) {
+  --tw-text-opacity: 1;
+  color: rgb(250 202 21 / var(--tw-text-opacity));
+}
 :is(.dark .dark\:placeholder-gray-400)::-moz-placeholder {
   --tw-placeholder-opacity: 1;
   color: rgb(156 163 175 / var(--tw-placeholder-opacity));
@@ -2422,6 +2434,10 @@ input:checked + .toggle-bg {
 :is(.dark .dark\:hover\:bg-slate-800:hover) {
   --tw-bg-opacity: 1;
   background-color: rgb(30 41 59 / var(--tw-bg-opacity));
+}
+:is(.dark .dark\:hover\:bg-teal-700:hover) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(3 102 114 / var(--tw-bg-opacity));
 }
 :is(.dark .dark\:hover\:bg-zinc-700:hover) {
   --tw-bg-opacity: 1;
@@ -2512,10 +2528,6 @@ input:checked + .toggle-bg {
     margin-right: 0px;
   }
 
-  .sm\:mt-2 {
-    margin-top: 0.5rem;
-  }
-
   .sm\:mt-3 {
     margin-top: 0.75rem;
   }
@@ -2594,11 +2606,6 @@ input:checked + .toggle-bg {
 
   .sm\:p-5 {
     padding: 1.25rem;
-  }
-
-  .sm\:px-2 {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
   }
 
   .sm\:px-6 {

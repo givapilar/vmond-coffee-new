@@ -21,7 +21,7 @@
     <div class="grid grid-cols-2 sm:grid-cols-1 gap-4 sm:gap-1">
         <div class="max-w-sm h-80 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
             @foreach ($data_carts as $item)
-            {{-- {{ dd($item) }} --}}
+            {{-- {{ dd($item->model) }} --}}
             <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
                 <li class="py-3 sm:py-4">
                     <div class="flex items-start space-x-4">
@@ -32,6 +32,9 @@
                         <div class="flex-1 min-w-0">
                             <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
                                 {{ $item->model->nama }}
+                            </p>
+                            <p>
+                                <span class="block text-[10px] dark:text-yellow-300">Stock {{ $item->model->stok_perhari }}</span>
                             </p>
                             <p class="text-xs text-gray-500 truncate dark:text-gray-400" id="note">
                                 {{ $item->model->description }}
