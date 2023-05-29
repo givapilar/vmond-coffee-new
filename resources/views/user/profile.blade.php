@@ -19,7 +19,7 @@
                 <div class="bg-white shadow rounded-lg p-6 dark:bg-gray-800">
                     <div class="flex flex-col items-center">
                         <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80" class="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0">
-                        <h1 class="text-xl font-bold dark:text-white">{{ Auth::user()->name ?? 'Guest' }}</h1>
+                        <h1 class="text-xl font-bold dark:text-white">{{ Auth::user()->username ?? 'Guest' }}</h1>
                         <p class="text-gray-600 dark:text-gray-400">{{ Auth::user()->email ?? 'Guest' }}</p>
                         <div class="mt-6 flex flex-wrap gap-4 justify-center">
                             {{-- <a href="javascript:void(0)" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Contact</a>
@@ -39,7 +39,7 @@
                                 <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
                                 {{-- <input type="text" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Nathan Alexander" required> --}}
                                 <input type="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('name') is-invalid @enderror"
-                                    id="name" name="name" value="{{ old('name') ?? $user->name }}"
+                                    id="name" name="username" value="{{ old('name') ?? $user->name }}"
                                     placeholder="Enter name">
                                 @error('name')
                                 <span class="invalid-feedback" role="alert">

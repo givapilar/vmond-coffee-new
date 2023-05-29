@@ -26,14 +26,14 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $validateData = $request->validate([
-            'name'   => 'required|string|min:3',
-            // 'username'   => 'required|alpha_dash|unique:users,username,'.$id,
+            // 'name'   => 'required|string|min:3',
+            'username'   => 'required|alpha_dash|unique:users,username,'.$id,
             'email'   => 'required',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
 
         $user = User::findOrFail($id);
-        $user->name = $validateData['name'];
+        $user->username = $validateData['username'];
         $user->email = $validateData['email'];
 
 

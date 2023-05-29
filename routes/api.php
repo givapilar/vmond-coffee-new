@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Payment\XenditController;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,3 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/xendit/va/list', [XenditController::class, 'getListVa']);
 Route::post('/xendit/va/invoice', [XenditController::class, 'createVa']);
+Route::post('/midtrans-callback',[OrderController::class,'callback'])->name('callback');

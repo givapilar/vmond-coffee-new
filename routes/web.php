@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartOrdersController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,21 +76,10 @@ Route::get('/reservation', function () {
     return view('reservation.index');
 })->name('reservation');
 
-// Route::get('/cart', function () {
-//     return view('cart.index');
-// })->name('cart');
-
-Route::get('/checkout', function () {
-    return view('checkout.index');
-})->name('checkout');
-
 // Route::get('/checkout', function () {
 //     return view('checkout.index');
 // })->name('checkout');
 
-// Route::get('/profile-user', function () {
-//         return view('user.profile');
-//     })->name('user-profile');
 
 // Cart Meeting Room
 Route::get('/cart-meeting', function () {
@@ -116,3 +106,11 @@ Route::get('/add-chart-restaurant/{id}',[CartOrdersController::class, 'addCartRe
 Route::get('/cart',[CartOrdersController::class, 'index'])->name('cart');
 Route::get('/delete-chart-restaurant/{id}',[CartOrdersController::class, 'deleteCartRestaurant'])->name('delete-restaurant-cart');
 
+// Route Midtrans
+Route::get('midtrans',[CartOrdersController::class,'midtransCheck'])->name('midtrans-check');
+
+// Route Orders
+Route::get('orders',[OrderController::class,'index'])->name('order.index');
+// Route::post('/checkout-order',[OrderController::class,'checkout'])->name('checkout-order');
+Route::post('/checkout',[OrderController::class,'checkout'])->name('checkout-order');
+Route::get('/invoice/{id}',[OrderController::class,'invoice'])->name('invoice');

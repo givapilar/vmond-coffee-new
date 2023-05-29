@@ -52,7 +52,7 @@
                                     </button>
 
                                     <div>
-                                        <input type="number" value="{{ $item->quantity }}" name="count-items" id="count-items" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm text-center focus:ring-primary-600 focus:border-primary-600 block w-full py-0.5 h-full px-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 counter-{{ $item->name }}" placeholder="0" required="">
+                                        <input type="number" value="{{ $item->quantity }}" name="qty" id="count-items" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm text-center focus:ring-primary-600 focus:border-primary-600 block w-full py-0.5 h-full px-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 counter-{{ $item->name }}" placeholder="0" required="">
                                     </div>
 
                                     <button type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-r-full hover:bg-gray-50 dark:hover:bg-gray-800 group" onclick="add('{{ $item->name }}')">
@@ -165,9 +165,12 @@
                 </li>
             </ul>
 
-            <div class="mt-2">
-                <button class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900" onclick="location.href='{{ route('checkout') }}';">Checkout</button>
-            </div>
+            <form action="{{ route('checkout-order') }}" method="POST">
+                @csrf
+                <div class="mt-2">
+                    <button class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Checkout</button>
+                </div>
+            </form>
         </div>
     </div>
 </section>

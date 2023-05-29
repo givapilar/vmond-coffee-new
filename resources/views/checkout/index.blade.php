@@ -441,11 +441,23 @@
                 <div class="flex items-start space-x-4">
                     <div class="flex-1 min-w-0">
                         <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
-                            Subtotal
+                            Name
                         </p>
                     </div>
                     <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
-                        Rp. 45.000,00
+                        {{-- {{  $order->name  }} --}}
+                    </div>
+                </div>
+            </li>
+            <li class="py-3 sm:py-3">
+                <div class="flex items-start space-x-4">
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
+                            Sub Total
+                        </p>
+                    </div>
+                    <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
+                        {{ number_format(\Cart::getTotal() ?? '0',2 )  }}
                     </div>
                 </div>
             </li>
@@ -457,7 +469,7 @@
                         </p>
                     </div>
                     <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
-                        Rp. 14.850,00 {{-- Harga Total * (11/100) --}} 
+                        Rp. {{ number_format((\Cart::getTotal() ?? '0') * 11/100,2 )  }}
                     </div>
                 </div>
             </li>
@@ -469,7 +481,11 @@
                         </p>
                     </div>
                     <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
-                        Rp. 5.000,00
+                        <?php
+                        $biaya_layanan = 5000;
+
+                    ?>
+                    Rp. {{ number_format($biaya_layanan ?? '0',2) }}
                     </div>
                 </div>
             </li>
@@ -481,16 +497,22 @@
                         </p>
                     </div>
                     <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white">
-                        Rp. 64.850,00
+                        @if (\Cart::getTotal() ?? 0)
+                            
+                        Rp. {{ number_format(\Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan ,2 ) }}
+                        @else
+                        Rp. 0
+                        @endif
                     </div>
                 </div>
             </li>
         </ul>
 
         <div class="mt-2">
-            <button class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
+            <button id="pay-button" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
         </div>
     </div>
+    
 </section>
 
 <div class="pb-[5rem]"></div>
@@ -501,6 +523,8 @@
 @endpush
 
 @push('script-bot')
+<script type="text/javascript" src="{{ config('midtrans.snap_url') }}" data-client-key="{{ config('midtrans.client_key') }}"></script>
+
 <script>
     $('.slick1').slick({
         infinite:false,
@@ -541,4 +565,32 @@
         }
     })
  </script>
+
+<script type="text/javascript">
+    // For example trigger on button clicked, or any time you need
+    var payButton = document.getElementById('pay-button');
+    payButton.addEventListener('click', function () {
+      // Trigger snap popup. @TODO: Replace TRANSACTION_TOKEN_HERE with your transaction token
+      window.snap.pay('{{ $snapToken }}', {
+        onSuccess: function(result){
+          /* You may add your own implementation here */
+          // alert("payment success!"); 
+          window.location.href = '/invoice/{{ $order->id }}'
+          console.log(result);
+        },
+        onPending: function(result){
+          /* You may add your own implementation here */
+          alert("wating your payment!"); console.log(result);
+        },
+        onError: function(result){
+          /* You may add your own implementation here */
+          alert("payment failed!"); console.log(result);
+        },
+        onClose: function(){
+          /* You may add your own implementation here */
+          alert('you closed the popup without finishing the payment');
+        }
+      })
+    });
+  </script>
 @endpush
