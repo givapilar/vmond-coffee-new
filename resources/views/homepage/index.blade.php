@@ -9,6 +9,30 @@
 @endpush
 
 @section('content')
+<section>
+    <div class=" w-11/12 mt-5 p-4 bg-[#1d2943] border border-gray-200 rounded-lg shadow mx-auto dark:bg-[#1d2943] dark:border-[#16274b]">
+        <div class="grid grid-cols-1">
+            <div class="flex items-center space-x-4">
+                <div class="flex-shrink-0 bg-white rounded-full p-2">
+                    <svg class="w-6 h-6 text-[#1d2943]" fill="currentColor"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                        <path d="M64 32C28.7 32 0 60.7 0 96v32H576V96c0-35.3-28.7-64-64-64H64zM576 224H0V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V224zM112 352h64c8.8 0 16 7.2 16 16s-7.2 16-16 16H112c-8.8 0-16-7.2-16-16s7.2-16 16-16zm112 16c0-8.8 7.2-16 16-16H368c8.8 0 16 7.2 16 16s-7.2 16-16 16H240c-8.8 0-16-7.2-16-16z"/>
+                    </svg>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                        Total Transaksi
+                    </p>
+                    <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                        Rp. 500.000 ( Silver Member )
+                    </p>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2 dark:bg-gray-700">
+                        <div class="bg-indigo-600 h-2.5 rounded-full dark:bg-indigo-500" style="width: 50%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 <section class="p-3">
     <div class="flex items-center justify-between">
@@ -19,14 +43,18 @@
         {{-- @if (session('message'))
             <div class="text-lg font-bold dark:text-white ml-1">{{ session('message') }}</div>
         @endif --}}
-        
+
     </div>
 
     <div class="grid grid-cols-3 gap-3">
         <a href="{{ route('daftar-restaurant') }}">
             <div class="text-base sm:text-sm p-1">
-                <div class="aspect-h-1 h-36 sm:h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
+                <div class="relative inline-block aspect-h-1 h-36 sm:h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
                     <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80" alt="" class="object-cover object-center h-full w-full">
+                    {{-- <span class="absolute top-0 left-0 inline-flex items-center justify-center w-6 h-6 bg-blue-600 rounded-full">
+                        <svg aria-hidden="true" class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm1 3a1 1 0 100 2h3a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
+                        <span class="sr-only">Message icon</span>
+                    </span> --}}
                 </div>
 
                 <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300">Restaurant</p>
@@ -103,7 +131,7 @@
                 {{-- <span class="block text-[8px] dark:text-yellow-300">Stock 100</span> --}}
                 <span class="block text-[8px] dark:text-red-500 line-through">Rp.{{ number_format($item->harga,2) }}</span>
                 <span class="block text-[10px] dark:text-red-500">Rp.{{ number_format($item->harga,2) }}</span>
-                
+
                 <div class="flex justify-center gap-1">
                     <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" onclick="window.location='{{ route('detail-menu', ['type' => 'resto', 'slug' => $item->slug]) }}';"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
                     <form action="{{ route('restaurant-cart',$item->id) }}" method="get" class=" w-8/12">
@@ -248,7 +276,7 @@
 
  </script>
 
- 
+
 
 
 @endpush
