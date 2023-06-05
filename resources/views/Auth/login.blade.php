@@ -5,7 +5,7 @@
     <div class="flex flex-col items-center justify-center h-screen px-6 py-8 mx-auto md:h-screen lg:h-screen lg:py-0">
         <div class=" text-center">
             <img class="w-44 h-44 rounded-full mx-auto" src="https://lh3.googleusercontent.com/p/AF1QipPaC8tMUrKh3aVYC6PgdUTDcZj49xkMxqAXswqb=s680-w680-h510" alt="logo">
-            <h1 class="text-[40px] mt-2 font-bold leading-tight tracking-[0.7rem] text-center text-gray-900 md:text-2xl lg:text-2xl dark:text-white">
+            <h1 class="text-[40px] mt-2 font-bold leading-tight tracking-[0.7rem] text-center text-gray-900 dark:text-white">
                 VMOND
             </h1>
             <span class="text-[40px] font-light leading-tight tracking-[0.7rem] text-center text-gray-900 dark:text-white">

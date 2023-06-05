@@ -54,7 +54,7 @@
 </div>
 
 @include('modal.history')
-@include('modal.notification')
+@include('modal.pesanan')
 </body>
 
 @include('layouts.partials.foot')
