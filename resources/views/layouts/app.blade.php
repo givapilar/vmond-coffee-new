@@ -55,6 +55,7 @@
 
 @include('modal.history')
 @include('modal.pesanan')
+@include('modal.pesanan-detail')
 </body>
 
 @include('layouts.partials.foot')

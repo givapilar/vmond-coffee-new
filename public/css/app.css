@@ -1967,6 +1967,9 @@ input:checked + .toggle-bg {
 .text-right {
   text-align: right;
 }
+.text-start {
+  text-align: start;
+}
 .align-middle {
   vertical-align: middle;
 }

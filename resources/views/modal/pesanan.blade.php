@@ -18,101 +18,22 @@
                 </button>
             </div>
             <!-- Modal body -->
-            <div class="p-2">
-                <div class="max-w-xl mx-auto mt-4 mb-2 py-4 border-2 border-gray-300 border-dashed">
-                    <div class="border-b-2 border-dashed border-gray-300 text-center pb-3">
-                        <span class="text-lg text-gray-200">Progress Pesanan Saya</span>
-                    </div>
-                    <div class="flex py-4 px-3 justify-center gap-3">
-                        <div class="">
-                            <div class="w-10 h-10 bg-green-400 mx-auto rounded-full text-lg text-white flex items-center">
-                                <span class="text-white text-center w-full">
-                                    <svg class="w-5 h-5 text-white block mx-auto" fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512"><path d="M192 0c-41.8 0-77.4 26.7-90.5 64H64C28.7 64 0 92.7 0 128V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V128c0-35.3-28.7-64-64-64H282.5C269.4 26.7 233.8 0 192 0zm0 64a32 32 0 1 1 0 64 32 32 0 1 1 0-64zM305 273L177 401c-9.4 9.4-24.6 9.4-33.9 0L79 337c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L271 239c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/></svg>
-                                </span>
-                            </div>
+            <div class="p-3">
+                <button type="button" class="w-full h-auto" data-modal-target="detail-pesanan-modal" data-modal-toggle="detail-pesanan-modal">
+                    <div class="flex items-center bg-gray-600 rounded-lg p-2 border border-gray-500 hover:brightness-75 mt-3">
+                        <div class="relative inline-block shrink-0">
+                            <img class="w-14 h-14 rounded-full" src="{{ asset('assetku/dataku/img/history-notification.jpg') }}" alt="History Notif"/>
                         </div>
-
-
-                        <div class="w-1/5 align-center items-center align-middle content-center flex">
-                            <div class="w-full bg-gray-300 rounded items-center align-middle align-center flex-1">
-                                 <div class="bg-green-300 text-xs leading-none py-1 text-center text-grey-darkest rounded " style="width: 100%"></div>
-                            </div>
+                        <div class="grow ml-3 text-sm font-normal text-start">
+                            <div class="text-sm font-semibold text-gray-900 dark:text-white">#09832847</div>
+                            <span class="text-xs font-medium text-blue-600 dark:text-blue-500">Pesanan 1</span>
                         </div>
-
-
-                        <div class="">
-                            <div class="w-10 h-10 bg-white border-2 border-grey-light mx-auto rounded-full text-md text-white flex items-center">
-                                <svg class="w-5 h-5 text-gray-500 block mx-auto" fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512"><path d="M32 0C14.3 0 0 14.3 0 32S14.3 64 32 64V75c0 42.4 16.9 83.1 46.9 113.1L146.7 256 78.9 323.9C48.9 353.9 32 394.6 32 437v11c-17.7 0-32 14.3-32 32s14.3 32 32 32H64 320h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V437c0-42.4-16.9-83.1-46.9-113.1L237.3 256l67.9-67.9c30-30 46.9-70.7 46.9-113.1V64c17.7 0 32-14.3 32-32s-14.3-32-32-32H320 64 32zM288 437v11H96V437c0-25.5 10.1-49.9 28.1-67.9L192 301.3l67.9 67.9c18 18 28.1 42.4 28.1 67.9z"/></svg>
-                            </div>
-                        </div>
-
-
-                        <div class="w-1/5 align-center items-center align-middle content-center flex">
-                            <div class="w-full bg-gray-300 rounded items-center align-middle align-center flex-1">
-                                 <div class="bg-green-300 text-xs leading-none py-1 text-center text-grey-darkest rounded " style="width: 0%"></div>
-                            </div>
-                        </div>
-
-
-                        <div class="">
-                            <div class="w-10 h-10 bg-white border-2 border-grey-light mx-auto rounded-full text-md text-white flex items-center">
-                                <svg class="w-5 h-5 text-gray-500 block mx-auto" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L369 209z"/></svg>
-                            </div>
+                        <div class="shrink-0">
+                            <img class="w-10 h-10 rounded-full p-2" src="{{ asset('assetku/dataku/img/right-arrow.png') }}" alt="History Notif"/>
                         </div>
                     </div>
-
-                    <div class="flex text-xs content-center text-center">
-                        <div class="w-2/4 text-white">
-                            Konfirmasi
-                        </div>
-
-                        <div class="w-2/4 text-white">
-                            Dalam proses
-                        </div>
-
-                        <div class="w-2/4 text-white">
-                            Selesai
-                        </div>
-                    </div>
-                </div>
+                </button>
             </div>
-            <div class="p-2">
-                <div class="max-w-xl mx-auto my-4 border border-gray-300">
-                    <div class="flex items-center border-b border-gray-300 p-3">
-                        <div class="relative inline-block shrink-0">
-                            <img class="w-14 h-14 rounded-full" src="{{ asset('assetku/dataku/img/history-notification.jpg') }}" alt="History Notif"/>
-                        </div>
-                        <div class="grow ml-3 text-sm font-normal">
-                            <div class="text-sm font-semibold text-gray-900 dark:text-white">Nasi Goreng</div>
-                            <span class="text-xs font-medium text-blue-600 dark:text-blue-500">a few seconds ago</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center border-b border-gray-300 p-3">
-                        <div class="relative inline-block shrink-0">
-                            <img class="w-14 h-14 rounded-full" src="{{ asset('assetku/dataku/img/history-notification.jpg') }}" alt="History Notif"/>
-                        </div>
-                        <div class="grow ml-3 text-sm font-normal">
-                            <div class="text-sm font-semibold text-gray-900 dark:text-white">Nasi Goreng</div>
-                            <span class="text-xs font-medium text-blue-600 dark:text-blue-500">a few seconds ago</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center border-b border-gray-300 p-3">
-                        <div class="relative inline-block shrink-0">
-                            <img class="w-14 h-14 rounded-full" src="{{ asset('assetku/dataku/img/history-notification.jpg') }}" alt="History Notif"/>
-                        </div>
-                        <div class="grow ml-3 text-sm font-normal">
-                            <div class="text-sm font-semibold text-gray-900 dark:text-white">Nasi Goreng</div>
-                            <span class="text-xs font-medium text-blue-600 dark:text-blue-500">a few seconds ago</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Modal footer -->
-            {{-- <div class="fixed bottom-0 w-full h-auto">
-                <div class="flex items-center px-6 py-4 space-x-2 border-t border-gray-200 dark:border-gray-600">
-                    <button data-modal-hide="defaultModal" type="button" class="text-white w-full bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Konfirmasi</button>
-                </div>
-            </div> --}}
         </div>
     </div>
 </div>
