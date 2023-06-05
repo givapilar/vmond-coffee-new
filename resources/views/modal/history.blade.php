@@ -22,7 +22,7 @@
             <div class="p-3 space-y-4 h-full max-h-[77%] overflow-y-scroll">
                 @foreach ($order_table as $item)
                 {{-- {{ dd($item->order->name) }} --}}
-                @if ($item->status == 'Paid')
+                @if ($item->status_pembayaran == 'Paid')
                     
                 <form action="{{ route('history-penjualan',$item->id) }}">
                     

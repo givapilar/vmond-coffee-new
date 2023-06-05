@@ -60,10 +60,10 @@ class OrderController extends Controller
 
         $restaurant = Restaurant::get();
 
-        \Cart::session(Auth::user()->id)->add(array(
-            'id' => $restaurant->id,
-            'quantity' => $request->quantity,
-        ));
+        // \Cart::session(Auth::user()->id)->add(array(
+        //     'id' => $restaurant->id,
+        //     'quantity' => $request->quantity,
+        // ));
         
         $order = Order::create([
             // $request->all()
@@ -73,7 +73,7 @@ class OrderController extends Controller
             'code' => $newInvoiceNumber,
             // 'total_price' => \Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan, 
             'total_price' =>  \Cart::getTotal(), 
-            'status' => 'Unpaid',
+            'status_pembayaran' => 'Unpaid',
             'invoice_no' => $newInvoiceNumber,
             'created_at' => date('Y-m-d H:i:s'),
         ]);
@@ -116,7 +116,7 @@ class OrderController extends Controller
         if ($hashed == $request->signature_key) {
             if ($request->transaction_status == 'capture' or $request->transaction_status == 'settlement') {
                 $order = Order::find($request->order_id);
-                $order->update(['status' => 'Paid']);
+                $order->update(['status_pembayaran' => 'Paid']);
 
             }
         }
