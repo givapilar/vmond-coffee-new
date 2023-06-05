@@ -11,4 +11,8 @@ class Order extends Model
 
     protected $guarded = [];
 
+    public function orderPivot()
+    {
+        return $this->hasMany(OrderPivot::class);
+    }
 }

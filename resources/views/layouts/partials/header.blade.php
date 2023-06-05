@@ -34,7 +34,7 @@
                 <!-- Dropdown menu -->
                 <div class="z-40 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600 w-[10rem]" id="user-dropdown">
                     <div class="px-4 py-3">
-                        <span class="block text-sm text-gray-900 dark:text-white">{{ Auth::user()->name ?? 'Guest' }}</span>
+                        <span class="block text-sm text-gray-900 dark:text-white">{{ Auth::user()->username ?? 'Guest' }}</span>
                         @if (Auth::user() != null)
                             <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">{{ 'Rp. ' . Auth::user()->balance. ',-' ?? '' }}</span>
                         @endif

@@ -43,33 +43,47 @@
             <td class="text-white">{{ $order->total_price }}</td>
         </tr>
     </table>
-    <button id="pay-button" class="rounded-full bg-amber-300">Pay!</button>
+    <button id="pay-button" onclick="payButton()" class="rounded-full bg-amber-300">Pay!</button>
+
     <script type="text/javascript">
       // For example trigger on button clicked, or any time you need
-      var payButton = document.getElementById('pay-button');
-      payButton.addEventListener('click', function () {
-        // Trigger snap popup. @TODO: Replace TRANSACTION_TOKEN_HERE with your transaction token
-        window.snap.pay('{{ $snapToken }}', {
-          onSuccess: function(result){
-            /* You may add your own implementation here */
-            // alert("payment success!"); 
-            window.location.href = '/invoice/{{ $order->id }}'
-            console.log(result);
-          },
-          onPending: function(result){
-            /* You may add your own implementation here */
-            alert("wating your payment!"); console.log(result);
-          },
-          onError: function(result){
-            /* You may add your own implementation here */
-            alert("payment failed!"); console.log(result);
-          },
-          onClose: function(){
-            /* You may add your own implementation here */
-            alert('you closed the popup without finishing the payment');
-          }
-        })
-      });
+    //   var payButton = document.getElementById('pay-button');
+    //   payButton.addEventListener('click', function () {
+    //     // Trigger snap popup. @TODO: Replace TRANSACTION_TOKEN_HERE with your transaction token
+    //     window.snap.pay('{{ $snapToken }}', {
+    //       onSuccess: function(result){
+    //         /* You may add your own implementation here */
+    //         // alert("payment success!"); 
+    //         window.location.href = '/invoice/{{ $order->id }}'
+    //         console.log(result);
+    //       },
+    //       onPending: function(result){
+    //         /* You may add your own implementation here */
+    //         alert("wating your payment!"); console.log(result);
+    //       },
+    //       onError: function(result){
+    //         /* You may add your own implementation here */
+    //         alert("payment failed!"); console.log(result);
+    //       },
+    //       onClose: function(){
+    //         /* You may add your own implementation here */
+    //         alert('you closed the popup without finishing the payment');
+    //       }
+    //     })
+    //   });
+    function payButton(data) {
+        $.ajax({
+            url: "api/data/success-order",
+            method: "POST", // First change type to method here    
+            data: data,
+            success: function(callback) {
+                console.log('Callback', callback);
+            },
+            error: function(error) {
+                alert("error" + error);
+            }
+        });    
+    }
     </script>
 </body>
 </html>

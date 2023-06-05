@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartOrdersController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\HistoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,7 @@ use App\Http\Controllers\OrderController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+// Route::auth();
 Route::get('/', function () {
     return view('auth.login');
 });
@@ -114,3 +116,7 @@ Route::get('orders',[OrderController::class,'index'])->name('order.index');
 // Route::post('/checkout-order',[OrderController::class,'checkout'])->name('checkout-order');
 Route::post('/checkout',[OrderController::class,'checkout'])->name('checkout-order');
 Route::get('/invoice/{id}',[OrderController::class,'invoice'])->name('invoice');
+
+// Route History Penjualan
+Route::get('/history-penjualan/{id}',[HistoryController::class,'index'])->name('history-penjualan');
+Route::get('/history-penjualan/cetak-pdf/{id}',[HistoryController::class,'pdfExport'])->name('cetak-pdf');

@@ -37,10 +37,9 @@
                                 <span class="block text-[10px] dark:text-yellow-300">Stock {{ $item->model->stok_perhari }}</span>
                             </p>
                             <p class="text-xs text-gray-500 truncate dark:text-gray-400" id="note">
-                                {{ $item->model->description }}
                             </p>
                             <p class="text-xs text-gray-500 truncate dark:text-red-500">
-                                {{ $item->model->harga }}
+                                Rp. {{ $item->model->harga }}
                             </p>
 
 

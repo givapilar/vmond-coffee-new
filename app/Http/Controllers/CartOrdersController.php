@@ -111,8 +111,8 @@ class CartOrdersController extends Controller
                 'id' => $restaurant->id, // inique row ID
                 'name' => $restaurant->nama,
                 'price' => $restaurant->harga,
-                'quantity' => $quantity,
-                'attributes' => array(),
+                'quantity' => $request->quantity,
+                'attributes' => array($restaurant),
                 'associatedModel' => Restaurant::class
             ));
             return redirect()->route('homepage')->with('message', 'Data berhasil dimasukkan ke dalam keranjang !');

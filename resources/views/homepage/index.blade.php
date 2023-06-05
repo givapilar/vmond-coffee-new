@@ -10,6 +10,9 @@
 
 @section('content')
 <section>
+    {{-- @foreach ($order_table as $item)
+                {{ dd($item->order->name) }}
+    @endforeach --}}
     <div class=" w-11/12 mt-5 p-4 bg-[#1d2943] border border-gray-200 rounded-lg shadow mx-auto dark:bg-[#1d2943] dark:border-[#16274b]">
         <div class="grid grid-cols-1">
             <div class="flex items-center space-x-4">

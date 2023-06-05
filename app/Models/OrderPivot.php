@@ -5,15 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Restaurant extends Model
+class OrderPivot extends Model
 {
     use HasFactory;
 
-    protected $table = 'restaurants';
-
     public function order()
     {
-        return $this->hasMany(OrderPivot::class);
+        return $this->belongsTo(Order::class);
+    }
+
+    public function restaurant()
+    {
+        return $this->belongsTo(Restaurant::class);
     }
 }
-
