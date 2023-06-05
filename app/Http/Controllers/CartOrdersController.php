@@ -19,9 +19,10 @@ class CartOrdersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request,$id)
     {
         $data ['restaurant'] = Restaurant::get();
+
         $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
         return view('cart.index',$data);
     }

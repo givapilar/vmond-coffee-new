@@ -16,7 +16,7 @@ class OrderController extends Controller
     public function index()
     {
 
-        return view('checkout.order',$data);
+        return view('checkout.order');
     }
 
     public function checkout(Request $request)
@@ -57,6 +57,13 @@ class OrderController extends Controller
         //     'attributes' => array($restaurant),
         //     'associatedModel' => Restaurant::class
         // ));
+
+        $restaurant = Restaurant::get();
+
+        \Cart::session(Auth::user()->id)->add(array(
+            'id' => $restaurant->id,
+            'quantity' => $request->quantity,
+        ));
         
         $order = Order::create([
             // $request->all()
@@ -68,6 +75,7 @@ class OrderController extends Controller
             'total_price' =>  \Cart::getTotal(), 
             'status' => 'Unpaid',
             'invoice_no' => $newInvoiceNumber,
+            'created_at' => date('Y-m-d H:i:s'),
         ]);
         // dd(\Cart::getTotalQuantity());
 
@@ -123,55 +131,6 @@ class OrderController extends Controller
     }
 
     public function successOrder(Request $request){
-        // dd($request->all());
-        // $orderPivot = OrderPivot::create() 
-        // dd($request->all());
-
-        // $order = Order::get();
-        // $restaurant = Restaurant::get();
-        // try {
-        //     $orderRestaurant = [];
-        //     // if ($request->restaurant_id) {
-        //         foreach ($request->tag_id as $key => $value) {
-
-        //             $orderRestaurant[] = [
-        //                 'order_id' => $order->id,
-        //                 'restaurant_id' => $restaurant->id,
-        //             ];
-        //         }
-                
-        //         OrderPivot::insert($orderRestaurant);
-        //         // }
-                
-        //         $response['success'] = true;
-        //         $response['code'] = 200;
-        //         $response['message'] = 'Success order...';
-
-        //     return $request[19]['id'];
-        // } catch (\Throwable $th) {
-        //     $response['success'] = false;
-        //     $response['code'] = 500;
-        //     $response['message'] = 'Upss... ' . $th->getMessage();
-        //     //throw $th;
-        // }
-
-        // try {
-            
-        //     $orderPivot = [];
-        //     foreach ($request[19]['id'] as $key => $value) {
-
-        //         $orderPivot[] = [
-        //             'restaurant_id' => $request[19]['id'],
-        //             // 'order_id' => $request->tag_id,
-        //         ];
-        //     }
-        //     return $orderPivot;
-        //     OrderPivot::insert($orderPivot);
-            
-        //     // return redirect()->route('restaurant.index')->with(['success' => 'Restaurant added successfully!']);
-        // } catch (\Throwable $th) {
-        //     // return redirect()->route('restaurant.index')->with(['failed' => 'Restaurant added failed! '.$th->getMessage()]);
-        // }
 
         $datas = [];
         
@@ -186,6 +145,7 @@ class OrderController extends Controller
                         $orderPivot[] = [
                             'order_id' => $getRequest['order_id'],
                             'restaurant_id' => $data['id'],
+                            'created_at' => date('Y-m-d H:i:s'),
                         ];
                     // }
                     OrderPivot::insert($orderPivot);
