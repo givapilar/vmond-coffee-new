@@ -15,7 +15,7 @@ class AddColumStatusToOrdersTable extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->renameColumn('status', 'status_pembayaran');
-            $table->string("status_pemesanan")->nullable();
+            $table->string("status_pesanan")->nullable();
         });
     }
 
@@ -27,7 +27,8 @@ class AddColumStatusToOrdersTable extends Migration
     public function down()
     {
         Schema::table('orders', function (Blueprint $table) {
-            //
+           $table->dropColumn("status_pesanan");
+           $table->renameColumn('status_pembayaran', 'status');
         });
     }
 }

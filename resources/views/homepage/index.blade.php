@@ -10,9 +10,6 @@
 
 @section('content')
 <section>
-    {{-- @foreach ($order_table as $item)
-                {{ dd($item->order->name) }}
-    @endforeach --}}
     <div class=" w-11/12 mt-5 p-4 bg-[#1d2943] border border-gray-200 rounded-lg shadow mx-auto dark:bg-[#1d2943] dark:border-[#16274b]">
         <div class="grid grid-cols-1">
             <div class="flex items-center space-x-4">
@@ -52,7 +49,7 @@
     <div class="grid grid-cols-3 gap-3">
         <a href="{{ route('daftar-restaurant') }}">
             <div class="text-base sm:text-sm p-1">
-                <div class="relative inline-block aspect-h-1 h-36 sm:h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
+                <div class="aspect-h-1 h-36 sm:h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
                     <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80" alt="" class="object-cover object-center h-full w-full">
                     {{-- <span class="absolute top-0 left-0 inline-flex items-center justify-center w-6 h-6 bg-blue-600 rounded-full">
                         <svg aria-hidden="true" class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm1 3a1 1 0 100 2h3a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
@@ -64,7 +61,7 @@
             </div>
         </a>
         <a href="{{ route('daftar-billiard') }}">
-            <div class=" text-base sm:text-sm p-1">
+            <div class="text-base sm:text-sm p-1">
                 <div class="aspect-h-1 h-36 sm:h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
                     <img src="https://images.unsplash.com/photo-1544070928-135893793bdc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=627&q=80" alt="." class="object-cover object-center h-full w-full">
                 </div>
@@ -126,12 +123,26 @@
     <div class="slick1 pt-2">
         @foreach ($response_data as $item)
         <div class="text-base sm:text-sm p-1">
-            <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
+            {{-- <div class="w-full aspect-h-1 h-full aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
+                <div class="relative inline-flex">
                 <img src="{{ $item->image ?? 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=780&q=80'}} " alt="" class="object-cover object-center h-full w-full">
-            </div>
+                    <span class="absolute top-0 inline-flex items-center justify-center w-full h-6 bg-blue-600 rounded-full">
+                        <svg aria-hidden="true" class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm1 3a1 1 0 100 2h3a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
+                        <span class="sr-only">Message icon</span>
+                    </span>
+                </div>
+            </div> --}}
+            <figure class="relative max-w-sm">
+                <a href="#">
+                  <img class="rounded-lg" src="{{ $item->image ?? 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=780&q=80'}} " alt="image description">
+                </a>
+                <span class="absolute top-0 right-0 inline-flex items-center justify-center w-6 h-6 bg-blue-600 rounded-full">
+                    <svg aria-hidden="true" class="w-4 h-4 text-white" fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512"><path d="M374.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-320 320c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l320-320zM128 128A64 64 0 1 0 0 128a64 64 0 1 0 128 0zM384 384a64 64 0 1 0 -128 0 64 64 0 1 0 128 0z"/></svg>
+                </span>
+              </figure>
             <div class="px-1">
                 <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">{{ $item->nama ?? 'Error' }}</p>
-                {{-- <span class="block text-[8px] dark:text-yellow-300">Stock 100</span> --}}
+                <span class="block text-[8px] dark:text-yellow-300">Stock 100</span>
                 <span class="block text-[8px] dark:text-red-500 line-through">Rp.{{ number_format($item->harga,2) }}</span>
                 <span class="block text-[10px] dark:text-red-500">Rp.{{ number_format($item->harga,2) }}</span>
 
@@ -143,11 +154,11 @@
                             <input type="hidden" name="quantity" value="1" id="">
                             <input type="hidden" name="image" value="{{ $item->image }}" id="">
                             <input type="hidden" name="id" value="{{ $item->id }}" id="">
-                                <button class="w-full bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                            </div>
+                            <button class="w-full bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
                         </div>
-                </form>
+                    </form>
                 </div>
+            </div>
         </div>
         @endforeach
     </div>
