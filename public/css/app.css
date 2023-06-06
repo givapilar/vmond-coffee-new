@@ -1328,6 +1328,9 @@ input:checked + .toggle-bg {
 .w-3\.5 {
   width: 0.875rem;
 }
+.w-3\/12 {
+  width: 25%;
+}
 .w-32 {
   width: 8rem;
 }
