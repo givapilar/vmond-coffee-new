@@ -24,8 +24,8 @@ class HistoryController extends Controller
     }
     public function pdfExport($id)
     {
-        $ids = Crypt::decryptString($id);
-        $data = Order::findorFail($ids);
+        $id = Crypt::decryptString($id);
+        $data = Order::findorFail($id);
 
         $pdf = PDF::loadview('history.cetak-pdf',['orders'=>$data]);
         return $pdf->download('History-pdf.pdf');

@@ -155,6 +155,17 @@
 	<div class="container dark:bg-gray-900 mx-auto py-6 px-4" x-data="invoices()" x-init="generateInvoiceNumber(111111, 999999);" x-cloak>
 		<div class="flex justify-between">
 			<h2 class="text-2xl dark:text-gray-400 font-bold mb-6 pb-2 tracking-wider uppercase">Invoice</h2>
+			{{-- <div>
+				<div class="relative inline-block">
+					<div class="text-gray-500 cursor-pointer w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-300 inline-flex items-center justify-center" @mouseenter="showTooltip2 = true" @mouseleave="showTooltip2 = false" @click="window.location.reload()">
+						<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-refresh" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+							<rect x="0" y="0" width="24" height="24" stroke="none"></rect>
+							<path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -5v5h5" />
+							<path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 5v-5h-5" />
+						</svg>
+					</div>
+				</div>
+			</div> --}}
 		</div>
 
 		<div class="flex mb-8 justify-between">
@@ -162,7 +173,7 @@
 				<div class="mb-2 md:mb-1 md:flex items-center">
 					<label class="w-32 text-gray-800 dark:text-gray-400 block font-bold text-sm uppercase tracking-wide">Name</label>
 				</div>
-				
+
                 <div class="mb-2 md:mb-1 md:flex items-center">
 					<label class="w-32 text-gray-800 dark:text-gray-400 block font-bold text-sm uppercase tracking-wide">Invoice No. </label>
 				</div>
@@ -182,7 +193,7 @@
 				<div class="mb-2 md:mb-1 md:flex items-center">
 					<label class="w-32 text-gray-800 dark:text-gray-400 block font-bold text-sm uppercase tracking-wide">{{ $orders->name }}</label>
 				</div>
-				
+
                 <div class="mb-2 md:mb-1 md:flex items-center">
 					<label class="w-32 text-gray-800 dark:text-gray-400 block font-bold text-sm uppercase tracking-wide">#{{ $orders->invoice_no }}</label>
 				</div>
@@ -194,8 +205,8 @@
 			</div>
 		</div>
 
-		
-        
+
+
 		<div class="flex -mx-1 border-b py-2 items-start">
 			<div class="flex-1 px-1">
 				<p class="text-gray-800 dark:text-gray-400 uppercase tracking-wide text-sm font-bold">Item</p>
@@ -266,7 +277,7 @@
                     </div>
 				</div>
 			</div>
-		
+
 			<div class="py-2 border-t border-b">
 				<div class="flex justify-between">
 					<div class="text-xl text-gray-600 dark:text-gray-400 text-right flex-1">Total</div>
@@ -278,12 +289,12 @@
 		</div>
 
 	</div>
-	
+
 	<script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
 	<script>
         window.addEventListener('DOMContentLoaded', function() {
 			const today = new Date();
-		
+
             var picker = new Pikaday({
 				keyboardInput: false,
 				field: document.querySelector('.js-datepicker'),

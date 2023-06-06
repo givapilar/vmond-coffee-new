@@ -106,6 +106,7 @@ Route::get('cart_biliard/{id}/edit', [CartOrdersController::class, 'editBiliard'
 // Restaurant Cart
 Route::get('/add-chart-restaurant/{id}',[CartOrdersController::class, 'addCartRestaurant'])->name('restaurant-cart');
 Route::get('/cart',[CartOrdersController::class, 'index'])->name('cart');
+Route::post('/cart-update',[CartOrdersController::class, 'updateCart'])->name('cart-update');
 Route::get('/delete-chart-restaurant/{id}',[CartOrdersController::class, 'deleteCartRestaurant'])->name('delete-restaurant-cart');
 
 // Route Midtrans

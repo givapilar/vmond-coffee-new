@@ -33,9 +33,13 @@ class AppServiceProvider extends ServiceProvider
             // $orderTable = Order::where('user_id', Auth::user()->id)->where('status', 'Paid')->get();
             // $orderPivot = Order::finorFail();
             $orderTable = Order::get();
+            // $data['data_carts_image'] = \Cart::session(Auth::user()->id)->getContent();
+
             // $orderTable = OrderPivot::get();
             // dd($orderPivot);
             View::share('order_table',$orderTable);
+            // View::share($data);
+
         });
 
         // $orderTable = Order::where('user_id', (Auth::user()->id ?? 2))->get();

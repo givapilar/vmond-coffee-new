@@ -24,8 +24,19 @@ class OrderController extends Controller
         $request->request->add(['qty' => $request->qty]);
         // dd($request->request->add(['qty' => $request->qty]));
         $biaya_layanan = 5000;
-        $session_cart = \Cart::session(Auth::user()->id)->getContent();
         $price = 1;
+        // $session_cart = \Cart::session(Auth::user()->id)->getContent();
+        $session_cart = \Cart::session(Auth::user()->id)->getContent();
+
+        foreach ($session_cart as $key => $item) {
+            // $order = Order::get();
+            $orderPivot = [];
+                $orderPivot[] = [
+                    'qty' => $item->quantity,
+                ];
+            // }
+            OrderPivot::insert($orderPivot);
+        }
 
         foreach ($session_cart as $key => $value) {
             $price +=$value->price;
@@ -50,21 +61,27 @@ class OrderController extends Controller
         // return $newInvoiceNumber;
         
         // \Cart::session(Auth::user()->id)->add(array(
-        //     'id' => $restaurant->id, // inique row ID
-        //     'name' => $restaurant->nama,
-        //     'price' => $restaurant->harga,
-        //     'quantity' => $request->quantity,
-        //     'attributes' => array($restaurant),
-        //     'associatedModel' => Restaurant::class
-        // ));
-
+            //     'id' => $restaurant->id, // inique row ID
+            //     'name' => $restaurant->nama,
+            //     'price' => $restaurant->harga,
+            //     'quantity' => $request->quantity,
+            //     'attributes' => array($restaurant),
+            //     'associatedModel' => Restaurant::class
+            // ));
+            
         $restaurant = Restaurant::get();
-
-        // \Cart::session(Auth::user()->id)->add(array(
-        //     'id' => $restaurant->id,
-        //     'quantity' => $request->quantity,
-        // ));
         
+        // \Cart::session(Auth::user()->id)->add(array(
+            //     'id' => $restaurant->id,
+            //     'quantity' => $request->quantity,
+            // ));
+            
+            // $session_cart = \Cart::session(Auth::user()->id)->getContent();
+
+            // dd($session_cart);
+
+        $biaya_layanan = 5000;
+            
         $order = Order::create([
             // $request->all()
             'user_id' => auth()->user()->id,
@@ -72,7 +89,8 @@ class OrderController extends Controller
             'qty' => $request->qty,
             'code' => $newInvoiceNumber,
             // 'total_price' => \Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan, 
-            'total_price' =>  \Cart::getTotal(), 
+            // 'total_price' =>  \Cart::getTotal(), 
+            'total_price' => (\Cart::getTotal() *11/100 )+ \Cart::getTotal() + $biaya_layanan, 
             'status_pembayaran' => 'Unpaid',
             'invoice_no' => $newInvoiceNumber,
             'created_at' => date('Y-m-d H:i:s'),
@@ -88,11 +106,12 @@ class OrderController extends Controller
         \Midtrans\Config::$isSanitized = true;
         // Set 3DS transaction for credit card to true
         \Midtrans\Config::$is3ds = true;
-
+        // dd(number_format($order->total_price, 0));
         $params = array(
             'transaction_details' => array(
                 'order_id' => $order->id,
-                'gross_amount' => $order->total_price,
+                // 'gross_amount' => $order->total_price,
+                'gross_amount' => str_replace(',','',number_format($order->total_price, 0)),
             ),
             'customer_details' => array(
                 'first_name' => auth()->user()->name,
@@ -100,7 +119,7 @@ class OrderController extends Controller
                 // 'code' => rand(),
             ),
         );
-
+        
         $snapToken = \Midtrans\Snap::getSnapToken($params);
         // dd($snapToken);
         $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
@@ -133,7 +152,6 @@ class OrderController extends Controller
     public function successOrder(Request $request){
 
         $datas = [];
-        
         try {
             $getRequest = $request->all(); 
             if ($getRequest) {

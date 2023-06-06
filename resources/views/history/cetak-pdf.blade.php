@@ -11,7 +11,7 @@
 			font-size: 9pt;
 		}
 	</style>
- 
+
 	<table class='table table-bordered'>
 		<thead>
 			<tr>
@@ -33,6 +33,6 @@
 			</tr>
 		</tbody>
 	</table>
- 
+
 </body>
 </html>

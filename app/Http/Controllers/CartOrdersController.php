@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Biliard;
 use App\Models\CartOrders;
 use App\Models\MeetingRoom;
+use App\Models\OrderPivot;
 use App\Models\Restaurant;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -23,6 +24,7 @@ class CartOrdersController extends Controller
     {
         $data ['restaurant'] = Restaurant::get();
         $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
+
         return view('cart.index',$data);
     }
 
@@ -90,6 +92,36 @@ class CartOrdersController extends Controller
     {
         \Cart::session(Auth::user()->id)->remove($id);
         return redirect()->back();
+    }
+
+    public function updateCart(Request $request)
+    {
+        // dd($request->id);
+        // $totalPrice = $request->qty * $price;
+        // update the item on cart
+        // \Cart::session(Auth::user()->id)->add($request->id,[
+        //     'quantity' => $request->qty,
+        //     // 'price' => $totalPrice
+        // ]);
+        // update the item on cart
+        \Cart::session(Auth::user()->id)->update($request->id,[
+            'quantity' => $request->qty,
+        ]);
+        // Cart::update($request->id, array(
+        //     'quantity' => $request->qty, // so if the current product has a quantity of 4, another 2 will be added so this will result to 6
+        // ));
+        // OrderPivot::create([
+        //     'restaurant_id' => $request->id,
+        //     'qty' => $request->qty,
+        // ]);
+                // item cart diupdate sesuai dengan qty yang diinput
+                \Cart::session(Auth::user()->id)->update($request->id, [
+                    'quantity' => array(
+                        'relative' => false,
+                        'value' => $request->qty
+                    ),
+                ]);
+
     }
 
     public function addCartRestaurant(Request $request,$id)
