@@ -19,39 +19,31 @@
             </div>
             <!-- Modal body -->
 
-            <div class="p-3 space-y-4 h-full max-h-[77%] overflow-y-scroll">
+            <div class="p-3 h-full max-h-[77%] overflow-y-scroll">
                 @foreach ($order_table as $item)
-                {{-- {{ dd($item->order->name) }} --}}
-                @if ($item->status == 'Paid')
-                    
-                <form action="{{ route('history-penjualan',$item->id) }}">
-                    
-                    <button type="submit">
-                        <div class="flex items-center bg-gray-600 rounded-lg p-2 border border-gray-500 hover:brightness-75 mt-3">
-                            <div class="relative inline-block shrink-0">
-                                <img class="w-14 h-14 rounded-full" src="{{ asset('assetku/dataku/img/history-notification.jpg') }}" alt="History Notif"/>
+                    @if ($item->status_pembayaran == 'Paid')
+                    {{-- <form action="{{ route('history-penjualan',$item->id) }}"> --}}
+                        <button type="submit" class="w-full h-auto" data-modal-target="history-detail-modal{{ $item->code }}" data-modal-toggle="history-detail-modal{{ $item->code }}">
+                            <div class="flex items-center bg-gray-600 rounded-lg p-2 border border-gray-500 hover:brightness-75 mt-3">
+                                <div class="relative inline-block shrink-0">
+                                    <img class="w-14 h-14 rounded-full" src="{{ asset('assetku/dataku/img/history-notification.jpg') }}" alt="History Notif"/>
+                                </div>
+                                <div class="grow ml-3 text-sm font-normal text-start">
+                                    <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ $item->name ?? 'Not' }}</div>
+                                    <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ $item->total_price ?? 'Not' }}</div>
+                                    <span class="text-xs font-medium text-blue-600 dark:text-blue-500">a few seconds ago</span>
+                                </div>
+                                <div class="shrink-0">
+                                    <img class="w-10 h-10 rounded-full p-2" src="{{ asset('assetku/dataku/img/right-arrow.png') }}" alt="History Notif"/>
+                                </div>
                             </div>
-                            <div class="grow ml-3 text-sm font-normal">
-                                <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ $item->name ?? 'Not' }}</div>
-                                <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ $item->total_price ?? 'Not' }}</div>
-                                <span class="text-xs font-medium text-blue-600 dark:text-blue-500">a few seconds ago</span>
-                            </div>
-                            <div class="shrink-0">
-                                <img class="w-10 h-10 rounded-full p-2" src="{{ asset('assetku/dataku/img/right-arrow.png') }}" alt="History Notif"/>
-                            </div>
-                        </div>
-                    </button>
-                </form>
-                @endif
-                    @endforeach
-                </div>
-                
-            <!-- Modal footer -->
-            {{-- <div class="fixed bottom-0 w-full h-auto">
-                <div class="flex items-center px-6 py-4 space-x-2 border-t border-gray-200 dark:border-gray-600">
-                    <button data-modal-hide="defaultModal" type="button" class="text-white w-full bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Konfirmasi</button>
-                </div>
-            </div> --}}
+                        </button>
+                    {{-- </form> --}}
+
+                    @include('modal.history-detail')
+                    @endif
+                @endforeach
+            </div>
         </div>
     </div>
 </div>
