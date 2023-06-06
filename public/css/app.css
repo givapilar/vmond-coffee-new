@@ -1328,6 +1328,9 @@ input:checked + .toggle-bg {
 .w-3\.5 {
   width: 0.875rem;
 }
+.w-3\/12 {
+  width: 25%;
+}
 .w-32 {
   width: 8rem;
 }
@@ -1602,6 +1605,12 @@ input:checked + .toggle-bg {
 .overflow-y-scroll {
   overflow-y: scroll;
 }
+.overscroll-y-auto {
+  overscroll-behavior-y: auto;
+}
+.overscroll-x-none {
+  overscroll-behavior-x: none;
+}
 .truncate {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1773,6 +1782,10 @@ input:checked + .toggle-bg {
 .bg-gray-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(75 85 99 / var(--tw-bg-opacity));
+}
+.bg-gray-700 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(55 65 81 / var(--tw-bg-opacity));
 }
 .bg-gray-800 {
   --tw-bg-opacity: 1;
