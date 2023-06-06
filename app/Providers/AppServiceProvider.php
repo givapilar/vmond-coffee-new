@@ -7,6 +7,8 @@ use App\Models\OrderPivot;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Route;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -35,7 +37,7 @@ class AppServiceProvider extends ServiceProvider
             // dd($orderPivot);
             View::share('order_table',$orderTable);
         });
-        
+
         // $orderTable = Order::where('user_id', (Auth::user()->id ?? 2))->get();
         // $orderTable = Order::where('user_id', 2)->where('status', 'Paid')->get();
         // $orderTable = Order::where('user_id')->where('status', 'Paid')->get();

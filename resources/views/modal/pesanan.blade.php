@@ -18,14 +18,16 @@
                 </button>
             </div>
             <!-- Modal body -->
+            @foreach ($order_table as $item)
+            @if ($item->status_pembayaran == 'Paid' && $item->status_pesanan != 'selesai')
             <div class="p-3">
-                <button type="button" class="w-full h-auto" data-modal-target="detail-pesanan-modal" data-modal-toggle="detail-pesanan-modal">
+                <button type="button" class="w-full h-auto" data-modal-target="detail-pesanan-modal{{ $item->id }}" data-modal-toggle="detail-pesanan-modal{{ $item->id }}">
                     <div class="flex items-center bg-gray-600 rounded-lg p-2 border border-gray-500 hover:brightness-75 mt-3">
                         <div class="relative inline-block shrink-0">
                             <img class="w-14 h-14 rounded-full" src="{{ asset('assetku/dataku/img/history-notification.jpg') }}" alt="History Notif"/>
                         </div>
                         <div class="grow ml-3 text-sm font-normal text-start">
-                            <div class="text-sm font-semibold text-gray-900 dark:text-white">#09832847</div>
+                            <div class="text-sm font-semibold text-gray-900 dark:text-white">#Inv{{ $item->invoice_no }}</div>
                             <span class="text-xs font-medium text-blue-600 dark:text-blue-500">Pesanan 1</span>
                         </div>
                         <div class="shrink-0">
@@ -34,6 +36,10 @@
                     </div>
                 </button>
             </div>
+            
+            @include('modal.pesanan-detail')
+            @endif
+            @endforeach
         </div>
     </div>
 </div>

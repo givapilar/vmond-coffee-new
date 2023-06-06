@@ -24,9 +24,16 @@ class HistoryController extends Controller
     }
     public function pdfExport($id)
     {
-        $data = Order::findorFail($id);
+        $ids = Crypt::decryptString($id);
+        $data = Order::findorFail($ids);
 
         $pdf = PDF::loadview('history.cetak-pdf',['orders'=>$data]);
         return $pdf->download('History-pdf.pdf');
+    }
+
+    public function pesananOrder($id)
+    {
+        $data['orders'] = Order::findOrFail($id);
+        return view('modal.pesanan-detail')->with($data);
     }
 }

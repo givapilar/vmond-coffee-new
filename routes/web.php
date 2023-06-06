@@ -120,3 +120,6 @@ Route::get('/invoice/{id}',[OrderController::class,'invoice'])->name('invoice');
 // Route History Penjualan
 Route::get('/history-penjualan/{id}',[HistoryController::class,'index'])->name('history-penjualan');
 Route::get('/history-penjualan/cetak-pdf/{id}',[HistoryController::class,'pdfExport'])->name('cetak-pdf');
+
+// Route Pesanan detail
+Route::get('/pesanan-detail/{id}',[HistoryController::class,'pesananOrder'])->name('pesanan-order');

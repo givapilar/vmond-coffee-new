@@ -21,7 +21,6 @@
 
             <div class="p-3 space-y-4 h-full max-h-[77%] overflow-y-scroll">
                 @foreach ($order_table as $item)
-                {{-- {{ dd($item->order->name) }} --}}
                 @if ($item->status_pembayaran == 'Paid')
                     
                 <form action="{{ route('history-penjualan',$item->id) }}">
@@ -43,15 +42,9 @@
                     </button>
                 </form>
                 @endif
-                    @endforeach
-                </div>
+                @endforeach
+            </div>
                 
-            <!-- Modal footer -->
-            {{-- <div class="fixed bottom-0 w-full h-auto">
-                <div class="flex items-center px-6 py-4 space-x-2 border-t border-gray-200 dark:border-gray-600">
-                    <button data-modal-hide="defaultModal" type="button" class="text-white w-full bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Konfirmasi</button>
-                </div>
-            </div> --}}
         </div>
     </div>
 </div>
