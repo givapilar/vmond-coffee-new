@@ -18,7 +18,7 @@
         </div>
         <!-- Modal body -->
 
-        <div class="p-3 space-y-4 h-full max-h-[77%] overflow-y-scroll">
+        <div class="p-5 space-y-4 h-full max-h-[77%] overflow-y-scroll">
             <div class="" x-data="invoices()" x-init="generateInvoiceNumber(111111, 999999);" x-cloak>
                 <div class="flex justify-center items-center">
                     <h2 class="text-2xl text-gray-400 font-bold mb-6 pb-2 tracking-wider uppercase text-center">Invoice</h2>
