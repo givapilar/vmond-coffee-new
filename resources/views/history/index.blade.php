@@ -232,7 +232,6 @@
 			</div>
 		</div>
         @foreach ($orders->orderPivot as $order)
-        {{-- {{ dd($order->orderPivot) }} --}}
 		<div class="flex -mx-1 border-b py-2 items-start">
 			<div class="flex-1 px-1">
 				<p class="text-gray-800 dark:text-gray-400 uppercase tracking-wide text-sm font-bold">{{ $order->restaurant->nama }}</p>
@@ -260,12 +259,6 @@
         @endforeach
 
 		<div class="py-2 ml-auto mt-5 w-full w-2/4">
-			{{-- <div class="flex justify-between mb-3">
-				<div class="flex-shrink-0 text-gray-800 dark:text-gray-400 text-right flex-1">Sub Total</div>
-				<div class="text-right w-40">
-                        <div class="text-gray-800 font-medium">{{ number_format(\Cart::getTotal() ?? '0',2 )  }}</div>
-				</div>
-			</div> --}}
 			<div class="flex justify-between mb-4">
 				<div class="text-sm text-gray-600 dark:text-gray-400 text-right flex-1">PPN 11%</div>
 				<div class="text-right w-40">
@@ -294,8 +287,6 @@
 				</div>
 			</div>
 		</div>
-
-		<!-- Print Template -->
 
 	</div>
 

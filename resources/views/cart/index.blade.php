@@ -41,20 +41,23 @@
                             <p class="text-xs text-gray-500 truncate dark:text-red-500">
                                 Rp. {{ $item->model->harga }}
                             </p>
+                            <p class="text-xs text-gray-500 truncate dark:text-red-500">
+                                Total {{ $item->quantity }}
+                            </p>
 
 
                             <div class="rounded-full h-7 w-32 border border-gray-500 mt-2">
                                 <div class="grid h-full w-full grid-cols-3 mx-auto">
-                                    <button type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-l-full hover:bg-gray-50 dark:hover:bg-gray-800 group" onclick="remove('{{ $item->name }}')">
+                                    <button type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-l-full hover:bg-gray-50 dark:hover:bg-gray-800 group" onclick="remove('{{ strtolower(str_replace(' ','-',$item->model->nama)) }}',  {{ $item->model->id }})">
                                         <ion-icon name="remove" class="w-4 h-3 mb-0.5 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"></ion-icon>
                                         <span class="sr-only">Remove</span>
                                     </button>
 
                                     <div>
-                                        <input type="number" value="{{ $item->quantity }}" name="qty" id="count-items" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm text-center focus:ring-primary-600 focus:border-primary-600 block w-full py-0.5 h-full px-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 counter-{{ $item->name }}" placeholder="0" required="">
+                                        <input type="number" value="{{ $item->quantity }}" name="qty" id="count-items" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm text-center focus:ring-primary-600 focus:border-primary-600 block w-full py-0.5 h-full px-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 counter-{{ strtolower(str_replace(' ','-',$item->model->nama)) }}" placeholder="0" required="">
                                     </div>
 
-                                    <button type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-r-full hover:bg-gray-50 dark:hover:bg-gray-800 group" onclick="add('{{ $item->name }}')">
+                                    <button type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-r-full hover:bg-gray-50 dark:hover:bg-gray-800 group" onclick="add('{{ strtolower(str_replace(' ','-',$item->model->nama)) }}',  {{ $item->model->id }})">
                                         <ion-icon name="add" class="w-4 h-3 mb-0.5 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"></ion-icon>
                                         <span class="sr-only">Add</span>
                                     </button>
@@ -254,7 +257,7 @@
     })
 
 
-    function add(slug){
+    function add(slug, $id){
         let getVar = parseInt($('.counter-'+slug).val());
         if(!getVar || getVar == NaN){
             getVar = 1;
@@ -263,9 +266,30 @@
             getVar = getVar + 1;
             $('.counter-'+slug).val(getVar);
         }
+
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('cart-update') }}",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+                "_token": "{{ csrf_token() }}",
+                "qty": getVar,
+                "id": $id
+            },
+            success: function (data) {
+                // location.reload();
+                // window.location.href(url)
+            },
+            error: function (data) {
+                $.alert('Failed!');
+                console.log(data);
+            }
+        });
     }
 
-    function remove(slug){
+    function remove(slug, $id){
         let getVar = parseInt($('.counter-'+slug).val());
         if(!getVar || getVar == NaN){
             getVar = 0;
@@ -274,6 +298,27 @@
             getVar = getVar - 1;
             $('.counter-'+slug).val(getVar);
         }
+
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('cart-update') }}",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+                "_token": "{{ csrf_token() }}",
+                "qty": getVar,
+                "id": $id
+            },
+            success: function (data) {
+                // location.reload();
+                // window.location.href(url)
+            },
+            error: function (data) {
+                $.alert('Failed!');
+                console.log(data);
+            }
+        });
     }
  </script>
 @endpush
