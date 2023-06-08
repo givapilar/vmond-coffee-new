@@ -22,4 +22,12 @@
 @endif
 </body>
 @include('layouts.partials.foot')
+
+<script>
+    function phoneMask() {
+        var num = $(this).val().replace(/\D/g,'');
+        $(this).val(num.substring(0,13));
+    }
+    $('[type="tel"]').keyup(phoneMask);
+</script>
 </html>
