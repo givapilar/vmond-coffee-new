@@ -243,13 +243,13 @@
 
 			<div class="px-1 w-32 text-right">
 				<p class="leading-none">
-					<span class="block uppercase tracking-wide text-sm font-bold text-gray-800 dark:text-gray-400">{{ $order->qty ?? 0 * $order->restaurant->harga}}  </span>
+					<span class="block uppercase tracking-wide text-sm font-bold text-gray-800 dark:text-gray-400">{{ $order->qty}}  </span>
 				</p>
 			</div>
 
 			<div class="px-1 w-32 text-right">
 				<p class="leading-none">
-					<span class="block uppercase tracking-wide text-sm font-bold text-gray-800 dark:text-gray-400">{{ number_format($order->restaurant->harga * $order->order->qty ?? 0 * $order->restaurant->harga , 2) }}</span>
+					<span class="block uppercase tracking-wide text-sm font-bold text-gray-800 dark:text-gray-400">{{ number_format($order->restaurant->harga * $order->qty ?? 0 * $order->restaurant->harga , 2) }}</span>
 				</p>
 			</div>
 
