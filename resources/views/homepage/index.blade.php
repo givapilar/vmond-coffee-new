@@ -9,6 +9,7 @@
 @endpush
 
 @section('content')
+@if (Auth::user())
 <section>
     <div class=" w-11/12 mt-5 p-4 bg-[#1d2943] border border-gray-200 rounded-lg shadow mx-auto dark:bg-[#1d2943] dark:border-[#16274b]">
         <div class="grid grid-cols-1">
@@ -23,7 +24,8 @@
                         Total Transaksi
                     </p>
                     <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                        Rp. 500.000 ( Silver Member )
+                        Rp. 500.000
+                        ( {{ ucwords(Auth::user()->membership) }} Member )
                     </p>
                     <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2 dark:bg-gray-700">
                         <div class="bg-indigo-600 h-2.5 rounded-full dark:bg-indigo-500" style="width: 50%"></div>
@@ -33,6 +35,7 @@
         </div>
     </div>
 </section>
+@endif
 
 <section class="p-3">
     <div class="flex items-center justify-between">
@@ -114,10 +117,10 @@
         <div class="">
             <span class="text-lg font-bold dark:text-white ml-1">MENU RESTAURANT</span>
         </div>
-        <div class="flex items-center">
+        <a class="flex items-center" href="{{ route('daftar-restaurant') }}">
             <span class="text-xs dark:text-white">Lihat Semua</span>
             <ion-icon name="chevron-forward-outline" class="dark:text-white"></ion-icon>
-        </div>
+        </a>
     </div>
 
     <div class="slick1 pt-2">
@@ -132,19 +135,28 @@
                     </span>
                 </div>
             </div> --}}
-            <figure class="relative max-w-sm">
+            <div class="relative max-w-sm">
                 <a href="#">
                   <img class="rounded-lg" src="{{ $item->image ?? 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=780&q=80'}} " alt="image description">
                 </a>
-                <span class="absolute top-0 right-0 inline-flex items-center justify-center w-6 h-6 bg-blue-600 rounded-full">
+                {{-- <span class="absolute top-0 right-0 inline-flex items-center justify-center w-6 h-6 bg-blue-600 rounded-full">
                     <svg aria-hidden="true" class="w-4 h-4 text-white" fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512"><path d="M374.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-320 320c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l320-320zM128 128A64 64 0 1 0 0 128a64 64 0 1 0 128 0zM384 384a64 64 0 1 0 -128 0 64 64 0 1 0 128 0z"/></svg>
+                </span> --}}
+                <span class="absolute bottom-0 inline-flex items-center justify-center w-full h-5 bg-red-800 border border-red-500 rounded-b-[.5rem] text-white text-xs">
+                    Discount
                 </span>
-              </figure>
+            </div>
             <div class="px-1">
                 <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">{{ $item->nama ?? 'Error' }}</p>
                 <span class="block text-[8px] dark:text-yellow-300">Stock 100</span>
-                <span class="block text-[8px] dark:text-red-500 line-through">Rp.{{ number_format($item->harga,2) }}</span>
-                <span class="block text-[10px] dark:text-red-500">Rp.{{ number_format($item->harga,2) }}</span>
+                <div class="flex gap-2">
+                    <div class="flex-1">
+                        <span class="block text-[10px] text-white">Rp.{{ number_format($item->harga,2) }}</span>
+                    </div>
+                    <div class="flex-1">
+                        <span class="block text-[8px] dark:text-red-500 line-through">Rp.{{ number_format($item->harga,2) }}</span>
+                    </div>
+                </div>
 
                 <div class="flex justify-center gap-1">
                     <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" onclick="window.location='{{ route('detail-menu', ['type' => 'resto', 'slug' => $item->slug]) }}';"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>

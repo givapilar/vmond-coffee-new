@@ -9,7 +9,7 @@
 @endpush
 
 @section('content')
-<section class="p-3">
+{{-- <section class="p-3">
     <div id="default-carousel" class="relative w-full" data-carousel="slide">
         <!-- Carousel wrapper -->
         <div class="relative h-36 overflow-hidden rounded-2xl shadow-2xl md:h-96">
@@ -38,225 +38,101 @@
             <button type="button" class="w-2 h-2 rounded-full" aria-current="false" aria-label="Slide 4" data-carousel-slide-to="3"></button>
         </div>
     </div>
-</section>
+</section> --}}
 
-<section class="p-3">
-    <div class="flex items-center justify-between">
+<section class="p-3 mt-3">
+    <div class="flex items-center justify-between border-b border-gray-400">
         <div class="">
             <span class="text-lg font-bold dark:text-white ml-1">MENU MAKANAN</span>
         </div>
-        {{-- <div class="flex items-center">
-            <span class="text-xs dark:text-white">Lihat Semua</span>
-            <ion-icon name="chevron-forward-outline" class="dark:text-white"></ion-icon>
-        </div> --}}
     </div>
 
-    <div class="grid grid-cols-3">
-        <div class="text-base sm:text-sm px-1 py-3">
-            <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=780&q=80" alt="" class="object-cover object-center h-full w-full">
-            </div>
-            <div class="px-1">
-                <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">Pancake Honey</p>
-                <span class="block text-[10px] dark:text-red-500">Rp.12.000,00</span>
-
-                <div class="flex gap-1 opacity-75 mt-auto">
-                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                    <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+    <div class="grid grid-cols-1">
+        @foreach ($restaurant as $item)
+            @if ($item->category == 'Makanan')
+            <div class="text-base flex gap-3 sm:text-sm px-1 py-3">
+                <div class="relative max-w-sm h-24 w-24">
+                    <a href="#">
+                    <img class="rounded-lg" src="{{ $item->image ?? 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=780&q=80'}} " alt="image description">
+                    </a>
+                    <span class="absolute bottom-0 inline-flex items-center justify-center w-full h-5 bg-red-800 border border-red-500 rounded-b-[.5rem] text-white text-xs">
+                        Discount
+                    </span>
+                </div>
+                <div class="grow px-1">
+                    <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">{{ $item->nama ?? 'Error' }}</p>
+                    <span class="block text-[8px] dark:text-yellow-300">Stock 100</span>
+                    <div class="flex gap-2">
+                        <span class="block text-[10px] text-white">Rp.{{ number_format($item->harga,2) }}</span>
+                        <span class="block text-[8px] dark:text-red-500 line-through">Rp.{{ number_format($item->harga,2) }}</span>
+                    </div>
+                </div>
+                <div class="shrink opacity-75 my-auto">
+                    <button class="w-10 h-full block bg-orange-500 text-xs rounded-lg mb-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" onclick="window.location='{{ route('detail-menu', ['type' => 'resto', 'slug' => $item->slug]) }}';"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                    <form action="{{ route('restaurant-cart',$item->id) }}" method="get" class="w-10">
+                        {{-- @csrf --}}
+                        <div class="flex gap-1 opacity-75">
+                            <input type="hidden" name="quantity" value="1" id="">
+                            <input type="hidden" name="image" value="{{ $item->image }}" id="">
+                            <input type="hidden" name="id" value="{{ $item->id }}" id="">
+                            <button class="w-full h-full block bg-sky-500 text-xs rounded-lg p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </div>
-        <div class=" text-base sm:text-sm px-1 py-3">
-            <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80" alt="." class="object-cover object-center h-full w-full">
-            </div>
-
-            <div class="px-1">
-                <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">Burger Top #1</p>
-                <span class="block text-[10px] dark:text-red-500">Rp.25.000,00</span>
-
-                <div class="flex gap-1 opacity-75 mt-auto">
-                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                    <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                </div>
-            </div>
-        </div>
-        <div class=" text-base sm:text-sm px-1 py-3">
-            <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                <img src="https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="." class="object-cover object-center h-full w-full">
-            </div>
-
-            <div class="px-1">
-                <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">Red Curry #1</p>
-                <span class="block text-[10px] dark:text-red-500">Rp.35.000,00</span>
-
-                <div class="flex gap-1 opacity-75 mt-auto">
-                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                    <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                </div>
-            </div>
-        </div>
-        <div class=" text-base sm:text-sm px-1 py-3">
-            <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                <img src="https://images.unsplash.com/photo-1520201163981-8cc95007dd2a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80" alt="." class="object-cover object-center h-full w-full">
-            </div>
-
-            <div class="px-1">
-                <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">Jimmy Willy Pizza</p>
-                <span class="block text-[10px] dark:text-red-500">Rp.65.000,00</span>
-
-                <div class="flex gap-1 opacity-75 mt-auto">
-                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                    <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                </div>
-            </div>
-        </div>
-        <div class=" text-base sm:text-sm px-1 py-3">
-            <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                <img src="https://images.unsplash.com/photo-1565299507177-b0ac66763828?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=422&q=80" alt="." class="object-cover object-center h-full w-full">
-            </div>
-
-            <div class="px-1">
-                <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">Eggs Benedict Burger</p>
-                <span class="block text-[10px] dark:text-red-500">Rp.35.000,00</span>
-
-                <div class="flex gap-1 opacity-75 mt-auto">
-                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                    <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                </div>
-            </div>
-        </div>
-        <div class=" text-base sm:text-sm px-1 py-3">
-            <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                <img src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80" alt="." class="object-cover object-center h-full w-full">
-            </div>
-
-            <div class="px-1">
-                <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">Seafood pasta with shrimps and tomatoes</p>
-                <span class="block text-[10px] dark:text-red-500">Rp.45.000,00</span>
-
-                <div class="flex gap-1 opacity-75 mt-auto">
-                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                    <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                </div>
-            </div>
-        </div>
-        <div class=" text-base sm:text-sm px-1 py-3">
-            <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                <img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80" alt="." class="object-cover object-center h-full w-full">
-            </div>
-
-            <div class="px-1">
-                <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">Ramen noodles</p>
-                <span class="block text-[10px] dark:text-red-500">Rp.35.000,00</span>
-
-                <div class="flex gap-1 opacity-75 mt-auto">
-                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                    <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                </div>
-            </div>
-        </div>
-        <div class=" text-base sm:text-sm px-1 py-3">
-            <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                <img src="https://images.unsplash.com/photo-1432139509613-5c4255815697?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=385&q=80" alt="." class="object-cover object-center h-full w-full">
-            </div>
-
-            <div class="px-1">
-                <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">Steak Rare #1</p>
-                <span class="block text-[10px] dark:text-red-500">Rp.55.000,00</span>
-
-                <div class="flex gap-1 opacity-75 mt-auto">
-                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                    <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                </div>
-            </div>
-        </div>
-        <div class=" text-base sm:text-sm px-1 py-3">
-            <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                <img src="https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="." class="object-cover object-center h-full w-full">
-            </div>
-
-            <div class="px-1">
-                <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">Red Curry #2</p>
-                <span class="block text-[10px] dark:text-red-500">Rp.35.000,00</span>
-
-                <div class="flex gap-1 opacity-75 mt-auto">
-                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                    <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                </div>
-            </div>
-        </div>
+            <div class="border-b border-gray-500"></div>
+            @endif
+        @endforeach
     </div>
 </section>
 
-<section class="p-3">
-    <div class="flex items-center justify-between">
+<section class="p-3 mt-3">
+    <div class="flex items-center justify-between border-b border-gray-400">
         <div class="">
             <span class="text-lg font-bold dark:text-white ml-1">MENU MINUMAN</span>
         </div>
-        {{-- <div class="flex items-center">
-            <span class="text-xs dark:text-white">Lihat Semua</span>
-            <ion-icon name="chevron-forward-outline" class="dark:text-white"></ion-icon>
-        </div> --}}
     </div>
 
-    <div class="grid grid-cols-3">
-        <div class="text-base sm:text-sm px-1 py-3">
-            <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80" alt="." class="object-cover object-center h-full w-full">
-            </div>
-            <div class="px-1">
-                <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">Ice Lemon Tea</p>
-                <span class="block text-[10px] dark:text-red-500">Rp.15.000,00</span>
-
-                <div class="flex gap-1 opacity-75 mt-auto">
-                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                    <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+    <div class="grid grid-cols-1">
+        @foreach ($restaurant as $item)
+            @if ($item->category == 'Minuman')
+            <div class="text-base flex gap-3 sm:text-sm px-1 py-3">
+                <div class="relative max-w-sm h-24 w-24">
+                    <a href="#">
+                    <img class="rounded-lg" src="{{ $item->image ?? 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=780&q=80'}} " alt="image description">
+                    </a>
+                    {{-- <span class="absolute top-0 right-0 inline-flex items-center justify-center w-6 h-6 bg-blue-600 rounded-full">
+                        <svg aria-hidden="true" class="w-4 h-4 text-white" fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512"><path d="M374.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-320 320c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l320-320zM128 128A64 64 0 1 0 0 128a64 64 0 1 0 128 0zM384 384a64 64 0 1 0 -128 0 64 64 0 1 0 128 0z"/></svg>
+                    </span> --}}
+                    <span class="absolute bottom-0 inline-flex items-center justify-center w-full h-5 bg-red-800 border border-red-500 rounded-b-[.5rem] text-white text-xs">
+                        Discount
+                    </span>
+                </div>
+                <div class="grow px-1">
+                    <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">{{ $item->nama ?? 'Error' }}</p>
+                    <span class="block text-[8px] dark:text-yellow-300">Stock 100</span>
+                    <div class="flex gap-2">
+                        <span class="block text-[10px] text-white">Rp.{{ number_format($item->harga,2) }}</span>
+                        <span class="block text-[8px] dark:text-red-500 line-through">Rp.{{ number_format($item->harga,2) }}</span>
+                    </div>
+                </div>
+                <div class="shrink opacity-75 my-auto">
+                    <button class="w-10 h-full block bg-orange-500 text-xs rounded-lg mb-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                    <button class="w-10 h-full block bg-sky-500 text-xs rounded-lg p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
                 </div>
             </div>
-        </div>
-        <div class=" text-base sm:text-sm px-1 py-3">
-            <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                <img src="https://images.unsplash.com/photo-1577805947697-89e18249d767?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=398&q=80" alt="." class="object-cover object-center h-full w-full">
-            </div>
-
-            <div class="px-1">
-                <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">Milo Dinosaurus</p>
-                <span class="block text-[10px] dark:text-red-500">Rp.25.000,00</span>
-
-                <div class="flex gap-1 opacity-75 mt-auto">
-                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                    <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                </div>
-            </div>
-        </div>
-        <div class=" text-base sm:text-sm px-1 py-3">
-            <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                <img src="https://images.unsplash.com/photo-1507133750040-4a8f57021571?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80" alt="." class="object-cover object-center h-full w-full">
-            </div>
-
-            <div class="px-1">
-                <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">Coffee Latte</p>
-                <span class="block text-[10px] dark:text-red-500">Rp.25.000,00</span>
-
-                <div class="flex gap-1 opacity-75 mt-auto">
-                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                    <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                </div>
-            </div>
-        </div>
+            <div class="border-b border-gray-500"></div>
+            @endif
+        @endforeach
     </div>
 </section>
 
-<section class="p-3">
+{{-- <section class="p-3">
     <div class="flex items-center justify-between">
         <div class="">
             <span class="text-lg font-bold dark:text-white ml-1">MENU DESERT</span>
         </div>
-        {{-- <div class="flex items-center">
-            <span class="text-xs dark:text-white">Lihat Semua</span>
-            <ion-icon name="chevron-forward-outline" class="dark:text-white"></ion-icon>
-        </div> --}}
+
     </div>
 
     <div class="grid grid-cols-3">
@@ -305,7 +181,7 @@
             </div>
         </div>
     </div>
-</section>
+</section> --}}
 
 
 <div class="pb-[5rem]"></div>
