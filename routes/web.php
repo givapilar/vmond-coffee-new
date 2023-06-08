@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartOrdersController;
 use App\Http\Controllers\DaftarMenuController;
@@ -22,6 +23,8 @@ use App\Http\Controllers\HomepageController;
 Route::get('/', function () {
     return view('auth.login');
 });
+Route::get('/register', [RegisterController::class, 'index'])->name('register');
+Route::post('/register', [RegisterController::class, 'store'])->name('register');
 
 Route::get('/home', [HomepageController::class, 'index'])->name('homepage');
 
