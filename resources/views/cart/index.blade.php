@@ -97,6 +97,36 @@
                     </div>
                 </li>
                 @endforeach
+                <form action="{{ route('xendit-order') }}" method="POST">
+                    @csrf
+                    <label for="">External Id</label>
+                    <input type="text" name="external_id" id="external_id">
+
+                    <label for="">Payer Email</label>
+                    <input type="text" name="payer_email" id="payer_email">
+                    
+                    <label for="">Description</label>
+                    <input type="text" name="description" id="description">
+
+                    <label for="">Amount</label>
+                    <input type="number" name="amount" id="amount">
+
+                    <label for="">Customer Names</label>
+                    <input type="text" name="given_names" id="given_names">
+
+                    <label for="">mobile phone</label>
+                    <input type="text" name="mobile_phone" id="mobile_phone">
+
+                    <label for="">Item Name</label>
+                    <input type="text" name="name" id="name">
+
+                    <label for="">Price</label>
+                    <input type="number" name="price" id="price">
+                    
+                    <div class="mt-2">
+                        <button class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Xendit</button>
+                    </div>
+                </form>
             </ul>
         </div>
 
@@ -173,6 +203,7 @@
                     <button class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Checkout</button>
                 </div>
             </form>
+            
         </div>
     </div>
 </section>

@@ -9,8 +9,8 @@ use Illuminate\Http\Request;
 use Cart;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-
-
+use Xendit\Xendit;
+// require 'vendor/autoload.php';
 class OrderController extends Controller
 {
     public function index()
@@ -179,5 +179,98 @@ class OrderController extends Controller
             //throw $th;
         }
         return $response;
+    }
+
+    public function xenditOrder(Request $request )
+    {
+        $data = $request->external_id;
+        $data = $request->bank_code;
+        $data = $request->name;
+        Xendit::setApiKey('xnd_development_xKxZDSjXGvKcqTJR19iqbANl4Ocr9Oc7IRDt8SiTq3lA43XSdKaCE2N1klQYmx');
+
+        // $params = [
+        //     'external_id' => $request->external_id,
+        //     'bank_code' => $request->bank_code,
+        //     'name' => $request->name,
+        //     // 'checkout_method' => 'ONE_TIME_PAYMENT',
+        //     // 'channel_code' => 'ID_SHOPEEPAY',
+        //     // 'channel_properties' => [
+        //     //     'success_redirect_url' => 'http://vmondcafe.test/callback-xendit',
+        //     // ],
+        //     // 'metadata' => [
+        //     //     'branch_code' => 'tree_branch'
+        //     // ]
+        // ];
+        // $createEWalletCharge = \Xendit\VirtualAccounts::create($params);
+
+        // dd($createEWalletCharge);
+// dd($request->all());
+        $params = [ 
+            'external_id' => 'demo_1475801962607',
+            'amount' => $request->amount,
+            'description' => $request->description,
+            'invoice_duration' => 86400,
+            'customer' => [
+                'given_names' => $request->given_names,
+                'surname' => 'Doe',
+                'email' => $request->payer_email,
+                'mobile_number' => $request->mobile_phone,
+                'addresses' => [
+                    [
+                        'city' => 'Jakarta Selatan',
+                        'country' => 'Indonesia',
+                        'postal_code' => '12345',
+                        'state' => 'Daerah Khusus Ibukota Jakarta',
+                        'street_line1' => 'Jalan Makan',
+                        'street_line2' => 'Kecamatan Kebayoran Baru'
+                    ]
+                ]
+            ],
+            'customer_notification_preference' => [
+                'invoice_created' => [
+                    'whatsapp',
+                    'sms',
+                    'email',
+                    'viber'
+                ],
+                'invoice_reminder' => [
+                    'whatsapp',
+                    'sms',
+                    'email',
+                    'viber'
+                ],
+                'invoice_paid' => [
+                    'whatsapp',
+                    'sms',
+                    'email',
+                    'viber'
+                ],
+                'invoice_expired' => [
+                    'whatsapp',
+                    'sms',
+                    'email',
+                    'viber'
+                ]
+            ],
+            'success_redirect_url' => 'http://vmondcafe.test/callbcak-xendit',
+            'failure_redirect_url' => 'http://vmondcafe.test/callbcak-xendit/fail',
+            'currency' => 'IDR',
+            'items' => [
+                [
+                    'name' => $request->name,
+                    'quantity' => 1,
+                    'price' => $request->price,
+                    'category' => 'Electronic',
+                ]
+            ],
+          ];
+        
+          $createInvoice = \Xendit\Invoice::create($params);
+          var_dump($createInvoice);
+    }
+
+    public function callbackXendit()
+    {
+        return view('checkout.tes');
     }
 }

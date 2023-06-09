@@ -99,3 +99,9 @@ Route::get('/history-penjualan/cetak-pdf/{id}',[HistoryController::class,'pdfExp
 
 // Route Pesanan detail
 Route::get('/pesanan-detail/{id}',[HistoryController::class,'pesananOrder'])->name('pesanan-order');
+
+// Route Xendit Payment
+Route::post('/ewallets/charges',[OrderController::class,'xenditOrder'])->name('xendit-order');
+
+// Route Xendit Payment Callback
+Route::get('/callback-xendit',[OrderController::class,'callbackXendit'])->name('callback-xendit');
