@@ -1,20 +1,20 @@
 @extends('Auth.layouts.app')
 
 @section('content')
-<section class="bg-gray-50 dark:bg-gray-900">
+<section class="bg-gray-50 dark:bg-gray-900 ">
     <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         {{-- <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
             <img class="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo">
             Flowbite
         </a> --}}
         <div class=" text-center">
-            <img class="w-44 h-44 rounded-full mx-auto" src="https://lh3.googleusercontent.com/p/AF1QipPaC8tMUrKh3aVYC6PgdUTDcZj49xkMxqAXswqb=s680-w680-h510" alt="logo">
-            <h1 class="text-[40px] mt-2 font-bold leading-tight tracking-[0.7rem] text-center text-gray-900 md:text-2xl lg:text-2xl dark:text-white">
+            <img class="mx-auto" src="{{ asset('assetku/dataku/img/logo/logo-vmond.png') }}" alt="logo">
+            {{-- <h1 class="text-[40px] mt-2 font-bold leading-tight tracking-[0.7rem] text-center text-gray-900 md:text-2xl lg:text-2xl dark:text-white">
                 VMOND
-            </h1>
-            <span class="text-[40px] font-light leading-tight tracking-[0.7rem] text-center text-gray-900 dark:text-white">
-                CAFE
-            </span>
+            </h1> --}}
+            {{-- <span class="text-xs font-light leading-tight tracking-[0.1rem] text-center text-gray-900 dark:text-white">
+                Welcome!, signup account
+            </span> --}}
         </div>
         <div class="w-full bg-transparent md:mt-0 max-w-md xl:p-0">
             <div class="px-6 py-2 space-y-4 md:space-y-6 ">

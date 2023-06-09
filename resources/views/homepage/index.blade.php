@@ -37,10 +37,10 @@
 </section>
 @endif
 
-<section class="p-3">
-    <div class="flex items-center justify-between">
+<section class="p-3 mt-1">
+    <div class="flex items-center justify-between mb-1">
         <div class="">
-            <span class="text-lg font-bold dark:text-white ml-1">MENU UTAMA</span>
+            <span class="text-lg font-bold dark:text-white ml-1">MAIN MENU</span>
         </div>
 
         {{-- @if (session('message'))
@@ -52,7 +52,7 @@
     <div class="grid grid-cols-3 gap-3">
         <a href="{{ route('daftar-restaurant') }}">
             <div class="text-base sm:text-sm p-1">
-                <div class="aspect-h-1 h-36 sm:h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
+                <div class="aspect-h-1 h-36 sm:h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg">
                     <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80" alt="" class="object-cover object-center h-full w-full">
                     {{-- <span class="absolute top-0 left-0 inline-flex items-center justify-center w-6 h-6 bg-blue-600 rounded-full">
                         <svg aria-hidden="true" class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm1 3a1 1 0 100 2h3a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
@@ -65,16 +65,16 @@
         </a>
         <a href="{{ route('daftar-billiard') }}">
             <div class="text-base sm:text-sm p-1">
-                <div class="aspect-h-1 h-36 sm:h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
+                <div class="aspect-h-1 h-36 sm:h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg">
                     <img src="https://images.unsplash.com/photo-1544070928-135893793bdc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=627&q=80" alt="." class="object-cover object-center h-full w-full">
                 </div>
 
-                <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300">Billiard</p>
+                <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300">Sport</p>
             </div>
         </a>
         <a href="{{ route('daftar-meeting-room') }}">
             <div class="text-base sm:text-sm p-1">
-                <div class="aspect-h-1 h-36 sm:h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
+                <div class="aspect-h-1 h-36 sm:h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg">
                     <img src="https://images.unsplash.com/photo-1431540015161-0bf868a2d407?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="." class="object-cover object-center h-full w-full">
                 </div>
 
@@ -88,30 +88,27 @@
 <section class="p-3">
     <div id="default-carousel" class="relative w-full" data-carousel="slide">
         <!-- Carousel wrapper -->
-        <div class="relative h-48 sm:h-36 overflow-hidden rounded-2xl shadow-2xl">
+        <div class="relative h-48 sm:h-36 overflow-hidden rounded-2xl shadow-2xl border border-[#16274b] shadow-lg">
             <!-- Item 1 -->
             @foreach ($response_data_banner as $item)
-            {{-- {{ dd($item->image) }} --}}
             <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                {{-- <img src="https://images.unsplash.com/photo-1563897539633-7374c276c212?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1046&q=80" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..."> --}}
                 <img src="{{ $item->image ?? 'https://images.unsplash.com/photo-1563897539633-7374c276c212?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1046&q=80'}} " alt=""class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-
             </div>
-
             @endforeach
         </div>
+
         <!-- Slider indicators -->
-        <div class="absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
+        {{-- <div class="absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
             <button type="button" class="w-2 h-2 rounded-full" aria-current="true" aria-label="Slide 1" data-carousel-slide-to="0"></button>
             <button type="button" class="w-2 h-2 rounded-full" aria-current="false" aria-label="Slide 2" data-carousel-slide-to="1"></button>
             <button type="button" class="w-2 h-2 rounded-full" aria-current="false" aria-label="Slide 3" data-carousel-slide-to="2"></button>
             <button type="button" class="w-2 h-2 rounded-full" aria-current="false" aria-label="Slide 4" data-carousel-slide-to="3"></button>
-        </div>
+        </div> --}}
     </div>
 </section>
 @endif
 
-@if (count($response_data) != null || count($response_data) != 0)
+{{-- @if (count($response_data) != null || count($response_data) != 0)
 <section class="p-3">
     <div class="flex items-center justify-between">
         <div class="">
@@ -126,22 +123,11 @@
     <div class="slick1 pt-2">
         @foreach ($response_data as $item)
         <div class="text-base sm:text-sm p-1">
-            {{-- <div class="w-full aspect-h-1 h-full aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                <div class="relative inline-flex">
-                <img src="{{ $item->image ?? 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=780&q=80'}} " alt="" class="object-cover object-center h-full w-full">
-                    <span class="absolute top-0 inline-flex items-center justify-center w-full h-6 bg-blue-600 rounded-full">
-                        <svg aria-hidden="true" class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm1 3a1 1 0 100 2h3a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
-                        <span class="sr-only">Message icon</span>
-                    </span>
-                </div>
-            </div> --}}
             <div class="relative max-w-sm">
                 <a href="#">
                   <img class="rounded-lg" src="{{ $item->image ?? 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=780&q=80'}} " alt="image description">
                 </a>
-                {{-- <span class="absolute top-0 right-0 inline-flex items-center justify-center w-6 h-6 bg-blue-600 rounded-full">
-                    <svg aria-hidden="true" class="w-4 h-4 text-white" fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512"><path d="M374.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-320 320c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l320-320zM128 128A64 64 0 1 0 0 128a64 64 0 1 0 128 0zM384 384a64 64 0 1 0 -128 0 64 64 0 1 0 128 0z"/></svg>
-                </span> --}}
+
                 <span class="absolute bottom-0 inline-flex items-center justify-center w-full h-5 bg-red-800 border border-red-500 rounded-b-[.5rem] text-white text-xs">
                     Discount
                 </span>
@@ -161,7 +147,6 @@
                 <div class="flex justify-center gap-1">
                     <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" onclick="window.location='{{ route('detail-menu', ['type' => 'resto', 'slug' => $item->slug]) }}';"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
                     <form action="{{ route('restaurant-cart',$item->id) }}" method="get" class=" w-8/12">
-                        {{-- @csrf --}}
                         <div class="flex gap-1 opacity-75">
                             <input type="hidden" name="quantity" value="1" id="">
                             <input type="hidden" name="image" value="{{ $item->image }}" id="">
@@ -193,7 +178,6 @@
         @foreach ($response_data_biliard as $biliard)
         <div class="text-base sm:text-sm p-1">
             <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                {{-- <img src="https://images.unsplash.com/photo-1535066925810-38b22c6b8255?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1372&q=80" alt="" class="object-cover object-center h-full w-full"> --}}
                 <img src="{{ $biliard->image ?? 'https://images.unsplash.com/photo-1535066925810-38b22c6b8255?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1372&q=80'}} " alt="" class="object-cover object-center h-full w-full">
             </div>
             <div class="px-1">
@@ -244,7 +228,7 @@
         @endforeach
     </div>
 </section>
-@endif
+@endif --}}
 
 <div class="pb-[5rem]"></div>
 @endsection

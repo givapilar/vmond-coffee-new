@@ -26,9 +26,10 @@ class RegisterController extends Controller
         ]);
 
         $user = new User();
-        $user->username = $validate['username'];
-        $user->telephone = $validate['telephone'];
-        $user->password = Hash::make($validate['password']);
+        $user->username     = $validate['username'];
+        $user->name         = $validate['username'];
+        $user->telephone    = $validate['telephone'];
+        $user->password     = Hash::make($validate['password']);
         $user->save();
 
         return redirect()->route('login')->with(['message_success' => 'Register account successfully!']);
