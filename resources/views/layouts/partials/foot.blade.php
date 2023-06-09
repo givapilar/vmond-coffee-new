@@ -84,7 +84,7 @@
     // }
 </script>
 
-{{-- @if(session('message')) --}}
+@if(session('message'))
 <script>
     Toastify({
         text: session('message'),
@@ -100,8 +100,10 @@
         duration: 3000
     }).showToast();
 </script>
+@endif
 
 <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
+<script src="{{ asset('assetku/dataku/lib/alpine/alpine.js') }}" defer></script>
 	<script>
         window.addEventListener('DOMContentLoaded', function() {
 			const today = new Date();

@@ -39,17 +39,16 @@ class FortifyServiceProvider extends ServiceProvider
 
 
         Fortify::authenticateUsing(function (Request $request) {
-            $user = User::where('email', $request->email)->first();
-
+            $user = User::where('username', $request->email)->orWhere('telephone', $request->email)->first();
             if ($user &&
                 Hash::check($request->password, $user->password)) {
                 return $user;
             }
         });
 
-        Fortify::registerView(function () {
-            return view('auth.register');
-        });
+        // Fortify::registerView(function () {
+        //     return view('auth.register');
+        // });
 
         // Fortify::resetPasswordView(function (Request $request) {
         //     return view('auth.reset-password', ['request' => $request]);
