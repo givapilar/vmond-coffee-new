@@ -24,8 +24,10 @@
                         Total Transaksi
                     </p>
                     <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                        Rp. 500.000
-                        ( {{ ucwords(Auth::user()->membership) }} Member )
+                        
+                        Rp. {{ $orderFinishSubtotal ?? '' }} 
+                        {{-- {{ dd($orderFinishSubtotal) }} --}}
+                        ( {{ ucwords(Auth::user()->membership->level ?? '') }} Member )
                     </p>
                     <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2 dark:bg-gray-700">
                         <div class="bg-indigo-600 h-2.5 rounded-full dark:bg-indigo-500" style="width: 50%"></div>

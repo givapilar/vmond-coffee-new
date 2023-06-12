@@ -118,7 +118,15 @@
                 </div>
                 <div class="shrink opacity-75 my-auto">
                     <button class="w-10 h-full block bg-orange-500 text-xs rounded-lg mb-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                    <button class="w-10 h-full block bg-sky-500 text-xs rounded-lg p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                    <form action="{{ route('restaurant-cart',$item->id) }}" method="get" class="w-10">
+                        {{-- @csrf --}}
+                        <div class="flex gap-1 opacity-75">
+                            <input type="hidden" name="quantity" value="1" id="">
+                            <input type="hidden" name="image" value="{{ $item->image }}" id="">
+                            <input type="hidden" name="id" value="{{ $item->id }}" id="">
+                            <button class="w-full h-full block bg-sky-500 text-xs rounded-lg p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="border-b border-gray-500"></div>

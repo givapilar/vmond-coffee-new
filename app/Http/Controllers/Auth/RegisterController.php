@@ -23,12 +23,14 @@ class RegisterController extends Controller
             "password"              => "required|string|min:6|required_with:password_confirmation|same:password_confirmation",
             "password_confirmation" => "min:6",
             "telephone"             => "required|regex:/[0-9]/|min:11|unique:account_users,telephone",
+            "membership"             => "nullable",
         ]);
 
         $user = new User();
         $user->username     = $validate['username'];
         // $user->name         = $validate['username'];
         $user->telephone    = $validate['telephone'];
+        $user->membership_id     = 1;
         $user->password     = Hash::make($validate['password']);
         $user->save();
 

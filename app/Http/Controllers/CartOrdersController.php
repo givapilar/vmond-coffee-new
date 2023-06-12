@@ -147,9 +147,9 @@ class CartOrdersController extends Controller
                 'attributes' => array($restaurant),
                 'associatedModel' => Restaurant::class
             ));
-            return redirect()->route('homepage')->with('message', 'Data berhasil dimasukkan ke dalam keranjang !');
+            return redirect()->route('daftar-restaurant')->with('message', 'Data berhasil dimasukkan ke dalam keranjang !');
         } else {
-            return redirect()->route('homepage')->with('message', 'Harap Login Terlebih Dahulu !');
+            return redirect()->route('daftar-restaurant')->with('message', 'Harap Login Terlebih Dahulu !');
         }
 
 
