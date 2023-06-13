@@ -22,6 +22,8 @@
         <div class="max-w-sm h-80 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
             @foreach ($data_carts as $item)
             {{-- {{ dd($item->model) }} --}}
+            <input type="hidden" name="category" value="restaurant">
+
             <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
                 <li class="py-3 sm:py-4">
                     <div class="flex items-start space-x-4">
@@ -30,14 +32,25 @@
 
                         </div>
                         <div class="flex-1 min-w-0">
+                            @if ($item->model->nama)
                             <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
                                 {{ $item->model->nama }}
+                                {{-- {{ $item->model->nama_paket }} --}}
                             </p>
+                            
+                            @else
+                            <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                {{ $item->model->nama_paket }}
+                            </p>
+                            @endif
+
+                            @if ( $item->model->stok_perhari)
                             <p>
                                 <span class="block text-[10px] dark:text-yellow-300">Stock {{ $item->model->stok_perhari }}</span>
                             </p>
-                            <p class="text-xs text-gray-500 truncate dark:text-gray-400" id="note">
-                            </p>
+                            @endif
+                            {{-- <p class="text-xs text-gray-500 truncate dark:text-gray-400" id="note">
+                            </p> --}}
                             <p class="text-xs text-gray-500 truncate dark:text-red-500">
                                 Rp. {{ $item->model->harga }}
                             </p>
@@ -202,10 +215,188 @@
                 <div class="mt-2">
                     <button class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Checkout</button>
                 </div>
-            </form>
             
         </div>
     </div>
+
+    <div class="text-left max-w-full mt-2 h-96 bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+        <div class="p-2 space-x-4">
+            <p class="text-lg font-semibold text-center dark:text-white">Pilih Category</p>
+        </div>
+        <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
+        <ul class="max-w-full divide-y divide-gray-200 dark:divide-gray-700 px-3">
+            <li class="py-3 sm:py-2">
+                <div class="flex items-center space-x-4">
+                  <div class="flex-shrink-0">
+                    <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/takeaway.png') }}" alt="Neil image">
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                      Takeway
+                    </p>
+                  </div>
+                  <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                    <input id="takeaway-radio" type="radio" value="takeaway" name="order-type" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                  </div>
+                </div>
+            </li>
+            <li class="py-3 sm:py-2">
+                <div class="flex items-center space-x-4">
+                <div class="flex-shrink-0">
+                    <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/dinein.png') }}" alt="Neil image">
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                    Dine In
+                    </p>
+                </div>
+                <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                    <input id="dine-in-radio" type="radio" value="dine-in" name="order-type" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                </div>
+                </div>
+            </li>
+            <li class="py-3 sm:py-2">
+                <div id="select-input-wrapper">
+                    <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja</label>
+                    <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option disabled selected>Pilih Meja Restaurant</option>
+                        @foreach ($meja_restaurants as $key => $meja_restaurant)
+                            <option value="{{ $meja_restaurant->id }}">{{ $meja_restaurant->nama }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </li>
+
+            <li class="py-3 sm:py-2">
+                <div id="select-input-biliard">
+                    <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja Biliard</label>
+                    <select id="countries" name="biliard_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option disabled selected>Pilih Meja Biliard</option>
+                        @foreach ($biliards as $key => $biliard)
+                            <option value="{{ $biliard->id }}">{{ $biliard->nama }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+    @foreach ($data_carts as $paket)
+    @if ($paket->model->nama_paket)
+
+        
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-1 gap-4 sm:gap-1 mt-2">
+        <div class="max-w-full h-96 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+            <div class="p-3 space-x-4">
+                <p class="text-lg font-semibold text-center dark:text-white">Pilih Minuman</p>
+            </div>
+            <div class="grid grid-cols-1 gap-2">
+                <div class="mt-9 ml-4">
+                    <ul class="max-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        @foreach ($restaurants as $index => $restaurant)
+                        <li class="pb-3 sm:pb-4">
+                            <div class="flex items-center space-x-4">
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                        {{ $restaurant->nama }}
+                                    </p>
+                                    <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                        Rp.  {{ number_format($restaurant->harga, 0) }}
+                                    </p>
+                                </div>
+                                <div class="flex items-center mb-4">
+                                    <input id="checkbox_{{ $restaurant->id }}" name="checkbox[]" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" {{ $index >= 2 ? 'disabled' : '' }}>
+                                    <label for="checkbox_{{ $restaurant->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Default checkbox</label>
+                                </div>
+                            </div>
+                        </li>
+                    @endforeach
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-1 gap-4 sm:gap-1 mt-2">
+        <div class="max-w-full h-96 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+            <div class="p-3 space-x-4">
+                <p class="text-lg font-semibold text-center dark:text-white">Pilih Jam</p>
+            </div>
+            <div class="grid grid-cols-3 gap-2">
+                <div class="mt-9 ml-4">
+                    <label for="countries" class=" mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Date</label>                    
+                    <input type="date" name="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
+                </div>
+                <div class="mt-9 ml-4">
+                    <label for="countries" class=" mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Time From</label>
+                    <select id="countries" name="time_from" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option disabled selected>Choose a Time From</option>
+                        <option value="00:00">00::00</option>
+                        <option value="01:00">01::00</option>
+                        <option value="02:00">02::00</option>
+                        <option value="03:00">03::00</option>
+                        <option value="04:00">04::00</option>
+                        <option value="05:00">05::00</option>
+                        <option value="06:00">06::00</option>
+                        <option value="07:00">07::00</option>
+                        <option value="08:00">08::00</option>
+                        <option value="09:00">09::00</option>
+                        <option value="10:00">10::00</option>
+                        <option value="11:00">11::00</option>
+                        <option value="12:00">12::00</option>
+                        <option value="13:00">13::00</option>
+                        <option value="14:00">14::00</option>
+                        <option value="15:00">15::00</option>
+                        <option value="16:00">16::00</option>
+                        <option value="17:00">17::00</option>
+                        <option value="18:00">18::00</option>
+                        <option value="19:00">19::00</option>
+                        <option value="20:00">20::00</option>
+                        <option value="21:00">21::00</option>
+                        <option value="22:00">22::00</option>
+                        <option value="23:00">23::00</option>
+                    </select>
+                </div>
+
+                <div class="mt-9 ml-4">
+                    <label for="countries" class=" mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Time To</label>
+                    <select id="countries" name="time_to" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option disabled selected>Choose a Time To</option>
+                        <option value="00:00">00::00</option>
+                        <option value="01:00">01::00</option>
+                        <option value="02:00">02::00</option>
+                        <option value="03:00">03::00</option>
+                        <option value="04:00">04::00</option>
+                        <option value="05:00">05::00</option>
+                        <option value="06:00">06::00</option>
+                        <option value="07:00">07::00</option>
+                        <option value="08:00">08::00</option>
+                        <option value="09:00">09::00</option>
+                        <option value="10:00">10::00</option>
+                        <option value="11:00">11::00</option>
+                        <option value="12:00">12::00</option>
+                        <option value="13:00">13::00</option>
+                        <option value="14:00">14::00</option>
+                        <option value="15:00">15::00</option>
+                        <option value="16:00">16::00</option>
+                        <option value="17:00">17::00</option>
+                        <option value="18:00">18::00</option>
+                        <option value="19:00">19::00</option>
+                        <option value="20:00">20::00</option>
+                        <option value="21:00">21::00</option>
+                        <option value="22:00">22::00</option>
+                        <option value="23:00">23::00</option>
+                    </select>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    @endif
+    @endforeach
+
+</form>
 </section>
 
 {{-- @if (count($response_data) != null || count($response_data) != 0)
@@ -352,4 +543,26 @@
         });
     }
  </script>
+
+<script>
+    const takeawayRadio = document.getElementById('takeaway-radio');
+    const dineInRadio = document.getElementById('dine-in-radio');
+    const selectInputWrapper = document.getElementById('select-input-wrapper');
+    const selectInputBiliard = document.getElementById('select-input-biliard');
+  
+    // Initially hide the select input
+    selectInputWrapper.style.display = 'none';
+    selectInputBiliard.style.display = 'none';
+  
+    // Add event listeners to the radio buttons
+    takeawayRadio.addEventListener('change', () => {
+      selectInputWrapper.style.display = 'none';
+      selectInputBiliard.style.display = 'none';
+    });
+  
+    dineInRadio.addEventListener('change', () => {
+      selectInputWrapper.style.display = 'block';
+      selectInputBiliard.style.display = 'block';
+    });
+</script>
 @endpush

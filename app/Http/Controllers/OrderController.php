@@ -65,7 +65,8 @@ class OrderController extends Controller
             
         $restaurant = Restaurant::get();
         
-        $member = Membership::get();
+        // dd($request->all());
+        // $member = Membership::get();
         // \Cart::session(Auth::user()->id)->add(array(
             //     'id' => $restaurant->id,
             //     'quantity' => $request->quantity,
@@ -73,10 +74,6 @@ class OrderController extends Controller
             
             // $session_cart = \Cart::session(Auth::user()->id)->getContent();
 
-            // dd($session_cart);
-
-            
-            // dd(Auth::user()->membership->level);
             if (Auth::user()->membership->level == 'Super Platinum') {
                 $order = Order::create([
                     // $request->all()
@@ -84,6 +81,9 @@ class OrderController extends Controller
                     'name' => auth()->user()->username,
                     'qty' => $request->qty,
                     'code' => $newInvoiceNumber,
+                    'date' => $request->date,
+                    'time_from' => $request->time_from,
+                    'time_to' => $request->time_to,
                     // 'total_price' => \Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan, 
                     // 'total_price' =>  \Cart::getTotal(), 
                     'total_price' => 0, 
@@ -99,6 +99,10 @@ class OrderController extends Controller
                     'name' => auth()->user()->username,
                     'qty' => $request->qty,
                     'code' => $newInvoiceNumber,
+                    'date' => $request->date,
+                    'time_from' => $request->time_from,
+                    'time_to' => $request->time_to,
+                    'biliard_id' => $request->biliard_id,
                     // 'total_price' => \Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan, 
                     // 'total_price' =>  \Cart::getTotal(), 
                     'total_price' => \Cart::getTotal() + $biaya_layanan, 
@@ -108,15 +112,32 @@ class OrderController extends Controller
                 ]);
 
                 foreach ($session_cart as $key => $item) {
-                    // dd($item->id);
+                    // dd($item->attributes);
                     // $order = Order::get();
+                    
                     $orderPivot = [];
-                        $orderPivot[] = [
-                            'order_id' => $order->id,
-                            'restaurant_id' => $item->id,
-                            'qty' => $item->quantity,
-                        ];
+                    if ($item->conditions == 'Restaurant') {
+                        # code...
+                            $orderPivot[] = [
+                                'order_id' => $order->id,
+                                'restaurant_id' => $item->associatedModel->id,
+                                // 'paket_menu_id' => $item->id,
+                                'category' => 'Restaurant',
+                                'qty' => $item->quantity,
+                            ];
+                        } else {
+                            $orderPivot[] = [
+                                'order_id' => $order->id,
+                                'restaurant_id' => null,
+                                'paket_menu_id' => $item->id,
+                                'category' => 'Paket Menu',
+                                'qty' => $item->quantity,
+                            ];
+                        # code...
+                    }
+                    
                     // }
+                    // dd($orderPivot);
                     OrderPivot::insert($orderPivot);
                 }
           }

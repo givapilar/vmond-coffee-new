@@ -21,4 +21,20 @@ class DaftarMenuController extends Controller
 
         return view('daftarmenu.restaurant', compact(['restaurant']));
     }
+
+    public function biliard()
+    {
+        $global_url = 'http://management-vmond.test/api/v1/vmond/tokoonline/';
+        $rest_api_url = $global_url .'paket-menu';
+
+        try {
+            $json_data = file_get_contents($rest_api_url);
+            // Decodes the JSON data into a PHP array.
+            $billiard = json_decode($json_data);
+        } catch (\Throwable $th) {
+            $billiard = [];
+        }
+
+        return view('daftarmenu.billiard', compact(['billiard']));
+    }
 }

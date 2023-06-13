@@ -1997,6 +1997,9 @@ input:checked + .toggle-bg {
 .pb-\[5rem\] {
   padding-bottom: 5rem;
 }
+.pl-10 {
+  padding-left: 2.5rem;
+}
 .pr-3 {
   padding-right: 0.75rem;
 }
@@ -2849,6 +2852,10 @@ input:checked + .toggle-bg {
 
   .sm\:py-4 {
     padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .sm\:pb-4 {
     padding-bottom: 1rem;
   }
 

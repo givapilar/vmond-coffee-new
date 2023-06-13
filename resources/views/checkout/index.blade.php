@@ -91,7 +91,7 @@
     </div>
 </section>
 
-<section class="p-3 " style="text-align: -webkit-center;">
+{{-- <section class="p-3 " style="text-align: -webkit-center;">
     <div class="text-left max-w-sm h-36 bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
         <div class="p-2 space-x-4">
             <p class="text-lg font-semibold text-center dark:text-white">Pilih Category</p>
@@ -130,7 +130,7 @@
             </li>
         </ul>
     </div>
-</section>
+</section> --}}
 
 {{-- <section class="p-3">
     <div class="max-w-sm h-48 bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700">

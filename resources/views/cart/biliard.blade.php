@@ -20,6 +20,7 @@
 <section class="p-3">
     <div class="grid grid-cols-2 sm:grid-cols-1 gap-4 sm:gap-1">
         <div class="max-w-sm h-60 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+            @foreach ($data_carts as $item)
             <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
                 <li class="py-3 sm:py-4">
                     <div class="flex items-start space-x-4">
@@ -29,20 +30,20 @@
                         </div>
                         <div class="flex-1 min-w-0">
                             <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                {{ $biliards->nama }}
+                                {{ $item->model->nama }}
                             </p>
                             <p class="text-xs text-gray-500 truncate dark:text-gray-400" id="note">
-                                {{ $biliards->description }}
+                                {{ $item->model->description }}
                             </p>
                             <p class="text-xs text-gray-500 truncate dark:text-red-500">
-                                {{ number_format($biliards->harga,2) }}
+                                {{ number_format($item->model->harga,2) }}
                             </p>
 
                         </div>
-                        <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                            {{-- <button class="flex justify-center items-center w-10 h-10 rounded-full p-2 bg-red-500 hover:bg-red-600 focus:ring-red-900 focus:ring-4"  data-modal-toggle="deleteModal">
+                        {{-- <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                            <button class="flex justify-center items-center w-10 h-10 rounded-full p-2 bg-red-500 hover:bg-red-600 focus:ring-red-900 focus:ring-4"  data-modal-toggle="deleteModal">
                                 <ion-icon name="trash" class=""></ion-icon>
-                            </button> --}}
+                            </button>
 
                             <div id="deleteModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full sm:inset-0 h-full delay-200">
                                 <div class="relative p-4 w-full max-w-md h-auto">
@@ -58,20 +59,21 @@
                                             <button data-modal-toggle="deleteModal" type="button" class="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                                                 No, cancel
                                             </button>
-                                            {{-- <a href="{{ route('delete-cart', $item->id)}}" class="btn btn-danger py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
+                                            <a href="{{ route('delete-cart', $item->id)}}" class="btn btn-danger py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
                                                 Yes, I'm sure
-                                            </a> --}}
-                                            {{-- <button type="submit" class="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
+                                            </a>
+                                            <button type="submit" class="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
                                                 Yes, I'm sure
-                                            </button> --}}
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </li>
             </ul>
+            @endforeach
         </div>
 
         <div class="max-w-sm max-h-[17rem] bg-white border border-gray-200 rounded-[30px] shadow dark:bg-gray-800 dark:border-gray-700 sm:mt-3">
@@ -88,7 +90,7 @@
                         </div>
                         <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
                             {{-- {{ dd(number_format($biliards->sum('harga'),2)) }} --}}
-                            {{ number_format($biliards->harga,2) }}
+                            Rp. {{ number_format(\Cart::getTotal() ?? '0',2 )  }}
                         </div>
                     </div>
                 </li>
@@ -101,7 +103,7 @@
                         </div>
                         <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
                              {{-- Harga Total * (11/100) --}}
-                            Rp. {{ number_format($biliards->harga *11/100,2 )  }}
+                            Rp. {{ number_format((\Cart::getTotal() ?? '0') * 11/100,2 )  }}
                         </div>
                     </div>
                 </li>
@@ -117,7 +119,7 @@
                                 $biaya_layanan = 1000;
 
                             ?>
-                           Rp. {{ number_format($biaya_layanan,2) }}
+                           Rp. {{ number_format($biaya_layanan ?? '0',2) }}
                         </div>
                     </div>
                 </li>
@@ -129,7 +131,12 @@
                             </p>
                         </div>
                         <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white">
-                            Rp. {{ number_format($biliards->harga *11/100 + $biliards->harga  + $biaya_layanan,2 ) }}
+                            @if (\Cart::getTotal() ?? 0)
+                            
+                            Rp. {{ number_format(\Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan ,2 ) }}
+                            @else
+                            Rp. 0
+                            @endif
                         </div>
                     </div>
                 </li>

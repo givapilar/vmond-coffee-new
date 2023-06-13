@@ -30,9 +30,10 @@ Route::get('/home', [HomepageController::class, 'index'])->name('homepage');
 
 Route::get('/daftarmenu/restaurant', [DaftarMenuController::class, 'restaurant'])->name('daftar-restaurant');
 
-Route::get('/daftarmenu/billiard', function () {
-    return view('daftarmenu.billiard');
-})->name('daftar-billiard');
+Route::get('/daftarmenu/biliard', [DaftarMenuController::class, 'biliard'])->name('daftar-billiard');
+// Route::get('/daftarmenu/billiard', function () {
+//     return view('daftarmenu.billiard');
+// })->name('daftar-billiard');
 
 Route::get('/daftarmenu/meetingroom', function () {
     return view('daftarmenu.meeting-room');
@@ -70,6 +71,19 @@ Route::get('/cart-meeting', function () {
 // Route::get('/user-profile', [UserController::class, 'userProfile'])->name('user-profile');
 Route::resource('/users', UserController::class);
 
+// Restaurant Cart
+Route::get('/add-chart-restaurant/{id}',[CartOrdersController::class, 'addCartRestaurant'])->name('restaurant-cart');
+Route::get('/cart',[CartOrdersController::class, 'index'])->name('cart');
+Route::post('/cart-update',[CartOrdersController::class, 'updateCart'])->name('cart-update');
+Route::get('/delete-chart-restaurant/{id}',[CartOrdersController::class, 'deleteCartRestaurant'])->name('delete-restaurant-cart');
+
+// Biliard
+// Route::get('cart_biliard/{id}/edit', [CartOrdersController::class, 'editBiliard'])->name('cart-biliard-edit');
+Route::get('/cart-billiard',[CartOrdersController::class, 'viewCartBilliard'])->name('cart-billiard');
+Route::get('/cart-billiard/{id}',[CartOrdersController::class, 'addCartBilliard'])->name('add-cart-billiard');
+Route::get('cart_billiard/{id}/edit', [CartOrdersController::class, 'editBilliard'])->name('edit-cart-billiard');
+Route::get('/delete-chart-biliard/{id}',[CartOrdersController::class, 'deleteCartBilliard'])->name('delete-cart-billiard');
+
 // Meeting Room Cart
 // Route::post('/add-chart',[CartOrdersController::class, 'addCart'])->name('add-chart');
 Route::get('/cart-meeting-room/{id}',[CartOrdersController::class, 'addCartMeeting'])->name('add-chart');
@@ -77,15 +91,7 @@ Route::get('/cart-meeting',[CartOrdersController::class, 'viewCartMeetingRoom'])
 Route::get('/delete-chart/{id}',[CartOrdersController::class, 'deleteCart'])->name('delete-cart');
 Route::get('cart_meeting-room/{id}/edit', [CartOrdersController::class, 'editMeeting'])->name('cart-meeting-edit');
 
-// Biliard
-Route::get('cart_biliard/{id}/edit', [CartOrdersController::class, 'editBiliard'])->name('cart-biliard-edit');
 
-
-// Restaurant Cart
-Route::get('/add-chart-restaurant/{id}',[CartOrdersController::class, 'addCartRestaurant'])->name('restaurant-cart');
-Route::get('/cart',[CartOrdersController::class, 'index'])->name('cart');
-Route::post('/cart-update',[CartOrdersController::class, 'updateCart'])->name('cart-update');
-Route::get('/delete-chart-restaurant/{id}',[CartOrdersController::class, 'deleteCartRestaurant'])->name('delete-restaurant-cart');
 
 // Route Midtrans
 Route::get('midtrans',[CartOrdersController::class,'midtransCheck'])->name('midtrans-check');

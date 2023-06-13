@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Biliard;
 use App\Models\CartOrders;
 use App\Models\MeetingRoom;
+use App\Models\MejaRestaurant;
+use App\Models\MenuPackages;
 use App\Models\OrderPivot;
 use App\Models\Restaurant;
 use App\Models\User;
@@ -22,22 +24,118 @@ class CartOrdersController extends Controller
      */
     public function index()
     {
-        $data ['restaurant'] = Restaurant::get();
+        $data ['restaurants'] = Restaurant::get();
+        $data ['meja_restaurants'] = MejaRestaurant::get();
+        $data ['biliards'] = Biliard::get();
         $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
 
         return view('cart.index',$data);
     }
 
-    public function storeCart(Request $request )
+    public function addCartRestaurant(Request $request,$id)
     {
-        $restaurant = Restaurant::findOrFail($request->input('restaurant_id'));
-        Cart::add(
-            $restaurant->id,
-            $restaurant->nama,
-            $request->input('quantity'),
-            $request->harga/100,
-        );
-        return redirect()->route('cart')->with(['message' => 'Cart Berhasil Dimasukkan!']);
+
+        $restaurant = Restaurant::findOrFail($id);
+        if ($request->quantity) {
+            $quantity = $request->quantity;
+        } else {
+            $quantity = 0;
+        }
+
+        // $auth = User::get();
+        // dd($auth->id);
+
+        // Pengecekan Login
+        if (Auth::check()) {
+            \Cart::session(Auth::user()->id)->add(array(
+                'id' => $restaurant->id, // inique row ID
+                'name' => $restaurant->nama,
+                'price' => $restaurant->harga,
+                'quantity' => $request->quantity,
+                'attributes' => array($restaurant),
+                'conditions' => 'Restaurant',
+                'associatedModel' => $restaurant
+            ));
+            // dd($tes);
+            return redirect()->route('daftar-restaurant')->with('message', 'Data berhasil dimasukkan ke dalam keranjang !');
+        } else {
+            return redirect()->route('daftar-restaurant')->with('message', 'Harap Login Terlebih Dahulu !');
+        }
+    }
+
+    public function updateCart(Request $request)
+    {
+        // dd($request->id);
+        // $totalPrice = $request->qty * $price;
+        // update the item on cart
+        // \Cart::session(Auth::user()->id)->add($request->id,[
+        //     'quantity' => $request->qty,
+        //     // 'price' => $totalPrice
+        // ]);
+        // update the item on cart
+        \Cart::session(Auth::user()->id)->update($request->id,[
+            'quantity' => $request->qty,
+        ]);
+        // Cart::update($request->id, array(
+        //     'quantity' => $request->qty, // so if the current product has a quantity of 4, another 2 will be added so this will result to 6
+        // ));
+        // OrderPivot::create([
+        //     'restaurant_id' => $request->id,
+        //     'qty' => $request->qty,
+        // ]);
+                // item cart diupdate sesuai dengan qty yang diinput
+        \Cart::session(Auth::user()->id)->update($request->id, [
+            'quantity' => array(
+                'relative' => false,
+                'value' => $request->qty
+            ),
+        ]);
+
+    }
+
+    public function deleteCartRestaurant($id)
+    {
+        \Cart::session(Auth::user()->id)->remove($id);
+        return redirect()->back();
+    }
+
+
+    public function viewCartBilliard()
+    {
+        $data ['billiard'] = Biliard::get();
+        $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
+
+        return view('cart.biliard',$data);
+    }
+
+    public function addCartBilliard(Request $request,$id)
+    {
+
+        $paket_menu = MenuPackages::findOrFail($id);
+        if ($request->quantity) {
+            $quantity = $request->quantity;
+        } else {
+            $quantity = 0;
+        }
+
+        // $auth = User::get();
+        // dd($auth->id);
+
+        // Pengecekan Login
+        if (Auth::check()) {
+            \Cart::session(Auth::user()->id)->add(array(
+                'id' => $paket_menu->id, // inique row ID
+                'name' => $paket_menu->nama_paket,
+                'price' => $paket_menu->harga,
+                'quantity' => $request->quantity,
+                'attributes' => array($paket_menu),
+                'conditions' => 'Paket Menu',
+                'associatedModel' => $paket_menu
+            ));
+            return redirect()->route('daftar-billiard')->with('message', 'Data berhasil dimasukkan ke dalam keranjang !');
+        } else {
+            return redirect()->route('daftar-billiard')->with('message', 'Harap Login Terlebih Dahulu !');
+        }
     }
 
     public function viewCartMeetingRoom($id)
@@ -89,127 +187,6 @@ class CartOrdersController extends Controller
     }
 
     public function deleteCart($id)
-    {
-        \Cart::session(Auth::user()->id)->remove($id);
-        return redirect()->back();
-    }
-
-    public function updateCart(Request $request)
-    {
-        // dd($request->id);
-        // $totalPrice = $request->qty * $price;
-        // update the item on cart
-        // \Cart::session(Auth::user()->id)->add($request->id,[
-        //     'quantity' => $request->qty,
-        //     // 'price' => $totalPrice
-        // ]);
-        // update the item on cart
-        \Cart::session(Auth::user()->id)->update($request->id,[
-            'quantity' => $request->qty,
-        ]);
-        // Cart::update($request->id, array(
-        //     'quantity' => $request->qty, // so if the current product has a quantity of 4, another 2 will be added so this will result to 6
-        // ));
-        // OrderPivot::create([
-        //     'restaurant_id' => $request->id,
-        //     'qty' => $request->qty,
-        // ]);
-                // item cart diupdate sesuai dengan qty yang diinput
-                \Cart::session(Auth::user()->id)->update($request->id, [
-                    'quantity' => array(
-                        'relative' => false,
-                        'value' => $request->qty
-                    ),
-                ]);
-
-    }
-
-    public function addCartRestaurant(Request $request,$id)
-    {
-
-        $restaurant = Restaurant::findOrFail($id);
-        if ($request->quantity) {
-            $quantity = $request->quantity;
-        } else {
-            $quantity = 0;
-        }
-
-        // $auth = User::get();
-        // dd($auth->id);
-
-        // Pengecekan Login
-        if (Auth::check()) {
-            \Cart::session(Auth::user()->id)->add(array(
-                'id' => $restaurant->id, // inique row ID
-                'name' => $restaurant->nama,
-                'price' => $restaurant->harga,
-                'quantity' => $request->quantity,
-                'attributes' => array($restaurant),
-                'associatedModel' => Restaurant::class
-            ));
-            return redirect()->route('daftar-restaurant')->with('message', 'Data berhasil dimasukkan ke dalam keranjang !');
-        } else {
-            return redirect()->route('daftar-restaurant')->with('message', 'Harap Login Terlebih Dahulu !');
-        }
-
-
-    }
-
-    public function deleteCartRestaurant($id)
-    {
-        \Cart::session(Auth::user()->id)->remove($id);
-        return redirect()->back();
-    }
-
-    public function viewCartBiliard()
-    {
-        $data ['biliards'] = Biliard::get();
-
-        $data['cart_meeting_room'] = \Cart::session(Auth::user()->id)->getContent();
-        return view('cart.meeting-room',$data);
-    }
-
-    public function editBiliard($id)
-    {
-        $data['biliards'] = Biliard::find($id);
-
-        return view('cart.biliard',$data);
-    }
-
-
-    public function addCartBiliard(Request $request,$id)
-    {
-
-        $meeting_room = Biliard::findOrFail($id);
-        if ($request->quantity) {
-            $quantity = $request->quantity;
-        } else {
-            $quantity = 0;
-        }
-
-
-        // $auth = User::get();
-        // dd($auth->id);
-
-        // Pengecekan Login
-        if (Auth::check()) {
-            \Cart::session(Auth::user()->id)->add(array(
-                'id' => $meeting_room->id, // inique row ID
-                'name' => $meeting_room->nama,
-                'price' => $meeting_room->harga,
-                'quantity' => $quantity,
-                'attributes' => array(),
-                'associatedModel' => Biliard::class
-            ));
-            return redirect()->route('cart-meeting-room')->with('message', 'Data berhasil dimasukkan ke dalam keranjang !');
-        } else {
-            return redirect()->route('cart-meeting-room')->with('message', 'Harap Login Terlebih Dahulu !');
-        }
-
-
-    }
-
-    public function deleteCartBiliard($id)
     {
         \Cart::session(Auth::user()->id)->remove($id);
         return redirect()->back();
