@@ -35,8 +35,11 @@
                         <p class="text-xs text-gray-500 truncate dark:text-red-500">
                             Rp. {{ $item->model->harga }}
                         </p>
+                        <p class="text-xs text-gray-500 truncate dark:text-red-500">
+                            Total {{ $item->quantity }}
+                        </p>
 
-                        <div class="rounded-full h-7 w-32 border border-gray-500 mt-2">
+                        {{-- <div class="rounded-full h-7 w-32 border border-gray-500 mt-2">
                             <div class="grid h-full w-full grid-cols-3 mx-auto">
                                 <button type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-l-full hover:bg-gray-50 dark:hover:bg-gray-800 group" id="remove1">
                                     <ion-icon name="remove" class="w-4 h-3 mb-0.5 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"></ion-icon>
@@ -52,7 +55,7 @@
                                     <span class="sr-only">Add</span>
                                 </button>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                     {{-- <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                         <button class="flex justify-center items-center w-10 h-10 rounded-full p-2 bg-red-500 hover:bg-red-600 focus:ring-red-900 focus:ring-4"  data-modal-toggle="deleteModal">

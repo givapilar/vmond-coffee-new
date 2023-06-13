@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomepageController extends Controller
 {
@@ -31,6 +33,10 @@ class HomepageController extends Controller
             $response_data_banner =[];
         }
 
-        return view('homepage.index', compact(['response_data','response_data_biliard','response_data_meeting_room','response_data_banner']));
+        // if (Auth::check()) {
+            $orderFinishSubtotal = Order::where('user_id',Auth::user()->id)->where('status_pembayaran','Paid')->sum('total_price');
+        // }
+        // dd($orderFinishSubtotal);
+        return view('homepage.index', compact(['response_data','response_data_biliard','response_data_meeting_room','response_data_banner','orderFinishSubtotal']));
     }
 }

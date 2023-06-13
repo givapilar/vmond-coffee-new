@@ -109,3 +109,7 @@ Route::post('/ewallets/charges',[OrderController::class,'xenditOrder'])->name('x
 
 // Route Xendit Payment Callback
 Route::get('/callback-xendit',[OrderController::class,'callbackXendit'])->name('callback-xendit');
+
+// Route Xendit Payment Success
+Route::get('/callback-xendit-success',[OrderController::class,'success'])->name('callback-xendit-success');
+Route::get('/callback-xendit-failed',[OrderController::class,'failed'])->name('callback-xendit-failed');
