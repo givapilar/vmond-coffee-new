@@ -68,7 +68,8 @@ Route::get('/cart-meeting', function () {
 
 // User-profile
 // Route::get('/user-profile', [UserController::class, 'userProfile'])->name('user-profile');
-Route::resource('/users', UserController::class);
+Route::get('/user-profile/edit/{id}', [UserController::class, 'edit'])->name('edit-account');
+Route::patch('/user-profile/{id}', [UserController::class, 'update'])->name('update-account');
 
 // Meeting Room Cart
 // Route::post('/add-chart',[CartOrdersController::class, 'addCart'])->name('add-chart');

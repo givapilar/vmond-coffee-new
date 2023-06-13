@@ -40,7 +40,7 @@
     </div>
 </section> --}}
 
-<section class="p-3 mt-3">
+{{-- <section class="p-3 mt-3">
     <div class="flex items-center justify-between border-b border-gray-400">
         <div class="">
             <span class="text-lg font-bold dark:text-white ml-1">MENU MAKANAN</span>
@@ -70,7 +70,6 @@
                 <div class="shrink opacity-75 my-auto">
                     <button class="w-10 h-full block bg-orange-500 text-xs rounded-lg mb-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" onclick="window.location='{{ route('detail-menu', ['type' => 'resto', 'slug' => $item->slug]) }}';"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
                     <form action="{{ route('restaurant-cart',$item->id) }}" method="get" class="w-10">
-                        {{-- @csrf --}}
                         <div class="flex gap-1 opacity-75">
                             <input type="hidden" name="quantity" value="1" id="">
                             <input type="hidden" name="image" value="{{ $item->image }}" id="">
@@ -84,9 +83,9 @@
             @endif
         @endforeach
     </div>
-</section>
+</section> --}}
 
-<section class="p-3 mt-3">
+{{-- <section class="p-3 mt-3">
     <div class="flex items-center justify-between border-b border-gray-400">
         <div class="">
             <span class="text-lg font-bold dark:text-white ml-1">MENU MINUMAN</span>
@@ -101,9 +100,6 @@
                     <a href="#">
                     <img class="rounded-lg" src="{{ $item->image ?? 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=780&q=80'}} " alt="image description">
                     </a>
-                    {{-- <span class="absolute top-0 right-0 inline-flex items-center justify-center w-6 h-6 bg-blue-600 rounded-full">
-                        <svg aria-hidden="true" class="w-4 h-4 text-white" fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512"><path d="M374.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-320 320c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l320-320zM128 128A64 64 0 1 0 0 128a64 64 0 1 0 128 0zM384 384a64 64 0 1 0 -128 0 64 64 0 1 0 128 0z"/></svg>
-                    </span> --}}
                     <span class="absolute bottom-0 inline-flex items-center justify-center w-full h-5 bg-red-800 border border-red-500 rounded-b-[.5rem] text-white text-xs">
                         Discount
                     </span>
@@ -125,7 +121,7 @@
             @endif
         @endforeach
     </div>
-</section>
+</section> --}}
 
 {{-- <section class="p-3">
     <div class="flex items-center justify-between">
@@ -184,7 +180,123 @@
 </section> --}}
 
 
-<div class="pb-[5rem]"></div>
+<section>
+    <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+        <ul class="flex -mb-px text-sm font-medium text-center slick1" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
+
+            <li class="mr-2" role="presentation">
+                <button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
+            </li>
+
+            {{-- <li class="mr-2" role="presentation">
+                <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Dashboard</button>
+            </li>
+            <li class="mr-2" role="presentation">
+                <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Settings</button>
+            </li>
+            <li role="presentation">
+                <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts" aria-selected="false">Contacts</button>
+            </li> --}}
+        </ul>
+    </div>
+</section>
+
+<section>
+    <div id="myTabContent h-full">
+
+        <div class="hidden p-4 rounded-t-[20px] bg-gray-50 dark:bg-gray-800 h-full overflow-y-auto" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="grid grid-cols-1">
+                @foreach ($restaurant as $item)
+                    @if ($item->category == 'Makanan')
+                    <div class="text-base flex gap-3 sm:text-sm px-1 py-3">
+                        <div class="relative max-w-sm h-24 w-24">
+                            <a href="#">
+                            <img class="rounded-lg" src="{{ $item->image ?? 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=780&q=80'}} " alt="image description">
+                            </a>
+                            <span class="absolute bottom-0 inline-flex items-center justify-center w-full h-5 bg-red-800 border border-red-500 rounded-b-[.5rem] text-white text-xs">
+                                Discount
+                            </span>
+                        </div>
+                        <div class="grow px-1">
+                            <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">{{ $item->nama ?? 'Error' }}</p>
+                            <span class="block text-[8px] dark:text-yellow-300">Stock 100</span>
+                            <div class="flex gap-2">
+                                <span class="block text-[10px] text-white">Rp.{{ number_format($item->harga,2) }}</span>
+                                <span class="block text-[8px] dark:text-red-500 line-through">Rp.{{ number_format($item->harga,2) }}</span>
+                            </div>
+                        </div>
+                        <div class="shrink opacity-75 my-auto">
+                            <button class="w-10 h-full block bg-orange-500 text-xs rounded-lg mb-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" onclick="window.location='{{ route('detail-menu', ['type' => 'resto', 'slug' => $item->slug]) }}';"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                            <form action="{{ route('restaurant-cart',$item->id) }}" method="get" class="w-10">
+                                <div class="flex gap-1 opacity-75">
+                                    <input type="hidden" name="quantity" value="1" id="">
+                                    <input type="hidden" name="image" value="{{ $item->image }}" id="">
+                                    <input type="hidden" name="id" value="{{ $item->id }}" id="">
+                                    <button class="w-full h-full block bg-sky-500 text-xs rounded-lg p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="border-b border-gray-500"></div>
+                    @endif
+                @endforeach
+            </div>
+            <div class="grid grid-cols-1">
+                @foreach ($restaurant as $item)
+                    @if ($item->category == 'Makanan')
+                    <div class="text-base flex gap-3 sm:text-sm px-1 py-3">
+                        <div class="relative max-w-sm h-24 w-24">
+                            <a href="#">
+                            <img class="rounded-lg" src="{{ $item->image ?? 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=780&q=80'}} " alt="image description">
+                            </a>
+                            <span class="absolute bottom-0 inline-flex items-center justify-center w-full h-5 bg-red-800 border border-red-500 rounded-b-[.5rem] text-white text-xs">
+                                Discount
+                            </span>
+                        </div>
+                        <div class="grow px-1">
+                            <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">{{ $item->nama ?? 'Error' }}</p>
+                            <span class="block text-[8px] dark:text-yellow-300">Stock 100</span>
+                            <div class="flex gap-2">
+                                <span class="block text-[10px] text-white">Rp.{{ number_format($item->harga,2) }}</span>
+                                <span class="block text-[8px] dark:text-red-500 line-through">Rp.{{ number_format($item->harga,2) }}</span>
+                            </div>
+                        </div>
+                        <div class="shrink opacity-75 my-auto">
+                            <button class="w-10 h-full block bg-orange-500 text-xs rounded-lg mb-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" onclick="window.location='{{ route('detail-menu', ['type' => 'resto', 'slug' => $item->slug]) }}';"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                            <form action="{{ route('restaurant-cart',$item->id) }}" method="get" class="w-10">
+                                <div class="flex gap-1 opacity-75">
+                                    <input type="hidden" name="quantity" value="1" id="">
+                                    <input type="hidden" name="image" value="{{ $item->image }}" id="">
+                                    <input type="hidden" name="id" value="{{ $item->id }}" id="">
+                                    <button class="w-full h-full block bg-sky-500 text-xs rounded-lg p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="border-b border-gray-500"></div>
+                    @endif
+                @endforeach
+            </div>
+        </div>
+
+        {{-- <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+            <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Dashboard tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
+        </div>
+        <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+            <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Settings tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
+        </div>
+        <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
+            <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Contacts tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
+        </div> --}}
+    </div>
+</section>
+
+{{-- <section class="p-3 mt-3">
+
+</section> --}}
+
+
+<div class="pb-[4rem]"></div>
 @endsection
 
 @push('script-top')
@@ -201,5 +313,9 @@
         autoplay: false,
         speed:200,
     });
+
+    // window.addEventListener("load", function(event) {
+        // document.querySelector('[data-dropdown-toggle="dropdown"]').click();
+    // });
  </script>
 @endpush
