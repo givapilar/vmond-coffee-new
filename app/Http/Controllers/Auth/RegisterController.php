@@ -19,7 +19,7 @@ class RegisterController extends Controller
     {
         // dd($request->all());
         $validate = $request->validate([
-            "username"              => "required|min:5|unique:account_users,username",
+            "username"              => "required|string|min:5|unique:account_users,username",
             "password"              => "required|string|min:6|required_with:password_confirmation|same:password_confirmation",
             "password_confirmation" => "min:6",
             "telephone"             => "required|regex:/[0-9]/|min:11|unique:account_users,telephone",

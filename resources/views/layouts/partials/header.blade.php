@@ -12,9 +12,9 @@
             @endphp
             <div class="flex items-center sm:order-2">
 
-                <a href="{{ route('reservation') }}" class="flex mr-5">
+                {{-- <a href="{{ route('reservation') }}" class="flex mr-5">
                     <ion-icon name="grid" class="text-2xl dark:text-white"></ion-icon>
-                </a>
+                </a> --}}
 
                 <a href="{{ route('cart') }}" class="flex mr-5">
                     <ion-icon name="cart" class="text-2xl dark:text-white"></ion-icon>
@@ -30,15 +30,13 @@
 
                 <button type="button" class="flex mr-3 text-sm bg-gray-800 rounded-full sm:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
                     <span class="sr-only">Open user menu</span>
-                    <img class="w-8 h-8 rounded-full" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80" alt="user photo">
+                    <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/user/'.(Auth::user()->avatar ?? 'default.png')) }}" alt="user photo">
                 </button>
                 <!-- Dropdown menu -->
                 <div class="z-40 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600 w-[10rem]" id="user-dropdown">
                     <div class="px-4 py-3">
                         <span class="block text-sm text-gray-900 dark:text-white">{{ Auth::user()->username ?? 'Guest' }}</span>
-                        @if (Auth::user() != null)
-                            <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">{{ 'Rp. ' . Auth::user()->balance. ',-' ?? '' }}</span>
-                        @endif
+                        <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">{{ Auth::user()->membership ?? '' }}</span>
                     </div>
                     <ul class="py-2" aria-labelledby="user-menu-button">
                         <li>
@@ -47,7 +45,7 @@
 
                         @if (Auth::user() != null)
                         <li>
-                            <a href="{{url('users/'.Auth::user()->id.'/edit')}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Profile</a>
+                            <a href="{{ route('edit-account', Crypt::encryptString(Auth::user()->id.'-encrypt')) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Profile</a>
                         </li>
                         <li>
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" data-modal-toggle="signoutModal">Sign out</a>
