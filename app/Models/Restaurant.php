@@ -11,6 +11,11 @@ class Restaurant extends Model
 
     protected $table = 'restaurants';
 
+    public function restaurantTag()
+    {
+        return $this->hasMany(RestaurantPivot::class);
+    }
+    
     public function order()
     {
         return $this->hasMany(OrderPivot::class);

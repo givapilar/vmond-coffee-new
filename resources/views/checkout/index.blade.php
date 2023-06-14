@@ -344,6 +344,7 @@
         onPending: function(result){
           /* You may add your own implementation here */
           alert("wating your payment!"); console.log(result);
+          window.location.href = '/cart'
         },
         onError: function(result){
           /* You may add your own implementation here */

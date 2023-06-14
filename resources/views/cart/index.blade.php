@@ -236,7 +236,7 @@
                     </p>
                   </div>
                   <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                    <input id="takeaway-radio" type="radio" value="takeaway" name="order-type" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                    <input id="takeaway-radio" type="radio" value="Takeaway" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                   </div>
                 </div>
             </li>
@@ -247,11 +247,11 @@
                 </div>
                 <div class="flex-1 min-w-0">
                     <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                    Dine In
+                        Dine In
                     </p>
                 </div>
                 <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                    <input id="dine-in-radio" type="radio" value="dine-in" name="order-type" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                    <input id="dine-in-radio" type="radio" value="dine-in" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                 </div>
                 </div>
             </li>
@@ -304,13 +304,14 @@
                                         Rp.  {{ number_format($restaurant->harga, 0) }}
                                     </p>
                                 </div>
+                                {{ dd($paket->model->minimal ) }}
                                 <div class="flex items-center mb-4">
-                                    <input id="checkbox_{{ $restaurant->id }}" name="checkbox[]" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" {{ $index >= 2 ? 'disabled' : '' }}>
-                                    <label for="checkbox_{{ $restaurant->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Default checkbox</label>
+                                    <input id="checkbox" name="restaurant_id[]" type="checkbox" value="{{ $restaurant->id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" onchange="toggleCheckbox(this, '{{ $paket->model->nama_paket }}' , '{{ $paket->model->minimal }}')">
+                                    <label for="checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Default checkbox</label>
                                 </div>
                             </div>
                         </li>
-                    @endforeach
+                        @endforeach
 
                     </ul>
                 </div>
@@ -319,18 +320,19 @@
     </div>
 
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-1 gap-4 sm:gap-1 mt-2">
-        <div class="max-w-full h-96 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+        <div class="max-w-full h-64 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
             <div class="p-3 space-x-4">
                 <p class="text-lg font-semibold text-center dark:text-white">Pilih Jam</p>
             </div>
             <div class="grid grid-cols-3 gap-2">
-                <div class="mt-9 ml-4">
+                <div class="mt-4 ml-4">
                     <label for="countries" class=" mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Date</label>                    
-                    <input type="date" name="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
+                    {{-- <input type="date" name="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date"> --}}
+                    <input type="date" required name="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 </div>
-                <div class="mt-9 ml-4">
+                <div class="mt-4 ml-4">
                     <label for="countries" class=" mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Time From</label>
-                    <select id="countries" name="time_from" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <select id="countries" required name="time_from" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option disabled selected>Choose a Time From</option>
                         <option value="00:00">00::00</option>
                         <option value="01:00">01::00</option>
@@ -359,9 +361,9 @@
                     </select>
                 </div>
 
-                <div class="mt-9 ml-4">
+                <div class="mt-4 ml-4">
                     <label for="countries" class=" mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Time To</label>
-                    <select id="countries" name="time_to" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <select id="countries" required name="time_to" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option disabled selected>Choose a Time To</option>
                         <option value="00:00">00::00</option>
                         <option value="01:00">01::00</option>
@@ -440,6 +442,17 @@
 @endpush
 
 @push('script-bot')
+
+<script>
+    function toggleCheckbox(checkbox, minimal, namaPaket) {
+        console.log(minimal);
+        console.log(namaPaket);
+        if (checkbox.checked && namaPaket > minimal) {
+            checkbox.disabled = true;
+        }
+    }
+</script>
+
 <script>
     $('.slick1').slick({
         infinite:false,

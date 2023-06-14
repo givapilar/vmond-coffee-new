@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Cart;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
 use Xendit\Xendit;
 // require 'vendor/autoload.php';
@@ -30,7 +31,7 @@ class OrderController extends Controller
         // $session_cart = \Cart::session(Auth::user()->id)->getContent();
         $session_cart = \Cart::session(Auth::user()->id)->getContent();
 
-        
+
 
         foreach ($session_cart as $key => $value) {
             $price +=$value->price;
@@ -53,7 +54,7 @@ class OrderController extends Controller
         }
 
         // return $newInvoiceNumber;
-        
+
         // \Cart::session(Auth::user()->id)->add(array(
             //     'id' => $restaurant->id, // inique row ID
             //     'name' => $restaurant->nama,
@@ -62,18 +63,18 @@ class OrderController extends Controller
             //     'attributes' => array($restaurant),
             //     'associatedModel' => Restaurant::class
             // ));
-            
+
         $restaurant = Restaurant::get();
         
         // dd($request->all());
-        // $member = Membership::get();
+        $member = Membership::get();
         // \Cart::session(Auth::user()->id)->add(array(
             //     'id' => $restaurant->id,
             //     'quantity' => $request->quantity,
             // ));
-            
-            // $session_cart = \Cart::session(Auth::user()->id)->getContent();
 
+            // $session_cart = \Cart::session(Auth::user()->id)->getContent();
+            
             if (Auth::user()->membership->level == 'Super Platinum') {
                 $order = Order::create([
                     // $request->all()
@@ -82,6 +83,7 @@ class OrderController extends Controller
                     'qty' => $request->qty,
                     'code' => $newInvoiceNumber,
                     'date' => $request->date,
+                    'category' => $request->category,
                     'time_from' => $request->time_from,
                     'time_to' => $request->time_to,
                     // 'total_price' => \Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan, 
@@ -100,9 +102,11 @@ class OrderController extends Controller
                     'qty' => $request->qty,
                     'code' => $newInvoiceNumber,
                     'date' => $request->date,
+                    'category' => $request->category,
                     'time_from' => $request->time_from,
                     'time_to' => $request->time_to,
                     'biliard_id' => $request->biliard_id,
+                    'meja_restaurant_id' => $request->meja_restaurant_id,
                     // 'total_price' => \Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan, 
                     // 'total_price' =>  \Cart::getTotal(), 
                     'total_price' => \Cart::getTotal() + $biaya_layanan, 
@@ -114,7 +118,7 @@ class OrderController extends Controller
                 foreach ($session_cart as $key => $item) {
                     // dd($item->attributes);
                     // $order = Order::get();
-                    
+                    // dd($item);
                     $orderPivot = [];
                     if ($item->conditions == 'Restaurant') {
                         # code...
@@ -122,18 +126,21 @@ class OrderController extends Controller
                                 'order_id' => $order->id,
                                 'restaurant_id' => $item->associatedModel->id,
                                 // 'paket_menu_id' => $item->id,
-                                'category' => 'Restaurant',
+                                'category' => $item->model->category,
                                 'qty' => $item->quantity,
                             ];
                         } else {
-                            $orderPivot[] = [
-                                'order_id' => $order->id,
-                                'restaurant_id' => null,
-                                'paket_menu_id' => $item->id,
-                                'category' => 'Paket Menu',
-                                'qty' => $item->quantity,
-                            ];
-                        # code...
+                            $restaurantId = isset($request->restaurant_id[$key]) ? $request->restaurant_id[$key] : null;
+                            foreach ($request->restaurant_id as $key => $value) {
+                                # code...
+                                $orderPivot[] = [
+                                    'order_id' => $order->id,
+                                    'restaurant_id' => $request->restaurant_id[$key],
+                                    'paket_menu_id' => $item->id,
+                                    'category' => 'Minuman',
+                                    'qty' => $item->quantity,
+                                ];
+                            }
                     }
                     
                     // }
@@ -141,8 +148,8 @@ class OrderController extends Controller
                     OrderPivot::insert($orderPivot);
                 }
           }
-        
-       
+
+
         // dd(\Cart::getTotalQuantity());
 
 
@@ -184,8 +191,8 @@ class OrderController extends Controller
             );
             # code...
         }
-        
-        
+
+
         $snapToken = \Midtrans\Snap::getSnapToken($params);
         // dd($snapToken);
         $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
@@ -206,7 +213,7 @@ class OrderController extends Controller
                 // Get User ID
 
                 $orderFinishSubtotal = Order::where('user_id', $order->user_id)->where('status_pembayaran','Paid')->sum('total_price');
-                
+
                 $user = User::find($order->user_id);
                 if ($user) {
                     if ($orderFinishSubtotal >= 1 && $orderFinishSubtotal < 2) {
@@ -257,13 +264,13 @@ class OrderController extends Controller
 
         $datas = [];
         // try {
-        //     $getRequest = $request->all(); 
+        //     $getRequest = $request->all();
         //     if ($getRequest) {
         //         foreach ($getRequest['data_menu'] as $key => $data) {
         //             // $order = Order::get();
         //             $orderPivot = [];
         //             // foreach ($request->all() as $key => $value) {
-            
+
         //                 $orderPivot[] = [
         //                     'order_id' => $getRequest['order_id'],
         //                     'restaurant_id' => $data['id'],
@@ -290,7 +297,7 @@ class OrderController extends Controller
         $data = $request->external_id;
         $data = $request->bank_code;
         $data = $request->name;
-        
+
         Xendit::setApiKey('xnd_development_xKxZDSjXGvKcqTJR19iqbANl4Ocr9Oc7IRDt8SiTq3lA43XSdKaCE2N1klQYmx');
 
         // base64_encode($xendit);
@@ -311,7 +318,7 @@ class OrderController extends Controller
 
         // dd($createEWalletCharge);
 // dd($request->all());
-        // $params = [ 
+        // $params = [
         //     'external_id' => 'demo_1475801962607',
         //     'amount' => $request->amount,
         //     'description' => $request->description,
@@ -370,7 +377,7 @@ class OrderController extends Controller
         //         ]
         //     ],
         //   ];
-        
+
         //   $createInvoice = \Xendit\Invoice::create($params);
 
         $params = [
@@ -386,7 +393,7 @@ class OrderController extends Controller
                 'branch_code' => 'tree_branch'
             ]
         ];
-        
+
         $createEWalletCharge = \Xendit\EWallets::createEWalletCharge($params);
         var_dump($createEWalletCharge);
         //   var_dump($createInvoice);
@@ -401,5 +408,28 @@ class OrderController extends Controller
     public function callbackXendit()
     {
         return view('checkout.tes');
+    }
+
+    public function feedback(Request $request, $token, $id) {
+
+        try {
+            $getDataFeedback = $request->feedback;
+            $getID = Crypt::decryptString($id);
+            $getID = explode('-',$getID);
+            $getID = $getID[1];
+            $getToken = Crypt::decryptString($token);
+            $getToken = explode('-',$getToken);
+            $getToken = (int)$getToken[1];
+
+            if (!$getID && !$getDataFeedback && !$getToken) {
+                return redirect()->route('homepage')->with(['failed' => 'Send feedback failed!', 'auth' => Auth::user()->id, 'menu' => 'feedback']);
+            }
+
+            Order::where("id", $getID)->update(["status_feedback" => true, "feedback"  => $getDataFeedback]);
+
+            return redirect()->route('homepage')->with(['success' => 'Send feedback successfully! Thankyou...', 'auth' => $getToken, 'menu' => 'feedback']);
+        } catch (\Throwable $th) {
+            return redirect()->route('homepage')->with(['failed' => 'Send feedback failed! ' . $th->getMessage(), 'auth' => $getToken, 'menu' => 'feedback']);
+        }
     }
 }

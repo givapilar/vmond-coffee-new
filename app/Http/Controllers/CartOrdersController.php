@@ -27,6 +27,11 @@ class CartOrdersController extends Controller
         $data ['restaurants'] = Restaurant::get();
         $data ['meja_restaurants'] = MejaRestaurant::get();
         $data ['biliards'] = Biliard::get();
+        $data ['paket_menu'] = MenuPackages::get();
+        // foreach ($tes as $key => $paket_menu) {
+        //     return $paket = $paket_menu;
+        // }
+        // dd($paket_menu);
         $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
 
         return view('cart.index',$data);

@@ -91,11 +91,11 @@
                 @foreach ($item->orderPivot as $order)
                 <div class="flex -mx-1 border-b py-2 items-center">
                     <div class="px-1 w-3/12 text-center">
-                        <p class="text-gray-800 dark:text-gray-400 uppercase tracking-wide text-sm font-bold">{{ $order->restaurant->nama }}</p>
+                        <p class="text-gray-800 dark:text-gray-400 uppercase tracking-wide text-sm font-bold">{{ $order->restaurant->nama ?? '' }}</p>
                     </div>
 
                     <div class="px-1  w-3/12 text-center">
-                        <p class="text-gray-800 dark:text-gray-400 uppercase tracking-wide text-sm font-bold">{{ $order->restaurant->harga }}</p>
+                        <p class="text-gray-800 dark:text-gray-400 uppercase tracking-wide text-sm font-bold">{{ $order->restaurant->harga ?? ''}}</p>
                     </div>
 
                     <div class="px-1  w-3/12 text-center">
@@ -106,7 +106,7 @@
 
                     <div class="px-1  w-3/12 text-center">
                         <p class="leading-none">
-                            <span class="block uppercase tracking-wide text-sm font-bold text-gray-800 dark:text-gray-400">{{ $order->restaurant->harga * ($order->qty ?? 1) }}</span>
+                            <span class="block uppercase tracking-wide text-sm font-bold text-gray-800 dark:text-gray-400">{{ $order->restaurant->harga ?? 0 * ($order->qty ?? 1) }}</span>
                         </p>
                     </div>
                 </div>

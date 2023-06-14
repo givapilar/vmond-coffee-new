@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Restaurant;
+use App\Models\RestaurantPivot;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class DaftarMenuController extends Controller
@@ -19,7 +22,12 @@ class DaftarMenuController extends Controller
             $restaurant = [];
         }
 
-        return view('daftarmenu.restaurant', compact(['restaurant']));
+        $tags = Tag::get();
+        $restaurantPivot = RestaurantPivot::get();
+        $restaurantss = Restaurant::get();
+
+        // dd($restaurant);
+        return view('daftarmenu.restaurant', compact(['restaurant','tags','restaurantPivot','restaurantss']));
     }
 
     public function biliard()

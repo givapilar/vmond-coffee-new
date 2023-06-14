@@ -11,4 +11,8 @@ class MenuPackages extends Model
 
     protected $fillable = ['menu_packages_id', 'restaurant_id'];
 
+    public function order()
+    {
+        return $this->hasMany(OrderPivot::class);
+    }
 }
