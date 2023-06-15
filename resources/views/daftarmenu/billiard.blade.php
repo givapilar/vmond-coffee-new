@@ -60,7 +60,7 @@
             </div>
             <div class="px-1">
                 <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">{{ $item->nama_paket ?? 'Error' }}</p>
-                <span class="block text-[10px] dark:text-red-500">Rp.{{ number_format($item->harga,2) }} / Jam</span>
+                <span class="block text-[10px] dark:text-red-500">Rp.{{ number_format($item->harga,2) }} </span>
 
                 <div class="flex gap-1 opacity-75 mt-auto">
                     <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
