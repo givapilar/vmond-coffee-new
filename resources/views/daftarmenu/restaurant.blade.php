@@ -247,6 +247,41 @@
                     <div class="border-b border-gray-500"></div>
                     @endif
                 @endforeach
+
+                @foreach ($restaurant as $item)
+            @if ($item->category == 'Minuman')
+            <div class="text-base flex gap-3 sm:text-sm px-1 py-3">
+                <div class="relative max-w-sm h-24 w-24">
+                    <a href="#">
+                    <img class="rounded-lg" src="{{ $item->image ?? 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=780&q=80'}} " alt="image description">
+                    </a>
+                    <span class="absolute bottom-0 inline-flex items-center justify-center w-full h-5 bg-red-800 border border-red-500 rounded-b-[.5rem] text-white text-xs">
+                        Discount
+                    </span>
+                </div>
+                <div class="grow px-1">
+                    <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">{{ $item->nama ?? 'Error' }}</p>
+                    <span class="block text-[8px] dark:text-yellow-300">Stock 100</span>
+                    <div class="flex gap-2">
+                        <span class="block text-[10px] text-white">Rp.{{ number_format($item->harga,2) }}</span>
+                        <span class="block text-[8px] dark:text-red-500 line-through">Rp.{{ number_format($item->harga,2) }}</span>
+                    </div>
+                </div>
+                <div class="shrink opacity-75 my-auto">
+                    <button class="w-10 h-full block bg-orange-500 text-xs rounded-lg mb-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                    <form action="{{ route('restaurant-cart',$item->id) }}" method="get" class="w-10">
+                        <div class="flex gap-1 opacity-75">
+                            <input type="hidden" name="quantity" value="1" id="">
+                            <input type="hidden" name="image" value="{{ $item->image }}" id="">
+                            <input type="hidden" name="id" value="{{ $item->id }}" id="">
+                            <button class="w-full h-full block bg-sky-500 text-xs rounded-lg p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="border-b border-gray-500"></div>
+            @endif
+        @endforeach
             </div>
             <div class="grid grid-cols-1">
                 @foreach ($restaurant as $item)
