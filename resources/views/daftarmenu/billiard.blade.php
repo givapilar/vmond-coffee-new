@@ -52,132 +52,30 @@
     </div>
 
     <div class="grid grid-cols-3">
+        @foreach ($billiard as $item)
+        {{-- {{ dd($item) }} --}}
         <div class="text-base sm:text-sm px-1 py-3">
             <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                <img src="https://images.unsplash.com/photo-1641393553834-38578d1f6116?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=415&q=80" alt="." class="object-cover object-center h-full w-full">
+                <img src="{{ $item->image ?? 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=780&q=80'}} " alt="." class="object-cover object-center h-full w-full">
             </div>
             <div class="px-1">
-                <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">Meja Billiard #1</p>
-                <span class="block text-[10px] dark:text-red-500">Rp.100.000,00 / Jam</span>
+                <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">{{ $item->nama_paket ?? 'Error' }}</p>
+                <span class="block text-[10px] dark:text-red-500">Rp.{{ number_format($item->harga,2) }} / Jam</span>
 
                 <div class="flex gap-1 opacity-75 mt-auto">
-                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                    <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" ><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                    <form action="{{ route('add-cart-billiard',$item->id) }}" method="get" class=" w-8/12">
+                        <div class="flex gap-1 opacity-75">
+                            <input type="hidden" name="quantity" value="1" id="">
+                            <input type="hidden" name="image" value="{{ $item->image }}" id="">
+                            <input type="hidden" name="id" value="{{ $item->id }}" id="">
+                            <button class="w-full bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-        <div class="text-base sm:text-sm px-1 py-3">
-            <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                <img src="https://images.unsplash.com/photo-1641393553834-38578d1f6116?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=415&q=80" alt="." class="object-cover object-center h-full w-full">
-            </div>
-            <div class="px-1">
-                <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">Meja Billiard #2</p>
-                <span class="block text-[10px] dark:text-red-500">Rp.100.000,00 / Jam</span>
-
-                <div class="flex gap-1 opacity-75 mt-auto">
-                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                    <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                </div>
-            </div>
-        </div>
-        <div class="text-base sm:text-sm px-1 py-3">
-            <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                <img src="https://images.unsplash.com/photo-1641393553834-38578d1f6116?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=415&q=80" alt="." class="object-cover object-center h-full w-full">
-            </div>
-            <div class="px-1">
-                <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">Meja Billiard #3</p>
-                <span class="block text-[10px] dark:text-red-500">Rp.100.000,00 / Jam</span>
-
-                <div class="flex gap-1 opacity-75 mt-auto">
-                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                    <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                </div>
-            </div>
-        </div>
-        <div class="text-base sm:text-sm px-1 py-3">
-            <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                <img src="https://images.unsplash.com/photo-1641393553834-38578d1f6116?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=415&q=80" alt="." class="object-cover object-center h-full w-full">
-            </div>
-            <div class="px-1">
-                <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">Meja Billiard #4</p>
-                <span class="block text-[10px] dark:text-red-500">Rp.100.000,00 / Jam</span>
-
-                <div class="flex gap-1 opacity-75 mt-auto">
-                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                    <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                </div>
-            </div>
-        </div>
-        <div class="text-base sm:text-sm px-1 py-3">
-            <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                <img src="https://images.unsplash.com/photo-1641393553834-38578d1f6116?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=415&q=80" alt="." class="object-cover object-center h-full w-full">
-            </div>
-            <div class="px-1">
-                <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">Meja Billiard #5</p>
-                <span class="block text-[10px] dark:text-red-500">Rp.100.000,00 / Jam</span>
-
-                <div class="flex gap-1 opacity-75 mt-auto">
-                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                    <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                </div>
-            </div>
-        </div>
-        <div class="text-base sm:text-sm px-1 py-3">
-            <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                <img src="https://images.unsplash.com/photo-1641393553834-38578d1f6116?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=415&q=80" alt="." class="object-cover object-center h-full w-full">
-            </div>
-            <div class="px-1">
-                <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">Meja Billiard #6</p>
-                <span class="block text-[10px] dark:text-red-500">Rp.100.000,00 / Jam</span>
-
-                <div class="flex gap-1 opacity-75 mt-auto">
-                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                    <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                </div>
-            </div>
-        </div>
-        <div class="text-base sm:text-sm px-1 py-3">
-            <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                <img src="https://images.unsplash.com/photo-1641393553834-38578d1f6116?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=415&q=80" alt="." class="object-cover object-center h-full w-full">
-            </div>
-            <div class="px-1">
-                <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">Meja Billiard #7</p>
-                <span class="block text-[10px] dark:text-red-500">Rp.100.000,00 / Jam</span>
-
-                <div class="flex gap-1 opacity-75 mt-auto">
-                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                    <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                </div>
-            </div>
-        </div>
-        <div class="text-base sm:text-sm px-1 py-3">
-            <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                <img src="https://images.unsplash.com/photo-1641393553834-38578d1f6116?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=415&q=80" alt="." class="object-cover object-center h-full w-full">
-            </div>
-            <div class="px-1">
-                <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">Meja Billiard #8</p>
-                <span class="block text-[10px] dark:text-red-500">Rp.100.000,00 / Jam</span>
-
-                <div class="flex gap-1 opacity-75 mt-auto">
-                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                    <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                </div>
-            </div>
-        </div>
-        <div class="text-base sm:text-sm px-1 py-3">
-            <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                <img src="https://images.unsplash.com/photo-1641393553834-38578d1f6116?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=415&q=80" alt="." class="object-cover object-center h-full w-full">
-            </div>
-            <div class="px-1">
-                <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">Meja Billiard #9</p>
-                <span class="block text-[10px] dark:text-red-500">Rp.100.000,00 / Jam</span>
-
-                <div class="flex gap-1 opacity-75 mt-auto">
-                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                    <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                </div>
-            </div>
-        </div>
+        @endforeach
     </div>
 </section>
 

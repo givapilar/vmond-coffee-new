@@ -41,7 +41,7 @@
 
                 @include('modal.history-detail')
 
-                @else
+                @elseif($item->status_pembayaran == 'Paid')
 
                 <button type="submit" class="w-full h-auto" data-modal-target="feedback-modal{{ $item->code }}" data-modal-toggle="feedback-modal{{ $item->code }}">
                     <div class="flex items-center bg-gray-600 rounded-lg p-2 border border-gray-500 hover:brightness-75 mt-3">

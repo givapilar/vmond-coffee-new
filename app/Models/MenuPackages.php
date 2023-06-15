@@ -5,20 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Restaurant extends Model
+class MenuPackages extends Model
 {
     use HasFactory;
 
-    protected $table = 'restaurants';
+    protected $fillable = ['menu_packages_id', 'restaurant_id'];
 
-    public function restaurantTag()
-    {
-        return $this->hasMany(RestaurantPivot::class);
-    }
-    
     public function order()
     {
         return $this->hasMany(OrderPivot::class);
     }
 }
-

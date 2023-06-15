@@ -65,7 +65,8 @@ class OrderController extends Controller
             // ));
 
         $restaurant = Restaurant::get();
-
+        
+        // dd($request->all());
         $member = Membership::get();
         // \Cart::session(Auth::user()->id)->add(array(
             //     'id' => $restaurant->id,
@@ -73,11 +74,7 @@ class OrderController extends Controller
             // ));
 
             // $session_cart = \Cart::session(Auth::user()->id)->getContent();
-
-            // dd($session_cart);
-
-
-            // dd(Auth::user()->membership->level);
+            
             if (Auth::user()->membership->level == 'Super Platinum') {
                 $order = Order::create([
                     // $request->all()
@@ -85,9 +82,13 @@ class OrderController extends Controller
                     'name' => auth()->user()->username,
                     'qty' => $request->qty,
                     'code' => $newInvoiceNumber,
-                    // 'total_price' => \Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan,
-                    // 'total_price' =>  \Cart::getTotal(),
-                    'total_price' => 0,
+                    'date' => $request->date,
+                    'category' => $request->category,
+                    'time_from' => $request->time_from,
+                    'time_to' => $request->time_to,
+                    // 'total_price' => \Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan, 
+                    // 'total_price' =>  \Cart::getTotal(), 
+                    'total_price' => 0, 
                     'status_pembayaran' => 'Unpaid',
                     'invoice_no' => $newInvoiceNumber,
                     'created_at' => date('Y-m-d H:i:s'),
@@ -100,24 +101,50 @@ class OrderController extends Controller
                     'name' => auth()->user()->username,
                     'qty' => $request->qty,
                     'code' => $newInvoiceNumber,
-                    // 'total_price' => \Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan,
-                    // 'total_price' =>  \Cart::getTotal(),
-                    'total_price' => \Cart::getTotal() + $biaya_layanan,
+                    'date' => $request->date,
+                    'category' => $request->category,
+                    'time_from' => $request->time_from,
+                    'time_to' => $request->time_to,
+                    'biliard_id' => $request->biliard_id,
+                    'meja_restaurant_id' => $request->meja_restaurant_id,
+                    // 'total_price' => \Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan, 
+                    // 'total_price' =>  \Cart::getTotal(), 
+                    'total_price' => \Cart::getTotal() + $biaya_layanan, 
                     'status_pembayaran' => 'Unpaid',
                     'invoice_no' => $newInvoiceNumber,
                     'created_at' => date('Y-m-d H:i:s'),
                 ]);
 
                 foreach ($session_cart as $key => $item) {
-                    // dd($item->id);
+                    // dd($item->attributes);
                     // $order = Order::get();
+                    // dd($item);
                     $orderPivot = [];
-                        $orderPivot[] = [
-                            'order_id' => $order->id,
-                            'restaurant_id' => $item->id,
-                            'qty' => $item->quantity,
-                        ];
+                    if ($item->conditions == 'Restaurant') {
+                        # code...
+                            $orderPivot[] = [
+                                'order_id' => $order->id,
+                                'restaurant_id' => $item->associatedModel->id,
+                                // 'paket_menu_id' => $item->id,
+                                'category' => $item->model->category,
+                                'qty' => $item->quantity,
+                            ];
+                        } else {
+                            $restaurantId = isset($request->restaurant_id[$key]) ? $request->restaurant_id[$key] : null;
+                            foreach ($request->restaurant_id as $key => $value) {
+                                # code...
+                                $orderPivot[] = [
+                                    'order_id' => $order->id,
+                                    'restaurant_id' => $request->restaurant_id[$key],
+                                    'paket_menu_id' => $item->id,
+                                    'category' => 'Minuman',
+                                    'qty' => $item->quantity,
+                                ];
+                            }
+                    }
+                    
                     // }
+                    // dd($orderPivot);
                     OrderPivot::insert($orderPivot);
                 }
           }
