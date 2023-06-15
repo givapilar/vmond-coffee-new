@@ -414,6 +414,7 @@ class OrderController extends Controller
 
         try {
             $getDataFeedback = $request->feedback;
+            $getDataFeedbackdescription = $request->description_feedback;
             $getID = Crypt::decryptString($id);
             $getID = explode('-',$getID);
             $getID = $getID[1];
@@ -425,7 +426,7 @@ class OrderController extends Controller
                 return redirect()->route('homepage')->with(['failed' => 'Send feedback failed!', 'auth' => Auth::user()->id, 'menu' => 'feedback']);
             }
 
-            Order::where("id", $getID)->update(["status_feedback" => true, "feedback"  => $getDataFeedback]);
+            Order::where("id", $getID)->update(["status_feedback" => true, "feedback"  => $getDataFeedback, "description_feedback" => $getDataFeedbackdescription]);
 
             return redirect()->route('homepage')->with(['success' => 'Send feedback successfully! Thankyou...', 'auth' => $getToken, 'menu' => 'feedback']);
         } catch (\Throwable $th) {

@@ -29,6 +29,12 @@
                                     <option value="Buruk">Buruk</option>
                                 </select>
                             </div>
+
+                            <div class="flex shadow-sm rounded">
+                                <textarea class="text-sm text-gray-800 bg-white rounded-l leading-5 py-2 px-3 placeholder-gray-400 w-full border border-transparent focus:border-indigo-300 focus:ring-0" name="description_feedback" required id="" cols="30" rows="3">
+
+                                </textarea>
+                            </div>
                             <button type="submit" class="font-semibold text-sm inline-flex items-center justify-center px-3 py-2 border border-transparent rounded leading-5 shadow transition duration-150 ease-in-out w-full bg-indigo-500 hover:bg-indigo-600 text-white focus:outline-none focus-visible:ring-2">Send Feedback</button>
                         </form>
                     </div>

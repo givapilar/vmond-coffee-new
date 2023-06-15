@@ -35,9 +35,11 @@ Route::get('/daftarmenu/biliard', [DaftarMenuController::class, 'biliard'])->nam
 //     return view('daftarmenu.billiard');
 // })->name('daftar-billiard');
 
-Route::get('/daftarmenu/meetingroom', function () {
-    return view('daftarmenu.meeting-room');
-})->name('daftar-meeting-room');
+Route::get('/daftarmenu/meetingroom', [DaftarMenuController::class, 'meetingRoom'])->name('daftar-meeting-room');
+
+// Route::get('/daftarmenu/meetingroom', function () {
+//     return view('daftarmenu.meeting-room');
+// })->name('daftar-meeting-room');
 
 Route::get('/detailmenu/{type}/{slug}', function (Request $request,$type, $slug) {
     $global_url = 'http://management-vmond.test/api/v1/vmond/tokoonline/detail/';

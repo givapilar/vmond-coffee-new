@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MenuPackages;
 use App\Models\Restaurant;
 use App\Models\RestaurantPivot;
 use App\Models\Tag;
@@ -44,6 +45,26 @@ class DaftarMenuController extends Controller
             $billiard = [];
         }
 
-        return view('daftarmenu.billiard', compact(['billiard']));
+        $paket_menus = MenuPackages::get();
+
+        return view('daftarmenu.billiard', compact(['billiard','paket_menus']));
+    }
+
+    public function meetingRoom()
+    {
+        $global_url = 'http://management-vmond.test/api/v1/vmond/tokoonline/';
+        $rest_api_url = $global_url .'paket-menu';
+
+        try {
+            $json_data = file_get_contents($rest_api_url);
+            // Decodes the JSON data into a PHP array.
+            $billiard = json_decode($json_data);
+        } catch (\Throwable $th) {
+            $billiard = [];
+        }
+
+        $paket_menus = MenuPackages::get();
+
+        return view('daftarmenu.meeting-room', compact(['billiard','paket_menus']));
     }
 }
