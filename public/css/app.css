@@ -1651,6 +1651,9 @@ input:checked + .toggle-bg {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.text-ellipsis {
+  text-overflow: ellipsis;
+}
 .whitespace-nowrap {
   white-space: nowrap;
 }
@@ -1705,10 +1708,6 @@ input:checked + .toggle-bg {
 .rounded-r-lg {
   border-top-right-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
-}
-.rounded-t-\[20px\] {
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
 }
 .rounded-t-\[30px\] {
   border-top-left-radius: 30px;
@@ -1774,10 +1773,6 @@ input:checked + .toggle-bg {
 .border-gray-300 {
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
-}
-.border-gray-400 {
-  --tw-border-opacity: 1;
-  border-color: rgb(156 163 175 / var(--tw-border-opacity));
 }
 .border-gray-500 {
   --tw-border-opacity: 1;
