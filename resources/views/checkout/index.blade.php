@@ -207,7 +207,7 @@
                 <div class="flex items-start space-x-4">
                     <div class="flex-1 min-w-0">
                         <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
-                            PPN 11%
+                            PPN 10%
                         </p>
                     </div>
                     <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
@@ -241,7 +241,7 @@
                     <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white">
                         @if (\Cart::getTotal() ?? 0)
                             
-                        Rp. {{ number_format(\Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan ,2 ) }}
+                        Rp. {{ number_format(\Cart::getTotal() * 10/100 + \Cart::getTotal() + $biaya_layanan ,2 ) }}
                         @else
                         Rp. 0
                         @endif
@@ -331,8 +331,8 @@
                 method: "POST", // First change type to method here   
                 data: newData,
                 success: function(callback) {
-                    console.log('Callback', callback);
                     window.location.href = '/home'
+                    console.log('Callback', callback);
 
                 },
                 error: function(error) {

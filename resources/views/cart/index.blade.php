@@ -19,7 +19,7 @@
 @endif
 <section class="p-3">
     <div class="grid grid-cols-2 sm:grid-cols-1 gap-4 sm:gap-1">
-        <div class="max-w-sm h-80 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+        <div class="max-w-sm h-96 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
             @foreach ($data_carts as $item)
             {{-- {{ dd($item->model) }} --}}
             <input type="hidden" name="category" value="restaurant">
@@ -142,145 +142,70 @@
                 </form> --}}
             </ul>
         </div>
-
-        <div class="max-w-sm max-h-[17rem] bg-white border border-gray-200 rounded-[30px] shadow dark:bg-gray-800 dark:border-gray-700 sm:mt-3">
-            <div class="p-3 space-x-4">
-                <p class="text-lg font-semibold text-center dark:text-white">Order Summary</p>
+        <div class="text-left max-w-sm h-96 bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+            <div class="p-2 space-x-4">
+                <p class="text-lg font-semibold text-center dark:text-white">Pilih Category</p>
             </div>
-            <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700 px-3">
-                <li class="py-3 sm:py-3">
-                    <div class="flex items-start space-x-4">
-                        <div class="flex-1 min-w-0">
-                            <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
-                                Subtotal
-                            </p>
-                        </div>
-                        <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
-                            {{-- {{ dd($data_carts) }} --}}
-                            {{-- Rp. {{ number_format($item->model->harga ?? '0',2 ) }} --}}
-                            Rp. {{ number_format(\Cart::getTotal() ?? '0',2 )  }}
-                        </div>
+            <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
+            <ul class="max-w-sm divide-y divide-gray-200 dark:divide-gray-700 px-3">
+                <li class="py-3 sm:py-2">
+                    <div class="flex items-center space-x-4">
+                      <div class="flex-shrink-0">
+                        <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/takeaway.png') }}" alt="Neil image">
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                          Takeway
+                        </p>
+                      </div>
+                      <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                        <input id="takeaway-radio" type="radio" value="Takeaway" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                      </div>
                     </div>
                 </li>
-                <li class="py-3 sm:py-3">
-                    <div class="flex items-start space-x-4">
-                        <div class="flex-1 min-w-0">
-                            <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
-                                PPN 11%
-                            </p>
-                        </div>
-                        <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
-                            Rp. {{ number_format((\Cart::getTotal() ?? '0') * 11/100,2 )  }}
-                        </div>
+                <li class="py-3 sm:py-2">
+                    <div class="flex items-center space-x-4">
+                    <div class="flex-shrink-0">
+                        <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/dinein.png') }}" alt="Neil image">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                            Dine In
+                        </p>
+                    </div>
+                    <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                        <input id="dine-in-radio" type="radio" value="dine-in" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                    </div>
                     </div>
                 </li>
-                <li class="py-3 sm:py-3">
-                    <div class="flex items-start space-x-4">
-                        <div class="flex-1 min-w-0">
-                            <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
-                                Layanan
-                            </p>
-                        </div>
-                        <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
-                            <?php
-                            $biaya_layanan = 5000;
-
-                        ?>
-                        Rp. {{ number_format($biaya_layanan ?? '0',2) }}
-                        </div>
+                <li class="py-3 sm:py-2">
+                    <div id="select-input-wrapper">
+                        <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja</label>
+                        <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option disabled selected>Pilih Meja Restaurant</option>
+                            @foreach ($meja_restaurants as $key => $meja_restaurant)
+                                <option value="{{ $meja_restaurant->id }}">{{ $meja_restaurant->nama }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </li>
-                <li class="py-3 sm:py-3">
-                    <div class="flex items-start space-x-4">
-                        <div class="flex-1 min-w-0">
-                            <p class="text-xs font-medium text-gray-900 truncate dark:text-white">
-                                Order Total
-                            </p>
-                        </div>
-                        <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white">
-                            @if (\Cart::getTotal() ?? 0)
-                            
-                            Rp. {{ number_format(\Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan ,2 ) }}
-                            @else
-                            Rp. 0
-                            @endif
-
-                        </div>
+    
+                <li class="py-3 sm:py-2">
+                    <div id="select-input-biliard">
+                        <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja Biliard</label>
+                        <select id="countries" name="biliard_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option disabled selected>Pilih Meja Biliard</option>
+                            @foreach ($biliards as $key => $biliard)
+                                <option value="{{ $biliard->id }}">{{ $biliard->nama }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </li>
+    
             </ul>
-
-            <form action="{{ route('checkout-order') }}" method="POST">
-                @csrf
-                <div class="mt-2">
-                    <button class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Checkout</button>
-                </div>
-            
         </div>
     </div>
 
-    <div class="text-left max-w-full mt-2 h-96 bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
-        <div class="p-2 space-x-4">
-            <p class="text-lg font-semibold text-center dark:text-white">Pilih Category</p>
-        </div>
-        <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
-        <ul class="max-w-full divide-y divide-gray-200 dark:divide-gray-700 px-3">
-            <li class="py-3 sm:py-2">
-                <div class="flex items-center space-x-4">
-                  <div class="flex-shrink-0">
-                    <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/takeaway.png') }}" alt="Neil image">
-                  </div>
-                  <div class="flex-1 min-w-0">
-                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                      Takeway
-                    </p>
-                  </div>
-                  <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                    <input id="takeaway-radio" type="radio" value="Takeaway" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                  </div>
-                </div>
-            </li>
-            <li class="py-3 sm:py-2">
-                <div class="flex items-center space-x-4">
-                <div class="flex-shrink-0">
-                    <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/dinein.png') }}" alt="Neil image">
-                </div>
-                <div class="flex-1 min-w-0">
-                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                        Dine In
-                    </p>
-                </div>
-                <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                    <input id="dine-in-radio" type="radio" value="dine-in" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                </div>
-                </div>
-            </li>
-            <li class="py-3 sm:py-2">
-                <div id="select-input-wrapper">
-                    <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja</label>
-                    <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option disabled selected>Pilih Meja Restaurant</option>
-                        @foreach ($meja_restaurants as $key => $meja_restaurant)
-                            <option value="{{ $meja_restaurant->id }}">{{ $meja_restaurant->nama }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </li>
-
-            <li class="py-3 sm:py-2">
-                <div id="select-input-biliard">
-                    <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja Biliard</label>
-                    <select id="countries" name="biliard_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option disabled selected>Pilih Meja Biliard</option>
-                        @foreach ($biliards as $key => $biliard)
-                            <option value="{{ $biliard->id }}">{{ $biliard->nama }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </li>
-
-        </ul>
-    </div>
     @foreach ($data_carts as $paket)
     @if ($paket->model->nama_paket)
 
@@ -327,7 +252,6 @@
             <div class="grid grid-cols-3 gap-2">
                 <div class="mt-4 ml-4">
                     <label for="countries" class=" mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Date</label>                    
-                    {{-- <input type="date" name="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date"> --}}
                     <input type="date" required name="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 </div>
                 <div class="mt-4 ml-4">
@@ -399,6 +323,82 @@
     @endforeach
 
 </form>
+
+    <div class="max-w-full mt-2 max-h-[17rem] bg-white border border-gray-200 rounded-[30px] shadow dark:bg-gray-800 dark:border-gray-700 sm:mt-3">
+        <div class="p-3 space-x-4">
+            <p class="text-lg font-semibold text-center dark:text-white">Order Summary</p>
+        </div>
+        <ul class="max-w-full divide-y divide-gray-200 dark:divide-gray-700 px-3">
+            <li class="py-3 sm:py-3">
+                <div class="flex items-start space-x-4">
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
+                            Subtotal
+                        </p>
+                    </div>
+                    <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
+                        {{-- {{ dd($data_carts) }} --}}
+                        {{-- Rp. {{ number_format($item->model->harga ?? '0',2 ) }} --}}
+                        Rp. {{ number_format(\Cart::getTotal() ?? '0',2 )  }}
+                    </div>
+                </div>
+            </li>
+            <li class="py-3 sm:py-3">
+                <div class="flex items-start space-x-4">
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
+                            PPN 10%
+                        </p>
+                    </div>
+                    <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
+                        Rp. {{ number_format((\Cart::getTotal() ?? '0') * 10/100,2 )  }}
+                    </div>
+                </div>
+            </li>
+            <li class="py-3 sm:py-3">
+                <div class="flex items-start space-x-4">
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
+                            Layanan
+                        </p>
+                    </div>
+                    <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
+                        <?php
+                        $biaya_layanan = 5000;
+
+                    ?>
+                    Rp. {{ number_format($biaya_layanan ?? '0',2) }}
+                    </div>
+                </div>
+            </li>
+            <li class="py-3 sm:py-3">
+                <div class="flex items-start space-x-4">
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs font-medium text-gray-900 truncate dark:text-white">
+                            Order Total
+                        </p>
+                    </div>
+                    <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white">
+                        @if (\Cart::getTotal() ?? 0)
+                        
+                        Rp. {{ number_format(\Cart::getTotal() *10/100 + \Cart::getTotal() + $biaya_layanan ,2 ) }}
+                        @else
+                        Rp. 0
+                        @endif
+
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+        <form action="{{ route('checkout-order') }}" method="POST">
+            @csrf
+            <div class="mt-2">
+                <button class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Checkout</button>
+            </div>
+        
+    </div>
+    
 </section>
 
 {{-- @if (count($response_data) != null || count($response_data) != 0)
@@ -546,7 +546,7 @@
                 "id": $id
             },
             success: function (data) {
-                // location.reload();
+                location.reload();
                 // window.location.href(url)
             },
             error: function (data) {
