@@ -25,8 +25,68 @@
     <div id="myTabContent">
         @foreach ($tags as $item)
         <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="{{ strtolower(str_replace(' ','',$item->tag_name)) }}" role="tabpanel" aria-labelledby="{{ strtolower(str_replace(' ','',$item->tag_name)) }}-tab">
-            {{-- <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">{{ strtolower(str_replace(' ','',$item->tag_name)) }} tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p> --}}
-            <div class="grid grid-cols-1">
+            <div class="grid grid-cols-2">
+                @foreach ($restaurants as $resto)
+                @foreach ($resto->restaurantTag as $pivot)
+                    @if ($pivot->tag_id == $item->id)
+                <div class="text-base sm:text-sm px-1 py-3">
+                    <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
+                        <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80" alt="." class="object-cover object-center h-full w-full">
+                    </div>
+                    <div class="px-1">
+                        <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">{{ $resto->nama ?? 'Error' }}</p>
+                        <span class="block text-[10px] dark:text-red-500">Rp.{{ number_format($resto->harga,2) }} </span>
+
+                        <div class="flex gap-1 opacity-75 mt-auto">
+                            <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                            {{-- <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button> --}}
+                            <form action="{{ route('add-cart-billiard',$resto->id) }}" method="get" class=" w-8/12">
+                                <div class="flex gap-1 opacity-75">
+                                    <input type="hidden" name="quantity" value="1" id="">
+                                    <input type="hidden" name="image" value="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80" id="">
+                                    <input type="hidden" name="id" value="{{ $resto->id }}" id="">
+                                    <button class="w-full bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                @endif
+                @endforeach
+                @endforeach
+
+                @foreach ($restaurants as $resto)
+                @foreach ($resto->restaurantTag as $pivot)
+                    @if ($pivot->tag_id == $item->id)
+                <div class="text-base sm:text-sm px-1 py-3">
+                    <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
+                        <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80" alt="." class="object-cover object-center h-full w-full">
+                    </div>
+                    <div class="px-1">
+                        <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">{{ $resto->nama_paket ?? 'Error' }}</p>
+                        <span class="block text-[10px] dark:text-red-500">Rp.{{ number_format($resto->harga,2) }} </span>
+
+                        <div class="flex gap-1 opacity-75 mt-auto">
+                            <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" data-modal-target="description-modal{{ $resto->id }}" data-modal-toggle="description-modal{{ $resto->id }}"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                            {{-- <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button> --}}
+                            <form action="{{ route('add-cart-billiard',$resto->id) }}" method="get" class=" w-8/12">
+                                <div class="flex gap-1 opacity-75">
+                                    <input type="hidden" name="quantity" value="1" id="">
+                                    <input type="hidden" name="image" value="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80" id="">
+                                    <input type="hidden" name="id" value="{{ $resto->id }}" id="">
+                                    <button class="w-full bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    @include('modal.description')
+                </div>
+                @endif
+                @endforeach
+                @endforeach
+            </div>
+
+            {{-- <div class="grid grid-cols-1">
                 @foreach ($restaurants as $resto)
                     @foreach ($resto->restaurantTag as $pivot)
                         @if ($pivot->tag_id == $item->id)
@@ -68,7 +128,7 @@
                         @endif
                     @endforeach
                 @endforeach
-            </div>
+            </div> --}}
         </div>
         @endforeach
     </div>
