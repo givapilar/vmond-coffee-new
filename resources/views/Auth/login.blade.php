@@ -63,12 +63,16 @@
                         <a href="#" class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">Forgot password?</a>
                     </div>
                     <button type="submit" class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Sign in</button>
+                    <hr>
                     <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-                        Don’t have an account yet? <a href="{{ route('register') }}" class="font-medium text-blue-600 hover:underline dark:text-blue-500">Sign up</a>
+                        Don’t have an account yet? 
                     </p>
-                    <span class="text-sm font-light text-gray-500 dark:text-gray-400">
+                    <button href="{{ route('register') }}" class="w-full text-white bg-orange-600 hover:bg-orange-700 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800" style="width: 100% !important;">Sign up</button>
+                    <br>
+                    <br>
+                    {{-- <span class="text-sm font-light text-gray-500 dark:text-gray-400">
                         log in as a guest? <a href="{{ route('homepage') }}" class="font-medium text-blue-600 hover:underline dark:text-blue-500">Click here</a>
-                    </span>
+                    </span> --}}
                 </form>
             </div>
         </div>

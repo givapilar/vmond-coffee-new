@@ -346,7 +346,7 @@
                 <div class="flex items-start space-x-4">
                     <div class="flex-1 min-w-0">
                         <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
-                            PPN 10%
+                            PB01 10%
                         </p>
                     </div>
                     <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">

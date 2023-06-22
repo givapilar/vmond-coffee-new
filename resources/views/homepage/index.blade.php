@@ -71,7 +71,7 @@
                     <img src="https://images.unsplash.com/photo-1544070928-135893793bdc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=627&q=80" alt="." class="object-cover object-center h-full w-full">
                 </div>
 
-                <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300">Sport</p>
+                <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300">FwB</p>
             </div>
         </a>
         <a href="{{ route('daftar-meeting-room') }}">
@@ -80,7 +80,7 @@
                     <img src="https://images.unsplash.com/photo-1431540015161-0bf868a2d407?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="." class="object-cover object-center h-full w-full">
                 </div>
 
-                <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300">Meeting Room</p>
+                <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300">Exclusive Room</p>
             </div>
         </a>
     </div>

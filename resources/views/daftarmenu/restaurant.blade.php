@@ -25,7 +25,7 @@
     <div id="myTabContent">
         @foreach ($tags as $item)
         <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="{{ strtolower(str_replace(' ','',$item->tag_name)) }}" role="tabpanel" aria-labelledby="{{ strtolower(str_replace(' ','',$item->tag_name)) }}-tab">
-            <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">{{ strtolower(str_replace(' ','',$item->tag_name)) }} tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
+            {{-- <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">{{ strtolower(str_replace(' ','',$item->tag_name)) }} tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p> --}}
             <div class="grid grid-cols-1">
                 @foreach ($restaurants as $resto)
                     @foreach ($resto->restaurantTag as $pivot)

@@ -43,7 +43,7 @@
 <section class="p-3">
     <div class="flex items-center justify-between">
         <div class="">
-            <span class="text-lg font-bold dark:text-white ml-1">MEJA BILLIARD</span>
+            <span class="text-lg font-bold dark:text-white ml-1">Food with Billiard</span>
         </div>
         {{-- <div class="flex items-center">
             <span class="text-xs dark:text-white">Lihat Semua</span>
@@ -51,7 +51,7 @@
         </div> --}}
     </div>
 
-    <div class="grid grid-cols-3">
+    <div class="grid grid-cols-2">
         {{-- @foreach ($billiard as $item)
         <div class="text-base sm:text-sm px-1 py-3">
             <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
@@ -83,7 +83,7 @@
             
         <div class="text-base sm:text-sm px-1 py-3">
             <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                <img src="{{'http://management-vmond.test/assets/images/paket-menu/'. ($item->biliard->image ?? '') }}" alt="." class="object-cover object-center h-full w-full">
+                <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80" alt="." class="object-cover object-center h-full w-full">
             </div>
             <div class="px-1">
                 <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">{{ $item->nama_paket ?? 'Error' }}</p>
@@ -95,13 +95,42 @@
                     <form action="{{ route('add-cart-billiard',$item->id) }}" method="get" class=" w-8/12">
                         <div class="flex gap-1 opacity-75">
                             <input type="hidden" name="quantity" value="1" id="">
-                            <input type="hidden" name="image" value="{{'http://management-vmond.test/assets/images/paket-menu/'. ($item->biliard->image ?? '') }}" id="">
+                            <input type="hidden" name="image" value="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80" id="">
                             <input type="hidden" name="id" value="{{ $item->id }}" id="">
                             <button class="w-full bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
                         </div>
                     </form>
                 </div>
             </div>
+        </div>
+        @endif
+        @endforeach
+        @foreach ($paket_menus as $item)
+        {{-- {{ dd($item->biliard) }} --}}
+        @if ($item->category == 'billiard')
+            
+        <div class="text-base sm:text-sm px-1 py-3">
+            <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
+                <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80" alt="." class="object-cover object-center h-full w-full">
+            </div>
+            <div class="px-1">
+                <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">{{ $item->nama_paket ?? 'Error' }}</p>
+                <span class="block text-[10px] dark:text-red-500">Rp.{{ number_format($item->harga,2) }} </span>
+                
+                <div class="flex gap-1 opacity-75 mt-auto">
+                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" data-modal-target="description-modal{{ $item->id }}" data-modal-toggle="description-modal{{ $item->id }}"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                    {{-- <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button> --}}
+                    <form action="{{ route('add-cart-billiard',$item->id) }}" method="get" class=" w-8/12">
+                        <div class="flex gap-1 opacity-75">
+                            <input type="hidden" name="quantity" value="1" id="">
+                            <input type="hidden" name="image" value="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80" id="">
+                            <input type="hidden" name="id" value="{{ $item->id }}" id="">
+                            <button class="w-full bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            @include('modal.description')
         </div>
         @endif
         @endforeach
