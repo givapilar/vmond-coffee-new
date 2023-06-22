@@ -75,7 +75,17 @@
 
                     @foreach ($others as $other)
                     {{-- <a href="https://wa.me/6285718724894"> --}}
-                    @if ($item->status_konfirmasi == 'Inactive')
+                    @if ($item->status_konfirmasi == 'Aktif')
+                    
+                    <form action="{{ route('add-cart-meeting-room',$item->id) }}" method="get" class=" w-full">
+                        <div class="flex gap-1 opacity-75">
+                            <input type="hidden" name="quantity" value="1" id="">
+                            <input type="hidden" name="image" value="{{'http://management-vmond.test/assets/images/paket-menu/'. ($item->biliard->image ?? '') }}" id="">
+                            <input type="hidden" name="id" value="{{ $item->id }}" id="">
+                            <button class="w-full bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                        </div>
+                    </form>
+                    @else
                     <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Please Contact My Operator</p>
                     <a href={{ "https://wa.me/".$other->no_wa }}>
                         <div class="sm:mt-3 inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-center text-white bg-teal-700 rounded-lg hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-blue-800 w-full">
@@ -85,15 +95,6 @@
                             </svg>
                         </div>
                     </a>
-                    @else
-                    <form action="{{ route('add-cart-meeting-room',$item->id) }}" method="get" class=" w-full">
-                        <div class="flex gap-1 opacity-75">
-                            <input type="hidden" name="quantity" value="1" id="">
-                            <input type="hidden" name="image" value="{{'http://management-vmond.test/assets/images/paket-menu/'. ($item->biliard->image ?? '') }}" id="">
-                            <input type="hidden" name="id" value="{{ $item->id }}" id="">
-                            <button class="w-full bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                        </div>
-                    </form>
                     @endif
                     @endforeach
                 </div>
