@@ -243,7 +243,8 @@
             </div>
         </div>
     </div>
-
+    @endif
+    @endforeach
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-1 gap-4 sm:gap-1 mt-2">
         <div class="max-w-full h-64 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
             <div class="p-3 space-x-4">
@@ -319,8 +320,6 @@
             </div>
         </div>
     </div>
-    @endif
-    @endforeach
 
 </form>
 

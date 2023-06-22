@@ -36,7 +36,7 @@
                                 <img class="rounded-lg" src="{{ $global_url_image.$resto->image ?? 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=780&q=80'}} " alt="image description">
                                 </a>
                                 <span class="absolute bottom-0 inline-flex items-center justify-center w-full h-5 bg-red-800 border border-red-500 rounded-b-[.5rem] text-white text-xs">
-                                    Discount
+                                    Spesial Price
                                 </span>
                             </div>
                             <div class="grow px-1">

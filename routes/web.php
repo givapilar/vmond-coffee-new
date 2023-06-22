@@ -89,10 +89,10 @@ Route::get('/delete-chart-biliard/{id}',[CartOrdersController::class, 'deleteCar
 
 // Meeting Room Cart
 // Route::post('/add-chart',[CartOrdersController::class, 'addCart'])->name('add-chart');
-Route::get('/cart-meeting-room/{id}',[CartOrdersController::class, 'addCartMeeting'])->name('add-chart');
 Route::get('/cart-meeting',[CartOrdersController::class, 'viewCartMeetingRoom'])->name('cart-meeting-room');
+Route::get('/cart-meeting-room/{id}',[CartOrdersController::class, 'addCartMeeting'])->name('add-cart-meeting-room');
+Route::get('cart_meeting-room/{id}/edit', [CartOrdersController::class, 'editMeeting'])->name('edit-cart-meeting-room');
 Route::get('/delete-chart/{id}',[CartOrdersController::class, 'deleteCart'])->name('delete-cart');
-Route::get('cart_meeting-room/{id}/edit', [CartOrdersController::class, 'editMeeting'])->name('cart-meeting-edit');
 
 
 

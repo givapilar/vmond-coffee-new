@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MenuPackages;
+use App\Models\OtherSetting;
 use App\Models\Restaurant;
 use App\Models\RestaurantPivot;
 use App\Models\Tag;
@@ -64,7 +65,8 @@ class DaftarMenuController extends Controller
         }
 
         $paket_menus = MenuPackages::get();
+        $others = OtherSetting::get();
 
-        return view('daftarmenu.meeting-room', compact(['billiard','paket_menus']));
+        return view('daftarmenu.meeting-room', compact(['billiard','paket_menus','others']));
     }
 }

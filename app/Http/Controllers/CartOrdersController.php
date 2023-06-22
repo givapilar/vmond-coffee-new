@@ -162,33 +162,34 @@ class CartOrdersController extends Controller
     public function addCartMeeting(Request $request,$id)
     {
 
-        $meeting_room = MeetingRoom::findOrFail($id);
+        $paket_menu = MenuPackages::findOrFail($id);
         if ($request->quantity) {
             $quantity = $request->quantity;
         } else {
             $quantity = 0;
         }
 
-
         // $auth = User::get();
         // dd($auth->id);
 
         // Pengecekan Login
         if (Auth::check()) {
-            \Cart::session(Auth::user()->id)->add(array(
-                'id' => $meeting_room->id, // inique row ID
-                'name' => $meeting_room->nama,
-                'price' => $meeting_room->harga,
-                'quantity' => $quantity,
-                'attributes' => array(),
-                'associatedModel' => MeetingRoom::class
-            ));
-            return redirect()->route('cart-meeting-room')->with('message', 'Data berhasil dimasukkan ke dalam keranjang !');
+            if ($paket_menu->category == 'meeting_room') {
+                # code...
+                \Cart::session(Auth::user()->id)->add(array(
+                    'id' => $paket_menu->id, // inique row ID
+                    'name' => $paket_menu->nama_paket,
+                    'price' => $paket_menu->harga,
+                    'quantity' => $request->quantity,
+                    'attributes' => array($paket_menu),
+                    'conditions' => 'Paket Menu',
+                    'associatedModel' => $paket_menu
+                ));
+            }
+                return redirect()->route('daftar-meeting-room')->with('message', 'Data berhasil dimasukkan ke dalam keranjang !');
         } else {
-            return redirect()->route('cart-meeting-room')->with('message', 'Harap Login Terlebih Dahulu !');
+            return redirect()->route('daftar-meeting-room')->with('message', 'Harap Login Terlebih Dahulu !');
         }
-
-
     }
 
     public function deleteCart($id)
