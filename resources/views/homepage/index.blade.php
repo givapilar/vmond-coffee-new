@@ -24,8 +24,8 @@
                         Total Transaksi
                     </p>
                     <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                        
-                        Rp. {{ $orderFinishSubtotal ?? '' }} 
+
+                        Rp. {{ $orderFinishSubtotal ?? '' }}
                         {{-- {{ dd($orderFinishSubtotal) }} --}}
                         ( {{ ucwords(Auth::user()->membership->level ?? '') }} Member )
                     </p>
@@ -52,7 +52,7 @@
     </div>
 
     <div class="grid grid-cols-3 gap-3">
-        <a href="{{ route('daftar-restaurant') }}">
+        <a href="{{ route('homepage-restaurant') }}">
             <div class="text-base sm:text-sm p-1">
                 <div class="aspect-h-1 h-36 sm:h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg">
                     <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80" alt="" class="object-cover object-center h-full w-full">

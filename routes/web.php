@@ -68,6 +68,9 @@ Route::get('/reservation', function () {
 Route::get('/cart-meeting', function () {
     return view('cart.meeting-room');
 })->name('cart-meeting-room');
+Route::get('/restaurant/menu', function () {
+    return view('homepage.restaurant');
+})->name('homepage-restaurant');
 
 // User-profile
 // Route::get('/user-profile', [UserController::class, 'userProfile'])->name('user-profile');
