@@ -143,10 +143,10 @@
 
 @push('script-bot')
 <script>
-    $('.slick1').slick({
+    $('#myTab').slick({
         infinite:false,
         arrows: false,
-        slidesToShow: 3,
+        slidesToShow: 2,
         slidesToScroll: 1,
         autoplay: false,
         speed:200,
