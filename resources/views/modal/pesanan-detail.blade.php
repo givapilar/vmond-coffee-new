@@ -81,7 +81,7 @@
                         
                     <div class="flex items-center border-b border-gray-300 p-3">
                         <div class="relative inline-block shrink-0">
-                            <img class="w-14 h-14 rounded-full" src="{{ 'http://management-vmond.test/assets/images/restaurant/' .($order->restaurant->image ?? 'http://management-vmond.test/assets/images/paket-menu/' .$order->paketMenu->image)}}" alt="History Notif"/>
+                            <img class="w-14 h-14 rounded-full" src="{{ 'https://managementvmond.controlindo.com/assets/images/restaurant/' .($order->restaurant->image ?? 'https://managementvmond.controlindo.com/assets/images/paket-menu/' .$order->paketMenu->image)}}" alt="History Notif"/>
                         </div>
                         <div class="grow ml-3 text-sm font-normal">
                             <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ $order->restaurant->nama ?? $order->paketMenu->nama_paket }}</div>
@@ -90,7 +90,7 @@
                     </div>
                     {{-- <div class="flex items-center border-b border-gray-300 p-3">
                         <div class="relative inline-block shrink-0">
-                            <img class="w-14 h-14 rounded-full" src="{{ 'http://management-vmond.test/assets/images/paket-menu/' .$order->paketMenu->image ?? 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80'}}" alt="History Notif"/>
+                            <img class="w-14 h-14 rounded-full" src="{{ 'https://managementvmond.controlindo.com/assets/images/paket-menu/' .$order->paketMenu->image ?? 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80'}}" alt="History Notif"/>
                         </div>
                         <div class="grow ml-3 text-sm font-normal">
                             <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ $order->paketMenu->nama_paket ?? '' }}</div>

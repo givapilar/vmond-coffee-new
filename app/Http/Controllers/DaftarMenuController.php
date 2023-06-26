@@ -11,10 +11,10 @@ use Illuminate\Http\Request;
 
 class DaftarMenuController extends Controller
 {
-    public function restaurant()
+    public function restaurant(Request $request)
     {
-        // $global_url = 'http://management-vmond.test/api/v1/vmond/tokoonline/';
-        $global_url_image = 'http://management-vmond.test/assets/images/restaurant/';
+        // $global_url = 'https://managementvmond.controlindo.com/api/v1/vmond/tokoonline/';
+        $global_url_image = 'https://managementvmond.controlindo.com/assets/images/restaurant/';
         // $rest_api_url = $global_url .'resto';
 
         // try {
@@ -28,14 +28,22 @@ class DaftarMenuController extends Controller
         $tags = Tag::get();
         $restaurantPivot = RestaurantPivot::get();
         $restaurants = Restaurant::get();
+        $category = $request->input('category');
+        if ($category == 'food') {
+            $category = 'Makanan';
+        }elseif($category == 'drink'){
+            $category = 'Minuman';
+        }else{
+            $category = 'Makanan';
+        }
 
         // dd($restaurant);
-        return view('daftarmenu.restaurant', compact(['restaurants','tags','restaurantPivot', 'global_url_image']));
+        return view('daftarmenu.restaurant', compact(['restaurants','tags','restaurantPivot', 'global_url_image', 'category']));
     }
 
     public function biliard()
     {
-        $global_url = 'http://management-vmond.test/api/v1/vmond/tokoonline/';
+        $global_url = 'https://managementvmond.controlindo.com/api/v1/vmond/tokoonline/';
         $rest_api_url = $global_url .'paket-menu';
 
         try {
@@ -53,7 +61,7 @@ class DaftarMenuController extends Controller
 
     public function meetingRoom()
     {
-        $global_url = 'http://management-vmond.test/api/v1/vmond/tokoonline/';
+        $global_url = 'https://managementvmond.controlindo.com/api/v1/vmond/tokoonline/';
         $rest_api_url = $global_url .'paket-menu';
 
         try {

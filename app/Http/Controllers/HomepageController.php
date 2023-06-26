@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class HomepageController extends Controller
 {
     public function index() {
-        $global_url = 'http://management-vmond.test/api/v1/vmond/tokoonline/';
+        $global_url = 'https://managementvmond.controlindo.com/api/v1/vmond/tokoonline/';
         $rest_api_url = $global_url .'resto';
         $rest_api_biliard = $global_url .'biliard';
         $rest_api_meeting_room = $global_url .'meetingroom';
