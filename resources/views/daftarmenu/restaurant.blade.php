@@ -12,10 +12,31 @@
 <section>
     <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
         <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
+        @php
+            $processedTags = []; // Array untuk menyimpan tag yang telah diproses
+            @endphp
+
             @foreach ($tags as $item)
-            <li class="mr-2" role="presentation">
-                <button class="inline-block p-4 border-b-2 rounded-t-lg" id="{{ strtolower(str_replace(' ','',$item->tag_name)) }}-tab" data-tabs-target="#{{ strtolower(str_replace(' ','',$item->tag_name)) }}" type="button" role="tab" aria-controls="{{ strtolower(str_replace(' ','',$item->tag_name)) }}" aria-selected="false">{{ strtolower(str_replace(' ','',$item->tag_name)) }}</button>
-            </li>
+                @php
+                $isTagProcessed = false; // Flag untuk menandai apakah tag telah diproses sebelumnya
+                @endphp
+
+                @foreach ($restaurants as $resto)
+                    @foreach ($resto->restaurantTag as $pivot)
+                        @if ($resto->category == $category)
+                            @if ($pivot->tag_id == $item->id && !in_array($item->id, $processedTags))
+                                @php
+                                $processedTags[] = $item->id; // Menyimpan tag yang telah diproses
+                                $isTagProcessed = true; // Menandai bahwa tag telah diproses
+                                @endphp
+
+                                <li class="mr-2" role="presentation">
+                                    <button class="inline-block p-4 border-b-2 rounded-t-lg" id="{{ strtolower(str_replace(' ','',$item->tag_name)) }}-tab" data-tabs-target="#{{ strtolower(str_replace(' ','',$item->tag_name)) }}" type="button" role="tab" aria-controls="{{ strtolower(str_replace(' ','',$item->tag_name)) }}" aria-selected="false">{{ strtolower(str_replace(' ','',$item->tag_name)) }}</button>
+                                </li>
+                            @endif
+                        @endif
+                    @endforeach
+                @endforeach
             @endforeach
         </ul>
     </div>
@@ -29,6 +50,7 @@
                 @foreach ($restaurants as $resto)
                 @foreach ($resto->restaurantTag as $pivot)
                     @if ($pivot->tag_id == $item->id)
+                    @if ($resto->category == $category)
                 <div class="text-base sm:text-sm px-1 py-3">
                     <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
                         <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80" alt="." class="object-cover object-center h-full w-full">
@@ -38,37 +60,8 @@
                         <span class="block text-[10px] dark:text-red-500">Rp.{{ number_format($resto->harga,2) }} </span>
 
                         <div class="flex gap-1 opacity-75 mt-auto">
-                            <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                            {{-- <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button> --}}
-                            <form action="{{ route('restaurant-cart',$resto->id) }}" method="get" class=" w-8/12">
-                                <div class="flex gap-1 opacity-75">
-                                    <input type="hidden" name="quantity" value="1" id="">
-                                    <input type="hidden" name="image" value="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80" id="">
-                                    <input type="hidden" name="id" value="{{ $resto->id }}" id="">
-                                    <button class="w-full bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                @endif
-                @endforeach
-                @endforeach
-
-                {{-- @foreach ($restaurants as $resto)
-                @foreach ($resto->restaurantTag as $pivot)
-                    @if ($pivot->tag_id == $item->id)
-                <div class="text-base sm:text-sm px-1 py-3">
-                    <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                        <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80" alt="." class="object-cover object-center h-full w-full">
-                    </div>
-                    <div class="px-1">
-                        <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">{{ $resto->nama_paket ?? 'Error' }}</p>
-                        <span class="block text-[10px] dark:text-red-500">Rp.{{ number_format($resto->harga,2) }} </span>
-
-                        <div class="flex gap-1 opacity-75 mt-auto">
                             <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" data-modal-target="description-modal{{ $resto->id }}" data-modal-toggle="description-modal{{ $resto->id }}"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                            <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                            {{-- <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button> --}}
                             <form action="{{ route('add-cart-billiard',$resto->id) }}" method="get" class=" w-8/12">
                                 <div class="flex gap-1 opacity-75">
                                     <input type="hidden" name="quantity" value="1" id="">
@@ -82,8 +75,9 @@
                     @include('modal.description')
                 </div>
                 @endif
+                @endif
                 @endforeach
-                @endforeach --}}
+                @endforeach 
             </div>
 
             {{-- <div class="grid grid-cols-1">

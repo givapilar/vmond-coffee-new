@@ -21,7 +21,7 @@ use App\Http\Controllers\HomepageController;
 */
 // Route::auth();
 Route::get('/', function () {
-    return view('auth.login');
+    return view('Auth.login');
 });
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/register', [RegisterController::class, 'store'])->name('register');
@@ -42,7 +42,7 @@ Route::get('/daftarmenu/meetingroom', [DaftarMenuController::class, 'meetingRoom
 // })->name('daftar-meeting-room');
 
 Route::get('/detailmenu/{type}/{slug}', function (Request $request,$type, $slug) {
-    $global_url = 'http://management-vmond.test/api/v1/vmond/tokoonline/detail/';
+    $global_url = 'https://managementvmond.controlindo.com/api/v1/vmond/tokoonline/detail/';
     $rest_api_url = $global_url.$type.'/'.$slug;
     // Belum selesai
     $getData = file_get_contents($rest_api_url);

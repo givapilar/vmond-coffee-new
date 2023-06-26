@@ -57,7 +57,7 @@
         @if ($item->category == 'meeting_room')
         <div class="text-base sm:text-sm px-1 py-3">
             <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                <img src="{{'http://management-vmond.test/assets/images/meeting-room/'. ($item->roomMeet->image ?? '') }}" alt="." class="object-cover object-center h-full w-full">
+                <img src="{{'https://managementvmond.controlindo.com/assets/images/meeting-room/'. ($item->roomMeet->image ?? '') }}" alt="." class="object-cover object-center h-full w-full">
             </div>
             <div class="px-1">
                 <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">{{ $item->nama_paket ?? 'Error' }}</p>
@@ -68,7 +68,7 @@
                 {{-- <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button> --}}
                     {{-- <div class="flex gap-1 opacity-75">
                         <input type="hidden" name="quantity" value="1" id="">
-                        <input type="hidden" name="image" value="{{'http://management-vmond.test/assets/images/paket-menu/'. ($item->roomMeet->image ?? '') }}" id="">
+                        <input type="hidden" name="image" value="{{'https://managementvmond.controlindo.com/assets/images/paket-menu/'. ($item->roomMeet->image ?? '') }}" id="">
                         <input type="hidden" name="id" value="{{ $item->id }}" id="">
                         <button class="w-full bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
                     </div> --}}
@@ -80,7 +80,7 @@
                     <form action="{{ route('add-cart-meeting-room',$item->id) }}" method="get" class=" w-full">
                         <div class="flex gap-1 opacity-75">
                             <input type="hidden" name="quantity" value="1" id="">
-                            <input type="hidden" name="image" value="{{'http://management-vmond.test/assets/images/paket-menu/'. ($item->biliard->image ?? '') }}" id="">
+                            <input type="hidden" name="image" value="{{'https://managementvmond.controlindo.com/assets/images/paket-menu/'. ($item->biliard->image ?? '') }}" id="">
                             <input type="hidden" name="id" value="{{ $item->id }}" id="">
                             <button class="w-full bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
                         </div>

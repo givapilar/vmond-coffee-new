@@ -23,7 +23,7 @@
             <li class="py-3 sm:py-4">
                 <div class="flex items-start space-x-4">
                     <div class="flex-shrink-0">
-                        <img class="w-12 h-12 rounded-full" src="{{ 'http://management-vmond.test/assets/images/restaurant/'.$item->model->image ?? 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80'}}" alt="Neil image">
+                        <img class="w-12 h-12 rounded-full" src="{{ 'https://managementvmond.controlindo.com/assets/images/restaurant/'.$item->model->image ?? 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80'}}" alt="Neil image">
                     </div>
                     <div class="flex-1 min-w-0">
                         <p class="text-sm font-medium text-gray-900 truncate dark:text-white">

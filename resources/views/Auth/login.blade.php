@@ -67,7 +67,7 @@
                     <p class="text-sm font-light text-gray-500 dark:text-gray-400">
                         Don’t have an account yet? 
                     </p>
-                    <button href="{{ route('register') }}" class="w-full text-white bg-orange-600 hover:bg-orange-700 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800" style="width: 100% !important;">Sign up</button>
+                    <button type="button" onClick="window.location = '{{ route('register') }}';" class="w-full text-white bg-orange-600 hover:bg-orange-700 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800" style="width: 100% !important;">Sign up</button>
                     <br>
                     <br>
                     {{-- <span class="text-sm font-light text-gray-500 dark:text-gray-400">
