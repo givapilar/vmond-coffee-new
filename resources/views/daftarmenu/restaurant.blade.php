@@ -40,7 +40,7 @@
                         <div class="flex gap-1 opacity-75 mt-auto">
                             <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
                             {{-- <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button> --}}
-                            <form action="{{ route('add-cart-billiard',$resto->id) }}" method="get" class=" w-8/12">
+                            <form action="{{ route('restaurant-cart',$resto->id) }}" method="get" class=" w-8/12">
                                 <div class="flex gap-1 opacity-75">
                                     <input type="hidden" name="quantity" value="1" id="">
                                     <input type="hidden" name="image" value="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80" id="">
@@ -55,7 +55,7 @@
                 @endforeach
                 @endforeach
 
-                @foreach ($restaurants as $resto)
+                {{-- @foreach ($restaurants as $resto)
                 @foreach ($resto->restaurantTag as $pivot)
                     @if ($pivot->tag_id == $item->id)
                 <div class="text-base sm:text-sm px-1 py-3">
@@ -68,7 +68,7 @@
 
                         <div class="flex gap-1 opacity-75 mt-auto">
                             <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" data-modal-target="description-modal{{ $resto->id }}" data-modal-toggle="description-modal{{ $resto->id }}"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                            {{-- <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button> --}}
+                            <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
                             <form action="{{ route('add-cart-billiard',$resto->id) }}" method="get" class=" w-8/12">
                                 <div class="flex gap-1 opacity-75">
                                     <input type="hidden" name="quantity" value="1" id="">
@@ -83,7 +83,7 @@
                 </div>
                 @endif
                 @endforeach
-                @endforeach
+                @endforeach --}}
             </div>
 
             {{-- <div class="grid grid-cols-1">

@@ -238,7 +238,7 @@
     </div>
 </div> --}}
 
-<div id="reader" class="" style="color: white;" width="600px"></div>
+{{-- <div id="reader" class="" style="color: white;" width="600px"></div> --}}
 <div class="pb-[5rem]"></div>
 @endsection
 
