@@ -15,7 +15,7 @@
         <div class="w-full bg-transparent md:mt-0 max-w-md xl:p-0">
             <div class="px-6 py-2 space-y-4 md:space-y-6 ">
 
-                <form class="space-y-4 md:space-y-6" action="{{ route('login') }}" method="POST">
+                <form class="space-y-4 md:space-y-6" action="{{ route('login', ['jenis_meja' => Request::get('jenis_meja'), 'no_meja' => Request::get('no_meja')]) }}" method="POST">
                     @csrf
                     <div>
                         <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username / Phone Number</label>
@@ -54,7 +54,7 @@
                     <div class="flex items-center justify-between">
                         <div class="flex items-start">
                             <div class="flex items-center h-5">
-                              <input id="remember" aria-describedby="remember" type="checkbox" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800" required="">
+                              <input id="remember" aria-describedby="remember" type="checkbox" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800">
                             </div>
                             <div class="ml-3 text-sm">
                               <label for="remember" class="text-gray-500 dark:text-gray-300">Remember me</label>

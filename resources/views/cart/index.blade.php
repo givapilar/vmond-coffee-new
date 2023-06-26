@@ -142,6 +142,9 @@
                 </form> --}}
             </ul>
         </div>
+
+        @if ($item->model->nama_paket == 'null')
+            
         <div class="text-left max-w-sm h-96 bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
             <div class="p-2 space-x-4">
                 <p class="text-lg font-semibold text-center dark:text-white">Pilih Category</p>
@@ -160,7 +163,7 @@
                       </div>
                       <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                         <input id="takeaway-radio" type="radio" value="Takeaway" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                      </div>
+                    </div>
                     </div>
                 </li>
                 <li class="py-3 sm:py-2">
@@ -176,10 +179,10 @@
                     <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                         <input id="dine-in-radio" type="radio" value="dine-in" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                     </div>
-                    </div>
-                </li>
-                <li class="py-3 sm:py-2">
-                    <div id="select-input-wrapper">
+                </div>
+            </li>
+            <li class="py-3 sm:py-2">
+                <div id="select-input-wrapper">
                         <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja</label>
                         <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option disabled selected>Pilih Meja Restaurant</option>
@@ -189,73 +192,35 @@
                         </select>
                     </div>
                 </li>
-    
-                <li class="py-3 sm:py-2">
+                
+                {{-- <li class="py-3 sm:py-2">
                     <div id="select-input-biliard">
                         <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja Biliard</label>
                         <select id="countries" name="biliard_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option disabled selected>Pilih Meja Biliard</option>
                             @foreach ($biliards as $key => $biliard)
-                                <option value="{{ $biliard->id }}">{{ $biliard->nama }}</option>
+                            <option value="{{ $biliard->id }}">{{ $biliard->nama }}</option>
                             @endforeach
                         </select>
                     </div>
-                </li>
-    
+                </li> --}}
+                
             </ul>
         </div>
+        @endif
     </div>
 
-    @foreach ($data_carts as $paket)
-    @if ($paket->model->nama_paket)
-
-        
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-1 gap-4 sm:gap-1 mt-2">
-        <div class="max-w-full h-96 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
-            <div class="p-3 space-x-4">
-                <p class="text-lg font-semibold text-center dark:text-white">Pilih Minuman</p>
-            </div>
-            <div class="grid grid-cols-1 gap-2">
-                <div class="mt-9 ml-4">
-                    <ul class="max-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                        @foreach ($restaurants as $index => $restaurant)
-                        <li class="pb-3 sm:pb-4">
-                            <div class="flex items-center space-x-4">
-                                <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                        {{ $restaurant->nama }}
-                                    </p>
-                                    <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                                        Rp.  {{ number_format($restaurant->harga, 0) }}
-                                    </p>
-                                </div>
-                                {{-- {{ dd($paket->model->minimal ) }} --}}
-                                <div class="flex items-center mb-4">
-                                    <input id="checkbox" name="restaurant_id[]" type="checkbox" value="{{ $restaurant->id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" onchange="toggleCheckbox(this, '{{ $paket->model->nama_paket }}' , '{{ $paket->model->minimal }}')">
-                                    <label for="checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Default checkbox</label>
-                                </div>
-                            </div>
-                        </li>
-                        @endforeach
-
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endif
-    @endforeach
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-1 gap-4 sm:gap-1 mt-2">
         <div class="max-w-full h-64 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
             <div class="p-3 space-x-4">
-                <p class="text-lg font-semibold text-center dark:text-white">Pilih Jam</p>
+                <p class="text-lg font-semibold text-center dark:text-white">Schedule & Table</p>
             </div>
-            <div class="grid grid-cols-3 gap-2">
-                <div class="mt-4 ml-4">
+            <div class="grid grid-cols-2 gap-2">
+                <div class="mt-4">
                     <label for="countries" class=" mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Date</label>                    
                     <input type="date" required name="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 </div>
-                <div class="mt-4 ml-4">
+                <div class="mt-4">
                     <label for="countries" class=" mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Time From</label>
                     <select id="countries" required name="time_from" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option disabled selected>Choose a Time From</option>
@@ -286,7 +251,7 @@
                     </select>
                 </div>
 
-                <div class="mt-4 ml-4">
+                <div class="mt-4">
                     <label for="countries" class=" mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Time To</label>
                     <select id="countries" required name="time_to" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option disabled selected>Choose a Time To</option>
@@ -316,11 +281,60 @@
                         <option value="23:00">23::00</option>
                     </select>
                 </div>
+                <div class="mt-4">
+                    <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja Biliard</label>
+                    <select id="countries" name="biliard_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option disabled selected>Pilih Meja Biliard</option>
+                        @foreach ($biliards as $key => $biliard)
+                            <option value="{{ $biliard->id }}">{{ $biliard->nama }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                
                 
             </div>
         </div>
     </div>
 
+    @foreach ($data_carts as $paket)
+    @if ($paket->model->nama_paket)
+
+        
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-1 gap-4 sm:gap-1 mt-2">
+        <div class="max-w-full h-96 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+            <div class="p-3 space-x-4">
+                <p class="text-lg font-semibold text-center dark:text-white">Select Food & Drink</p>
+            </div>
+            <div class="grid grid-cols-1 gap-2">
+                <div class="mt-9 ml-4">
+                    <ul class="max-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        @foreach ($restaurants as $index => $restaurant)
+                        <li class="pb-3 sm:pb-4">
+                            <div class="flex items-center space-x-4">
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                        {{ $restaurant->nama }}
+                                    </p>
+                                    <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                        Rp.  {{ number_format($restaurant->harga, 0) }}
+                                    </p>
+                                </div>
+                                {{-- {{ dd($paket->model->minimal ) }} --}}
+                                <div class="flex items-center mb-4">
+                                    <input id="checkbox" name="restaurant_id[]" type="checkbox" value="{{ $restaurant->id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" onchange="toggleCheckbox(this, '{{ $paket->model->nama_paket }}' , '{{ $paket->model->minimal }}')">
+                                    {{-- <label for="checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Default checkbox</label> --}}
+                                </div>
+                            </div>
+                        </li>
+                        @endforeach
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+    @endforeach
 </form>
 
     <div class="max-w-full mt-2 max-h-[17rem] bg-white border border-gray-200 rounded-[30px] shadow dark:bg-gray-800 dark:border-gray-700 sm:mt-3">
@@ -560,16 +574,16 @@
     const takeawayRadio = document.getElementById('takeaway-radio');
     const dineInRadio = document.getElementById('dine-in-radio');
     const selectInputWrapper = document.getElementById('select-input-wrapper');
-    const selectInputBiliard = document.getElementById('select-input-biliard');
+    // const selectInputBiliard = document.getElementById('select-input-biliard');
   
     // Initially hide the select input
     selectInputWrapper.style.display = 'none';
-    selectInputBiliard.style.display = 'none';
+    // selectInputBiliard.style.display = 'none';
   
     // Add event listeners to the radio buttons
     takeawayRadio.addEventListener('change', () => {
       selectInputWrapper.style.display = 'none';
-      selectInputBiliard.style.display = 'none';
+    //   selectInputBiliard.style.display = 'none';
     });
   
     dineInRadio.addEventListener('change', () => {
