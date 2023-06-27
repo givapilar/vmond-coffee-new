@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\APIController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartOrdersController;
 use App\Http\Controllers\DaftarMenuController;
+use App\Http\Controllers\DetailController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\HistoryController;
@@ -28,7 +30,11 @@ Route::post('/register', [RegisterController::class, 'store'])->name('register')
 
 Route::get('/home', [HomepageController::class, 'index'])->name('homepage');
 
+// daftar menu
 Route::get('/daftarmenu/restaurant', [DaftarMenuController::class, 'restaurant'])->name('daftar-restaurant');
+// Detial Resto
+// Route::get('/daftarmenu/detail-resto/{$id}', [DetailController::class, 'restaurant'])->name('detail-resto');
+Route::get('/daftarmenu/restaurant/{id}', [DetailController::class, 'detailRestaurant'])->name('detail-resto');
 
 Route::get('/daftarmenu/biliard', [DaftarMenuController::class, 'biliard'])->name('daftar-billiard');
 // Route::get('/daftarmenu/billiard', function () {
@@ -79,6 +85,7 @@ Route::patch('/user-profile/{id}', [UserController::class, 'update'])->name('upd
 
 // Restaurant Cart
 Route::get('/add-chart-restaurant/{id}',[CartOrdersController::class, 'addCartRestaurant'])->name('restaurant-cart');
+// Route::post('/add-chart-restaurant/{id}',[CartOrdersController::class, 'addCartRestaurant'])->name('restaurant-cart');
 Route::get('/cart',[CartOrdersController::class, 'index'])->name('cart');
 Route::post('/cart-update',[CartOrdersController::class, 'updateCart'])->name('cart-update');
 Route::get('/delete-chart-restaurant/{id}',[CartOrdersController::class, 'deleteCartRestaurant'])->name('delete-restaurant-cart');
@@ -124,3 +131,7 @@ Route::get('/callback-xendit',[OrderController::class,'callbackXendit'])->name('
 // Route Xendit Payment Success
 Route::get('/callback-xendit-success',[OrderController::class,'success'])->name('callback-xendit-success');
 Route::get('/callback-xendit-failed',[OrderController::class,'failed'])->name('callback-xendit-failed');
+
+
+// Cek Schedule Untuk Checkout
+Route::post('/check-schedule',[APIController::class,'checkDateSchedule'])->name('check-schedule');

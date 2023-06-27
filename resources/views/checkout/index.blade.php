@@ -36,7 +36,7 @@
                             Rp. {{ $item->model->harga }}
                         </p>
                         <p class="text-xs text-gray-500 truncate dark:text-red-500">
-                            Total {{ $item->quantity }}
+                            Note {{ implode(', ', $item->attributes['add_on_title']) }} {{ implode(', ', $item->attributes['harga_add']) }}  
                         </p>
 
                         {{-- <div class="rounded-full h-7 w-32 border border-gray-500 mt-2">
@@ -207,7 +207,7 @@
                 <div class="flex items-start space-x-4">
                     <div class="flex-1 min-w-0">
                         <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
-                            PPN 10%
+                            PB01 10%
                         </p>
                     </div>
                     <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AddOn;
 use App\Models\MenuPackages;
 use App\Models\OtherSetting;
 use App\Models\Restaurant;
@@ -37,8 +38,13 @@ class DaftarMenuController extends Controller
             $category = 'Makanan';
         }
 
+        $data ['add_ons'] = AddOn::get();
+        // $data['restaurant_add_on'] = RestaurantPivot::where("restaurant_id",$id)
+        // ->pluck('add_on_id')
+        // ->all();
+
         // dd($restaurant);
-        return view('daftarmenu.restaurant', compact(['restaurants','tags','restaurantPivot', 'global_url_image', 'category']));
+        return view('daftarmenu.restaurant',$data, compact(['restaurants','tags','restaurantPivot', 'global_url_image', 'category']));
     }
 
     public function biliard()

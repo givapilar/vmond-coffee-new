@@ -2736,6 +2736,14 @@ input:checked + .toggle-bg {
 :is(.dark .dark\:ring-offset-gray-800) {
   --tw-ring-offset-color: #1F2937;
 }
+:is(.dark .dark\:checked\:border-blue-500:checked) {
+  --tw-border-opacity: 1;
+  border-color: rgb(63 131 248 / var(--tw-border-opacity));
+}
+:is(.dark .dark\:checked\:bg-blue-500:checked) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(63 131 248 / var(--tw-bg-opacity));
+}
 :is(.dark .dark\:hover\:bg-blue-600:hover) {
   --tw-bg-opacity: 1;
   background-color: rgb(28 100 242 / var(--tw-bg-opacity));

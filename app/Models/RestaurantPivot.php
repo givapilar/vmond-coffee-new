@@ -20,4 +20,9 @@ class RestaurantPivot extends Model
     {
         return $this->belongsTo(Restaurant::class);
     }
+
+    public function addOn()
+    {
+        return $this->belongsTo(AddOn::class);
+    }
 }

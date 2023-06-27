@@ -52,11 +52,14 @@
                             {{-- <p class="text-xs text-gray-500 truncate dark:text-gray-400" id="note">
                             </p> --}}
                             <p class="text-xs text-gray-500 truncate dark:text-red-500">
-                                Rp. {{ $item->model->harga }}
+                                {{-- Rp. {{ $item->model->harga }} --}}
+                                Rp. {{ number_format(array_sum($item->attributes['harga_add']) + $item->model->harga,0) }}
                             </p>
-                            <p class="text-xs text-gray-500 truncate dark:text-red-500">
-                                Total {{ $item->quantity }}
-                            </p>
+                            {{-- <p class="text-xs text-gray-500  dark:text-red-500">
+                                Note {{ implode(', ', $item->attributes['add_on_title']) }} {{ implode(', ', $item->attributes['harga_add']) }}  
+                                {{ array_sum($item->attributes['harga_add']) }}
+
+                            </p> --}}
 
 
                             <div class="rounded-full h-7 w-32 border border-gray-500 mt-2">
@@ -143,7 +146,7 @@
             </ul>
         </div>
 
-        @if ($item->model->nama_paket == 'null')
+        {{-- @if ($item->model->nama_paket == 'null')
             
         <div class="text-left max-w-sm h-96 bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
             <div class="p-2 space-x-4">
@@ -192,25 +195,9 @@
                         </select>
                     </div>
                 </li>
-                
-                {{-- <li class="py-3 sm:py-2">
-                    <div id="select-input-biliard">
-                        <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja Biliard</label>
-                        <select id="countries" name="biliard_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option disabled selected>Pilih Meja Biliard</option>
-                            @foreach ($biliards as $key => $biliard)
-                            <option value="{{ $biliard->id }}">{{ $biliard->nama }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </li> --}}
-                
             </ul>
         </div>
-        @endif
-    </div>
-
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-1 gap-4 sm:gap-1 mt-2">
+        @endif --}}
         <div class="max-w-full h-64 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
             <div class="p-3 space-x-4">
                 <p class="text-lg font-semibold text-center dark:text-white">Schedule & Table</p>
@@ -218,67 +205,67 @@
             <div class="grid grid-cols-2 gap-2">
                 <div class="mt-4">
                     <label for="countries" class=" mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Date</label>                    
-                    <input type="date" required name="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <input type="date" id="date" required name="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onchange="disableHour()">
                 </div>
                 <div class="mt-4">
                     <label for="countries" class=" mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Time From</label>
-                    <select id="countries" required name="time_from" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <select id="time_from" required name="time_from" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option disabled selected>Choose a Time From</option>
-                        <option value="00:00">00::00</option>
-                        <option value="01:00">01::00</option>
-                        <option value="02:00">02::00</option>
-                        <option value="03:00">03::00</option>
-                        <option value="04:00">04::00</option>
-                        <option value="05:00">05::00</option>
-                        <option value="06:00">06::00</option>
-                        <option value="07:00">07::00</option>
-                        <option value="08:00">08::00</option>
-                        <option value="09:00">09::00</option>
-                        <option value="10:00">10::00</option>
-                        <option value="11:00">11::00</option>
-                        <option value="12:00">12::00</option>
-                        <option value="13:00">13::00</option>
-                        <option value="14:00">14::00</option>
-                        <option value="15:00">15::00</option>
-                        <option value="16:00">16::00</option>
-                        <option value="17:00">17::00</option>
-                        <option value="18:00">18::00</option>
-                        <option value="19:00">19::00</option>
-                        <option value="20:00">20::00</option>
-                        <option value="21:00">21::00</option>
-                        <option value="22:00">22::00</option>
-                        <option value="23:00">23::00</option>
+                        <option value="00:00">00:00</option>
+                        <option value="01:00">01:00</option>
+                        <option value="02:00">02:00</option>
+                        <option value="03:00">03:00</option>
+                        <option value="04:00">04:00</option>
+                        <option value="05:00">05:00</option>
+                        <option value="06:00">06:00</option>
+                        <option value="07:00">07:00</option>
+                        <option value="08:00">08:00</option>
+                        <option value="09:00">09:00</option>
+                        <option value="10:00">10:00</option>
+                        <option value="11:00">11:00</option>
+                        <option value="12:00">12:00</option>
+                        <option value="13:00">13:00</option>
+                        <option value="14:00">14:00</option>
+                        <option value="15:00">15:00</option>
+                        <option value="16:00">16:00</option>
+                        <option value="17:00">17:00</option>
+                        <option value="18:00">18:00</option>
+                        <option value="19:00">19:00</option>
+                        <option value="20:00">20:00</option>
+                        <option value="21:00">21:00</option>
+                        <option value="22:00">22:00</option>
+                        <option value="23:00">23:00</option>
                     </select>
                 </div>
 
                 <div class="mt-4">
                     <label for="countries" class=" mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Time To</label>
-                    <select id="countries" required name="time_to" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <select id="time_to" required name="time_to" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option disabled selected>Choose a Time To</option>
-                        <option value="00:00">00::00</option>
-                        <option value="01:00">01::00</option>
-                        <option value="02:00">02::00</option>
-                        <option value="03:00">03::00</option>
-                        <option value="04:00">04::00</option>
-                        <option value="05:00">05::00</option>
-                        <option value="06:00">06::00</option>
-                        <option value="07:00">07::00</option>
-                        <option value="08:00">08::00</option>
-                        <option value="09:00">09::00</option>
-                        <option value="10:00">10::00</option>
-                        <option value="11:00">11::00</option>
-                        <option value="12:00">12::00</option>
-                        <option value="13:00">13::00</option>
-                        <option value="14:00">14::00</option>
-                        <option value="15:00">15::00</option>
-                        <option value="16:00">16::00</option>
-                        <option value="17:00">17::00</option>
-                        <option value="18:00">18::00</option>
-                        <option value="19:00">19::00</option>
-                        <option value="20:00">20::00</option>
-                        <option value="21:00">21::00</option>
-                        <option value="22:00">22::00</option>
-                        <option value="23:00">23::00</option>
+                        <option value="00:00">00:00</option>
+                        <option value="01:00">01:00</option>
+                        <option value="02:00">02:00</option>
+                        <option value="03:00">03:00</option>
+                        <option value="04:00">04:00</option>
+                        <option value="05:00">05:00</option>
+                        <option value="06:00">06:00</option>
+                        <option value="07:00">07:00</option>
+                        <option value="08:00">08:00</option>
+                        <option value="09:00">09:00</option>
+                        <option value="10:00">10:00</option>
+                        <option value="11:00">11:00</option>
+                        <option value="12:00">12:00</option>
+                        <option value="13:00">13:00</option>
+                        <option value="14:00">14:00</option>
+                        <option value="15:00">15:00</option>
+                        <option value="16:00">16:00</option>
+                        <option value="17:00">17:00</option>
+                        <option value="18:00">18:00</option>
+                        <option value="19:00">19:00</option>
+                        <option value="20:00">20:00</option>
+                        <option value="21:00">21:00</option>
+                        <option value="22:00">22:00</option>
+                        <option value="23:00">23:00</option>
                     </select>
                 </div>
                 <div class="mt-4">
@@ -296,7 +283,11 @@
         </div>
     </div>
 
-    @foreach ($data_carts as $paket)
+    {{-- <div class="grid grid-cols-1 gap-6 sm:grid-cols-1 gap-4 sm:gap-1 mt-2">
+        
+    </div> --}}
+
+    {{-- @foreach ($data_carts as $paket)
     @if ($paket->model->nama_paket)
 
         
@@ -319,10 +310,8 @@
                                         Rp.  {{ number_format($restaurant->harga, 0) }}
                                     </p>
                                 </div>
-                                {{-- {{ dd($paket->model->minimal ) }} --}}
                                 <div class="flex items-center mb-4">
                                     <input id="checkbox" name="restaurant_id[]" type="checkbox" value="{{ $restaurant->id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" onchange="toggleCheckbox(this, '{{ $paket->model->nama_paket }}' , '{{ $paket->model->minimal }}')">
-                                    {{-- <label for="checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Default checkbox</label> --}}
                                 </div>
                             </div>
                         </li>
@@ -334,8 +323,8 @@
         </div>
     </div>
     @endif
-    @endforeach
-</form>
+    @endforeach --}}
+{{-- </form> --}}
 
     <div class="max-w-full mt-2 max-h-[17rem] bg-white border border-gray-200 rounded-[30px] shadow dark:bg-gray-800 dark:border-gray-700 sm:mt-3">
         <div class="p-3 space-x-4">
@@ -350,9 +339,9 @@
                         </p>
                     </div>
                     <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
-                        {{-- {{ dd($data_carts) }} --}}
+                        {{-- {{ dd(Cart::getConditions()) }} --}}
                         {{-- Rp. {{ number_format($item->model->harga ?? '0',2 ) }} --}}
-                        Rp. {{ number_format(\Cart::getTotal() ?? '0',2 )  }}
+                        Rp. {{ number_format(\Cart::getTotal()  ?? '0',2 )  }}
                     </div>
                 </div>
             </li>
@@ -409,8 +398,9 @@
             <div class="mt-2">
                 <button class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Checkout</button>
             </div>
-        
+        </form>
     </div>
+
     
 </section>
 
@@ -527,7 +517,7 @@
                 "id": $id
             },
             success: function (data) {
-                // location.reload();
+                location.reload();
                 // window.location.href(url)
             },
             error: function (data) {
@@ -570,25 +560,34 @@
     }
  </script>
 
+{{-- Untuk DIsable Jam pada tanggal tertentu --}}
 <script>
-    const takeawayRadio = document.getElementById('takeaway-radio');
-    const dineInRadio = document.getElementById('dine-in-radio');
-    const selectInputWrapper = document.getElementById('select-input-wrapper');
-    // const selectInputBiliard = document.getElementById('select-input-biliard');
-  
-    // Initially hide the select input
-    selectInputWrapper.style.display = 'none';
-    // selectInputBiliard.style.display = 'none';
-  
-    // Add event listeners to the radio buttons
-    takeawayRadio.addEventListener('change', () => {
-      selectInputWrapper.style.display = 'none';
-    //   selectInputBiliard.style.display = 'none';
-    });
-  
-    dineInRadio.addEventListener('change', () => {
-      selectInputWrapper.style.display = 'block';
-      selectInputBiliard.style.display = 'block';
-    });
+    function disableHour()
+    {
+        var valueDate = $('#date').val();
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('check-schedule') }}",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+                "_token": "{{ csrf_token() }}",
+                "date": valueDate
+            },
+            success: function (data) {
+                console.log(data);
+                data.times.forEach(element => {
+                    let valHourFrom = element.substring(0, 5);
+                    $("#time_from option[value='"+ valHourFrom + "']").attr('disabled', true); 
+                    $("#time_to option[value='"+ valHourFrom + "']").attr('disabled', true); 
+                });
+            },
+            error: function (data) {
+                $.alert('Failed!');
+                console.log(data);
+            }
+        });
+    }
 </script>
 @endpush

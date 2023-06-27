@@ -12,6 +12,7 @@ use App\Models\Restaurant;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 // use Gloudemans\Shoppingcart\facades\Cart;
 use Cart;
 
@@ -33,33 +34,71 @@ class CartOrdersController extends Controller
         // }
         // dd($paket_menu);
         $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
+        $data['condisi'] = Cart::getConditions();
+        // dd ($cartConditions);
+        // dd($data['data_carts']);
 
         return view('cart.index',$data);
     }
 
     public function addCartRestaurant(Request $request,$id)
     {
-
-        $restaurant = Restaurant::findOrFail($id);
+        // dd($request->all());
         if ($request->quantity) {
             $quantity = $request->quantity;
         } else {
             $quantity = 0;
         }
-
+        
+        $restaurant = Restaurant::findOrFail($id);
         // $auth = User::get();
         // dd($auth->id);
 
         // Pengecekan Login
+        
+        // dd($request->all());
+        $validator = Validator::make($request->all(), [
+            'qty' => 'nullable',
+            'category' => 'nullable',
+            // 'add_on_title' => 'required',
+            // 'harga_add' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            dd('sad');
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        // dd('sucess');
+
         if (Auth::check()) {
             \Cart::session(Auth::user()->id)->add(array(
                 'id' => $restaurant->id, // inique row ID
                 'name' => $restaurant->nama,
-                'price' => $restaurant->harga,
-                'quantity' => $request->quantity,
-                'attributes' => array($restaurant),
+                'price' => $restaurant->harga + array_sum($request->harga_add),
+                'quantity' => $request->qty,
+                // 'attributes' => array($restaurant),
+                'attributes' => array(
+                    'restaurant' => $restaurant,
+                    'category' => $request->category,
+                    'add_on_title' => $request->add_on_title,
+                    'harga_add' => $request->harga_add,
+                ),
                 'conditions' => 'Restaurant',
                 'associatedModel' => $restaurant
+            // \Cart::session(Auth::user()->id)->add(array(
+            //     'id' => $request->id, // inique row ID
+            //     'name' => $request->nama,
+            //     'price' => $request->harga,
+            //     'quantity' => $request->quantity,
+            //     // 'attributes' => array($restaurant),
+            //     'attributes' => array(
+            //         'restaurant' => $restaurant,
+            //         'category' => $request->category,
+            //         'add_on_title' => $request->add_on_title,
+            //         'harga_add' => $request->harga_add,
+            //     ),
+            //     'conditions' => 'Restaurant',
+            //     'associatedModel' => $restaurant
             ));
             // dd($tes);
             return redirect()->route('daftar-restaurant')->with('message', 'Data berhasil dimasukkan ke dalam keranjang !');
