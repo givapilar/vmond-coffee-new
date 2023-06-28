@@ -51,10 +51,15 @@
                             @endif
                             {{-- <p class="text-xs text-gray-500 truncate dark:text-gray-400" id="note">
                             </p> --}}
+                            {{-- {{ dd($item->conditions) }} --}}
+                            @if ($item->conditions == 'Restaurant')
                             <p class="text-xs text-gray-500 truncate dark:text-red-500">
                                 {{-- Rp. {{ $item->model->harga }} --}}
-                                Rp. {{ number_format(array_sum($item->attributes['harga_add']) + $item->model->harga,0) }}
+                                {{-- Rp. {{ number_format(array_sum($item->attributes['harga_add'] ?? []) + $item->model->harga ?? 0,0) }} --}}
+                                Rp. {{ number_format(array_sum((array) ($item->attributes['harga_add'] ?? [])) + ($item->model->harga ?? 0), 0) }}
+
                             </p>
+                            @endif
                             {{-- <p class="text-xs text-gray-500  dark:text-red-500">
                                 Note {{ implode(', ', $item->attributes['add_on_title']) }} {{ implode(', ', $item->attributes['harga_add']) }}  
                                 {{ array_sum($item->attributes['harga_add']) }}
@@ -146,9 +151,8 @@
             </ul>
         </div>
 
-        {{-- @if ($item->model->nama_paket == 'null')
             
-        <div class="text-left max-w-sm h-96 bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+        {{--<div class="text-left max-w-sm h-96 bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
             <div class="p-2 space-x-4">
                 <p class="text-lg font-semibold text-center dark:text-white">Pilih Category</p>
             </div>
@@ -198,6 +202,12 @@
             </ul>
         </div>
         @endif --}}
+
+        @foreach ($processedCartItems as $item)
+        {{-- {{ dd($processedCartItems) }} --}}
+            
+        @if ($item['conditions'] == 'Paket Menu')
+            
         <div class="max-w-full h-64 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
             <div class="p-3 space-x-4">
                 <p class="text-lg font-semibold text-center dark:text-white">Schedule & Table</p>
@@ -270,7 +280,7 @@
                 </div>
                 <div class="mt-4">
                     <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja Biliard</label>
-                    <select id="countries" name="biliard_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <select id="biliard_id" name="biliard_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option disabled selected>Pilih Meja Biliard</option>
                         @foreach ($biliards as $key => $biliard)
                             <option value="{{ $biliard->id }}">{{ $biliard->nama }}</option>
@@ -281,6 +291,9 @@
                 
             </div>
         </div>
+        @endif
+        @endforeach
+
     </div>
 
     {{-- <div class="grid grid-cols-1 gap-6 sm:grid-cols-1 gap-4 sm:gap-1 mt-2">
@@ -579,8 +592,16 @@
                 console.log(data);
                 data.times.forEach(element => {
                     let valHourFrom = element.substring(0, 5);
+                    console.log(element);
                     $("#time_from option[value='"+ valHourFrom + "']").attr('disabled', true); 
                     $("#time_to option[value='"+ valHourFrom + "']").attr('disabled', true); 
+                    // $("#biliard_id option[value='" + valHourFrom + "']").attr('disabled', true); 
+                });
+                
+                data.billiardIds.forEach(elementBiliard => {
+                    let biliard = elementBiliard;
+                    console.log(elementBiliard);
+                    $("#biliard_id option[value='"+ elementBiliard + "']").attr('disabled', true); 
                 });
             },
             error: function (data) {
@@ -589,5 +610,34 @@
             }
         });
     }
+
+    // function disableHour() {
+    //     var valueDate = $('#date').val();
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: "{{ route('check-schedule') }}",
+    //         headers: {
+    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //         },
+    //         data: {
+    //             "_token": "{{ csrf_token() }}",
+    //             "date": valueDate
+    //         },
+    //         success: function (data) {
+    //             data.times.forEach(function (element) {
+    //                 let valHourFrom = element.substring(0, 5);
+    //                 $("#time_from option[value='" + valHourFrom + "']").prop('disabled', true);
+    //                 $("#time_to option[value='" + valHourFrom + "']").prop('disabled', true);
+    //                 $("#billiard_id option[value='" + valHourFrom + "']").prop('disabled', true);
+    //             });
+                
+    //         },
+    //         error: function (data) {
+    //             $.alert('Failed!');
+    //             console.log(data);
+    //         }
+    //     });
+    // }
+
 </script>
 @endpush

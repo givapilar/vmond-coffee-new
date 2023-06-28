@@ -37,8 +37,38 @@ class CartOrdersController extends Controller
         $data['condisi'] = Cart::getConditions();
         // dd ($cartConditions);
         // dd($data['data_carts']);
+        
+        $data_carts = \Cart::session(Auth::user()->id)->getContent();
+        // dd($data_carts);
+        foreach ($data_carts as $cartItem) {
+            // Access individual cart item properties
+            $id = $cartItem->id;
+            $name = $cartItem->name;
+            $price = $cartItem->price;
+            $quantity = $cartItem->quantit;
+            $conditions = $cartItem->conditions;
+            // ... and so on
+        
+            // Perform any necessary operations with the cart item
+            // For example, you can store the cart item in an array or perform some calculations
+            // You can also pass the cart item to a view or manipulate its data
+        
+            // Example operation: Storing cart item data in an array
+            $cartItemData = [
+                'id' => $id,
+                'name' => $name,
+                'price' => $price,
+                'quantity' => $quantity,
+                'conditions' => $conditions,
+                // ... and so on
+            ];
+        
+            // Store the cart item data in another array or perform any other operations
+            // For example:
+            $processedCartItems[] = $cartItemData;
+        }
 
-        return view('cart.index',$data);
+        return view('cart.index',$data ,['processedCartItems' => $processedCartItems]);
     }
 
     public function addCartRestaurant(Request $request,$id)
