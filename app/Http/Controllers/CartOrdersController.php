@@ -107,7 +107,7 @@ class CartOrdersController extends Controller
             \Cart::session(Auth::user()->id)->add(array(
                 'id' => $restaurant->id, // inique row ID
                 'name' => $restaurant->nama,
-                'price' => $restaurant->harga + array_sum($request->harga_add),
+                'price' => ($restaurant->harga + (is_array($request->harga_add) ? array_sum($request->harga_add) : 0) ?? $restaurant->harga),
                 'quantity' => $request->qty,
                 // 'attributes' => array($restaurant),
                 'attributes' => array(
