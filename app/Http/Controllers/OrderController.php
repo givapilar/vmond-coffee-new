@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Membership;
 use App\Models\Order;
+use App\Models\OrderBilliard;
+use App\Models\OrderMeetingRoom;
 use App\Models\OrderPivot;
 use App\Models\Restaurant;
 use App\Models\User;
@@ -24,6 +26,7 @@ class OrderController extends Controller
 
     public function checkout(Request $request)
     {
+
         $request->request->add(['qty' => $request->qty]);
         // dd($request->request->add(['qty' => $request->qty]));
         $biaya_layanan = 5000;
@@ -64,9 +67,9 @@ class OrderController extends Controller
             //     'associatedModel' => Restaurant::class
             // ));
 
+            
         $restaurant = Restaurant::get();
         
-        // dd($request->all());
         $member = Membership::get();
         // \Cart::session(Auth::user()->id)->add(array(
             //     'id' => $restaurant->id,
@@ -74,7 +77,9 @@ class OrderController extends Controller
             // ));
 
             // $session_cart = \Cart::session(Auth::user()->id)->getContent();
+            $time_to = date('H:i', strtotime($request->time_from . ' + ' . $request->jam . ' hours'));
             
+            // dd($time_to);
             if (Auth::user()->membership->level == 'Super Platinum') {
                 $order = Order::create([
                     // $request->all()
@@ -85,7 +90,9 @@ class OrderController extends Controller
                     'date' => $request->date,
                     'category' => $request->category,
                     'time_from' => $request->time_from,
-                    'time_to' => $request->time_to,
+                    'time_to' => $time_to ,
+                    'biliard_id' => $request->biliard_id,
+                    'meeting_room_id' => $request->meeting_room_id,
                     // 'total_price' => \Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan, 
                     // 'total_price' =>  \Cart::getTotal(), 
                     'total_price' => 0, 
@@ -104,8 +111,9 @@ class OrderController extends Controller
                     'date' => $request->date,
                     'category' => $request->category,
                     'time_from' => $request->time_from,
-                    'time_to' => $request->time_to,
+                    'time_to' => $time_to,
                     'biliard_id' => $request->biliard_id,
+                    'meeting_room_id' => $request->meeting_room_id,
                     'meja_restaurant_id' => $request->meja_restaurant_id,
                     // 'total_price' => \Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan, 
                     // 'total_price' =>  \Cart::getTotal(), 
@@ -116,35 +124,58 @@ class OrderController extends Controller
                 ]);
 
                 foreach ($session_cart as $key => $item) {
-                    // dd($item->attributes);
-                    // $order = Order::get();
-                    // dd($item);
+                    // dd($item->attributes->category);
                     $orderPivot = [];
                     if ($item->conditions == 'Restaurant') {
+                        $orderPivot[] = [
+                            'order_id' => $order->id,
+                            'restaurant_id' => $item->associatedModel->id,
+                            // 'paket_menu_id' => $item->id,
+                            'category' => $item->model->category,
+                            'qty' => $item->quantity,
+                        ];
+                    }elseif ($item->conditions == 'Paket Menu') {
                         # code...
-                            $orderPivot[] = [
+                        $paketRestaurantIds = $item->attributes->paket_restaurant_id;
+                        $paketRestoCategory = $item->attributes->category;
+                        
+                        $length = min(count($paketRestaurantIds), count($paketRestoCategory));
+                        
+                        for ($i = 0; $i < $length; $i++) {
+                            $paketRestaurantId = $paketRestaurantIds[$i];
+                            $category = $paketRestoCategory[$i];
+                        
+                            $orderBilliard[] = [
                                 'order_id' => $order->id,
-                                'restaurant_id' => $item->associatedModel->id,
-                                // 'paket_menu_id' => $item->id,
-                                'category' => $item->model->category,
+                                'restaurant_id' => $paketRestaurantId,
+                                'paket_menu_id' => $item->id,
+                                'category' => $category,
                                 'qty' => $item->quantity,
                             ];
-                        } else {
-                            $restaurantId = isset($request->restaurant_id[$key]) ? $request->restaurant_id[$key] : null;
-                            foreach ($request->restaurant_id as $key => $value) {
-                                # code...
-                                $orderPivot[] = [
-                                    'order_id' => $order->id,
-                                    'restaurant_id' => $request->restaurant_id[$key],
-                                    'paket_menu_id' => $item->id,
-                                    'category' => 'Minuman',
-                                    'qty' => $item->quantity,
-                                ];
-                            }
+                        }
+                        OrderBilliard::insert($orderBilliard);
+                    } else{
+                        $paketRestaurantIds = $item->attributes->paket_restaurant_id;
+                        $paketRestoCategory = $item->attributes->category;
+                        
+                        $length = min(count($paketRestaurantIds), count($paketRestoCategory));
+                        
+                        for ($i = 0; $i < $length; $i++) {
+                            $paketRestaurantId = $paketRestaurantIds[$i];
+                            $category = $paketRestoCategory[$i];
+                        
+                            $orderMeeting[] = [
+                                'order_id' => $order->id,
+                                'restaurant_id' => $paketRestaurantId,
+                                'paket_menu_id' => $item->id,
+                                'category' => $category,
+                                'qty' => $item->quantity,
+                            ];
+                        }
+                        
+                        OrderMeetingRoom::insert($orderMeeting);
+                        
                     }
-                    
-                    // }
-                    // dd($orderPivot);
                     OrderPivot::insert($orderPivot);
                 }
           }

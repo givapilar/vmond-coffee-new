@@ -35,6 +35,8 @@ Route::get('/daftarmenu/restaurant', [DaftarMenuController::class, 'restaurant']
 // Detial Resto
 // Route::get('/daftarmenu/detail-resto/{$id}', [DetailController::class, 'restaurant'])->name('detail-resto');
 Route::get('/daftarmenu/restaurant/{id}', [DetailController::class, 'detailRestaurant'])->name('detail-resto');
+Route::get('/daftarmenu/billiard/{id}', [DetailController::class, 'detailBilliard'])->name('detail-billiard');
+Route::get('/daftarmenu/meeting-room/{id}', [DetailController::class, 'detailMeeting'])->name('detail-meeting');
 
 Route::get('/daftarmenu/biliard', [DaftarMenuController::class, 'biliard'])->name('daftar-billiard');
 // Route::get('/daftarmenu/billiard', function () {

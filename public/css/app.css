@@ -2080,6 +2080,9 @@ input:checked + .toggle-bg {
 .text-\[10px\] {
   font-size: 10px;
 }
+.text-\[15px\] {
+  font-size: 15px;
+}
 .text-\[40px\] {
   font-size: 40px;
 }

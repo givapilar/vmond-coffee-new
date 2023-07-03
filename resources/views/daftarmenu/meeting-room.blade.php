@@ -77,11 +77,11 @@
                     {{-- <a href="https://wa.me/6285718724894"> --}}
                     @if ($item->status_konfirmasi == 'Aktif')
                     
-                    <form action="{{ route('add-cart-meeting-room',$item->id) }}" method="get" class=" w-full">
+                    <form action="{{ route('detail-meeting',$item->id) }}" method="get" class=" w-full">
                         <div class="flex gap-1 opacity-75">
-                            <input type="hidden" name="quantity" value="1" id="">
+                            {{-- <input type="hidden" name="quantity" value="1" id="">
                             <input type="hidden" name="image" value="{{'https://managementvmond.controlindo.com/assets/images/paket-menu/'. ($item->biliard->image ?? '') }}" id="">
-                            <input type="hidden" name="id" value="{{ $item->id }}" id="">
+                            <input type="hidden" name="id" value="{{ $item->id }}" id=""> --}}
                             <button class="w-full bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
                         </div>
                     </form>

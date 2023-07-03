@@ -9,7 +9,7 @@ class MenuPackagePivots extends Model
 {
     use HasFactory;
 
-    protected $table = 'menu_packages';
+    protected $table = 'menu_package_pivots';
 
     public function biliard()
     {

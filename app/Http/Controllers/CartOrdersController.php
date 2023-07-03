@@ -28,6 +28,7 @@ class CartOrdersController extends Controller
         $data ['restaurants'] = Restaurant::get();
         $data ['meja_restaurants'] = MejaRestaurant::get();
         $data ['biliards'] = Biliard::get();
+        $data ['meeting_rooms'] = MeetingRoom::get();
         $data ['paket_menu'] = MenuPackages::get();
         // foreach ($tes as $key => $paket_menu) {
         //     return $paket = $paket_menu;
@@ -39,20 +40,21 @@ class CartOrdersController extends Controller
         // dd($data['data_carts']);
         
         $data_carts = \Cart::session(Auth::user()->id)->getContent();
-        // dd($data_carts);
-        foreach ($data_carts as $cartItem) {
+        $processedCartItems = [];
+
+        foreach ($data['data_carts'] as $cartItem) {
             // Access individual cart item properties
             $id = $cartItem->id;
             $name = $cartItem->name;
             $price = $cartItem->price;
-            $quantity = $cartItem->quantit;
+            $quantity = $cartItem->quantity;
             $conditions = $cartItem->conditions;
             // ... and so on
-        
+
             // Perform any necessary operations with the cart item
             // For example, you can store the cart item in an array or perform some calculations
             // You can also pass the cart item to a view or manipulate its data
-        
+
             // Example operation: Storing cart item data in an array
             $cartItemData = [
                 'id' => $id,
@@ -62,13 +64,14 @@ class CartOrdersController extends Controller
                 'conditions' => $conditions,
                 // ... and so on
             ];
-        
-            // Store the cart item data in another array or perform any other operations
-            // For example:
+
+            // Store the cart item data in the $processedCartItems array
             $processedCartItems[] = $cartItemData;
         }
 
-        return view('cart.index',$data ,['processedCartItems' => $processedCartItems]);
+        $data['processedCartItems'] = $processedCartItems;
+
+        return view('cart.index',$data);
     }
 
     public function addCartRestaurant(Request $request,$id)
@@ -193,16 +196,23 @@ class CartOrdersController extends Controller
         }
 
         // $auth = User::get();
-        // dd($auth->id);
+        // dd($request->all());
 
         // Pengecekan Login
         if (Auth::check()) {
             \Cart::session(Auth::user()->id)->add(array(
                 'id' => $paket_menu->id, // inique row ID
                 'name' => $paket_menu->nama_paket,
-                'price' => $paket_menu->harga,
+                'price' => $paket_menu->harga + array_sum($request->harga_paket),
                 'quantity' => $request->quantity,
-                'attributes' => array($paket_menu),
+                // 'attributes' => array($paket_menu),
+                'attributes' => array(
+                    'paket_restaurant_id' => $request->paket_restaurant_id,
+                    'paket_menu' => $paket_menu,
+                    'category' => $request->category,
+                    'harga_paket' => $request->harga_paket,
+                    'jam' => $request->jam,
+                ),
                 'conditions' => 'Paket Menu',
                 'associatedModel' => $paket_menu
             ));
@@ -239,23 +249,27 @@ class CartOrdersController extends Controller
         }
 
         // $auth = User::get();
-        // dd($auth->id);
+        // dd($request->all());
 
         // Pengecekan Login
         if (Auth::check()) {
-            if ($paket_menu->category == 'meeting_room') {
-                # code...
-                \Cart::session(Auth::user()->id)->add(array(
-                    'id' => $paket_menu->id, // inique row ID
-                    'name' => $paket_menu->nama_paket,
-                    'price' => $paket_menu->harga,
-                    'quantity' => $request->quantity,
-                    'attributes' => array($paket_menu),
-                    'conditions' => 'Paket Menu',
-                    'associatedModel' => $paket_menu
-                ));
-            }
-                return redirect()->route('daftar-meeting-room')->with('message', 'Data berhasil dimasukkan ke dalam keranjang !');
+            \Cart::session(Auth::user()->id)->add(array(
+                'id' => $paket_menu->id, // inique row ID
+                'name' => $paket_menu->nama_paket,
+                'price' => $paket_menu->harga + array_sum($request->harga_paket),
+                'quantity' => $request->quantity,
+                // 'attributes' => array($paket_menu),
+                'attributes' => array(
+                    'paket_restaurant_id' => $request->paket_restaurant_id,
+                    'paket_menu' => $paket_menu,
+                    'category' => $request->category,
+                    'harga_paket' => $request->harga_paket,
+                    'jam' => $request->jam,
+                ),
+                'conditions' => 'Paket Menu Meeting',
+                'associatedModel' => $paket_menu
+            ));
+            return redirect()->route('daftar-meeting-room')->with('message', 'Data berhasil dimasukkan ke dalam keranjang !');
         } else {
             return redirect()->route('daftar-meeting-room')->with('message', 'Harap Login Terlebih Dahulu !');
         }

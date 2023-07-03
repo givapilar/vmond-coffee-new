@@ -32,12 +32,22 @@
                         <p class="text-xs text-gray-500 truncate dark:text-gray-400" id="note">
                             Note: 
                         </p>
+                        @if ($item->conditions == 'Restaurant')
                         <p class="text-xs text-gray-500 truncate dark:text-red-500">
-                            Rp. {{ $item->model->harga }}
+                            {{-- Rp. {{ $item->model->harga }} --}}
+                            {{-- Rp. {{ number_format(array_sum($item->attributes['harga_add'] ?? []) + $item->model->harga ?? 0,0) }} --}}
+                            Rp. {{ number_format(array_sum((array) ($item->attributes['harga_add'] ?? [])) + ($item->model->harga ?? 0), 0) }}
+
                         </p>
+                        @else
                         <p class="text-xs text-gray-500 truncate dark:text-red-500">
+                            Rp. {{ number_format(array_sum((array) ($item->attributes['harga_paket'] ?? [])) + ($item->model->harga ?? 0), 0) }}
+
+                        </p>
+                        @endif
+                        {{-- <p class="text-xs text-gray-500 truncate dark:text-red-500">
                             Note {{ implode(', ', $item->attributes['add_on_title']) }} {{ implode(', ', $item->attributes['harga_add']) }}  
-                        </p>
+                        </p> --}}
 
                         {{-- <div class="rounded-full h-7 w-32 border border-gray-500 mt-2">
                             <div class="grid h-full w-full grid-cols-3 mx-auto">

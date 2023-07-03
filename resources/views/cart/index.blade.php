@@ -18,11 +18,13 @@
     <div>{{ session('message') }}</div>
 @endif
 <section class="p-3">
+    
     <div class="grid grid-cols-2 sm:grid-cols-1 gap-4 sm:gap-1">
         <div class="max-w-sm h-96 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
             @foreach ($data_carts as $item)
-            {{-- {{ dd($item->model) }} --}}
+
             <input type="hidden" name="category" value="restaurant">
+            {{-- {{ dd($item->attributes->jam) }} --}}
 
             <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
                 <li class="py-3 sm:py-4">
@@ -51,12 +53,17 @@
                             @endif
                             {{-- <p class="text-xs text-gray-500 truncate dark:text-gray-400" id="note">
                             </p> --}}
-                            {{-- {{ dd($item->conditions) }} --}}
+                            {{-- {{ dd($item->attributes) }} --}}
                             @if ($item->conditions == 'Restaurant')
                             <p class="text-xs text-gray-500 truncate dark:text-red-500">
                                 {{-- Rp. {{ $item->model->harga }} --}}
                                 {{-- Rp. {{ number_format(array_sum($item->attributes['harga_add'] ?? []) + $item->model->harga ?? 0,0) }} --}}
                                 Rp. {{ number_format(array_sum((array) ($item->attributes['harga_add'] ?? [])) + ($item->model->harga ?? 0), 0) }}
+
+                            </p>
+                            @else
+                            <p class="text-xs text-gray-500 truncate dark:text-red-500">
+                                Rp. {{ number_format(array_sum((array) ($item->attributes['harga_paket'] ?? [])) + ($item->model->harga ?? 0), 0) }}
 
                             </p>
                             @endif
@@ -117,6 +124,10 @@
                         </div>
                     </div>
                 </li>
+                <form action="{{ route('checkout-order') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="jam" value="{{ $item->attributes->jam }}" id="">
+
                 @endforeach
                 {{-- <form action="{{ route('xendit-order') }}" method="POST">
                     @csrf
@@ -203,6 +214,8 @@
         </div>
         @endif --}}
 
+        {{-- {{ dd($jam) }} --}}
+
         @foreach ($processedCartItems as $item)
         {{-- {{ dd($processedCartItems) }} --}}
             
@@ -210,7 +223,7 @@
             
         <div class="max-w-full h-64 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
             <div class="p-3 space-x-4">
-                <p class="text-lg font-semibold text-center dark:text-white">Schedule & Table</p>
+                <p class="text-lg font-semibold text-center dark:text-white">Schedule & Table Billiard</p>
             </div>
             <div class="grid grid-cols-2 gap-2">
                 <div class="mt-4">
@@ -248,7 +261,7 @@
                     </select>
                 </div>
 
-                <div class="mt-4">
+                {{-- <div class="mt-4">
                     <label for="countries" class=" mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Time To</label>
                     <select id="time_to" required name="time_to" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option disabled selected>Choose a Time To</option>
@@ -277,13 +290,66 @@
                         <option value="22:00">22:00</option>
                         <option value="23:00">23:00</option>
                     </select>
-                </div>
+                </div> --}}
                 <div class="mt-4">
                     <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja Biliard</label>
                     <select id="biliard_id" name="biliard_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option disabled selected>Pilih Meja Biliard</option>
                         @foreach ($biliards as $key => $biliard)
                             <option value="{{ $biliard->id }}">{{ $biliard->nama }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                
+                
+            </div>
+        </div>
+        @elseif($item['conditions'] == 'Paket Menu Meeting')
+        <div class="max-w-full h-64 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+            <div class="p-3 space-x-4">
+                <p class="text-lg font-semibold text-center dark:text-white">Schedule & Table Meeting Room</p>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+                <div class="mt-4">
+                    <label for="countries" class=" mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Date</label>                    
+                    <input type="date" id="date" required name="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onchange="disableHour()">
+                </div>
+                <div class="mt-4">
+                    <label for="countries" class=" mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Time From</label>
+                    <select id="time_from_meeting" required name="time_from" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option disabled selected>Choose a Time From</option>
+                        <option value="00:00">00:00</option>
+                        <option value="01:00">01:00</option>
+                        <option value="02:00">02:00</option>
+                        <option value="03:00">03:00</option>
+                        <option value="04:00">04:00</option>
+                        <option value="05:00">05:00</option>
+                        <option value="06:00">06:00</option>
+                        <option value="07:00">07:00</option>
+                        <option value="08:00">08:00</option>
+                        <option value="09:00">09:00</option>
+                        <option value="10:00">10:00</option>
+                        <option value="11:00">11:00</option>
+                        <option value="12:00">12:00</option>
+                        <option value="13:00">13:00</option>
+                        <option value="14:00">14:00</option>
+                        <option value="15:00">15:00</option>
+                        <option value="16:00">16:00</option>
+                        <option value="17:00">17:00</option>
+                        <option value="18:00">18:00</option>
+                        <option value="19:00">19:00</option>
+                        <option value="20:00">20:00</option>
+                        <option value="21:00">21:00</option>
+                        <option value="22:00">22:00</option>
+                        <option value="23:00">23:00</option>
+                    </select>
+                </div>
+                <div class="mt-4">
+                    <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja Meeting</label>
+                    <select id="meeting_room_id" name="meeting_room_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option disabled selected>Pilih Meja Meeting</option>
+                        @foreach ($meeting_rooms as $key => $meeting_room)
+                            <option value="{{ $meeting_room->id }}">{{ $meeting_room->nama }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -352,9 +418,9 @@
                         </p>
                     </div>
                     <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
-                        {{-- {{ dd(Cart::getConditions()) }} --}}
+                        {{-- {{ dd(number_format($total)) }} --}}
                         {{-- Rp. {{ number_format($item->model->harga ?? '0',2 ) }} --}}
-                        Rp. {{ number_format(\Cart::getTotal()  ?? '0',2 )  }}
+                        Rp. {{ number_format(\Cart::getTotal()  ?? '0',2 ) }}
                     </div>
                 </div>
             </li>
@@ -406,8 +472,7 @@
             </li>
         </ul>
 
-        <form action="{{ route('checkout-order') }}" method="POST">
-            @csrf
+        
             <div class="mt-2">
                 <button class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Checkout</button>
             </div>
@@ -590,11 +655,13 @@
             },
             success: function (data) {
                 console.log(data);
+                $("#time_from option").attr('disabled', false); 
+                $("#biliard_id option").attr('disabled', false); 
                 data.times.forEach(element => {
                     let valHourFrom = element.substring(0, 5);
                     console.log(element);
                     $("#time_from option[value='"+ valHourFrom + "']").attr('disabled', true); 
-                    $("#time_to option[value='"+ valHourFrom + "']").attr('disabled', true); 
+                    // $("#time_to option[value='"+ valHourFrom + "']").attr('disabled', true); 
                     // $("#biliard_id option[value='" + valHourFrom + "']").attr('disabled', true); 
                 });
                 
@@ -638,6 +705,48 @@
     //         }
     //     });
     // }
+
+</script>
+
+{{-- Disable Hour Jam Meeting --}}
+<script>
+    function disableHourMeeting()
+    {
+        var valueDate = $('#date').val();
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('check-schedule') }}",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+                "_token": "{{ csrf_token() }}",
+                "date": valueDate
+            },
+            success: function (data) {
+                console.log(data);
+                $("#time_from option").attr('disabled', false); 
+                $("#meeting_id option").attr('disabled', false); 
+                data.times.forEach(element => {
+                    let valHourFrom = element.substring(0, 5);
+                    console.log(element);
+                    $("#time_from_meeting option[value='"+ valHourFrom + "']").attr('disabled', true); 
+                    // $("#time_to option[value='"+ valHourFrom + "']").attr('disabled', true); 
+                    // $("#biliard_id option[value='" + valHourFrom + "']").attr('disabled', true); 
+                });
+                
+                data.billiardIds.forEach(elementBiliard => {
+                    let biliard = elementBiliard;
+                    console.log(elementBiliard);
+                    $("#meeting_id option[value='"+ elementBiliard + "']").attr('disabled', true); 
+                });
+            },
+            error: function (data) {
+                $.alert('Failed!');
+                console.log(data);
+            }
+        });
+    }
 
 </script>
 @endpush
