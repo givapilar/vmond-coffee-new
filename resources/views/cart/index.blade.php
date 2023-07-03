@@ -709,7 +709,7 @@
 </script>
 
 {{-- Disable Hour Jam Meeting --}}
-<script>
+{{-- <script>
     function disableHourMeeting()
     {
         var valueDate = $('#date').val();
@@ -748,5 +748,5 @@
         });
     }
 
-</script>
+</script> --}}
 @endpush
