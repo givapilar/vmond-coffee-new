@@ -639,7 +639,7 @@
  </script>
 
 {{-- Untuk DIsable Jam pada tanggal tertentu --}}
-<script>
+{{-- <script>
     function disableHour()
     {
         var valueDate = $('#date').val();
@@ -706,7 +706,7 @@
     //     });
     // }
 
-</script>
+</script> --}}
 
 {{-- Disable Hour Jam Meeting --}}
 {{-- <script>
