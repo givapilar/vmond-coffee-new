@@ -312,7 +312,7 @@
             <div class="grid grid-cols-2 gap-2">
                 <div class="mt-4">
                     <label for="countries" class=" mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Date</label>                    
-                    <input type="date" id="date" required name="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onchange="disableHour()">
+                    <input type="date" id="date_meeting" required name="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onchange="disableHour()">
                 </div>
                 <div class="mt-4">
                     <label for="countries" class=" mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Time From</label>
@@ -639,7 +639,7 @@
  </script>
 
 {{-- Untuk DIsable Jam pada tanggal tertentu --}}
-{{-- <script>
+<script>
     function disableHour()
     {
         var valueDate = $('#date').val();
@@ -706,7 +706,7 @@
     //     });
     // }
 
-</script> --}}
+</script>
 
 {{-- Disable Hour Jam Meeting --}}
 {{-- <script>

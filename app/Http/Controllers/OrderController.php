@@ -77,9 +77,9 @@ class OrderController extends Controller
             // ));
 
             // $session_cart = \Cart::session(Auth::user()->id)->getContent();
-            $time_to = date('H:i', strtotime($request->time_from . ' + ' . $request->jam . ' hours'));
-            
-            // dd($time_to);
+            // dd($request->all());
+            $time_to = date('Y-m-d', strtotime($request->date)) . ' ' . date('H:i', strtotime($request->time_from . ' + ' . $request->jam . ' hours'));
+            $time_from = date('Y-m-d', strtotime($request->date)) . ' ' . date('H:i', strtotime($request->time_from));
             if (Auth::user()->membership->level == 'Super Platinum') {
                 $order = Order::create([
                     // $request->all()
@@ -89,8 +89,8 @@ class OrderController extends Controller
                     'code' => $newInvoiceNumber,
                     'date' => $request->date,
                     'category' => $request->category,
-                    'time_from' => $request->time_from,
-                    'time_to' => $time_to ,
+                    // 'time_from' => $time_from,
+                    // 'time_to' => $time_to ,
                     'biliard_id' => $request->biliard_id,
                     'meeting_room_id' => $request->meeting_room_id,
                     // 'total_price' => \Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan, 
@@ -110,8 +110,8 @@ class OrderController extends Controller
                     'code' => $newInvoiceNumber,
                     'date' => $request->date,
                     'category' => $request->category,
-                    'time_from' => $request->time_from,
-                    'time_to' => $time_to,
+                    // 'time_from' => $time_from,
+                    // 'time_to' => $time_to,
                     'biliard_id' => $request->biliard_id,
                     'meeting_room_id' => $request->meeting_room_id,
                     'meja_restaurant_id' => $request->meja_restaurant_id,
@@ -151,6 +151,8 @@ class OrderController extends Controller
                                 'paket_menu_id' => $item->id,
                                 'category' => $category,
                                 'qty' => $item->quantity,
+                                'time_from' => $time_from,
+                                'time_to' => $time_to,
                             ];
                         }
                         OrderBilliard::insert($orderBilliard);
@@ -170,6 +172,8 @@ class OrderController extends Controller
                                 'paket_menu_id' => $item->id,
                                 'category' => $category,
                                 'qty' => $item->quantity,
+                                'time_from' => $time_from,
+                                'time_to' => $time_to,
                             ];
                         }
                         
