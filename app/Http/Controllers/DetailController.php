@@ -7,6 +7,7 @@ use App\Models\Biliard;
 use App\Models\MenuPackagePivots;
 use App\Models\MenuPackages;
 use App\Models\Restaurant;
+use App\Models\RestaurantAddOn;
 use App\Models\RestaurantPivot;
 use Illuminate\Http\Request;
 
@@ -20,7 +21,7 @@ class DetailController extends Controller
         $data ['restaurants'] = Restaurant::find($id);
         $data ['restaurant_details'] = RestaurantPivot::get();
         $data ['add_ons'] = AddOn::get();
-        $data['restaurant_add_on'] = RestaurantPivot::where("restaurant_id",$id)
+        $data['restaurant_add_on'] = RestaurantAddOn::where("restaurant_id",$id)
         ->pluck('add_on_id')
         ->all();
         // dd($restaurant);
