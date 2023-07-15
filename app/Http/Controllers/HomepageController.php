@@ -37,6 +37,8 @@ class HomepageController extends Controller
             $orderFinishSubtotal = Order::where('user_id',Auth::user()->id)->where('status_pembayaran','Paid')->sum('total_price');
         // }
         // dd($orderFinishSubtotal);
-        return view('homepage.index', compact(['response_data','response_data_biliard','response_data_meeting_room','response_data_banner','orderFinishSubtotal']));
+        $orderTableId['orderTable'] = Order::where('user_id', Auth::user()->id)->get();
+
+        return view('homepage.index', compact(['response_data','response_data_biliard','response_data_meeting_room','response_data_banner','orderFinishSubtotal','orderTableId']),$orderTableId);
     }
 }

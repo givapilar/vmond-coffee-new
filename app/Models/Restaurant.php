@@ -10,6 +10,20 @@ class Restaurant extends Model
     use HasFactory;
 
     protected $table = 'restaurants';
+    protected $fillable = [
+        'name',
+        'category',
+        'harga',
+        'status',
+        'image',
+        'description',
+        'slug',
+        'code',
+        'harga_diskon',
+        'stok_perhari',
+        'current_stok',
+        'persentase',
+    ];
 
     public function restaurantTag()
     {
@@ -19,6 +33,11 @@ class Restaurant extends Model
     public function order()
     {
         return $this->hasMany(OrderPivot::class);
+    }
+
+    public function addOns()
+    {
+        return $this->hasMany(RestaurantAddOn::class, 'restaurant_id');
     }
 }
 

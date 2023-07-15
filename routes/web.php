@@ -115,6 +115,8 @@ Route::get('midtrans',[CartOrdersController::class,'midtransCheck'])->name('midt
 Route::get('orders',[OrderController::class,'index'])->name('order.index');
 // Route::post('/checkout-order',[OrderController::class,'checkout'])->name('checkout-order');
 Route::post('/checkout',[OrderController::class,'checkout'])->name('checkout-order');
+Route::post('/checkout-billiard',[OrderController::class,'checkoutBilliard'])->name('checkout-billiard');
+Route::post('/checkout-meeting',[OrderController::class,'checkoutMeeting'])->name('checkout-meeting');
 Route::get('/invoice/{id}',[OrderController::class,'invoice'])->name('invoice');
 
 // Route History Penjualan
@@ -137,3 +139,6 @@ Route::get('/callback-xendit-failed',[OrderController::class,'failed'])->name('c
 
 // Cek Schedule Untuk Checkout
 Route::post('/check-schedule',[APIController::class,'checkDateSchedule'])->name('check-schedule');
+Route::post('/check-schedule-meeting',[APIController::class,'checkDateScheduleMeeting'])->name('check-schedule-meeting');
+
+Route::post('/data/success-order',[OrderController::class,'successOrder'])->name('success-order');

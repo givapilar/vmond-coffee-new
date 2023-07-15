@@ -113,12 +113,6 @@
                 @endforeach
 
                 <div class="py-2 ml-auto mt-5 w-full w-2/4">
-                    <div class="flex justify-between mb-4">
-                        <div class="text-sm text-gray-400 text-right flex-1">PPN 11%</div>
-                        <div class="text-right w-40">
-                            <div class="text-sm text-gray-400">{{ number_format($item->total_price * 11/100,0 )  }}</div>
-                        </div>
-                    </div>
 
                     <div class="flex justify-between mb-4">
                         <div class="text-sm text-gray-400 text-right flex-1">Layanan</div>
@@ -127,10 +121,24 @@
                                 <?php
                                 $biaya_layanan = 5000;
                                 ?>
-                                {{ number_format($biaya_layanan ?? '0',0) }}
+                                {{ number_format(($order->restaurant->harga ?? 0 * ($order->qty ?? 1)) * 5/100,2)  }}
+                                {{-- {{ number_format($item->total_price * 5/100,0 )  }} --}}
+                                {{-- {{ number_format($biaya_layanan ?? '0',0) }} --}}
                             </div>
                         </div>
                     </div>
+
+                    <div class="flex justify-between mb-4">
+                        <div class="text-sm text-gray-400 text-right flex-1">PB01%</div>
+                        <div class="text-right w-40">
+                            <div class="text-sm text-gray-400">
+                                {{-- {{ number_format($item->total_price * 10/100,0 )  }} --}}
+                                {{ number_format(($order->restaurant->harga ?? 0) * ($order->qty ?? 1) * 10/100,2)  }}
+                            </div>
+                        </div>
+                    </div>
+
+                    
 
                     <div class="py-2 border-t border-b">
                         <div class="flex justify-between">

@@ -23,5 +23,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/xendit/va/list', [XenditController::class, 'getListVa']);
 Route::post('/xendit/va/invoice', [XenditController::class, 'createVa']);
 Route::post('/midtrans-callback',[OrderController::class,'callback'])->name('callback');
-Route::post('/data/success-order',[OrderController::class,'successOrder'])->name('success-order');
 Route::post('/v1/feedback-customer/{token}/{id}',[OrderController::class,'feedback'])->name('feedback');

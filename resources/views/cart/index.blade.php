@@ -14,17 +14,18 @@
 @endpush
 
 @section('content')
-@if (session('message'))
+{{-- @if (session('message'))
     <div>{{ session('message') }}</div>
-@endif
+@endif --}}
 <section class="p-3">
     
     <div class="grid grid-cols-2 sm:grid-cols-1 gap-4 sm:gap-1">
         <div class="max-w-sm h-96 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
             @foreach ($data_carts as $item)
 
-            <input type="hidden" name="category" value="restaurant">
-            {{-- {{ dd($item->attributes->jam) }} --}}
+            <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+            {{-- <input type="hidden" name="category" value="restaurant"> --}}
+            {{-- {{ dd($item) }} --}}
 
             <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
                 <li class="py-3 sm:py-4">
@@ -46,9 +47,9 @@
                             </p>
                             @endif
 
-                            @if ( $item->model->stok_perhari)
+                            @if ( $item->model->current_stok)
                             <p>
-                                <span class="block text-[10px] dark:text-yellow-300">Stock {{ $item->model->stok_perhari }}</span>
+                                <span class="block text-[10px] dark:text-yellow-300">Stock {{ $item->model->current_stok }}</span>
                             </p>
                             @endif
                             {{-- <p class="text-xs text-gray-500 truncate dark:text-gray-400" id="note">
@@ -58,7 +59,8 @@
                             <p class="text-xs text-gray-500 truncate dark:text-red-500">
                                 {{-- Rp. {{ $item->model->harga }} --}}
                                 {{-- Rp. {{ number_format(array_sum($item->attributes['harga_add'] ?? []) + $item->model->harga ?? 0,0) }} --}}
-                                Rp. {{ number_format(array_sum((array) ($item->attributes['harga_add'] ?? [])) + ($item->model->harga ?? 0), 0) }}
+                                {{-- {{dd($item->attributes['harga_add'])}} --}}
+                                Rp. {{ number_format(array_sum((array) ($item->attributes['harga_add'] ?? [])) + ($item->model->harga_diskon ?? 0), 0) }}
 
                             </p>
                             @else
@@ -162,8 +164,9 @@
             </ul>
         </div>
 
+        @if (Auth::user()->no_meja == null )
             
-        {{--<div class="text-left max-w-sm h-96 bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+        <div class="text-left max-w-sm h-96 bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
             <div class="p-2 space-x-4">
                 <p class="text-lg font-semibold text-center dark:text-white">Pilih Category</p>
             </div>
@@ -195,11 +198,11 @@
                         </p>
                     </div>
                     <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                        <input id="dine-in-radio" type="radio" value="dine-in" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        <input id="dine-in-radio" type="radio" value="Dine In" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                     </div>
                 </div>
             </li>
-            <li class="py-3 sm:py-2">
+            <li class="py-3 sm:py-2" style="display: none;" id="meja-wrapper">
                 <div id="select-input-wrapper">
                         <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja</label>
                         <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -212,7 +215,8 @@
                 </li>
             </ul>
         </div>
-        @endif --}}
+        @endif
+
 
         {{-- {{ dd($jam) }} --}}
 
@@ -428,19 +432,7 @@
                 <div class="flex items-start space-x-4">
                     <div class="flex-1 min-w-0">
                         <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
-                            PB01 10%
-                        </p>
-                    </div>
-                    <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
-                        Rp. {{ number_format((\Cart::getTotal() ?? '0') * 10/100,2 )  }}
-                    </div>
-                </div>
-            </li>
-            <li class="py-3 sm:py-3">
-                <div class="flex items-start space-x-4">
-                    <div class="flex-1 min-w-0">
-                        <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
-                            Layanan
+                            Layanan {{ $order_settings[0]->layanan }}%
                         </p>
                     </div>
                     <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
@@ -448,10 +440,33 @@
                         $biaya_layanan = 5000;
 
                     ?>
-                    Rp. {{ number_format($biaya_layanan ?? '0',2) }}
+                    {{-- {{ $order_settings[0]->layanan }} --}}
+                    Rp. {{ number_format((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100,2 )  }}
+
                     </div>
                 </div>
             </li>
+            <li class="py-3 sm:py-3">
+                <div class="flex items-start space-x-4">
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
+                            PB01 10%
+                        </p>
+                    </div>
+                    <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
+                        @php
+                            // $pbo1String = strval($order_settings[0]->pbo1);
+                        @endphp
+
+                        {{-- {{dd($order_settings[0]->pb01)}} --}}
+                        Rp. {{ number_format((\Cart::getTotal() + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->layanan/100  ?? '0',2 ) }} 
+                    {{-- Rp. {{ number_format((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100,2 )  }} --}}
+
+                        {{-- Rp. {{ number_format((\Cart::getTotal() ?? '0') * $order_settings[0]->pb01/100,2 )  }} --}}
+                    </div>
+                </div>
+            </li>
+            
             <li class="py-3 sm:py-3">
                 <div class="flex items-start space-x-4">
                     <div class="flex-1 min-w-0">
@@ -462,7 +477,9 @@
                     <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white">
                         @if (\Cart::getTotal() ?? 0)
                         
-                        Rp. {{ number_format(\Cart::getTotal() *10/100 + \Cart::getTotal() + $biaya_layanan ,2 ) }}
+                        {{-- Rp. {{ number_format(\Cart::getTotal() *$order_settings[0]->pb01/100 + \Cart::getTotal() + $order_settings[0]->layanan ,2 ) }} --}}
+                        {{-- Rp. {{ number_format(\Cart::getTotal()  ?? '0',2 ) }} --}}
+                        {{ number_format((\Cart::getTotal() + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->layanan/100 + \Cart::getTotal() ?? 0 ,2)}}
                         @else
                         Rp. 0
                         @endif
@@ -532,6 +549,29 @@
             checkbox.disabled = true;
         }
     }
+</script>
+
+<script>
+    // Mengambil elemen radio button "Takeaway" dan "Dine In"
+    const takeawayRadio = document.getElementById('takeaway-radio');
+    const dineInRadio = document.getElementById('dine-in-radio');
+
+    // Mengambil elemen wrapper "Pilih Meja"
+    const mejaWrapper = document.getElementById('meja-wrapper');
+
+    // Menambahkan event listener saat radio button berubah
+    takeawayRadio.addEventListener('change', toggleMejaWrapper);
+    dineInRadio.addEventListener('change', toggleMejaWrapper);
+
+    // Fungsi untuk mengubah visibilitas "Pilih Meja"
+    function toggleMejaWrapper() {
+        if (takeawayRadio.checked) {
+            mejaWrapper.style.display = 'none';
+        } else if (dineInRadio.checked) {
+            mejaWrapper.style.display = 'block';
+        }
+    }
+
 </script>
 
 <script>

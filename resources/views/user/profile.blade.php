@@ -20,7 +20,7 @@
                     <div class="flex flex-col items-center">
                         <img src="{{ asset('assetku/dataku/img/user/'.($user->avatar ?? 'default.png')) }}" class="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0">
                         <h1 class="text-xl font-bold dark:text-white">{{ $user->username ?? 'Guest' }}</h1>
-                        <p class="text-gray-600 dark:text-gray-400">{{ $user->membership ?? '-' }}</p>
+                        <p class="text-gray-600 dark:text-gray-400">{{ ucwords(Auth::user()->membership->level ?? '') }} Member</p>
                         <div class="mt-6 flex flex-wrap gap-4 justify-center">
                             {{-- <a href="javascript:void(0)" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Contact</a>
                             <a href="javascript:void(0)" class="bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded">Resume</a> --}}
@@ -31,7 +31,7 @@
             <div class="col-span-4 sm:col-span-8">
                 <form action="{{route('update-account', Crypt::encryptString('update-'.$user->id.'-encrypt')) }}" method="POST" enctype="multipart/form-data">
                     @method('patch')
-                    @csrf
+                @csrf
                     <div class="bg-white shadow rounded-lg p-6 dark:bg-gray-800">
                         <h2 class="text-xl font-bold mb-4 dark:text-white text-center">Change Data</h2>
                         <div class="mb-4">

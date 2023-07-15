@@ -17,6 +17,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "midtrans/midtrans-php": "^2.5",
+        "mike42/escpos-php": "^4.0",
         "xendit/xendit-php": "^2.19"
     },
     "require-dev": {

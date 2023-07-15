@@ -69,10 +69,10 @@
                         </p>
 
                         <p>
-                            <span class="block text-[10px] dark:text-yellow-300">Stock {{ $restaurants->stok_perhari }}</span>
+                            <span class="block text-[10px] dark:text-yellow-300">Stock {{ $restaurants->current_stok }}</span>
                         </p>
                         <p class="text-xs text-gray-500 truncate dark:text-red-500">
-                            Rp. {{ number_format($restaurants->harga) }}
+                            Rp. {{ number_format($restaurants->harga_diskon) }}
                         </p>
 
 
@@ -130,21 +130,34 @@
     <div class="grid grid-cols-1">
         <div class="px-1 w-full">
             {{-- <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">{{ $restaurants->nama_paket ?? 'Error' }}</p> --}}
-            <span class="block text-[10px] dark:text-red-500">Rp.{{ number_format($restaurants->harga,2) }} </span>
-
+            {{-- <span class="block text-[10px] dark:text-red-500">Rp.{{ number_format($restaurants->harga,2) }} </span> --}}
+            <div>
+                @if(session()->has('failed'))
+                    <h1 class="text-red-500">{{ session()->get('failed') }}  </h1>
+                @endif
+            </div>
+            @php
+                $min = 0;
+            @endphp
             @foreach ($add_ons as $add_on)
+                @php
+                    $min += $add_on->minimum_choice;
+                @endphp 
+                {{-- {{dd($minimum_choice)}} --}}
                 @foreach (old('add_on_id') ?? $restaurant_add_on as $id)
                     @if ($id == $add_on->id)
                         <div class="flex gap-1 opacity-75 mt-auto w-full">
                             <div class="grid space-y-3">
-                                <input type="hidden" name="add_on_title[]" value="{{ $add_on->title }}" id="">
+                                <input type="hidden" name="add_on_title[]" value="{{ $add_on->id }}" id="">
                                 
                                 <p aria-hidden="true" class="text-lg mt-1 font-semibold dark:text-gray-300">{{ $add_on->title ?? 'Error' }} (Pilih {{ $add_on->minimum_choice  }} )</p>
                                 @foreach ($add_on->detailAddOn as $item)
                                     
                                 <div class="relative flex items-start">
                                     <div class="flex items-center h-5 mt-1">
-                                        <input id="hs-checkbox-delete" value="{{ $item->harga }}" name="harga_add[]" type="checkbox" class="{{ str_replace(' ', '-', strtolower($add_on->title)) }} border-gray-200 rounded text-blue-600 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800" aria-describedby="hs-checkbox-delete-description">
+                                        <input id="hs-checkbox-delete" value="{{ $item->id }}" name="harga_add[]" type="checkbox" class="{{ str_replace(' ', '-', strtolower($add_on->title)) }} border-gray-200 rounded text-blue-600 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800" aria-describedby="hs-checkbox-delete-description">
+                                        {{-- <input type="hidden" name="detail_id[]" value="{{ $item->id }}" id=""> --}}
+
                                     </div>
                                     <label for="hs-checkbox-delete" class="ml-3">
                                         {{-- <span class="block text-sm font-semibold text-gray-800 dark:text-gray-300">{{ $add_on->title }}</span> --}}
@@ -159,6 +172,7 @@
                     @endif
                 @endforeach
             @endforeach
+            <input type="hidden" name="minimum" value="{{ $min ?? 0 }}">
         </div>
     </div>
     
@@ -166,8 +180,9 @@
         <div class="mt-2">
             <input type="hidden" name="id" value="{{ $restaurants->id }}" id="">
             <input type="hidden" name="nama" value="{{ $restaurants->nama }}" id="">
-            <input type="hidden" name="harga" value="{{ $restaurants->harga }}" id="">
+            <input type="hidden" name="harga" value="{{ $restaurants->harga_diskon }}" id="">
             <input type="hidden" name="image" value="{{ $image.$restaurants->image }}" id="">
+
             {{-- <input type="hidden" name="quantity" value="1" id=""> --}}
             <button class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Checkout</button>
         </div>
@@ -192,49 +207,58 @@
         speed:200,
     });
 
-    function add(slug, $id){
-        let getVar = parseInt($('.counter').val());
-        if(!getVar || getVar == NaN){
-            getVar = 1;
-            $('.counter').val(getVar);
-        }else{
-            getVar = getVar + 1;
-            $('.counter').val(getVar);
-        }
+    // function add(slug, $id){
+    //     let getVar = parseInt($('.counter').val());
+    //     if(!getVar || getVar == NaN){
+    //         getVar = 1;
+    //         $('.counter').val(getVar);
+    //     }else{
+    //         getVar = getVar + 1;
+    //         $('.counter').val(getVar);
+    //     }
+    // }
 
-        // $.ajax({
-        //     type: 'POST',
-        //     url: "{{ route('cart-update') }}",
-        //     headers: {
-        //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //     },
-        //     data: {
-        //         "_token": "{{ csrf_token() }}",
-        //         "qty": getVar,
-        //         "id": $id
-        //     },
-        //     success: function (data) {
-        //         // location.reload();
-        //         // window.location.href(url)
-        //     },
-        //     error: function (data) {
-        //         $.alert('Failed!');
-        //         console.log(data);
-        //     }
-        // });
+    // function remove(slug, $id){
+    //     let getVar = parseInt($('.counter').val());
+    //     if(!getVar || getVar == NaN){
+    //         getVar = 0;
+    //         $('.counter').val(getVar);
+    //     }else{
+    //         getVar = getVar - 1;
+    //         $('.counter').val(getVar);
+    //     }
+
+    // }
+
+    function add(slug, $id) {
+    let getVar = parseInt($('.counter').val());
+    let stok = parseInt('{{ $restaurants->stok_perhari }}'); // Mendapatkan nilai stok dari PHP
+
+    if (!getVar || isNaN(getVar)) {
+        getVar = 1;
+    } else {
+        getVar = getVar + 1;
     }
 
-    function remove(slug, $id){
-        let getVar = parseInt($('.counter').val());
-        if(!getVar || getVar == NaN){
-            getVar = 0;
-            $('.counter').val(getVar);
-        }else{
-            getVar = getVar - 1;
-            $('.counter').val(getVar);
-        }
-
+    // Memeriksa apakah jumlah yang dimasukkan melebihi stok
+    if (getVar <= stok) {
+        $('.counter').val(getVar);
     }
+}
+
+function remove(slug, $id) {
+    let getVar = parseInt($('.counter').val());
+    
+    if (!getVar || isNaN(getVar)) {
+        getVar = 0;
+    } else {
+        getVar = getVar - 1;
+    }
+    
+    if (getVar >= 0) {
+        $('.counter').val(getVar);
+    }
+}
  </script>
  {{-- GUla --}}
  <script>
@@ -260,23 +284,28 @@
  </script>
  {{-- Level Pedas --}}
  <script>
-    const maxChecked2 = {{ $add_on->minimum_choice }}; // Jumlah maksimum nilai yang dapat dicentang
 
-    const checkboxes2 = document.querySelectorAll('.{{ str_replace(' ', '-', strtolower($add_on->title)) }}');
-    let checkedCount2 = 0;
+    const addOns = @JSON($add_ons);
+    console.log(addOns);
 
-    checkboxes2.forEach(checkbox2 => {
-        checkbox2.addEventListener('change', function() {
-            if (this.checked) {
-                checkedCount2++;
-            } else {
-                checkedCount2--;
-            }
+    addOns.forEach(addOns => {
+        let formCheck = document.querySelectorAll('.' + addOns.title.replace(' ', '-').toLowerCase());
+        let countCheck = 0;
+        let maxCheck = addOns.minimum_choice;
+        // console.log(formCheck);
+        formCheck.forEach(detail => {
+            detail.addEventListener('change', function(){
+                if (this.checked) {
+                    countCheck++;
+                } else {
+                    countCheck--;
+                }
 
-            if (checkedCount2 > maxChecked2) {
-                this.checked = false; // Mencegah centangan lebih dari jumlah maksimum
-                checkedCount2--;
-            }
+                if (countCheck > maxCheck) {
+                    this.checked = false; // Mencegah centangan lebih dari jumlah maksimum
+                    countCheck--;
+                }
+            });
         });
     });
  </script>

@@ -61,7 +61,8 @@
                 <span class="block text-[10px] dark:text-red-500">Rp.{{ number_format($item->harga,2) }} </span>
                 
                 <div class="flex gap-1 opacity-75 mt-auto">
-                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                    {{-- <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button> --}}
+                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" data-modal-target="description-modal{{ $item->id }}" data-modal-toggle="description-modal{{ $item->id }}"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
                     {{-- <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button> --}}
                     <form action="{{ route('detail-billiard',$item->id) }}" method="get" class=" w-8/12">
                         <div class="flex gap-1 opacity-75">
@@ -73,7 +74,7 @@
                     </form>
                 </div>
             </div>
-            @include('modal.description')
+            @include('modal.description-billiard')
         </div>
         @endif
         @endforeach
@@ -127,4 +128,6 @@
         speed:200,
     });
  </script>
+
+ 
 @endpush

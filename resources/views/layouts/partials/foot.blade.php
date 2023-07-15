@@ -91,23 +91,22 @@
     $('[type="tel"]').keyup(phoneMask);
 </script>
 
-@if(session('message'))
+{{-- @if(session('message'))
 <script>
     Toastify({
-        text: session('message'),
-        // text: "{{ session()->get('success') }}",
+        text: '{{ session('message') }}',
         close: true,
-        gravity: "top", // `top` or `bottom`
-        position: "right", // `left`, `center` or `right`
+        gravity: 'top', // `top` or `bottom`
+        position: 'right', // `left`, `center` or `right`
         stopOnFocus: true, // Prevents dismissing of toast on hover
         style: {
-            background: "#D5F3E9",
-            color: "#1f7556"
+            background: '#D5F3E9',
+            color: '#1f7556'
         },
         duration: 3000
     }).showToast();
 </script>
-@endif
+@endif --}}
 
 <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
 <script src="{{ asset('assetku/dataku/lib/alpine/alpine.js') }}" defer></script>
@@ -298,4 +297,20 @@
 	</script>
 {{-- @endif --}}
 
+@if(session()->has('failed'))
+<script>
+        Toastify({
+            text: "{{ session()->get('failed') }}",
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "right", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+                background: "#FBEFDB",
+                color: "#916c2e"
+            },
+            duration: 3000
+        }).showToast();
+</script>
+@endif
 @stack('script-bot')

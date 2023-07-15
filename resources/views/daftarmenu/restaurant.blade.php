@@ -31,7 +31,7 @@
                                 @endphp
 
                                 <li class="mr-2" role="presentation">
-                                    <button class="inline-block p-4 border-b-2 rounded-t-lg" id="{{ strtolower(str_replace(' ','',$item->tag_name)) }}-tab" data-tabs-target="#{{ strtolower(str_replace(' ','',$item->tag_name)) }}" type="button" role="tab" aria-controls="{{ strtolower(str_replace(' ','',$item->tag_name)) }}" aria-selected="false">{{ strtolower(str_replace(' ','',$item->tag_name)) }}</button>
+                                    <button class="inline-block px-5 py-4 border-b-2 rounded-t-lg mr-0 ml-3" style="text-align:center !important;" id="{{ strtolower(str_replace(' ','',$item->tag_name)) }}-tab" data-tabs-target="#{{ strtolower(str_replace(' ','',$item->tag_name)) }}" type="button" role="tab" aria-controls="{{ strtolower(str_replace(' ','',$item->tag_name)) }}" aria-selected="false">{{ strtolower(str_replace(' ','',$item->tag_name)) }}</button>
                                 </li>
                             @endif
                         @endif
@@ -57,7 +57,7 @@
                     </div>
                     <div class="px-1">
                         <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">{{ $resto->nama ?? 'Error' }}</p>
-                        <span class="block text-[10px] dark:text-red-500">Rp.{{ number_format($resto->harga,2) }} </span>
+                        <span class="block text-[10px] dark:text-red-500">Rp.{{ number_format($resto->harga_diskon,2) }} </span>
 
                         <div class="flex gap-1 opacity-75 mt-auto">
                             <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" data-modal-target="description-modal{{ $resto->id }}" data-modal-toggle="description-modal{{ $resto->id }}"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
@@ -149,11 +149,11 @@
 <script>
     $('#myTab').slick({
         infinite:false,
-        arrows: false,
-        slidesToShow: 2,
+        arrows: true,
+        slidesToShow: 3,
         slidesToScroll: 1,
         autoplay: false,
-        speed:200,
+        speed:100,
     });
 
     // window.addEventListener("load", function(event) {

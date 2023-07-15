@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AddOn;
+use App\Models\AddOnDetail;
 use App\Models\Biliard;
 use App\Models\CartOrders;
 use App\Models\MeetingRoom;
@@ -10,10 +12,15 @@ use App\Models\MenuPackages;
 use App\Models\OrderPivot;
 use App\Models\Restaurant;
 use App\Models\User;
+use App\Models\OtherSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 // use Gloudemans\Shoppingcart\facades\Cart;
+use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
+use Mike42\Escpos\Printer;
+use Mike42\Escpos\CapabilityProfile;
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 use Cart;
 
 class CartOrdersController extends Controller
@@ -30,6 +37,7 @@ class CartOrdersController extends Controller
         $data ['biliards'] = Biliard::get();
         $data ['meeting_rooms'] = MeetingRoom::get();
         $data ['paket_menu'] = MenuPackages::get();
+        $data ['order_settings'] = OtherSetting::get();
         // foreach ($tes as $key => $paket_menu) {
         //     return $paket = $paket_menu;
         // }
@@ -76,14 +84,63 @@ class CartOrdersController extends Controller
 
     public function addCartRestaurant(Request $request,$id)
     {
+
+        // Print Printer Termal
+
+        // $profile = CapabilityProfile::load("P");
+        // $connector = new WindowsPrintConnector("epsonKasir");
+        // $printer = new Printer($connector, $profile);
+
+        
+        // // Contoh teks yang akan dicetak
+        // $text = "Terima kasih atas pembayaran Anda.";
+
+        // $printer->text($text);
+        // $printer->feed();
+        // $printer->cut();
+
+        // $printer->close();
+
+        // $connector = new NetworkPrintConnector("192.168.23.18", 9100);
+        // $printer = new Printer($connector);
+        // try {
+        //     $text = "Terima kasih atas pembayaran Anda.";
+        // } finally {
+        //     $printer -> close();
+        // }
+
+        // $countAddOn = count($request->harga_add);
+        $dataHargaAddon = [];
+        if ($request->harga_add != null) {
+            foreach ($request->harga_add as $key => $val) {
+                $data_addOn = AddOnDetail::where('id', $val)->get();
+                $dataHargaAddon[] = $data_addOn[0]->harga . '';
+            }
+        }
+
+        // foreach ($request->add_on_title as $key => $val) {
+        //     $data_addOn = AddOn::where('id', $val)->get();
+        //     $dataHargaAddonTitle[] = $data_addOn[0]->nama . '';
+
+        // }
         // dd($request->all());
+
+        $restaurant = Restaurant::findOrFail($id);
+        // dd($restaurant->addOns->isNotEmpty());
+
+        $countAddOn = $request->harga_add ? count($request->harga_add) : 0;
+        // dd($request->minimum);
+        if (($countAddOn < $request->minimum) && $restaurant->addOns->isNotEmpty()) {
+            return redirect()->back()->with(['failed' => 'Harap Pilih Add On Sesuai minimum !!']);
+        }
+
         if ($request->quantity) {
             $quantity = $request->quantity;
         } else {
             $quantity = 0;
         }
         
-        $restaurant = Restaurant::findOrFail($id);
+        
         // $auth = User::get();
         // dd($auth->id);
 
@@ -98,7 +155,6 @@ class CartOrdersController extends Controller
         ]);
 
         if ($validator->fails()) {
-            dd('sad');
             return redirect()->back()->withErrors($validator)->withInput();
         }
         // dd('sucess');
@@ -107,14 +163,15 @@ class CartOrdersController extends Controller
             \Cart::session(Auth::user()->id)->add(array(
                 'id' => $restaurant->id, // inique row ID
                 'name' => $restaurant->nama,
-                'price' => ($restaurant->harga + (is_array($request->harga_add) ? array_sum($request->harga_add) : 0) ?? $restaurant->harga),
+                'price' => ($restaurant->harga_diskon + (is_array($dataHargaAddon) ? array_sum($dataHargaAddon) : 0) ?? $restaurant->harga_diskon),
                 'quantity' => $request->qty,
                 // 'attributes' => array($restaurant),
                 'attributes' => array(
                     'restaurant' => $restaurant,
                     'category' => $request->category,
                     'add_on_title' => $request->add_on_title,
-                    'harga_add' => $request->harga_add,
+                    'harga_add' => array_sum($dataHargaAddon),
+                    // 'harga_add' => $dataHargaAddon,
                 ),
                 'conditions' => 'Restaurant',
                 'associatedModel' => $restaurant

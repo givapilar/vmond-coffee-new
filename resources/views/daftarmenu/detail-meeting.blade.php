@@ -46,7 +46,7 @@
             <span class="text-lg font-bold dark:text-white ml-1">Detail Paket Menu</span>
         </div>
     </div>
-    <form action="{{ route('add-cart-meeting-room',$paket_menu->id) }}" method="get">
+    <form action="{{ route('checkout-meeting',$paket_menu->id) }}" method="POST">
         @csrf
     <div class="grid grid-cols-1">
         <div class="text-base sm:text-sm px-1 py-3 w-full">
@@ -62,6 +62,7 @@
             {{-- <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">{{ $paket_menu->nama_paket ?? 'Error' }}</p> --}}
             <p aria-hidden="true" class="text-lg mt-1 font-semibold dark:text-gray-300">{{ $paket_menu->nama_paket ?? 'Error' }} </p> <br>
             <span class="block text-[15px] dark:text-red-500">Rp.{{ number_format($paket_menu->harga,2) }} </span>
+            <input type="hidden" name="total_paket" value="{{ $paket_menu->harga }}">
 
             <p aria-hidden="true" class="text-lg mt-1 font-semibold dark:text-gray-300">Bonus Paket </p>
                 @foreach ($restaurants as $restaurant)
@@ -70,8 +71,9 @@
                             <div class="flex gap-1 opacity-75 mt-auto w-full">
                                 <div class="grid space-y-3">
                                     <input type="hidden" name="nama_resto[]" value="{{ $restaurant->nama ?? '' }}" id="">
-                                    <input type="hidden" name="harga_paket[]" value="{{ $restaurant->harga ?? 0 }}" id="">
-                                    <input type="hidden" name="category[]" value="{{ $restaurant->category }}">
+                                    {{-- <input type="hidden" name="harga_paket[]" value="{{ $restaurant->harga ?? 0 }}" id=""> --}}
+                                    {{-- <input type="hidden" name="category[]" value="{{ $restaurant->category }}"> --}}
+                                    <input type="hidden" name="category_paket[]" value="{{ $restaurant->category ?? '' }}">
                                     
                                     <div class="relative flex items-start">
                                         <div class="flex items-center h-5 mt-1">
@@ -80,7 +82,7 @@
                                         <label for="hs-checkbox-delete" class="ml-3">
                                             {{-- <span class="block text-sm font-semibold text-gray-800 dark:text-gray-300">{{ $restaurant->title }}</span> --}}
                                             <span id="hs-checkbox-delete-description" class="text-sm text-gray-600 dark:text-gray-300">{{ $restaurant->nama ?? '' }}</span> <br>
-                                            <span id="hs-checkbox-delete-description" class="text-sm text-gray-600 dark:text-gray-300">Rp. {{ number_format($restaurant->harga ?? '',0) }}</span>
+                                            {{-- <span id="hs-checkbox-delete-description" class="text-sm text-gray-600 dark:text-gray-300">Rp. {{ number_format($restaurant->harga ?? '',0) }}</span> --}}
                                         </label>
                                     </div>
                                     
@@ -90,6 +92,60 @@
                         @endforeach
                 @endforeach
 
+        </div>
+    </div>
+
+    <div class="max-w-full mt-2 h-64 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+        <div class="p-3 space-x-4">
+            <p class="text-lg font-semibold text-center dark:text-white">Schedule & Table Billiard</p>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+            <div class="mt-3">
+                <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja Meeting</label>
+                <select id="meeting_room_id" name="meeting_room_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onchange="disableHour()">
+                    <option disabled selected>Pilih Meja Meeting</option>
+                    @foreach ($meeting_rooms as $key => $meeting_room)
+                        <option value="{{ $meeting_room->id }}">{{ $meeting_room->nama }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="mt-4">
+                <label for="countries" class=" mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Date</label>                    
+                <input type="date" id="date" required name="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onchange="disableHour()" value="{{ date('Y-m-d') }}">
+            </div>
+            <div class="mt-4">
+                <label for="countries" class=" mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Time From</label>
+                <select id="time_from" required name="time_from" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option disabled selected>Choose a Time From</option>
+                    <option value="00:00">00:00</option>
+                    <option value="01:00">01:00</option>
+                    <option value="02:00">02:00</option>
+                    <option value="03:00">03:00</option>
+                    <option value="04:00">04:00</option>
+                    <option value="05:00">05:00</option>
+                    <option value="06:00">06:00</option>
+                    <option value="07:00">07:00</option>
+                    <option value="08:00">08:00</option>
+                    <option value="09:00">09:00</option>
+                    <option value="10:00">10:00</option>
+                    <option value="11:00">11:00</option>
+                    <option value="12:00">12:00</option>
+                    <option value="13:00">13:00</option>
+                    <option value="14:00">14:00</option>
+                    <option value="15:00">15:00</option>
+                    <option value="16:00">16:00</option>
+                    <option value="17:00">17:00</option>
+                    <option value="18:00">18:00</option>
+                    <option value="19:00">19:00</option>
+                    <option value="20:00">20:00</option>
+                    <option value="21:00">21:00</option>
+                    <option value="22:00">22:00</option>
+                    <option value="23:00">23:00</option>
+                </select>
+            </div>
+            
+            
+            
         </div>
     </div>
     
@@ -167,31 +223,48 @@
         }
 
     }
- </script>
- {{-- GUla --}}
- <script>
-    // const maxChecked = 1; // Jumlah maksimum nilai yang dapat dicentang
 
-    // const checkboxes = document.querySelectorAll('.pilih-gula');
-    // let checkedCount = 0;
+    function disableHour() {
+        var valueDate = $('#date').val();
+        var meetingId = $('#meeting_room_id').val();
 
-    // checkboxes.forEach(checkbox => {
-    // checkbox.addEventListener('change', function() {
-    //     if (this.checked) {
-    //     checkedCount++;
-    //     } else {
-    //     checkedCount--;
-    //     }
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('check-schedule-meeting') }}",
+            headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+            "_token": "{{ csrf_token() }}",
+            "date": valueDate,
+            "meeting_room_id": meetingId
+            },
+            success: function (data) {
+                console.log(data);
+                $("#time_from option").attr('disabled', false);
 
-    //     if (checkedCount > maxChecked) {
-    //     this.checked = false; // Mencegah centangan lebih dari jumlah maksimum
-    //     checkedCount--;
-    //     }
-    // });
-    // });
+                // Disable hours based on date
+                data.times.forEach(element => {
+                    $("#time_from option").attr('selected', false);
+                    let valHourFrom = element.substring(0, 5);
+                    $("#time_from option[value='" + valHourFrom + "']").attr('disabled', true);
+                });
+
+                // Disable hours based on billiard ID
+                // data.billiards.forEach(billiard => {
+                //     let valHourFrom = billiard.substring(0, 5);
+                //     $("#time_from option[value='" + valHourFrom + "']").attr('disabled', true);
+                // });
+            },
+            error: function (data) {
+            $.alert('Failed!');
+            console.log(data);
+            }
+        });
+    }
  </script>
  {{-- Level Pedas --}}
- <script>
+ {{-- <script>
     const maxChecked2 = {{ $restaurant->nama }}; // Jumlah maksimum nilai yang dapat dicentang
 
     const checkboxes2 = document.querySelectorAll('.{{ str_replace(' ', '-', strtolower($restaurant->nama)) }}');
@@ -211,5 +284,5 @@
             }
         });
     });
- </script>
+ </script> --}}
 @endpush

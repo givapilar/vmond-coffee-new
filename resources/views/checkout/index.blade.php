@@ -19,6 +19,7 @@
     <div class="max-w-sm text-left h-48 bg-white border border-gray-200 rounded-[30px] shadow px-3 dark:bg-gray-800 dark:border-gray-700">
         
         <ul class="max-w-md h-full divide-y divide-gray-200 dark:divide-gray-700 overflow-y-auto">
+            <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
             @foreach ($data_carts as $item)
             <li class="py-3 sm:py-4">
                 <div class="flex items-start space-x-4">
@@ -36,12 +37,12 @@
                         <p class="text-xs text-gray-500 truncate dark:text-red-500">
                             {{-- Rp. {{ $item->model->harga }} --}}
                             {{-- Rp. {{ number_format(array_sum($item->attributes['harga_add'] ?? []) + $item->model->harga ?? 0,0) }} --}}
-                            Rp. {{ number_format(array_sum((array) ($item->attributes['harga_add'] ?? [])) + ($item->model->harga ?? 0), 0) }}
+                            Rp. {{ number_format(array_sum((array) ($item->attributes['harga_add'] ?? [])) + ($item->model->harga_diskon ?? 0), 0) }}
 
                         </p>
                         @else
                         <p class="text-xs text-gray-500 truncate dark:text-red-500">
-                            Rp. {{ number_format(array_sum((array) ($item->attributes['harga_paket'] ?? [])) + ($item->model->harga ?? 0), 0) }}
+                            Rp. {{ number_format(array_sum((array) ($item->attributes['harga_paket'] ?? [])) + ($item->model->harga_diskon ?? 0), 0) }}
 
                         </p>
                         @endif
@@ -198,6 +199,48 @@
     </div>
 </section> --}}
 
+{{-- @if (Auth::user()->no_meja == null)
+    
+<div class="text-left max-w-sm h-96 bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+    <div class="p-2 space-x-4">
+        <p class="text-lg font-semibold text-center dark:text-white">Pilih Category</p>
+    </div>
+    <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
+    <ul class="max-w-sm divide-y divide-gray-200 dark:divide-gray-700 px-3">
+        <li class="py-3 sm:py-2">
+            <div class="flex items-center space-x-4">
+              <div class="flex-shrink-0">
+                <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/takeaway.png') }}" alt="Neil image">
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                  Takeway
+                </p>
+              </div>
+              <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                <input id="takeaway-radio" type="radio" value="Takeaway" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+            </div>
+            </div>
+        </li>
+        <li class="py-3 sm:py-2">
+            <div class="flex items-center space-x-4">
+            <div class="flex-shrink-0">
+                <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/dinein.png') }}" alt="Neil image">
+            </div>
+            <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                    Dine In
+                </p>
+            </div>
+            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                <input id="dine-in-radio" type="radio" value="Dine In" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+            </div>
+        </div>
+    </li>
+    </ul>
+</div> --}}
+{{-- @endif --}}
+
 <section class="p-3" style="text-align: -webkit-center;">
     <div class="text-left max-w-sm bg-white border border-gray-200 rounded-[30px] shadow dark:bg-gray-800 dark:border-gray-700">
         <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700 px-3 mt-2">
@@ -217,18 +260,6 @@
                 <div class="flex items-start space-x-4">
                     <div class="flex-1 min-w-0">
                         <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
-                            PB01 10%
-                        </p>
-                    </div>
-                    <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
-                        Rp. {{ number_format((\Cart::getTotal() ?? '0') * 11/100,2 )  }}
-                    </div>
-                </div>
-            </li>
-            <li class="py-3 sm:py-3">
-                <div class="flex items-start space-x-4">
-                    <div class="flex-1 min-w-0">
-                        <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
                             Layanan
                         </p>
                     </div>
@@ -237,10 +268,23 @@
                         $biaya_layanan = 5000;
 
                     ?>
-                    Rp. {{ number_format($biaya_layanan ?? '0',2) }}
+                    Rp. {{ number_format((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100,2 )  }}
                     </div>
                 </div>
             </li>
+            <li class="py-3 sm:py-3">
+                <div class="flex items-start space-x-4">
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
+                            PB01 10%
+                        </p>
+                    </div>
+                    <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
+                        Rp. {{ number_format((\Cart::getTotal() ?? '0') * $order_settings[0]->pb01/100,2 )  }}
+                    </div>
+                </div>
+            </li>
+            
             <li class="py-3 sm:py-3">
                 <div class="flex items-start space-x-4">
                     <div class="flex-1 min-w-0">
@@ -251,7 +295,7 @@
                     <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white">
                         @if (\Cart::getTotal() ?? 0)
                             
-                        Rp. {{ number_format(\Cart::getTotal() * 10/100 + \Cart::getTotal() + $biaya_layanan ,2 ) }}
+                        Rp. {{ number_format(\Cart::getTotal() * $order_settings[0]->pb01/100 + \Cart::getTotal() + $order_settings[0]->layanan ,2 ) }}
                         @else
                         Rp. 0
                         @endif
@@ -335,21 +379,25 @@
                 'order_id' : result.order_id,
                 'data_menu' : data,
             };
-
             $.ajax({
-                url: 'api/data/success-order',
-                method: "POST", // First change type to method here   
-                data: newData,
-                success: function(callback) {
-                    window.location.href = '/home'
-                    console.log('Callback', callback);
-
+                type: 'POST',
+                url: "{{ route('success-order') }}",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                error: function(error) {
-                    alert("error" + error);
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "data": newData
+                },
+                success: function (data) {
+                    window.location.href = '/home';
+                    // console.log('Callback', data);
+                },
+                error: function (data) {
+                    alert("error" + JSON.stringify(error));
                 }
-            });    
-          console.log(result);
+            });
+        //   console.log(result);
         },
         onPending: function(result){
           /* You may add your own implementation here */

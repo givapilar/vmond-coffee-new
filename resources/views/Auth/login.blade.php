@@ -15,7 +15,7 @@
         <div class="w-full bg-transparent md:mt-0 max-w-md xl:p-0">
             <div class="px-6 py-2 space-y-4 md:space-y-6 ">
 
-                <form class="space-y-4 md:space-y-6" action="{{ route('login', ['jenis_meja' => Request::get('jenis_meja'), 'no_meja' => Request::get('no_meja')]) }}" method="POST">
+                <form class="space-y-4 md:space-y-6" action="{{ route('login', ['jenis_meja' => Request::get('jenis_meja'), 'kode_meja' => Request::get('kode_meja')]) }}" method="POST">
                     @csrf
                     <div>
                         <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username / Phone Number</label>

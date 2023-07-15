@@ -18,7 +18,7 @@
             <!-- Modal body -->
             <div class="p-3">
                 @foreach ($order_table as $item)
-                @if ($item->status_pembayaran == 'Paid' && $item->status_pesanan != 'selesai')
+                @if ($item->status_pembayaran == 'Paid')
                 <button type="button" class="w-full h-auto" data-modal-target="detail-pesanan-modal{{ $item->id }}" data-modal-toggle="detail-pesanan-modal{{ $item->id }}">
                     <div class="flex items-center bg-gray-600 rounded-lg p-2 border border-gray-500 hover:brightness-75 mt-3">
                         <div class="relative inline-block shrink-0">

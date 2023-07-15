@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Order;
 use App\Models\OrderPivot;
+use App\Models\Restaurant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
@@ -41,12 +42,18 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('*', function (){
             // $orderTable = Order::where('user_id', Auth::user()->id)->where('status', 'Paid')->get();
             // $orderPivot = Order::finorFail();
-            $orderTable = Order::get();
+            // $orderTable = Order::get();
+            if (Auth::user()) {
+                $orderTable = Order::where('user_id', Auth::user()->id)->get();
+            }else{
+                $orderTable = [];
+            }
             // $data['data_carts_image'] = \Cart::session(Auth::user()->id)->getContent();
 
-            // $orderTable = OrderPivot::get();
             // dd($orderPivot);
             View::share('order_table',$orderTable);
+            $restaurantMenu = Restaurant::get();
+            View::share('restaurantMenu',$restaurantMenu);
             // View::share($data);
 
         });
