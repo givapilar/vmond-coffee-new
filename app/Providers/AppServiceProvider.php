@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Order;
 use App\Models\OrderPivot;
+use App\Models\OtherSetting;
 use App\Models\Restaurant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
@@ -54,8 +55,17 @@ class AppServiceProvider extends ServiceProvider
             View::share('order_table',$orderTable);
             $restaurantMenu = Restaurant::get();
             View::share('restaurantMenu',$restaurantMenu);
+            $otherSetting = OtherSetting::get();
+            View::share('otherSetting',$otherSetting);
             // View::share($data);
 
+            if (Auth::check()) {
+                // if ($request->has('jenis_meja') && $request->has('kode_meja')) {
+                //     $user->kode_meja = $request->kode_meja;
+                //     $user->jenis_meja = $request->jenis_meja;
+                //     $user->save();
+                // } 
+            }
         });
 
         // $orderTable = Order::where('user_id', (Auth::user()->id ?? 2))->get();

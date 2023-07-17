@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 
 class DetailController extends Controller
 {
-    public function detailRestaurant($id)
+    public function detailRestaurant($id, $category)
     {
         // dd();
         $data ['image'] = 'https://managementvmond.controlindo.com/assets/images/restaurant/';
@@ -25,6 +25,9 @@ class DetailController extends Controller
         $data['restaurant_add_on'] = RestaurantAddOn::where("restaurant_id",$id)
         ->pluck('add_on_id')
         ->all();
+        $category = $category;
+        $data['category'] = $category;
+
         // dd($restaurant);
         return view('daftarmenu.detail-restaurant',$data);
     }

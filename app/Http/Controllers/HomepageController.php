@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MejaRestaurant;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,10 +36,11 @@ class HomepageController extends Controller
 
         // if (Auth::check()) {
             $orderFinishSubtotal = Order::where('user_id',Auth::user()->id)->where('status_pembayaran','Paid')->sum('total_price');
+            $meja_restaurants = MejaRestaurant::get();
         // }
         // dd($orderFinishSubtotal);
         $orderTableId['orderTable'] = Order::where('user_id', Auth::user()->id)->get();
 
-        return view('homepage.index', compact(['response_data','response_data_biliard','response_data_meeting_room','response_data_banner','orderFinishSubtotal','orderTableId']),$orderTableId);
+        return view('homepage.index', compact(['response_data','response_data_biliard','response_data_meeting_room','response_data_banner','orderFinishSubtotal','orderTableId', 'meja_restaurants']),$orderTableId);
     }
 }

@@ -37,7 +37,7 @@
                         </div>
 
 
-                        @if ($item->status_pesanan == 'Clear')
+                        @if ($item->status_pesanan == 'selesai')
                         
                         <div class="">
                             <div class="w-10 h-10 bg-green-400 mx-auto rounded-full text-lg text-white flex items-center">
@@ -54,7 +54,7 @@
 
                         {{-- Selesai --}}
 
-                        @if ($item->status_pesanan == 'Clear')
+                        @if ($item->status_pesanan == 'selesai')
                         <div class="w-1/5 align-center items-center align-middle content-center flex">
                             <div class="w-full bg-gray-300 rounded items-center align-middle align-center flex-1">
                                  <div class="bg-green-300 text-xs leading-none py-1 text-center text-grey-darkest rounded " style="width: 100%"></div>
@@ -69,7 +69,7 @@
                         @endif
 
 
-                        @if ($item->status_pesanan == 'Clear')
+                        @if ($item->status_pesanan == 'selesai')
                             
                         <div class="">
                             <div class="w-10 h-10 bg-green-400 mx-auto rounded-full text-lg text-white flex items-center">

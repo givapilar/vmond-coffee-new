@@ -10,6 +10,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\HomepageController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,9 @@ use App\Http\Controllers\HomepageController;
 */
 // Route::auth();
 Route::get('/', function () {
+    if (Auth::check()) {
+        return redirect()->route('homepage');
+    }
     return view('Auth.login');
 });
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
@@ -34,7 +38,7 @@ Route::get('/home', [HomepageController::class, 'index'])->name('homepage');
 Route::get('/daftarmenu/restaurant', [DaftarMenuController::class, 'restaurant'])->name('daftar-restaurant');
 // Detial Resto
 // Route::get('/daftarmenu/detail-resto/{$id}', [DetailController::class, 'restaurant'])->name('detail-resto');
-Route::get('/daftarmenu/restaurant/{id}', [DetailController::class, 'detailRestaurant'])->name('detail-resto');
+Route::get('/daftarmenu/restaurant/{id}/{category}', [DetailController::class, 'detailRestaurant'])->name('detail-resto');
 Route::get('/daftarmenu/billiard/{id}', [DetailController::class, 'detailBilliard'])->name('detail-billiard');
 Route::get('/daftarmenu/meeting-room/{id}', [DetailController::class, 'detailMeeting'])->name('detail-meeting');
 
@@ -142,3 +146,10 @@ Route::post('/check-schedule',[APIController::class,'checkDateSchedule'])->name(
 Route::post('/check-schedule-meeting',[APIController::class,'checkDateScheduleMeeting'])->name('check-schedule-meeting');
 
 Route::post('/data/success-order',[OrderController::class,'successOrder'])->name('success-order');
+
+// Success order Waiters
+Route::post('/checkout/checkout-waiters',[OrderController::class,'checkoutWaiters'])->name('checkout-waiters');
+
+// delete meja id
+
+Route::get('/checkout/destroy',[OrderController::class,'resetMeja'])->name('reset-meja');

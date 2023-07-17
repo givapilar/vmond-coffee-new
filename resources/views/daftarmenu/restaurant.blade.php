@@ -16,7 +16,7 @@
             $processedTags = []; // Array untuk menyimpan tag yang telah diproses
             @endphp
 
-            @foreach ($tags as $item)
+            @foreach ($tags->sortByDesc('created_at') as $item)
                 @php
                 $isTagProcessed = false; // Flag untuk menandai apakah tag telah diproses sebelumnya
                 @endphp
@@ -49,8 +49,9 @@
             <div class="grid grid-cols-2">
                 @foreach ($restaurants as $resto)
                 @foreach ($resto->restaurantTag as $pivot)
-                    @if ($pivot->tag_id == $item->id)
-                    @if ($resto->category == $category)
+                {{-- {{ dd($resto->description) }} --}}
+                @if ($pivot->tag_id == $item->id)
+                @if ($resto->category == $category)
                 <div class="text-base sm:text-sm px-1 py-3">
                     <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
                         <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80" alt="." class="object-cover object-center h-full w-full">
@@ -60,7 +61,8 @@
                         <span class="block text-[10px] dark:text-red-500">Rp.{{ number_format($resto->harga_diskon,2) }} </span>
 
                         <div class="flex gap-1 opacity-75 mt-auto">
-                            <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" data-modal-target="description-modal{{ $resto->id }}" data-modal-toggle="description-modal{{ $resto->id }}"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                            {{-- <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" data-modal-target="description-modal-resto{{ $resto->id }}" data-modal-toggle="description-modal-resto{{ $resto->id }}"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button> --}}
+                            <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" data-modal-target="description-modal-resto{{ $resto->id }}" data-modal-toggle="description-modal-resto{{ $resto->id }}"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
                             {{-- <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button> --}}
                             {{-- <form action="{{ route('add-cart-billiard',$resto->id) }}" method="get" class=" w-8/12">
                                 <div class="flex gap-1 opacity-75">
@@ -70,7 +72,7 @@
                                     <button class="w-full bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
                                 </div>
                             </form> --}}
-                            <form action="{{ route('detail-resto',$resto->id) }}" method="get" class=" w-8/12">
+                            <form action="{{ route('detail-resto',['id' => $resto->id,'category' => request()->category]) }}" method="get" class=" w-8/12">
                                 <div class="flex gap-1 opacity-75 w-full">
                                     {{-- <input type="hidden" name="quantity" value="1" id="">
                                     <input type="hidden" name="image" value="{{ $global_url_image . $resto->image }}" id="">
@@ -82,8 +84,8 @@
                             </form>
                         </div>
                     </div>
-                    @include('modal.description')
                 </div>
+                @include('modal.description')
                 @endif
                 @endif
                 @endforeach
@@ -147,13 +149,30 @@
 
 @push('script-bot')
 <script>
-    $('#myTab').slick({
-        infinite:false,
-        arrows: true,
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        autoplay: false,
-        speed:100,
+    $(document).ready(function() {
+        // Menghitung panjang huruf untuk setiap tab
+        var tabLengths = [];
+        $('#myTab li').each(function(index) {
+            var tabText = $(this).text();
+            var textLength = tabText.length;
+            tabLengths.push(textLength);
+        });
+
+        // Mengambil nilai maksimum dari panjang huruf
+        var maxTabLength = Math.max.apply(null, tabLengths);
+
+        // Menghitung jumlah slide yang akan ditampilkan berdasarkan panjang huruf
+        var slidesToShow = Math.ceil(maxTabLength / 10); // Misalnya, setiap slide menampilkan 10 huruf
+
+        // Menginisialisasi Slick slider dengan konfigurasi dinamis
+        $('#myTab').slick({
+            infinite: false,
+            arrows: true,
+            slidesToShow: slidesToShow,
+            slidesToScroll: 1,
+            autoplay: false,
+            speed: 100
+        });
     });
 
     // window.addEventListener("load", function(event) {

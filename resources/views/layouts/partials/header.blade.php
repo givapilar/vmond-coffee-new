@@ -5,6 +5,7 @@
             <a href="https://flowbite.com/" class="">
                 <span class="block self-center text-2xl font-semibold whitespace-nowrap dark:text-white">VMOND</span>
                 <span class="block self-center text-xs font-normal whitespace-nowrap dark:text-white">Hi, {{ Auth::user()->username ?? 'Guest' }}</span>
+                {{-- <img src="{{ asset('assetku/dataku/img/logo/logo-vmond.png') }}" width="90" alt=""> --}}
             </a>
 
             @php

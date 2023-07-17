@@ -88,14 +88,20 @@
                     </div>
                 </div>
 
+                <?php
+                    $totalHarga = 0;
+                ?>
                 @foreach ($item->orderPivot as $order)
+                <?php
+                    $totalHarga += $order->restaurant->harga ?? 0 * ($order->qty ?? 1);
+                ?>
                 <div class="flex -mx-1 border-b py-2 items-center">
                     <div class="px-1 w-3/12 text-center">
                         <p class="text-gray-800 dark:text-gray-400 uppercase tracking-wide text-sm font-bold">{{ $order->restaurant->nama ?? '' }}</p>
                     </div>
 
                     <div class="px-1  w-3/12 text-center">
-                        <p class="text-gray-800 dark:text-gray-400 uppercase tracking-wide text-sm font-bold">{{ $order->restaurant->harga ?? ''}}</p>
+                        <p class="text-gray-800 dark:text-gray-400 uppercase tracking-wide text-sm font-bold">Rp.{{ number_format(($order->restaurant->harga ?? 0))}}</p>
                     </div>
 
                     <div class="px-1  w-3/12 text-center">
@@ -106,7 +112,7 @@
 
                     <div class="px-1  w-3/12 text-center">
                         <p class="leading-none">
-                            <span class="block uppercase tracking-wide text-sm font-bold text-gray-800 dark:text-gray-400">{{ $order->restaurant->harga ?? 0 * ($order->qty ?? 1) }}</span>
+                            <span class="block uppercase tracking-wide text-sm font-bold text-gray-800 dark:text-gray-400">Rp.{{ number_format(($order->restaurant->harga ?? 0) * ($order->qty ?? 1)), 2}}</span>
                         </p>
                     </div>
                 </div>
@@ -115,25 +121,26 @@
                 <div class="py-2 ml-auto mt-5 w-full w-2/4">
 
                     <div class="flex justify-between mb-4">
-                        <div class="text-sm text-gray-400 text-right flex-1">Layanan</div>
+                        <div class="text-sm text-gray-400 text-right flex-1">Service({{ $otherSetting[0]->layanan }}%)</div>
                         <div class="text-right w-40">
                             <div class="text-sm text-gray-400" >
                                 <?php
-                                $biaya_layanan = 5000;
+                                    $biaya_layanan = number_format(($totalHarga ?? 0) * $otherSetting[0]->layanan/100,0 );
                                 ?>
-                                {{ number_format(($order->restaurant->harga ?? 0 * ($order->qty ?? 1)) * 5/100,2)  }}
-                                {{-- {{ number_format($item->total_price * 5/100,0 )  }} --}}
-                                {{-- {{ number_format($biaya_layanan ?? '0',0) }} --}}
+                                Rp.{{  $biaya_layanan }}
                             </div>
                         </div>
                     </div>
 
                     <div class="flex justify-between mb-4">
-                        <div class="text-sm text-gray-400 text-right flex-1">PB01%</div>
+                        <div class="text-sm text-gray-400 text-right flex-1">PB01({{ $otherSetting[0]->pb01 }}%)</div>
                         <div class="text-right w-40">
                             <div class="text-sm text-gray-400">
-                                {{-- {{ number_format($item->total_price * 10/100,0 )  }} --}}
-                                {{ number_format(($order->restaurant->harga ?? 0) * ($order->qty ?? 1) * 10/100,2)  }}
+                                <?php
+                                    $biaya_pb01 = number_format((($totalHarga  ?? 0) + ($totalHarga ?? 0) * $otherSetting[0]->layanan/100) * $otherSetting[0]->pb01/100,0);
+                                ?>
+
+                                Rp.{{ $biaya_pb01 }} 
                             </div>
                         </div>
                     </div>
@@ -144,16 +151,22 @@
                         <div class="flex justify-between">
                             <div class="text-xl text-gray-400 text-right flex-1">Total</div>
                             <div class="text-right w-40">
-                                <div class="text-xl text-gray-400">{{ number_format($item->total_price,0 )  }}</div>
+                                <div class="text-xl text-gray-400">
+                                    @if ($totalHarga)
+                                    Rp.{{ number_format(($totalHarga + (($totalHarga ?? '0') * $otherSetting[0]->layanan/100)) + (($totalHarga  ?? '0') + ($totalHarga ?? '0') * $otherSetting[0]->layanan/100) * $otherSetting[0]->pb01/100,0)}}
+                                    @else
+                                    Rp.0
+                                    @endif    
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="mt-3 flex items-center w-full">
+                    {{-- <div class="mt-3 flex items-center w-full">
                         <a href="{{ route('cetak-pdf',Crypt::encryptString($item->id)) }}" class="bg-red-600 text-white text-md rounded-lg mt-2 p-1 w-full text-center hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-sky-300">
                             <ion-icon name="document" class="text-white"></ion-icon> PDF
                         </a>
-                    </div>
+                    </div> --}}
                 </div>
                 <!-- Print Template -->
             </div>

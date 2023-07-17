@@ -9,6 +9,7 @@ use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Fortify;
@@ -21,7 +22,7 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+
     }
 
     /**
@@ -42,19 +43,13 @@ class FortifyServiceProvider extends ServiceProvider
             $user = User::where('username', $request->email)->orWhere('telephone', $request->email)->first();
             // dd($request->all()); 
             if ($user && Hash::check($request->password, $user->password)) {
-                    // if ($user->is_worker == false) {
-                        if ($request->has('jenis_meja') && $request->has('kode_meja')) {
-                            $user->kode_meja = $request->kode_meja;
-                            $user->jenis_meja = $request->jenis_meja;
-                            $user->save();
-                        } 
-                        // else 
-                    //     {
-                    //         return false;
-                    //     }
-                }
-                return $user;
-            // }
+                if ($request->has('jenis_meja') && $request->has('kode_meja')) {
+                    $user->kode_meja = $request->kode_meja;
+                    $user->jenis_meja = $request->jenis_meja;
+                    $user->save();
+                } 
+            }
+            return $user;
         });
 
         // Fortify::registerView(function () {
@@ -67,7 +62,14 @@ class FortifyServiceProvider extends ServiceProvider
 
         RateLimiter::for('login', function (Request $request) {
             $email = (string) $request->email;
-
+            if (Auth::user()) {
+                $user = User::where('username', Auth::user()->email)->orWhere('telephone', Auth::user()->email)->first();
+                if ($request->has('jenis_meja') && $request->has('kode_meja')) {
+                    $user->kode_meja = $request->kode_meja;
+                    $user->jenis_meja = $request->jenis_meja;
+                    $user->save();
+                } 
+            }
             return Limit::perMinute(5)->by($email.$request->ip());
         });
 

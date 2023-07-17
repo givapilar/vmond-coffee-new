@@ -84,32 +84,6 @@ class CartOrdersController extends Controller
 
     public function addCartRestaurant(Request $request,$id)
     {
-
-        // Print Printer Termal
-
-        // $profile = CapabilityProfile::load("P");
-        // $connector = new WindowsPrintConnector("epsonKasir");
-        // $printer = new Printer($connector, $profile);
-
-        
-        // // Contoh teks yang akan dicetak
-        // $text = "Terima kasih atas pembayaran Anda.";
-
-        // $printer->text($text);
-        // $printer->feed();
-        // $printer->cut();
-
-        // $printer->close();
-
-        // $connector = new NetworkPrintConnector("192.168.23.18", 9100);
-        // $printer = new Printer($connector);
-        // try {
-        //     $text = "Terima kasih atas pembayaran Anda.";
-        // } finally {
-        //     $printer -> close();
-        // }
-
-        // $countAddOn = count($request->harga_add);
         $dataHargaAddon = [];
         if ($request->harga_add != null) {
             foreach ($request->harga_add as $key => $val) {
@@ -129,6 +103,7 @@ class CartOrdersController extends Controller
         // dd($restaurant->addOns->isNotEmpty());
 
         $countAddOn = $request->harga_add ? count($request->harga_add) : 0;
+        // dd($countAddOn);
         // dd($request->minimum);
         if (($countAddOn < $request->minimum) && $restaurant->addOns->isNotEmpty()) {
             return redirect()->back()->with(['failed' => 'Harap Pilih Add On Sesuai minimum !!']);
@@ -146,7 +121,7 @@ class CartOrdersController extends Controller
 
         // Pengecekan Login
         
-        // dd($request->all());
+        // dd($dataHargaAddon);
         $validator = Validator::make($request->all(), [
             'qty' => 'nullable',
             'category' => 'nullable',
@@ -170,8 +145,9 @@ class CartOrdersController extends Controller
                     'restaurant' => $restaurant,
                     'category' => $request->category,
                     'add_on_title' => $request->add_on_title,
-                    'harga_add' => array_sum($dataHargaAddon),
-                    // 'harga_add' => $dataHargaAddon,
+                    // 'harga_add' => array_sum($dataHargaAddon),
+                    'harga_add' => $dataHargaAddon,
+                    'detail_addon_id' => $request->harga_add,
                 ),
                 'conditions' => 'Restaurant',
                 'associatedModel' => $restaurant
@@ -191,9 +167,11 @@ class CartOrdersController extends Controller
             //     'associatedModel' => $restaurant
             ));
             // dd($tes);
-            return redirect()->route('daftar-restaurant')->with('message', 'Data berhasil dimasukkan ke dalam keranjang !');
+            $category = $request->category;
+            return redirect()->route('daftar-restaurant', ['category' => $category])->with('success', 'Berhasil masuk cart!');
         } else {
-            return redirect()->route('daftar-restaurant')->with('message', 'Harap Login Terlebih Dahulu !');
+            $category = $request->category;
+            return redirect()->route('daftar-restaurant', ['category' => $category])->with('failed', 'Harap Login Terlebih Dahulu !');
         }
     }
 

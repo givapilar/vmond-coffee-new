@@ -149,6 +149,53 @@
             
         </div>
     </div>
+
+            
+
+        <section class="p-3" style="text-align: -webkit-center;">
+        @if (Auth::user()->is_worker == true )
+            <div class="text-left max-w-sm bg-white border border-gray-200 rounded-[30px] shadow dark:bg-gray-800 dark:border-gray-700">
+                <div class="text-left max-w-sm h-96 bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+                    <div class="p-2 space-x-4">
+                        <p class="text-lg font-semibold text-center dark:text-white">Pilih Exclusive Order</p>
+                    </div>
+                    <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
+                    <ul class="max-w-sm divide-y divide-gray-200 dark:divide-gray-700 px-3">
+                        <li class="py-3 sm:py-2">
+                            <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0">
+                                <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/takeaway.png') }}" alt="Neil image">
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                    Payment Gateway Online 
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                <input id="payment_gateaway" required type="radio" value="Payment Gateaway Online" name="tipe_pemesanan" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            </div>
+                            </div>
+                        </li>
+                        <li class="py-3 sm:py-2">
+                            <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0">
+                                <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/dinein.png') }}" alt="Neil image">
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                    Edisi
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                <input id="edisi" required type="radio" value="Edisi" name="tipe_pemesanan" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            </div>
+                        </div>
+                    </li>
+                </div>
+            </div>
+        @endif
+            
+        </section>
     
         <div class="mt-2">
             <input type="hidden" name="id" value="{{ $paket_menu->id }}" id="">

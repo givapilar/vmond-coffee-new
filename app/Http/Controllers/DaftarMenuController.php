@@ -35,7 +35,7 @@ class DaftarMenuController extends Controller
         }elseif($category == 'drink'){
             $category = 'Minuman';
         }else{
-            $category = 'Makanan';
+            $category = 'Minuman';
         }
 
         $data ['add_ons'] = AddOn::get();

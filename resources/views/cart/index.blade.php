@@ -21,8 +21,7 @@
     
     <div class="grid grid-cols-2 sm:grid-cols-1 gap-4 sm:gap-1">
         <div class="max-w-sm h-96 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
-            @foreach ($data_carts as $item)
-
+            @foreach ($data_carts as $key => $item)
             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
             {{-- <input type="hidden" name="category" value="restaurant"> --}}
             {{-- {{ dd($item) }} --}}
@@ -47,11 +46,10 @@
                             </p>
                             @endif
 
-                            @if ( $item->model->current_stok)
                             <p>
-                                <span class="block text-[10px] dark:text-yellow-300">Stock {{ $item->model->current_stok }}</span>
+                                <span class="block text-[10px] dark:text-yellow-300">Stock {{ $item->model->current_stok ?? 0 }}</span>
                             </p>
-                            @endif
+                            
                             {{-- <p class="text-xs text-gray-500 truncate dark:text-gray-400" id="note">
                             </p> --}}
                             {{-- {{ dd($item->attributes) }} --}}
@@ -72,7 +70,6 @@
                             {{-- <p class="text-xs text-gray-500  dark:text-red-500">
                                 Note {{ implode(', ', $item->attributes['add_on_title']) }} {{ implode(', ', $item->attributes['harga_add']) }}  
                                 {{ array_sum($item->attributes['harga_add']) }}
-
                             </p> --}}
 
 
@@ -95,11 +92,11 @@
                             </div>
                         </div>
                         <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                            <button class="flex justify-center items-center w-10 h-10 rounded-full p-2 bg-red-500 hover:bg-red-600 focus:ring-red-900 focus:ring-4"  data-modal-toggle="deleteModal">
+                            <button class="flex justify-center items-center w-10 h-10 rounded-full p-2 bg-red-500 hover:bg-red-600 focus:ring-red-900 focus:ring-4"  data-modal-toggle="deleteModal-{{ $key }}">
                                 <ion-icon name="trash" class=""></ion-icon>
                             </button>
 
-                            <div id="deleteModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full sm:inset-0 h-full delay-200">
+                            <div id="deleteModal-{{ $key }}" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full sm:inset-0 h-full delay-200">
                                 <div class="relative p-4 w-full max-w-md h-auto">
                                     <!-- Modal content -->
                                     <div class="relative p-4 text-center bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
@@ -113,7 +110,7 @@
                                             <button data-modal-toggle="deleteModal" type="button" class="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                                                 No, cancel
                                             </button>
-                                            <a href="{{ route('delete-cart', $item->id)}}" class="btn btn-danger py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
+                                            <a href="{{ route('delete-cart', $key)}}" class="btn btn-danger py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
                                                 Yes, I'm sure
                                             </a>
                                             {{-- <button type="submit" class="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
@@ -164,7 +161,10 @@
             </ul>
         </div>
 
-        @if (Auth::user()->no_meja == null )
+        {{-- @if (Auth::user()->kode_meja)
+            <input type="hidden" name="meja_restaurant_id" value="{{ Auth::user()->kode_meja }}">
+        @endif --}}
+        @if (Auth::user()->kode_meja == null )
             
         <div class="text-left max-w-sm h-96 bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
             <div class="p-2 space-x-4">
@@ -183,7 +183,7 @@
                         </p>
                       </div>
                       <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                        <input id="takeaway-radio" type="radio" value="Takeaway" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        <input id="takeaway-radio" required type="radio" value="Takeaway" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                     </div>
                     </div>
                 </li>
@@ -198,7 +198,7 @@
                         </p>
                     </div>
                     <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                        <input id="dine-in-radio" type="radio" value="Dine In" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        <input id="dine-in-radio" required type="radio" value="Dine In" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                     </div>
                 </div>
             </li>
@@ -215,10 +215,114 @@
                 </li>
             </ul>
         </div>
+        @else
+        <div class="text-left max-w-sm h-96 bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+            <div class="p-2 space-x-4">
+                <p class="text-lg font-semibold text-center dark:text-white">Pilih Category</p>
+            </div>
+            <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
+            <ul class="max-w-sm divide-y divide-gray-200 dark:divide-gray-700 px-3">
+                <li class="py-3 sm:py-2">
+                    <div class="flex items-center space-x-4">
+                      <div class="flex-shrink-0">
+                        <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/takeaway.png') }}" alt="Neil image">
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                          Takeway
+                        </p>
+                      </div>
+                      <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                        <input id="takeaway-radiooo" required type="radio" value="Takeaway" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" disabled>
+                    </div>
+                    </div>
+                </li>
+                <li class="py-3 sm:py-2">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex-shrink-0">
+                            <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/dinein.png') }}" alt="Neil image">
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                Dine In
+                            </p>
+                        </div>
+                        <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                            <input id="dine-in-radio" required type="radio" value="Dine In" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" checked>
+                        </div>
+                    </div>
+                </li>
+                <li class="py-3 sm:py-2" style="" id="meja-wrapper">
+                    <div id="select-input-wrapper">
+                        <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja</label>
+                        <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option disabled selected>Pilih Meja Restaurant</option>
+                            @foreach ($meja_restaurants as $key => $meja_restaurant)
+                            @if (Auth::user()->kode_meja == $meja_restaurant->kode_meja)
+                            <option value="{{ $meja_restaurant->id }}" selected>{{ $meja_restaurant->nama }}</option>
+                            @endif
+                            @endforeach
+                        </select>
+                    </div>
+                </li>
+
+                {{-- <form action="{{ route('reset-meja') }}"> --}}
+                    {{-- <a href="{{ route('reset-meja') }}" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-red-700 focus:ring-2 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
+                        <button>
+                            Hapus Meja
+                        </button>
+                    </a> --}}
+                    <a href="{{ route('reset-meja') }}" >
+                        <button type="button" class="w-full h-full p-3 bg-blue-500 dark:text-white mt-auto rounded-[30px] hover:bg-red-700 focus:ring-2 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">Reset Meja</button>
+                    </a>
+                {{-- </form> --}}
+
+            </ul>
+        </div>
+
         @endif
 
 
-        {{-- {{ dd($jam) }} --}}
+        {{-- Untuk Waiters --}}
+        @if (Auth::user()->is_worker == true )
+        <div class="text-left max-w-sm h-36 bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+            <div class="p-2 space-x-4">
+                <p class="text-lg font-semibold text-center dark:text-white">Pilih Exclusive Order</p>
+            </div>
+            <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
+            <ul class="max-w-sm divide-y divide-gray-200 dark:divide-gray-700 px-3">
+                <li class="py-3 sm:py-2">
+                    <div class="flex items-center space-x-4">
+                      {{-- <div class="flex-shrink-0">
+                        <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/takeaway.png') }}" alt="Neil image">
+                      </div> --}}
+                      <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                            Payment Gateway Online 
+                        </p>
+                      </div>
+                      <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                        <input id="payment_gateaway" required type="radio" value="Payment Gateaway Online" name="tipe_pemesanan" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                    </div>
+                    </div>
+                </li>
+                <li class="py-3 sm:py-2">
+                    <div class="flex items-center space-x-4">
+                    {{-- <div class="flex-shrink-0">
+                        <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/dinein.png') }}" alt="Neil image">
+                    </div> --}}
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                            EDC
+                        </p>
+                    </div>
+                    <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                        <input id="edisi" required type="radio" value="Edisi" name="tipe_pemesanan" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                    </div>
+                </div>
+            </li>
+        </div>
+        @endif
 
         @foreach ($processedCartItems as $item)
         {{-- {{ dd($processedCartItems) }} --}}
@@ -423,8 +527,8 @@
                     </div>
                     <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
                         {{-- {{ dd(number_format($total)) }} --}}
-                        {{-- Rp. {{ number_format($item->model->harga ?? '0',2 ) }} --}}
-                        Rp. {{ number_format(\Cart::getTotal()  ?? '0',2 ) }}
+                        {{-- Rp. {{ number_format($item->model->harga ?? '0',0 ) }} --}}
+                        Rp. {{ number_format(\Cart::getTotal()  ?? '0',0 ) }}
                     </div>
                 </div>
             </li>
@@ -432,16 +536,15 @@
                 <div class="flex items-start space-x-4">
                     <div class="flex-1 min-w-0">
                         <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
-                            Layanan {{ $order_settings[0]->layanan }}%
+                            Service {{ $order_settings[0]->layanan }}%
                         </p>
                     </div>
                     <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
                         <?php
-                        $biaya_layanan = 5000;
-
-                    ?>
+                            $biaya_layanan = number_format((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100,0 );
+                        ?>
                     {{-- {{ $order_settings[0]->layanan }} --}}
-                    Rp. {{ number_format((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100,2 )  }}
+                    Rp. {{  $biaya_layanan }}
 
                     </div>
                 </div>
@@ -454,15 +557,15 @@
                         </p>
                     </div>
                     <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
-                        @php
-                            // $pbo1String = strval($order_settings[0]->pbo1);
-                        @endphp
+                        <?php
+                            $biaya_pb01 = number_format(((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100,0);
+                        ?>
 
                         {{-- {{dd($order_settings[0]->pb01)}} --}}
-                        Rp. {{ number_format((\Cart::getTotal() + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->layanan/100  ?? '0',2 ) }} 
-                    {{-- Rp. {{ number_format((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100,2 )  }} --}}
+                        Rp. {{ $biaya_pb01 }} 
+                    {{-- Rp. {{ number_format((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100,0 )  }} --}}
 
-                        {{-- Rp. {{ number_format((\Cart::getTotal() ?? '0') * $order_settings[0]->pb01/100,2 )  }} --}}
+                        {{-- Rp. {{ number_format((\Cart::getTotal() ?? '0') * $order_settings[0]->pb01/100,0 )  }} --}}
                     </div>
                 </div>
             </li>
@@ -475,21 +578,17 @@
                         </p>
                     </div>
                     <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white">
-                        @if (\Cart::getTotal() ?? 0)
-                        
-                        {{-- Rp. {{ number_format(\Cart::getTotal() *$order_settings[0]->pb01/100 + \Cart::getTotal() + $order_settings[0]->layanan ,2 ) }} --}}
-                        {{-- Rp. {{ number_format(\Cart::getTotal()  ?? '0',2 ) }} --}}
-                        {{ number_format((\Cart::getTotal() + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->layanan/100 + \Cart::getTotal() ?? 0 ,2)}}
+                        @if (\Cart::getTotal())
+                        {{-- Rp. {{ number_format(\Cart::getTotal() *$order_settings[0]->pb01/100 + \Cart::getTotal() + $order_settings[0]->layanan ,0 ) }} --}}
+                        {{-- Rp. {{ number_format(\Cart::getTotal()  ?? '0',0 ) }} --}}
+                        Rp. {{ number_format((\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100,0)}}
                         @else
                         Rp. 0
                         @endif
-
                     </div>
                 </div>
             </li>
         </ul>
-
-        
             <div class="mt-2">
                 <button class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Checkout</button>
             </div>

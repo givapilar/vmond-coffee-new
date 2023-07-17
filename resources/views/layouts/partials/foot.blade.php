@@ -297,10 +297,27 @@
 	</script>
 {{-- @endif --}}
 
-@if(session()->has('failed'))
+@if(session()->has('success'))
+    <script>
+            Toastify({
+                text: "{{ session()->get('success') }}",
+                close: true,
+                gravity: "top", // `top` or `bottom`
+                position: "right", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                    background: "#D5F3E9",
+                    color: "#1f7556"
+                },
+                duration: 3000
+            }).showToast();
+    </script>
+@endif
+
+@if(session()->has('warning'))
 <script>
         Toastify({
-            text: "{{ session()->get('failed') }}",
+            text: "{{ session()->get('warning') }}",
             close: true,
             gravity: "top", // `top` or `bottom`
             position: "right", // `left`, `center` or `right`
@@ -311,6 +328,24 @@
             },
             duration: 3000
         }).showToast();
+</script>
+@endif
+
+@if(session()->has('failed'))
+<script>
+    Toastify({
+        text: "🚨 {{ session()->get('failed') }}",
+        close: true,
+        gravity: "top", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        theme: "dark",
+        style: {
+            background: "#fde1e1",
+            color: "#924040"
+        },
+        duration: 4000
+    }).showToast();
 </script>
 @endif
 @stack('script-bot')

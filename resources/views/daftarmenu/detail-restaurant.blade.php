@@ -9,7 +9,7 @@
 @endpush
 
 @section('content')
-<section class="p-3">
+{{-- <section class="p-3">
     <div id="default-carousel" class="relative w-full" data-carousel="slide">
         <!-- Carousel wrapper -->
         <div class="relative h-36 overflow-hidden rounded-2xl shadow-2xl md:h-96">
@@ -38,155 +38,128 @@
             <button type="button" class="w-2 h-2 rounded-full" aria-current="false" aria-label="Slide 4" data-carousel-slide-to="3"></button>
         </div>
     </div>
-</section>
-
-<section class="p-3">
-    <div class="flex items-center justify-between">
-        <div class="">
-            <span class="text-lg font-bold dark:text-white ml-1">Detail Restaurant</span>
+</section> --}}
+<section class="p-3" style="text-align: -webkit-center;">
+    <div class="text-left max-w-sm bg-white border border-gray-200 rounded-[30px] shadow dark:bg-gray-800 dark:border-gray-700">
+        <div class="p-2 space-x-4">
+            <p class="text-lg font-semibold text-center dark:text-white">Detail Restaurant</p>
         </div>
-    </div>
-    <form action="{{ route('restaurant-cart',$restaurants->id) }}" method="get">
-        @csrf
-    <div class="grid grid-cols-2">
-        <div class="text-base sm:text-sm px-1 py-3 w-8/12">
-            <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80" alt="." class="object-cover object-center h-full w-full">
-            </div>
-        </div>
-
-        <input type="hidden" name="category" value="restaurant">
-        <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
-            <li class="py-3 sm:py-4">
-                <div class="flex items-start space-x-4">
-                    {{-- <div class="flex-shrink-0">
-                        <img src="{{ 'https://managementvmond.controlindo.com/assets/images/restaurant/' ?? 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80'}} " alt="" class="w-12 h-12 rounded-full">
-
-                    </div> --}}
-                    <div class="flex-1 min-w-0">
-                        <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                            {{ $restaurants->nama }}
-                        </p>
-
-                        <p>
-                            <span class="block text-[10px] dark:text-yellow-300">Stock {{ $restaurants->current_stok }}</span>
-                        </p>
-                        <p class="text-xs text-gray-500 truncate dark:text-red-500">
-                            Rp. {{ number_format($restaurants->harga_diskon) }}
-                        </p>
-
-
-                        <div class="rounded-full h-7 w-32 border border-gray-500 mt-2">
-                            <div class="grid h-full w-full grid-cols-3 mx-auto">
-                                <button type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-l-full hover:bg-gray-50 dark:hover:bg-gray-800 group">
-                                    <ion-icon name="remove" class="w-4 h-3 mb-0.5 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500" onclick="remove()"></ion-icon>
-                                    <span class="sr-only">Remove</span>
-                                </button>
-
-                                <div>
-                                    <input type="number" value="1" name="qty" id="count-items" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm text-center focus:ring-primary-600 focus:border-primary-600 block w-full py-0.5 h-full px-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 counter" placeholder="0" required="">
-                                </div>
-
-                                <button type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-r-full hover:bg-gray-50 dark:hover:bg-gray-800 group" onclick="add()">
-                                    <ion-icon name="add" class="w-4 h-3 mb-0.5 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"></ion-icon>
-                                    <span class="sr-only">Add</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                        <button class="flex justify-center items-center w-10 h-10 rounded-full p-2 bg-red-500 hover:bg-red-600 focus:ring-red-900 focus:ring-4"  data-modal-toggle="deleteModal">
-                            <ion-icon name="trash" class=""></ion-icon>
-                        </button>
-
-                        <div id="deleteModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full sm:inset-0 h-full delay-200">
-                            <div class="relative p-4 w-full max-w-md h-auto">
-                                <!-- Modal content -->
-                                <div class="relative p-4 text-center bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
-                                    <button type="button" class="text-gray-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="deleteModal">
-                                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                        <span class="sr-only">Close modal</span>
-                                    </button>
-                                    <svg class="text-gray-400 dark:text-gray-500 w-11 h-11 mb-3.5 mx-auto" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
-                                    <p class="mb-4 text-gray-500 dark:text-gray-300">Are you sure you want to delete this item?</p>
-                                    <div class="flex justify-center items-center space-x-4">
-                                        <button data-modal-toggle="deleteModal" type="button" class="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
-                                            No, cancel
-                                        </button>
-                                        <a href="" class="btn btn-danger py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
-                                            Yes, I'm sure
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+        <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
+        <form action="{{ route('restaurant-cart',$restaurants->id) }}" method="get">
+            @csrf
+            <div class="grid grid-cols-2">
+                <div class="text-base sm:text-sm px-1 py-3 w-8/12">
+                    <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
+                        <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80" alt="." class="object-cover object-center h-full w-full">
                     </div>
                 </div>
-            </li>
-        </ul>
-
-    </div>
-
-    <div class="grid grid-cols-1">
-        <div class="px-1 w-full">
-            {{-- <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">{{ $restaurants->nama_paket ?? 'Error' }}</p> --}}
-            {{-- <span class="block text-[10px] dark:text-red-500">Rp.{{ number_format($restaurants->harga,2) }} </span> --}}
-            <div>
-                @if(session()->has('failed'))
-                    <h1 class="text-red-500">{{ session()->get('failed') }}  </h1>
-                @endif
-            </div>
-            @php
-                $min = 0;
-            @endphp
-            @foreach ($add_ons as $add_on)
-                @php
-                    $min += $add_on->minimum_choice;
-                @endphp 
-                {{-- {{dd($minimum_choice)}} --}}
-                @foreach (old('add_on_id') ?? $restaurant_add_on as $id)
-                    @if ($id == $add_on->id)
-                        <div class="flex gap-1 opacity-75 mt-auto w-full">
-                            <div class="grid space-y-3">
-                                <input type="hidden" name="add_on_title[]" value="{{ $add_on->id }}" id="">
-                                
-                                <p aria-hidden="true" class="text-lg mt-1 font-semibold dark:text-gray-300">{{ $add_on->title ?? 'Error' }} (Pilih {{ $add_on->minimum_choice  }} )</p>
-                                @foreach ($add_on->detailAddOn as $item)
-                                    
-                                <div class="relative flex items-start">
-                                    <div class="flex items-center h-5 mt-1">
-                                        <input id="hs-checkbox-delete" value="{{ $item->id }}" name="harga_add[]" type="checkbox" class="{{ str_replace(' ', '-', strtolower($add_on->title)) }} border-gray-200 rounded text-blue-600 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800" aria-describedby="hs-checkbox-delete-description">
-                                        {{-- <input type="hidden" name="detail_id[]" value="{{ $item->id }}" id=""> --}}
-
+        
+                <input type="hidden" name="category" value="restaurant">
+                <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+                    <li class="py-3 sm:py-4">
+                        <div class="flex items-start space-x-4">
+                            {{-- <div class="flex-shrink-0">
+                                <img src="{{ 'https://managementvmond.controlindo.com/assets/images/restaurant/' ?? 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80'}} " alt="" class="w-12 h-12 rounded-full">
+        
+                            </div> --}}
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                    {{ $restaurants->nama }}
+                                </p>
+        
+                                <p>
+                                    <span class="block text-[10px] dark:text-yellow-300">Stock {{ $restaurants->current_stok }}</span>
+                                </p>
+                                <p class="text-xs text-gray-500 truncate dark:text-red-500">
+                                    Rp. {{ number_format($restaurants->harga_diskon) }}
+                                </p>
+        
+        
+                                <div class="rounded-full h-7 w-32 border border-gray-500 mt-2">
+                                    <div class="grid h-full w-full grid-cols-3 mx-auto">
+                                        <button type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-l-full hover:bg-gray-50 dark:hover:bg-gray-800 group">
+                                            <ion-icon name="remove" class="w-4 h-3 mb-0.5 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500" onclick="remove()"></ion-icon>
+                                            <span class="sr-only">Remove</span>
+                                        </button>
+        
+                                        <div>
+                                            <input type="number" value="1" name="qty" id="count-items" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm text-center focus:ring-primary-600 focus:border-primary-600 block w-full py-0.5 h-full px-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 counter" placeholder="0" required="">
+                                        </div>
+        
+                                        <button type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-r-full hover:bg-gray-50 dark:hover:bg-gray-800 group" onclick="add()">
+                                            <ion-icon name="add" class="w-4 h-3 mb-0.5 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"></ion-icon>
+                                            <span class="sr-only">Add</span>
+                                        </button>
                                     </div>
-                                    <label for="hs-checkbox-delete" class="ml-3">
-                                        {{-- <span class="block text-sm font-semibold text-gray-800 dark:text-gray-300">{{ $add_on->title }}</span> --}}
-                                        <span id="hs-checkbox-delete-description" class="text-sm text-gray-600 dark:text-gray-300">{{ $item->nama ?? '' }}</span> <br>
-                                        <span id="hs-checkbox-delete-description" class="text-sm text-gray-600 dark:text-gray-300">Rp. {{ $item->harga ?? '' }}</span>
-                                    </label>
                                 </div>
-                                @endforeach
-                                
                             </div>
                         </div>
-                    @endif
-                @endforeach
-            @endforeach
-            <input type="hidden" name="minimum" value="{{ $min ?? 0 }}">
-        </div>
-    </div>
+                    </li>
+                </ul>
+            </div>
     
-    
-        <div class="mt-2">
-            <input type="hidden" name="id" value="{{ $restaurants->id }}" id="">
-            <input type="hidden" name="nama" value="{{ $restaurants->nama }}" id="">
-            <input type="hidden" name="harga" value="{{ $restaurants->harga_diskon }}" id="">
-            <input type="hidden" name="image" value="{{ $image.$restaurants->image }}" id="">
+            <div class="grid grid-cols-1">
+                <div class="px-1 w-full">
+                    {{-- <p aria-hidden="true" class="text-xs mt-1 font-semibold dark:text-gray-300">{{ $restaurants->nama_paket ?? 'Error' }}</p> --}}
+                    {{-- <span class="block text-[10px] dark:text-red-500">Rp.{{ number_format($restaurants->harga,2) }} </span> --}}
+                    <div>
+                        @if(session()->has('failed'))
+                            <h1 class="text-red-500">{{ session()->get('failed') }}  </h1>
+                        @endif
+                    </div>
+                    @php
+                        $min = 0;
+                    @endphp
+                    {{-- {{dd($add_ons)}} --}}
+                    @foreach ($add_ons as $add_on)
+                        @foreach (old('add_on_id') ?? $restaurant_add_on as $id)
+                            @if ($id == $add_on->id)
+                                @php
+                                    $min += $add_on->minimum_choice;
+                                @endphp 
+                                <input type="hidden" name="minimum" value="{{ $min }}">
+                                <div class="flex gap-1 opacity-75 mt-auto w-full">
+                                    <div class="grid space-y-3">
+                                        <input type="hidden" name="add_on_title[]" value="{{ $add_on->id }}" id="">
+                                        
+                                        <p aria-hidden="true" class="text-lg mt-1 font-semibold dark:text-gray-300">{{ $add_on->title ?? 'Error' }} (Pilih {{ $add_on->minimum_choice  }} )</p>
+                                        @foreach ($add_on->detailAddOn as $item)
+                                            
+                                        <div class="relative flex items-start">
+                                            <div class="flex items-center h-5 mt-1">
+                                                <input id="hs-checkbox-delete" value="{{ $item->id }}" name="harga_add[]" type="checkbox" class="{{ str_replace(' ', '-', strtolower($add_on->title)) }} border-gray-200 rounded text-blue-600 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800" aria-describedby="hs-checkbox-delete-description">
+                                                {{-- <input type="hidden" name="detail_id[]" value="{{ $item->id }}" id=""> --}}
+        
+                                            </div>
+                                            <label for="hs-checkbox-delete" class="ml-3">
+                                                {{-- <span class="block text-sm font-semibold text-gray-800 dark:text-gray-300">{{ $add_on->title }}</span> --}}
+                                                <span id="hs-checkbox-delete-description" class="text-sm text-gray-600 dark:text-gray-300">{{ $item->nama ?? '' }}</span> <br>
+                                                <span id="hs-checkbox-delete-description" class="text-sm text-gray-600 dark:text-gray-300">Rp. {{ $item->harga ?? '' }}</span>
+                                            </label>
+                                        </div>
+                                        @endforeach
+                                        
+                                    </div>
+                                </div>
+                                    {{-- {{ dd($min) }} --}}
+                                @endif
+                            @endforeach
+                    @endforeach
+                </div>
+            </div>
 
-            {{-- <input type="hidden" name="quantity" value="1" id=""> --}}
-            <button class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Checkout</button>
-        </div>
-    </form>
+            <div class="mt-2">
+                <input type="hidden" name="id" value="{{ $restaurants->id }}" id="">
+                <input type="hidden" name="nama" value="{{ $restaurants->nama }}" id="">
+                <input type="hidden" name="harga" value="{{ $restaurants->harga_diskon }}" id="">
+                <input type="hidden" name="category" value="{{ $category }}" id="">
+                <input type="hidden" name="image" value="{{ $image.$restaurants->image }}" id="">
+
+                {{-- <input type="hidden" name="quantity" value="1" id=""> --}}
+                <button type="submit" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Add Cart</button>
+            </div>
+        </form>
+    </div>
 </section>
 
 <div class="pb-[5rem]"></div>

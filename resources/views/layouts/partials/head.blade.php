@@ -5,6 +5,7 @@
 <title>VMOND CAFE</title>
 
 <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+<link rel="shortcut icon" href="{{ asset('assetku/dataku/img/logo/vmond-logo-head.png') }}" />
 <link rel="stylesheet" href="{{ asset('assetku/dataku/css/style.css') }}">
 <link rel="stylesheet" href="{{ asset('assetku/dataku/lib/slick-1.8.1/slick/slick.css') }}">
 <link rel="stylesheet" href="{{ asset('assetku/dataku/lib/slick-1.8.1/slick/slick-theme.css') }}">
