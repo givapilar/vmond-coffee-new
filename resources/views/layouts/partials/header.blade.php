@@ -2,8 +2,8 @@
     {{-- {{ dd(substr($_SERVER['REQUEST_URI'],0,strrpos($_SERVER['REQUEST_URI'],'/'))) }} --}}
     <nav class="h-28 p-0" >
         <div class="max-w-screen-xl h-full flex flex-wrap items-start justify-between mx-auto p-4 backdrop-brightness-50">
-            <a href="https://flowbite.com/" class="">
-                <span class="block self-center text-2xl font-semibold whitespace-nowrap dark:text-white">VMOND</span>
+            <a href="{{ route('homepage') }}" class="">
+                <span class="block self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Vmond</span>
                 <span class="block self-center text-xs font-normal whitespace-nowrap dark:text-white">Hi, {{ Auth::user()->username ?? 'Guest' }}</span>
                 {{-- <img src="{{ asset('assetku/dataku/img/logo/logo-vmond.png') }}" width="90" alt=""> --}}
             </a>
@@ -13,19 +13,12 @@
             @endphp
             <div class="flex items-center sm:order-2">
 
-                {{-- <a href="{{ route('reservation') }}" class="flex mr-5">
-                    <ion-icon name="grid" class="text-2xl dark:text-white"></ion-icon>
-                </a> --}}
-
                 <a href="{{ route('cart') }}" class="flex mr-5">
                     <ion-icon name="cart" class="text-2xl dark:text-white"></ion-icon>
-                    {{-- <p class="text-white">
-                        (<?=count($cart_array)?>)
-                    </p> --}}
                     @if (Auth::check())
                         <p class="text-white">({{count(\Cart::session(Auth::user()->id)->getContent())}})</p>
                     @else
-                        <p class="text-white">(0)</p>
+                        <p class="text-white">({{count(\Cart::session('guest')->getContent())}})</p>
                     @endif
                 </a>
 

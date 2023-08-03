@@ -7,9 +7,13 @@ use App\Models\Biliard;
 use App\Models\MeetingRoom;
 use App\Models\MenuPackagePivots;
 use App\Models\MenuPackages;
+use App\Models\Order;
+use App\Models\OtherSetting;
 use App\Models\Restaurant;
 use App\Models\RestaurantAddOn;
 use App\Models\RestaurantPivot;
+use App\Models\User;
+use App\Models\UserManagement;
 use Illuminate\Http\Request;
 
 class DetailController extends Controller
@@ -27,6 +31,8 @@ class DetailController extends Controller
         ->all();
         $category = $category;
         $data['category'] = $category;
+        
+        $data['users'] = User::first();
 
         // dd($restaurant);
         return view('daftarmenu.detail-restaurant',$data);
@@ -40,12 +46,38 @@ class DetailController extends Controller
         $data ['paket_menu'] = MenuPackages::find($id);
         $data ['paket_details'] = MenuPackagePivots::get();
         $data ['billiard'] = Biliard::get();
+        $data ['add_ons'] = AddOn::get();
+        $data['restaurant_add_on'] = RestaurantAddOn::where("restaurant_id",$id)
+        ->pluck('add_on_id')
+        ->all();
+        // dd($data['restaurant_add_on']) ;
         $data ['restaurants'] = Restaurant::get();
+        $data ['userManagement'] = UserManagement::get();
+        $data ['order_settings'] = OtherSetting::get();
+        $data ['orders'] = Order::get();
         $data['menu_package_pivots'] = MenuPackagePivots::where('menu_packages_id', $id)
         ->pluck('restaurant_id')
         ->all();
         
         return view('daftarmenu.detail-billiard',$data);
+    }
+
+    public function detailBilliardGuest($id)
+    {
+        // dd();
+        $data ['image'] = 'https://managementvmond.controlindo.com/assets/images/paket-menu/';
+
+        $data ['paket_menu'] = MenuPackages::find($id);
+        $data ['paket_details'] = MenuPackagePivots::get();
+        $data ['billiard'] = Biliard::get();
+        $data ['restaurants'] = Restaurant::get();
+        $data ['order_settings'] = OtherSetting::get();
+        $data ['orders'] = Order::get();
+        $data['menu_package_pivots'] = MenuPackagePivots::where('menu_packages_id', $id)
+        ->pluck('restaurant_id')
+        ->all();
+        
+        return view('daftarmenu.detail-billiard-guest',$data);
     }
 
     public function detailMeeting($id)

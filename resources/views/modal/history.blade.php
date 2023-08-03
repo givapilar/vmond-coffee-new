@@ -20,7 +20,7 @@
 
         <div class="p-3 h-full max-h-[77%] overflow-y-scroll">
             @foreach ($order_table as $item)
-                @if ($item->status_pembayaran == 'Paid' && $item->status_feedback == true)
+                @if ($item->status_feedback == true)
                 {{-- <form action="{{ route('history-penjualan',$item->id) }}"> --}}
                     <button type="submit" class="w-full h-auto" data-modal-target="history-detail-modal{{ $item->code }}" data-modal-toggle="history-detail-modal{{ $item->code }}">
                         <div class="flex items-center bg-gray-600 rounded-lg p-2 border border-gray-500 hover:brightness-75 mt-3">
@@ -29,7 +29,7 @@
                             </div>
                             <div class="grow ml-3 text-sm font-normal text-start">
                                 <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ $item->name ?? 'Not' }}</div>
-                                <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ number_format($item->total_price,2 ?? 'Not') }}</div>
+                                <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ number_format($item->total_price,0 ?? 'Not') }}</div>
                                 <span class="text-xs font-medium text-blue-600 dark:text-blue-500">a few seconds ago</span>
                             </div>
                             <div class="shrink-0">
@@ -41,7 +41,7 @@
 
                 @include('modal.history-detail')
 
-                @elseif($item->status_pembayaran == 'Paid')
+                @else
 
                 <button type="submit" class="w-full h-auto" data-modal-target="feedback-modal{{ $item->code }}" data-modal-toggle="feedback-modal{{ $item->code }}">
                     <div class="flex items-center bg-gray-600 rounded-lg p-2 border border-gray-500 hover:brightness-75 mt-3">
@@ -50,7 +50,7 @@
                         </div>
                         <div class="grow ml-3 text-sm font-normal text-start">
                             <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ $item->name ?? 'Not' }}</div>
-                            <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ $item->total_price ?? 'Not' }}</div>
+                            <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ number_format($item->total_price,0) ?? 'Not' }}</div>
                             <span class="text-xs font-medium text-blue-600 dark:text-blue-500">a few seconds ago</span>
                         </div>
                         <div class="shrink-0">

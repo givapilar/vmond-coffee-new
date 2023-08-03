@@ -11,4 +11,18 @@ class OrderBilliard extends Model
 
     protected $guarded = [];
 
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
+
+    public function restaurant()
+    {
+        return $this->belongsTo(Restaurant::class);
+    }
+
+    public function paketMenu()
+    {
+        return $this->belongsTo(MenuPackages::class);
+    }
 }

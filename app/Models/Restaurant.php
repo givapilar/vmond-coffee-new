@@ -39,5 +39,10 @@ class Restaurant extends Model
     {
         return $this->hasMany(RestaurantAddOn::class, 'restaurant_id');
     }
+
+    public function testin()
+    {
+        return 'test';
+    }
 }
 

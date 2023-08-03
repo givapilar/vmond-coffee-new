@@ -34,13 +34,18 @@ class HomepageController extends Controller
             $response_data_banner =[];
         }
 
-        // if (Auth::check()) {
+        if (Auth::check()) {
             $orderFinishSubtotal = Order::where('user_id',Auth::user()->id)->where('status_pembayaran','Paid')->sum('total_price');
             $meja_restaurants = MejaRestaurant::get();
-        // }
-        // dd($orderFinishSubtotal);
-        $orderTableId['orderTable'] = Order::where('user_id', Auth::user()->id)->get();
+            $banner = MejaRestaurant::get();
+            $orderTableId['orderTable'] = Order::where('user_id', Auth::user()->id)->get();
+            return view('homepage.index', compact(['response_data','response_data_biliard','response_data_meeting_room','response_data_banner','orderFinishSubtotal','orderTableId', 'meja_restaurants']),$orderTableId);
+        }else{
+            $orderFinishSubtotal = 0;
+            $meja_restaurants = MejaRestaurant::get();
+            $orderTableId['orderTable'] = Order::get();
+            return view('homepage.index', compact(['response_data','response_data_biliard','response_data_meeting_room','response_data_banner','orderFinishSubtotal','orderTableId', 'meja_restaurants']),$orderTableId);
+        }
 
-        return view('homepage.index', compact(['response_data','response_data_biliard','response_data_meeting_room','response_data_banner','orderFinishSubtotal','orderTableId', 'meja_restaurants']),$orderTableId);
     }
 }

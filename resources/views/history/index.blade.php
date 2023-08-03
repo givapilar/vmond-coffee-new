@@ -258,6 +258,33 @@
 		</div>
         @endforeach
 
+		@foreach ($orders->orderBilliard as $order_billiard)
+		<div class="flex -mx-1 border-b py-2 items-start">
+			<div class="flex-1 px-1">
+				<p class="text-gray-800 dark:text-gray-400 uppercase tracking-wide text-sm font-bold">{{ $order_billiard->restaurant->nama }}</p>
+			</div>
+
+			<div class="px-1 w-20 text-right">
+				<p class="text-gray-800 dark:text-gray-400 uppercase tracking-wide text-sm font-bold">{{ $order_billiard->restaurant->harga }}</p>
+			</div>
+
+			<div class="px-1 w-32 text-right">
+				<p class="leading-none">
+					<span class="block uppercase tracking-wide text-sm font-bold text-gray-800 dark:text-gray-400">{{ $order_billiard->qty}}  </span>
+				</p>
+			</div>
+
+			<div class="px-1 w-32 text-right">
+				<p class="leading-none">
+					<span class="block uppercase tracking-wide text-sm font-bold text-gray-800 dark:text-gray-400">{{ number_format($order_billiard->restaurant->harga * $order_billiard->qty ?? 0 * $order_billiard->restaurant->harga , 2) }}</span>
+				</p>
+			</div>
+
+			<div class="px-1 w-20 text-center">
+			</div>
+		</div>
+        @endforeach
+
 		<div class="py-2 ml-auto mt-5 w-full w-2/4">
 			<div class="flex justify-between mb-4">
 				<div class="text-sm text-gray-600 dark:text-gray-400 text-right flex-1">PPN 11%</div>

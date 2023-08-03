@@ -48,6 +48,20 @@
                         <div class="mb-2 md:mb-1 md:flex items-center">
                             <label class="w-32 text-gray-800 dark:text-gray-400 block font-bold text-sm uppercase tracking-wide">Status</label>
                         </div>
+
+                        <div class="mb-2 md:mb-1 md:flex items-center">
+                            <label class="w-32 text-gray-800 dark:text-gray-400 block font-bold text-sm uppercase tracking-wide">Table</label>
+                        </div>
+
+                        @if ($item->biliard_id)
+                        <div class="mb-2 md:mb-1 md:flex items-center">
+                            <label class="w-32 text-gray-800 dark:text-gray-400 block font-bold text-sm uppercase tracking-wide">Time Start</label>
+                        </div>
+
+                        <div class="mb-2 md:mb-1 md:flex items-center">
+                            <label class="w-32 text-gray-800 dark:text-gray-400 block font-bold text-sm uppercase tracking-wide">Time End</label>
+                        </div>
+                        @endif
                     </div>
 
                     <div class="w-2/4" style="text-align: -webkit-right;">
@@ -63,6 +77,47 @@
                             <label class="w-32 text-gray-800 dark:text-gray-400 block font-bold text-sm uppercase tracking-wide"><span class="inline-flex items-center rounded-md bg-green-300 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">{{ $item->status_pembayaran }}</span></label>
                         </div>
 
+                        <div class="mb-2 md:mb-1 md:flex items-center">
+                            <label class="w-32 text-gray-800 dark:text-gray-400 block font-bold text-sm uppercase tracking-wide">
+                                {{-- 
+                                    @if($item->meja_restaurant_id || $item->category == 'Takeaway')
+                                        <span style="float: right; margin-right: 15px;">{{ $item->tableRestaurant->nama ?? '' }}</span>
+                                        @if ($item->category == 'Takeaway')
+                                        <span style="float: right; margin-right: -12px;">{{ $item->category }}</span>
+                                    @endif
+                                    --}}
+                                    <h5 class="card-title text-center pt-1 fw-bolder"> 
+                                    Meja 
+                                    @if($item->meja_restaurant_id || $item->category == 'Takeaway' )
+                                        {{ $item->tableRestaurant->nama ?? ''}}
+                                        @if ($item->category == 'Takeaway')
+                                        {{ $item->category }}
+                                        @endif
+                                        @elseif($item->biliard_id)
+                                            {{ $item->tableBilliard->nama }}    
+                                        @elseif($item->meeting_room_id)
+                                            {{ $item->tableMeetingRoom->nama }} 
+                                        @endif
+                                    </h5>
+                                        
+                            </label>
+                        </div>
+
+                        @if ($item->biliard_id)
+                            
+                        <div class="mb-2 md:mb-1 md:flex items-center">
+                            <label class="w-32 text-gray-800 dark:text-gray-400 block font-bold text-sm uppercase tracking-wide">{{ $item->time_from }}</label>
+                        </div>
+                        
+                        <div class="mb-2 md:mb-1 md:flex items-center">
+                            <?php
+                                $timeTo = strtotime($item->time_to);
+                                $newTimeTo = date('H:i:s', strtotime('+2 minutes', $timeTo));
+                                // echo $newTimeTo;
+                            ?>
+                            <label class="w-32 text-gray-800 dark:text-gray-400 block font-bold text-sm uppercase tracking-wide">{{ $newTimeTo }}</label>
+                        </div>
+                        @endif
                     </div>
                 </div>
 
@@ -90,84 +145,184 @@
 
                 <?php
                     $totalHarga = 0;
+                    $totalPrice = 0;
                 ?>
-                @foreach ($item->orderPivot as $order)
-                <?php
-                    $totalHarga += $order->restaurant->harga ?? 0 * ($order->qty ?? 1);
-                ?>
-                <div class="flex -mx-1 border-b py-2 items-center">
-                    <div class="px-1 w-3/12 text-center">
-                        <p class="text-gray-800 dark:text-gray-400 uppercase tracking-wide text-sm font-bold">{{ $order->restaurant->nama ?? '' }}</p>
-                    </div>
+                    @foreach ($item->orderPivot as $order)
+                        <?php
+                            $totalHarga += $order->restaurant->harga_diskon ?? 0 * ($order->qty ?? 1);
+                            $totalPrice += $order->restaurant->harga_diskon * $order->qty ;
+                        ?>
+                        <div class="flex -mx-1 border-b py-2 items-center">
+                            <div class="px-1 w-3/12 text-center">
+                                <p class="text-gray-800 dark:text-gray-400 uppercase tracking-wide text-sm font-bold">{{ $order->restaurant->nama ?? '' }}</p>
+                            </div>
 
-                    <div class="px-1  w-3/12 text-center">
-                        <p class="text-gray-800 dark:text-gray-400 uppercase tracking-wide text-sm font-bold">Rp.{{ number_format(($order->restaurant->harga ?? 0))}}</p>
-                    </div>
+                            <div class="px-1  w-3/12 text-center">
+                                <p class="text-gray-800 dark:text-gray-400 uppercase tracking-wide text-sm font-bold">Rp.{{ number_format(($order->restaurant->harga_diskon ?? 0))}}</p>
+                            </div>
 
-                    <div class="px-1  w-3/12 text-center">
-                        <p class="leading-none">
-                            <span class="block uppercase tracking-wide text-sm font-bold text-gray-800 dark:text-gray-400">{{ $order->qty ?? 1 }}  </span>
-                        </p>
-                    </div>
+                            <div class="px-1  w-3/12 text-center">
+                                <p class="leading-none">
+                                    <span class="block uppercase tracking-wide text-sm font-bold text-gray-800 dark:text-gray-400">{{ $order->qty ?? 1 }}  </span>
+                                </p>
+                            </div>
 
-                    <div class="px-1  w-3/12 text-center">
-                        <p class="leading-none">
-                            <span class="block uppercase tracking-wide text-sm font-bold text-gray-800 dark:text-gray-400">Rp.{{ number_format(($order->restaurant->harga ?? 0) * ($order->qty ?? 1)), 2}}</span>
-                        </p>
-                    </div>
-                </div>
-                @endforeach
-
-                <div class="py-2 ml-auto mt-5 w-full w-2/4">
-
-                    <div class="flex justify-between mb-4">
-                        <div class="text-sm text-gray-400 text-right flex-1">Service({{ $otherSetting[0]->layanan }}%)</div>
-                        <div class="text-right w-40">
-                            <div class="text-sm text-gray-400" >
-                                <?php
-                                    $biaya_layanan = number_format(($totalHarga ?? 0) * $otherSetting[0]->layanan/100,0 );
-                                ?>
-                                Rp.{{  $biaya_layanan }}
+                            <div class="px-1  w-3/12 text-center">
+                                <p class="leading-none">
+                                    <span class="block uppercase tracking-wide text-sm font-bold text-gray-800 dark:text-gray-400">Rp.{{ number_format(($order->restaurant->harga_diskon ?? 0) * ($order->qty ?? 1)), 2}}</span>
+                                </p>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="flex justify-between mb-4">
-                        <div class="text-sm text-gray-400 text-right flex-1">PB01({{ $otherSetting[0]->pb01 }}%)</div>
-                        <div class="text-right w-40">
-                            <div class="text-sm text-gray-400">
-                                <?php
-                                    $biaya_pb01 = number_format((($totalHarga  ?? 0) + ($totalHarga ?? 0) * $otherSetting[0]->layanan/100) * $otherSetting[0]->pb01/100,0);
-                                ?>
-
-                                Rp.{{ $biaya_pb01 }} 
-                            </div>
-                        </div>
-                    </div>
-
+                    @endforeach
                     
 
-                    <div class="py-2 border-t border-b">
-                        <div class="flex justify-between">
-                            <div class="text-xl text-gray-400 text-right flex-1">Total</div>
+                    @php
+                        $firstOrderBilliard = $item->orderBilliard->first();
+                    @endphp
+
+                    @if ($item->biliard_id)
+                        
+                    {{-- @foreach ($item->orderBilliard as $order_billiard) --}}
+                        <?php
+                            $totalHargaBilliard = $item->total_price;
+                        ?>
+                        <div class="flex -mx-1 border-b py-2 items-center">
+                            <div class="px-1 w-3/12 text-center">
+                                <p class="text-gray-800 dark:text-gray-400 uppercase tracking-wide text-sm font-bold">{{ $firstOrderBilliard->paketMenu->nama_paket ?? '' }}</p>
+                            </div>
+
+                            <div class="px-1  w-3/12 text-center">
+                                <p class="text-gray-800 dark:text-gray-400 uppercase tracking-wide text-sm font-bold">Rp.{{ number_format(($item->total_price ?? 0))}}</p>
+                            </div>
+
+                            <div class="px-1  w-3/12 text-center">
+                                <p class="leading-none">
+                                    <span class="block uppercase tracking-wide text-sm font-bold text-gray-800 dark:text-gray-400">{{ $firstOrderBilliard->qty ?? 1 }}  </span>
+                                </p>
+                            </div>
+
+                            <div class="px-1  w-3/12 text-center">
+                                <p class="leading-none">
+                                    <span class="block uppercase tracking-wide text-sm font-bold text-gray-800 dark:text-gray-400">Rp.{{ number_format(($item->total_price ?? 0) * ($order_billiard->qty ?? 1)), 2}}</span>
+                                </p>
+                            </div>
+                        </div>
+                    @endif
+
+                    {{-- <div class="flex -mx-1 border-b py-2 items-center">
+                        <div class="px-1 w-3/12 text-center">
+                            <p class="text-gray-800 dark:text-gray-400 uppercase tracking-wide text-sm font-bold">{{ $order_billiard->restaurant->nama ?? '' }}</p>
+                        </div>
+
+                        
+                    </div> --}}
+                    {{-- @endforeach --}}
+
+
+                @if($item->biliard_id)
+                    <div class="py-2 ml-auto mt-5 w-full w-2/4">
+
+                        <div class="flex justify-between mb-4">
+                            <div class="text-sm text-gray-400 text-right flex-1">Service({{ $otherSetting[0]->layanan }}%)</div>
                             <div class="text-right w-40">
-                                <div class="text-xl text-gray-400">
-                                    @if ($totalHarga)
-                                    Rp.{{ number_format(($totalHarga + (($totalHarga ?? '0') * $otherSetting[0]->layanan/100)) + (($totalHarga  ?? '0') + ($totalHarga ?? '0') * $otherSetting[0]->layanan/100) * $otherSetting[0]->pb01/100,0)}}
-                                    @else
-                                    Rp.0
-                                    @endif    
+                                <div class="text-sm text-gray-400" >
+                                    <?php
+                                        $biaya_layanan = number_format(($totalHargaBilliard ?? 0) * $otherSetting[0]->layanan/100,0 );
+                                    ?>
+                                    Rp.{{  $biaya_layanan }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between mb-4">
+                            <div class="text-sm text-gray-400 text-right flex-1">PB01({{ $otherSetting[0]->pb01 }}%)</div>
+                            <div class="text-right w-40">
+                                <div class="text-sm text-gray-400">
+                                    <?php
+                                        $biaya_pb01 = number_format((($totalHargaBilliard  ?? 0) + ($totalHargaBilliard ?? 0) * $otherSetting[0]->layanan/100) * $otherSetting[0]->pb01/100,0);
+                                    ?>
+
+                                    Rp.{{ $biaya_pb01 }} 
+                                </div>
+                            </div>
+                        </div>
+
+                        
+
+                        <div class="py-2 border-t border-b">
+                            <div class="flex justify-between">
+                                <div class="text-xl text-gray-400 text-right flex-1">Total</div>
+                                <div class="text-right w-40">
+                                    <div class="text-xl text-gray-400">
+                                        @if ($totalHargaBilliard)
+                                        Rp.{{ number_format(($totalHargaBilliard + (($totalHargaBilliard ?? '0') * $otherSetting[0]->layanan/100)) + (($totalHargaBilliard  ?? '0') + ($totalHargaBilliard ?? '0') * $otherSetting[0]->layanan/100) * $otherSetting[0]->pb01/100,0)}}
+                                        @else
+                                        Rp.0
+                                        @endif    
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    @else
 
-                    {{-- <div class="mt-3 flex items-center w-full">
-                        <a href="{{ route('cetak-pdf',Crypt::encryptString($item->id)) }}" class="bg-red-600 text-white text-md rounded-lg mt-2 p-1 w-full text-center hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-sky-300">
-                            <ion-icon name="document" class="text-white"></ion-icon> PDF
-                        </a>
-                    </div> --}}
-                </div>
+                    <div class="py-2 ml-auto mt-5 w-full w-2/4">
+
+                        <div class="flex justify-between mb-4">
+                            <div class="text-sm text-gray-400 text-right flex-1">Total</div>
+                            <div class="text-right w-40">
+                                <div class="text-sm text-gray-400" >
+                                    Rp.{{  number_format($totalPrice,0) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between mb-4">
+                            <div class="text-sm text-gray-400 text-right flex-1">Service({{ $otherSetting[0]->layanan }}%)</div>
+                            <div class="text-right w-40">
+                                <div class="text-sm text-gray-400" >
+                                    <?php
+                                        $biaya_layanan = number_format(($totalHarga ?? 0) * $otherSetting[0]->layanan/100,0 );
+                                    ?>
+                                    Rp.{{  $biaya_layanan }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between mb-4">
+                            <div class="text-sm text-gray-400 text-right flex-1">PB01({{ $otherSetting[0]->pb01 }}%)</div>
+                            <div class="text-right w-40">
+                                <div class="text-sm text-gray-400">
+                                    <?php
+                                        $biaya_pb01 = number_format((($totalHarga  ?? 0) + ($totalHarga ?? 0) * $otherSetting[0]->layanan/100) * $otherSetting[0]->pb01/100,0);
+                                    ?>
+
+                                    Rp.{{ $biaya_pb01 }} 
+                                </div>
+                            </div>
+                        </div>
+
+                        
+
+                        <div class="py-2 border-t border-b">
+                            <div class="flex justify-between">
+                                <div class="text-xl text-gray-400 text-right flex-1">Order Total</div>
+                                <div class="text-right w-40">
+                                    <div class="text-xl text-gray-400">
+                                        @php
+                                            $totalLayanan = ($totalPrice ?? 0) * ($otherSetting[0]->layanan / 100);
+                                            $totalPB01 = (($totalPrice ?? 0) + $totalLayanan) * ($otherSetting[0]->pb01 / 100);
+                                            $orderTotal = $totalPrice + $totalLayanan + $totalPB01;
+                                        @endphp
+
+                                        Rp.{{ number_format($orderTotal, 0) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
                 <!-- Print Template -->
             </div>
         </div>

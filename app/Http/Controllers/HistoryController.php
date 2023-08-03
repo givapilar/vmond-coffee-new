@@ -16,7 +16,7 @@ class HistoryController extends Controller
         // $data['orders'] = Order::findorFail($decrypted);
         // dd($data['orders']->order);
         $data['orders'] = Order::findorFail($id);
-        // dd($data['orders']->orderPivot);
+        // dd($data['orders']->orderBilliard);
         $data['orders_pivots'] = OrderPivot::get();
         // dd($data['orders_pivots'])->restaurant;
 

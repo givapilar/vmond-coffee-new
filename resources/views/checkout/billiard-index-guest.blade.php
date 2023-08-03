@@ -169,8 +169,6 @@
 <script type="text/javascript" src="{{ config('midtrans.snap_url') }}" data-client-key="{{ config('midtrans.client_key') }}"></script>
 
 <script>
-    //  var username = {{ \Cart::session(Auth::user()->id)->getContent() }};
-        // console.log(username);
     $('.slick1').slick({
         infinite:false,
         arrows: false,
@@ -220,7 +218,7 @@
         onSuccess: function(result){
           /* You may add your own implementation here */
           // alert("payment success!"); 
-            var data = {!! json_encode(\Cart::session(Auth::user()->id)->getContent()) !!};
+            var data = {!! json_encode(\Cart::session(Auth::guest())->getContent()) !!};
 
             let newData = {
                 'order_id' : result.order_id,

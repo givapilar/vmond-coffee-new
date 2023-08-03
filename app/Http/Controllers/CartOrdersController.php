@@ -13,6 +13,9 @@ use App\Models\OrderPivot;
 use App\Models\Restaurant;
 use App\Models\User;
 use App\Models\OtherSetting;
+use App\Models\Role;
+use App\Models\UserManagement;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -32,58 +35,114 @@ class CartOrdersController extends Controller
      */
     public function index()
     {
-        $data ['restaurants'] = Restaurant::get();
-        $data ['meja_restaurants'] = MejaRestaurant::get();
-        $data ['biliards'] = Biliard::get();
-        $data ['meeting_rooms'] = MeetingRoom::get();
-        $data ['paket_menu'] = MenuPackages::get();
-        $data ['order_settings'] = OtherSetting::get();
-        // foreach ($tes as $key => $paket_menu) {
-        //     return $paket = $paket_menu;
-        // }
-        // dd($paket_menu);
-        $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
-        $data['condisi'] = Cart::getConditions();
-        // dd ($cartConditions);
-        // dd($data['data_carts']);
-        
-        $data_carts = \Cart::session(Auth::user()->id)->getContent();
-        $processedCartItems = [];
+        // $data ['meja_restaurants'] = MejaRestaurant::get();
+        $data['meja_restaurants'] = MejaRestaurant::orderby('id', 'asc')->get();
 
-        foreach ($data['data_carts'] as $cartItem) {
-            // Access individual cart item properties
-            $id = $cartItem->id;
-            $name = $cartItem->name;
-            $price = $cartItem->price;
-            $quantity = $cartItem->quantity;
-            $conditions = $cartItem->conditions;
-            // ... and so on
+        $rest_api_url = 'https://managementvmond.controlindo.com/api/v1/vmond/user/get-role';
 
-            // Perform any necessary operations with the cart item
-            // For example, you can store the cart item in an array or perform some calculations
-            // You can also pass the cart item to a view or manipulate its data
-
-            // Example operation: Storing cart item data in an array
-            $cartItemData = [
-                'id' => $id,
-                'name' => $name,
-                'price' => $price,
-                'quantity' => $quantity,
-                'conditions' => $conditions,
-                // ... and so on
-            ];
-
-            // Store the cart item data in the $processedCartItems array
-            $processedCartItems[] = $cartItemData;
+        $getData = file_get_contents($rest_api_url);
+        try {
+            $role = json_decode($getData);
+            // dd($role);
+            // $data = $data->data;
+        } catch (\Throwable $th) {
+            $role = [];
         }
 
-        $data['processedCartItems'] = $processedCartItems;
 
-        return view('cart.index',$data);
+        $data ['userManagement'] = UserManagement::orderby('id', 'asc')->get();
+        // $data['role'] = Role::where('name', 'Barista')->first();
+        // dd($role);
+        $data ['order_settings'] = OtherSetting::get();
+        // foreach ($data ['userManagement'] as $key => $value) {
+        //     # code...
+        //     dd($value->getrolenames);
+        // }
+        if (Auth::check()) {
+            # code...
+            $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
+        }else{
+            $user = 'guest';
+            $data['cart_guest'] = \Cart::session($user)->getContent();
+        }
+        // dd($data['data_carts'][0]['attributes']);
+        $processedCartItems = [];
+
+        if (Auth::check()) {
+            foreach ($data['data_carts'] as $cartItem) {
+                // Access individual cart item properties
+                $id = $cartItem->id;
+                $name = $cartItem->name;
+                $price = $cartItem->price;
+                $quantity = $cartItem->quantity;
+                $conditions = $cartItem->conditions;
+
+                $cartItemData = [
+                    'id' => $id,
+                    'name' => $name,
+                    'price' => $price,
+                    'quantity' => $quantity,
+                    'conditions' => $conditions,
+                    // ... and so on
+                ];
+                // tanda
+                // Store the cart item data in the $processedCartItems array
+                // $processedCartItems[] = $cartItemData;
+                // $data['processedCartItems'] = $processedCartItems;
+                
+            }
+            return view('cart.index',$data,compact(['role']));    
+        }else{
+            foreach ($data['cart_guest'] as $cartItem) {
+                // Access individual cart item properties
+                $id = $cartItem->id;
+                $name = $cartItem->name;
+                $price = $cartItem->price;
+                $quantity = $cartItem->quantity;
+                $conditions = $cartItem->conditions;
+
+                $cartItemData = [
+                    'id' => $id,
+                    'name' => $name,
+                    'price' => $price,
+                    'quantity' => $quantity,
+                    'conditions' => $conditions,
+                    // ... and so on
+                ];
+
+                // $processedCartItems[] = $cartItemData;
+                // $data['processedCartItems'] = $processedCartItems;
+            }
+            return view('cart.cart-guest',$data);
+        }
+
+        // $data['processedCartItems'] = $processedCartItems;
+
+        // return view('cart.index',$data);
     }
 
     public function addCartRestaurant(Request $request,$id)
     {
+        $currentTime = Carbon::now()->format('H:i');
+
+        $other_setting = OtherSetting::get()->first();
+
+        // Jam batas untuk menerima pesanan (misalnya, jam 11:00 PM)
+        // dd($other_setting);
+        $orderDeadline = $other_setting->time_close;
+
+
+        // Jam batas untuk mulai menerima pesanan lagi (misalnya, jam 7:00 AM)
+        $orderOpenTime = $other_setting->time_start;
+
+        // Jika waktu saat ini melebihi batas pesanan, maka kembalikan pesan error
+        if ($currentTime > $orderDeadline) {
+            return redirect()->back()->with(['failed' => 'Maaf, pesanan tidak dapat diterima setelah jam 11 malam.']);
+        } elseif ($currentTime < $orderOpenTime) {
+            // Jika waktu saat ini masih sebelum batas pemesanan pagi, maka tampilkan pesan bahwa pemesanan belum dibuka
+            return redirect()->back()->with(['failed' => 'Maaf, pemesanan belum dibuka. Silakan coba lagi setelah jam 7 pagi.']);
+        }
+
         $dataHargaAddon = [];
         if ($request->harga_add != null) {
             foreach ($request->harga_add as $key => $val) {
@@ -92,20 +151,12 @@ class CartOrdersController extends Controller
             }
         }
 
-        // foreach ($request->add_on_title as $key => $val) {
-        //     $data_addOn = AddOn::where('id', $val)->get();
-        //     $dataHargaAddonTitle[] = $data_addOn[0]->nama . '';
-
-        // }
-        // dd($request->all());
 
         $restaurant = Restaurant::findOrFail($id);
-        // dd($restaurant->addOns->isNotEmpty());
 
         $countAddOn = $request->harga_add ? count($request->harga_add) : 0;
-        // dd($countAddOn);
-        // dd($request->minimum);
-        if (($countAddOn < $request->minimum) && $restaurant->addOns->isNotEmpty()) {
+
+        if ((($countAddOn < $request->minimum) && $restaurant->addOns->isNotEmpty()) && $request->addOnChange != 'Normal') {
             return redirect()->back()->with(['failed' => 'Harap Pilih Add On Sesuai minimum !!']);
         }
 
@@ -114,12 +165,7 @@ class CartOrdersController extends Controller
         } else {
             $quantity = 0;
         }
-        
-        
-        // $auth = User::get();
-        // dd($auth->id);
-
-        // Pengecekan Login
+    
         
         // dd($dataHargaAddon);
         $validator = Validator::make($request->all(), [
@@ -135,43 +181,119 @@ class CartOrdersController extends Controller
         // dd('sucess');
 
         if (Auth::check()) {
-            \Cart::session(Auth::user()->id)->add(array(
-                'id' => $restaurant->id, // inique row ID
-                'name' => $restaurant->nama,
-                'price' => ($restaurant->harga_diskon + (is_array($dataHargaAddon) ? array_sum($dataHargaAddon) : 0) ?? $restaurant->harga_diskon),
-                'quantity' => $request->qty,
-                // 'attributes' => array($restaurant),
-                'attributes' => array(
-                    'restaurant' => $restaurant,
-                    'category' => $request->category,
-                    'add_on_title' => $request->add_on_title,
-                    // 'harga_add' => array_sum($dataHargaAddon),
-                    'harga_add' => $dataHargaAddon,
-                    'detail_addon_id' => $request->harga_add,
-                ),
-                'conditions' => 'Restaurant',
-                'associatedModel' => $restaurant
-            // \Cart::session(Auth::user()->id)->add(array(
-            //     'id' => $request->id, // inique row ID
-            //     'name' => $request->nama,
-            //     'price' => $request->harga,
-            //     'quantity' => $request->quantity,
+            // Mengambil konten Cart berdasarkan user ID
+            $cartContent = \Cart::session(Auth::user()->id)->getContent();
+        
+            // Membuat array dari add-on detail untuk digunakan sebagai kunci unik
+            $addonDetail = array(
+                'restaurant' => $restaurant,
+                'category' => $request->category,
+                'add_on_title' => $request->add_on_title,
+                'harga_add' => $dataHargaAddon,
+                'detail_addon_id' => $request->harga_add,
+                'add_on_nama_title' => $request->add_on_nama_title,
+                'add_nama' => $request->add_nama,
+            );
+        
+            // Mengkonversi array add-on detail menjadi JSON untuk digunakan sebagai kunci unik
+            $itemIdentifier = md5(json_encode($addonDetail));
+        
+            // Memeriksa apakah item dengan add-on detail yang sama sudah ada di dalam Cart
+            $existingItem = $cartContent->first(function ($item, $key) use ($itemIdentifier) {
+                return $item->id === $itemIdentifier;
+            });
+        
+            if ($existingItem !== null) {
+                // Jika item dengan add-on detail yang sama sudah ada di dalam Cart
+                // Buat array baru dengan membawa detail add-on ID yang berbeda
+                $itemAttributes = $existingItem->attributes->toArray();
+                if (!in_array($request->harga_add, $itemAttributes['detail_addon_id'])) {
+                    $itemAttributes['detail_addon_id'][] = $request->harga_add;
+                    $existingItem->attributes = $itemAttributes;
+                    $existingItem->quantity += $request->qty;
+                    \Cart::session(Auth::user()->id)->update($existingItem->id, $existingItem->toArray());
+                }
+            } else {
+                // Jika item dengan add-on detail tertentu belum ada di dalam Cart, tambahkan data cart baru
+                \Cart::session(Auth::user()->id)->add(array(
+                    'id' => $itemIdentifier, // Gunakan kunci unik sebagai ID item
+                    'name' => $restaurant->nama,
+                    'price' => ($restaurant->harga_diskon + (is_array($dataHargaAddon) ? array_sum($dataHargaAddon) : 0) ?? $restaurant->harga_diskon),
+                    'quantity' => $request->qty,
+                    'attributes' => $addonDetail,
+                    'conditions' => 'Restaurant',
+                    'associatedModel' => Restaurant::class
+                ));
+            }
+            
+            $category = $request->category;
+            return redirect()->route('daftar-restaurant', ['category' => $category])->with('success', 'Berhasil masuk cart!');
+        } else {
+            $user = 'guest';
+            // \Cart::session($user)->add(array(
+            //     'id' => $restaurant->id, // inique row ID
+            //     'name' => $restaurant->nama,
+            //     'price' => ($restaurant->harga_diskon + (is_array($dataHargaAddon) ? array_sum($dataHargaAddon) : 0) ?? $restaurant->harga_diskon),
+            //     'quantity' => $request->qty,
             //     // 'attributes' => array($restaurant),
             //     'attributes' => array(
             //         'restaurant' => $restaurant,
             //         'category' => $request->category,
             //         'add_on_title' => $request->add_on_title,
-            //         'harga_add' => $request->harga_add,
+            //         // 'harga_add' => array_sum($dataHargaAddon),
+            //         'harga_add' => $dataHargaAddon,
+            //         'detail_addon_id' => $request->harga_add,
             //     ),
             //     'conditions' => 'Restaurant',
-            //     'associatedModel' => $restaurant
-            ));
-            // dd($tes);
+            //     'associatedModel' => Restaurant::class
+           
+            // ));
+
+            // Mengambil konten Cart berdasarkan user ID
+            $cartContent = \Cart::session($user)->getContent();
+        
+            // Membuat array dari add-on detail untuk digunakan sebagai kunci unik
+            $addonDetail = array(
+                'restaurant' => $restaurant,
+                'category' => $request->category,
+                'add_on_title' => $request->add_on_title,
+                'harga_add' => $dataHargaAddon,
+                'detail_addon_id' => $request->harga_add,
+            );
+        
+            // Mengkonversi array add-on detail menjadi JSON untuk digunakan sebagai kunci unik
+            $itemIdentifier = md5(json_encode($addonDetail));
+        
+            // Memeriksa apakah item dengan add-on detail yang sama sudah ada di dalam Cart
+            $existingItem = $cartContent->first(function ($item, $key) use ($itemIdentifier) {
+                return $item->id === $itemIdentifier;
+            });
+        
+            if ($existingItem !== null) {
+                // Jika item dengan add-on detail yang sama sudah ada di dalam Cart
+                // Buat array baru dengan membawa detail add-on ID yang berbeda
+                $itemAttributes = $existingItem->attributes->toArray();
+                if (!in_array($request->harga_add, $itemAttributes['detail_addon_id'])) {
+                    $itemAttributes['detail_addon_id'][] = $request->harga_add;
+                    $existingItem->attributes = $itemAttributes;
+                    $existingItem->quantity += $request->qty;
+                    \Cart::session($user)->update($existingItem->id, $existingItem->toArray());
+                }
+            } else {
+                // Jika item dengan add-on detail tertentu belum ada di dalam Cart, tambahkan data cart baru
+                \Cart::session($user)->add(array(
+                    'id' => $itemIdentifier, // Gunakan kunci unik sebagai ID item
+                    'name' => $restaurant->nama,
+                    'price' => ($restaurant->harga_diskon + (is_array($dataHargaAddon) ? array_sum($dataHargaAddon) : 0) ?? $restaurant->harga_diskon),
+                    'quantity' => $request->qty,
+                    'attributes' => $addonDetail,
+                    'conditions' => 'Restaurant',
+                    'associatedModel' => Restaurant::class
+                ));
+            }
+            // dd($cart);
             $category = $request->category;
-            return redirect()->route('daftar-restaurant', ['category' => $category])->with('success', 'Berhasil masuk cart!');
-        } else {
-            $category = $request->category;
-            return redirect()->route('daftar-restaurant', ['category' => $category])->with('failed', 'Harap Login Terlebih Dahulu !');
+            return redirect()->route('daftar-restaurant', ['category' => $category])->with('success', 'Berhasil Masuk Cart !');
         }
     }
 
@@ -185,9 +307,9 @@ class CartOrdersController extends Controller
         //     // 'price' => $totalPrice
         // ]);
         // update the item on cart
-        \Cart::session(Auth::user()->id)->update($request->id,[
-            'quantity' => $request->qty,
-        ]);
+        // \Cart::session(Auth::user()->id)->update($request->id,[
+        //     'quantity' => $request->qty,
+        // ]);
         // Cart::update($request->id, array(
         //     'quantity' => $request->qty, // so if the current product has a quantity of 4, another 2 will be added so this will result to 6
         // ));
@@ -205,9 +327,36 @@ class CartOrdersController extends Controller
 
     }
 
+    public function updateCartGuest(Request $request)
+    {
+        $user = auth()->guest() ? 'guest' : auth()->user()->id;
+        \Cart::session($user)->update($request->id, [
+            'quantity' => [
+                'relative' => false,
+                'value' => $request->qty
+            ],
+        ]);
+
+        return response()->json(['success' => true]);
+
+        // if($request->id && $request->quantity){
+        //     $cart = session()->get('cart');
+        //     $cart[$request->id]["quantity"] = $request->quantity;
+        //     session()->put('cart', $cart);
+        //     session()->flash('success', 'Cart successfully updated!');
+        // }
+    }
+
+
+
     public function deleteCartRestaurant($id)
     {
-        \Cart::session(Auth::user()->id)->remove($id);
+        if (Auth::check()) {
+            # code...
+            \Cart::session(Auth::user()->id)->remove($id);
+        }
+        $user = 'guest';
+        \Cart::session($user)->remove($id);
         return redirect()->back();
     }
 
@@ -312,7 +461,12 @@ class CartOrdersController extends Controller
 
     public function deleteCart($id)
     {
-        \Cart::session(Auth::user()->id)->remove($id);
+        if (Auth::check()) {
+            # code...
+            \Cart::session(Auth::user()->id)->remove($id);
+        }
+        $user = 'guest';
+        \Cart::session($user)->remove($id);
         return redirect()->back();
     }
 

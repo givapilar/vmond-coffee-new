@@ -16,9 +16,8 @@
             </button>
         </div>
         <!-- Modal body -->
-        <div class="p-3">
+        <div class="p-3 h-full max-h-[77%] overflow-y-scroll">
             @foreach ($order_table as $item)
-            @if ($item->status_pembayaran == 'Paid')
             <button type="button" class="w-full h-auto" data-modal-target="detail-pesanan-modal{{ $item->id }}" data-modal-toggle="detail-pesanan-modal{{ $item->id }}">
                 <div class="flex items-center bg-gray-600 rounded-lg p-2 border border-gray-500 hover:brightness-75 mt-3">
                     <div class="relative inline-block shrink-0">
@@ -26,7 +25,12 @@
                     </div>
                     <div class="grow ml-3 text-sm font-normal text-start">
                         <div class="text-sm font-semibold text-gray-900 dark:text-white">#Ord{{ $item->invoice_no }}</div>
+                        @if($item->meja_restaurant_id)
                         <span class="text-xs font-medium text-blue-600 dark:text-blue-500">{{ count($item->orderPivot) }} Pesanan</span>
+                        @elseif($item->biliard_id)
+                        <span class="text-xs font-medium text-blue-600 dark:text-blue-500">{{ count($item->orderBilliard) }} Pesanan</span>
+                        @endif
+                        {{-- <span class="text-xs font-medium text-blue-600 dark:text-blue-500">{{ count($item->orderBilliard) }} Pesanan</span> --}}
                     </div>
                     <div class="shrink-0">
                         <img class="w-10 h-10 rounded-full p-2" src="{{ asset('assetku/dataku/img/right-arrow.png') }}" alt="History Notif"/>
@@ -34,7 +38,6 @@
                 </div>
             </button>
             @include('modal.pesanan-detail')
-            @endif
             @endforeach
         </div>
     </div>

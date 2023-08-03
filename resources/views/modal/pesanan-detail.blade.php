@@ -44,7 +44,7 @@
                                 <svg class="w-5 h-5 text-gray-500 block mx-auto" fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512"><path d="M32 0C14.3 0 0 14.3 0 32S14.3 64 32 64V75c0 42.4 16.9 83.1 46.9 113.1L146.7 256 78.9 323.9C48.9 353.9 32 394.6 32 437v11c-17.7 0-32 14.3-32 32s14.3 32 32 32H64 320h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V437c0-42.4-16.9-83.1-46.9-113.1L237.3 256l67.9-67.9c30-30 46.9-70.7 46.9-113.1V64c17.7 0 32-14.3 32-32s-14.3-32-32-32H320 64 32zM288 437v11H96V437c0-25.5 10.1-49.9 28.1-67.9L192 301.3l67.9 67.9c18 18 28.1 42.4 28.1 67.9z"/></svg>
                             </div>
                         </div>
-                        @else
+                        @else       
                         <div class="">
                             <div class="w-10 h-10 bg-white border-2 border-grey-light mx-auto rounded-full text-md text-white flex items-center">
                                 <svg class="w-5 h-5 text-gray-500 block mx-auto" fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512"><path d="M32 0C14.3 0 0 14.3 0 32S14.3 64 32 64V75c0 42.4 16.9 83.1 46.9 113.1L146.7 256 78.9 323.9C48.9 353.9 32 394.6 32 437v11c-17.7 0-32 14.3-32 32s14.3 32 32 32H64 320h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V437c0-42.4-16.9-83.1-46.9-113.1L237.3 256l67.9-67.9c30-30 46.9-70.7 46.9-113.1V64c17.7 0 32-14.3 32-32s-14.3-32-32-32H320 64 32zM288 437v11H96V437c0-25.5 10.1-49.9 28.1-67.9L192 301.3l67.9 67.9c18 18 28.1 42.4 28.1 67.9z"/></svg>
@@ -112,16 +112,29 @@
                             <span class="text-xs font-medium text-blue-600 dark:text-blue-500">a few seconds ago</span>
                         </div>
                     </div>
-                    {{-- <div class="flex items-center border-b border-gray-300 p-3">
-                        <div class="relative inline-block shrink-0">
-                            <img class="w-14 h-14 rounded-full" src="{{ 'https://managementvmond.controlindo.com/assets/images/paket-menu/' .$order->paketMenu->image ?? 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80'}}" alt="History Notif"/>
-                        </div>
-                        <div class="grow ml-3 text-sm font-normal">
-                            <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ $order->paketMenu->nama_paket ?? '' }}</div>
-                            <span class="text-xs font-medium text-blue-600 dark:text-blue-500">a few seconds ago</span>
-                        </div>
-                    </div> --}}
                     @endforeach
+
+                    @if ($item->biliard_id != null)
+                        <div class="flex items-center border-b border-gray-300 p-3">
+                            <div class="grow ml-3 text-sm font-normal">
+                                <div class="text-sm font-semibold text-gray-900 dark:text-white">Status Lamp</div>
+                                @if ($item->status_lamp == 'ON')
+                                <span class="text-xs font-medium text-green-600 dark:text-green-500" style="color: #37fa2d;">On</span>
+                                @else
+                                <span class="text-xs font-medium text-green-600 dark:text-green-500" style="color: #fa2d2d;">Off</span>
+                                @endif
+                            </div>
+                        </div>
+                        @foreach ($item->orderBilliard as $order_billiard)
+
+                        <div class="flex items-center border-b border-gray-300 p-3">
+                            <div class="grow ml-3 text-sm font-normal">
+                                <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ $order_billiard->restaurant->nama ?? $order_billiard->paketMenu->nama_paket }}</div>
+                                <span class="text-xs font-medium text-blue-600 dark:text-blue-500">a few seconds ago</span>
+                            </div>
+                        </div>
+                        @endforeach
+                    @endif
                 </div>
             </div>
             <!-- Modal footer -->

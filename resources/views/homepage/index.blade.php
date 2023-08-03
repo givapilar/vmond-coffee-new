@@ -9,11 +9,6 @@
 @endpush
 
 @section('content')
-@if (Auth::user())
-@foreach ($orderTable as $item)
-    
-{{-- {{ dd($item->status_pesanan) }} --}}
-@endforeach
 <section>
     <div class=" w-11/12 mt-5 p-4 bg-[#1d2943] border border-gray-200 rounded-lg shadow mx-auto dark:bg-[#1d2943] dark:border-[#16274b]">
         <div class="grid grid-cols-1">
@@ -28,44 +23,18 @@
                         Total Transaksi
                     </p>
                     <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-
-                        Rp. {{ number_format($orderFinishSubtotal, 0) ?? '' }}
-                        {{-- {{ dd($orderFinishSubtotal) }} --}}
-                        ( {{ ucwords(Auth::user()->membership->level ?? '') }} Member )
+                        @if (Auth::check())
+                            Rp. {{ number_format($orderFinishSubtotal, 0) ?? '' }}
+                            ( {{ ucwords(Auth::user()->membership->level ?? '') }} Member )
+                        @else
+                            Daftarkan <a href="{{ route('register') }}" class="font-medium text-blue-600 hover:underline dark:text-blue-500">akun anda</a>
+                        @endif
                     </p>
-                    {{-- <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2 dark:bg-gray-700">
-                        <div class="bg-indigo-600 h-2.5 rounded-full dark:bg-indigo-500" style="width: 50%"></div>
-                    </div> --}}
                 </div>
             </div>
-            {{-- <div class="flex items-center space-x-4">
-                <div class="flex-shrink-0 bg-white rounded-full p-2">
-                    <svg class="w-6 h-6 text-[#1d2943]" fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512">
-                        <path d="M16 144a144 144 0 1 1 288 0A144 144 0 1 1 16 144zM160 80c8.8 0 16-7.2 16-16s-7.2-16-16-16c-53 0-96 43-96 96c0 8.8 7.2 16 16 16s16-7.2 16-16c0-35.3 28.7-64 64-64zM128 480V317.1c10.4 1.9 21.1 2.9 32 2.9s21.6-1 32-2.9V480c0 17.7-14.3 32-32 32s-32-14.3-32-32z"/>
-                    </svg>
-                </div>
-                <div class="flex-1 min-w-0">
-                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                        Meja
-                    </p>
-                    <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                        @if (Auth::user()->kode_meja)
-                        @foreach ($meja_restaurants as $key => $meja_restaurant)
-                            @if (Auth::user()->kode_meja == $meja_restaurant->kode_meja)
-                                {{ $meja_restaurant->nama }}
-                            @endif
-                        @endforeach
-                        @else
-                        -
-                        @endif
-
-                    </p>
-                </div>
-            </div> --}}
         </div>
     </div>
 </section>
-@endif
 
 <section class="p-3 mt-1">
     <div class="flex items-center justify-between mb-1">
@@ -90,7 +59,7 @@
                     </span> --}}
                 </div>
 
-                <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300">Restaurant</p>
+                <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300" style="font-weight: 500;">RESTAURANT</p>
             </div>
         </a>
         <a href="{{ route('daftar-billiard') }}">
@@ -99,7 +68,7 @@
                     <img src="https://images.unsplash.com/photo-1544070928-135893793bdc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=627&q=80" alt="." class="object-cover object-center h-full w-full">
                 </div>
 
-                <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300">FwB</p>
+                <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300" style="font-weight: 500;">F w B</p>
             </div>
         </a>
         <a href="{{ route('daftar-meeting-room') }}">
@@ -108,7 +77,7 @@
                     <img src="https://images.unsplash.com/photo-1431540015161-0bf868a2d407?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="." class="object-cover object-center h-full w-full">
                 </div>
 
-                <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300">Exclusive Room</p>
+                <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300" style="font-weight: 500;">EXCLUSIVE ROOM</p>
             </div>
         </a>
     </div>
@@ -120,12 +89,13 @@
         <!-- Carousel wrapper -->
         <div class="relative h-48 sm:h-36 overflow-hidden rounded-2xl shadow-2xl border border-[#16274b] shadow-lg" style="background: #fff !important;">
             <!-- Item 1 -->
-            {{-- @foreach ($response_data_banner as $item)
+            @foreach ($response_data_banner as $item)
             <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                <img src="{{ $item->image ?? 'https://images.unsplash.com/photo-1563897539633-7374c276c212?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1046&q=80'}} " alt=""class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                <img src="{{ $item->image ?? ''}} " alt=""class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
             </div>
-            @endforeach --}}
-            <div class="hidden duration-700 ease-in-out" data-carousel-item>
+            @endforeach
+            {{-- {{ dd($response_data_banner) }} --}}
+            {{-- <div class="hidden duration-700 ease-in-out" data-carousel-item>
                 <img src="{{ asset('assetku/dataku/img/logo/logo-vmond.png') }}" class="absolute block w-25 -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
             </div>
             <!-- Item 2 -->
@@ -139,7 +109,7 @@
             <!-- Item 4 -->
             <div class="hidden duration-700 ease-in-out" data-carousel-item>
                 <img src="{{ asset('assetku/dataku/img/logo/logo-vmond.png') }}" class="absolute block w-25 -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
-            </div>
+            </div> --}}
         </div>
 
         <!-- Slider indicators -->

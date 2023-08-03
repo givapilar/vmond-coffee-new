@@ -10,6 +10,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\HomepageController;
+use App\Models\Banner;
+use App\Models\CartOrders;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -40,6 +42,7 @@ Route::get('/daftarmenu/restaurant', [DaftarMenuController::class, 'restaurant']
 // Route::get('/daftarmenu/detail-resto/{$id}', [DetailController::class, 'restaurant'])->name('detail-resto');
 Route::get('/daftarmenu/restaurant/{id}/{category}', [DetailController::class, 'detailRestaurant'])->name('detail-resto');
 Route::get('/daftarmenu/billiard/{id}', [DetailController::class, 'detailBilliard'])->name('detail-billiard');
+Route::get('/daftarmenu/billiard-guest/{id}', [DetailController::class, 'detailBilliardGuest'])->name('detail-billiard-guest');
 Route::get('/daftarmenu/meeting-room/{id}', [DetailController::class, 'detailMeeting'])->name('detail-meeting');
 
 Route::get('/daftarmenu/biliard', [DaftarMenuController::class, 'biliard'])->name('daftar-billiard');
@@ -58,7 +61,7 @@ Route::get('/detailmenu/{type}/{slug}', function (Request $request,$type, $slug)
     $rest_api_url = $global_url.$type.'/'.$slug;
     // Belum selesai
     $getData = file_get_contents($rest_api_url);
-    try {
+    try {   
         $getJSON = json_decode($getData);
         // $getJSON = $getJSON->data;
     } catch (\Throwable $th) {
@@ -80,8 +83,10 @@ Route::get('/reservation', function () {
 Route::get('/cart-meeting', function () {
     return view('cart.meeting-room');
 })->name('cart-meeting-room');
+
 Route::get('/restaurant/menu', function () {
-    return view('homepage.restaurant');
+    $data['banners'] = Banner::get();
+    return view('homepage.restaurant', $data);
 })->name('homepage-restaurant');
 
 // User-profile
@@ -94,6 +99,8 @@ Route::get('/add-chart-restaurant/{id}',[CartOrdersController::class, 'addCartRe
 // Route::post('/add-chart-restaurant/{id}',[CartOrdersController::class, 'addCartRestaurant'])->name('restaurant-cart');
 Route::get('/cart',[CartOrdersController::class, 'index'])->name('cart');
 Route::post('/cart-update',[CartOrdersController::class, 'updateCart'])->name('cart-update');
+// Route::patch('cart-update', [CartOrdersController::class, 'updateCart'])->name('cart-update');
+Route::post('/cart-update-guest',[CartOrdersController::class, 'updateCartGuest'])->name('cart-update-guest');
 Route::get('/delete-chart-restaurant/{id}',[CartOrdersController::class, 'deleteCartRestaurant'])->name('delete-restaurant-cart');
 
 // Biliard
@@ -118,8 +125,10 @@ Route::get('midtrans',[CartOrdersController::class,'midtransCheck'])->name('midt
 // Route Orders
 Route::get('orders',[OrderController::class,'index'])->name('order.index');
 // Route::post('/checkout-order',[OrderController::class,'checkout'])->name('checkout-order');
-Route::post('/checkout',[OrderController::class,'checkout'])->name('checkout-order');
-Route::post('/checkout-billiard',[OrderController::class,'checkoutBilliard'])->name('checkout-billiard');
+Route::post('/checkout/{token}',[OrderController::class,'checkout'])->name('checkout-order');
+Route::post('/checkout-guest/{token}',[OrderController::class,'checkoutGuest'])->name('checkout-order-guest');
+Route::post('/checkout-billiard/{token}',[OrderController::class,'checkoutBilliard'])->name('checkout-billiard');
+Route::post('/checkout-billiard-guest/{token}',[OrderController::class,'checkoutBilliardGuest'])->name('checkout-billiard-guest');
 Route::post('/checkout-meeting',[OrderController::class,'checkoutMeeting'])->name('checkout-meeting');
 Route::get('/invoice/{id}',[OrderController::class,'invoice'])->name('invoice');
 
@@ -148,8 +157,7 @@ Route::post('/check-schedule-meeting',[APIController::class,'checkDateScheduleMe
 Route::post('/data/success-order',[OrderController::class,'successOrder'])->name('success-order');
 
 // Success order Waiters
-Route::post('/checkout/checkout-waiters',[OrderController::class,'checkoutWaiters'])->name('checkout-waiters');
+Route::post('/checkout/checkout-waiters/{token}',[OrderController::class,'checkoutWaiters'])->name('checkout-waiters');
 
 // delete meja id
-
 Route::get('/checkout/destroy',[OrderController::class,'resetMeja'])->name('reset-meja');

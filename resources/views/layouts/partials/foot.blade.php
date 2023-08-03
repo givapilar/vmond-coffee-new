@@ -9,6 +9,9 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.3/dist/alpine.min.js" defer></script>
 @stack('script-top')
+ 
+<!-- from cdn -->
+<script src="https://unpkg.com/@material-tailwind/html@latest/scripts/tabs.js"></script>
 
 <script>
     document.documentElement.classList.add('dark');
@@ -303,13 +306,13 @@
                 text: "{{ session()->get('success') }}",
                 close: true,
                 gravity: "top", // `top` or `bottom`
-                position: "right", // `left`, `center` or `right`
+                position: "left", // `left`, `center` or `right`
                 stopOnFocus: true, // Prevents dismissing of toast on hover
                 style: {
                     background: "#D5F3E9",
                     color: "#1f7556"
                 },
-                duration: 3000
+                duration: 1000
             }).showToast();
     </script>
 @endif
@@ -320,13 +323,13 @@
             text: "{{ session()->get('warning') }}",
             close: true,
             gravity: "top", // `top` or `bottom`
-            position: "right", // `left`, `center` or `right`
+            position: "left", // `left`, `center` or `right`
             stopOnFocus: true, // Prevents dismissing of toast on hover
             style: {
                 background: "#FBEFDB",
                 color: "#916c2e"
             },
-            duration: 3000
+            duration: 1000
         }).showToast();
 </script>
 @endif
@@ -337,14 +340,14 @@
         text: "🚨 {{ session()->get('failed') }}",
         close: true,
         gravity: "top", // `top` or `bottom`
-        position: "right", // `left`, `center` or `right`
+        position: "left", // `left`, `center` or `right`
         stopOnFocus: true, // Prevents dismissing of toast on hover
         theme: "dark",
         style: {
             background: "#fde1e1",
             color: "#924040"
         },
-        duration: 4000
+        duration: 1000
     }).showToast();
 </script>
 @endif

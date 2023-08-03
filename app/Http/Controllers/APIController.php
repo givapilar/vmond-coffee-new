@@ -37,18 +37,20 @@ class APIController extends Controller
                 ->select('time_from', 'time_to', 'biliard_id')
                 ->get();
 
-            $times = [];
+            $timeFrom = [];
+            $timeTo = [];
             $billiards = [];
             foreach ($orders as $order) {
-                $times[] = substr($order->time_from, 0, 5);
-                $times[] = substr($order->time_to, 0, 5);
+                $timeFrom[] = substr($order->time_from, 0, 5);
+                $timeTo[] = substr($order->time_to, 0, 5);
                 $billiards[] = strval($order->biliard_id);
             }
 
             return response()->json([
                 'status' => 200,
                 'message' => 'success',
-                'times' => $times,
+                'timeFrom' => $timeFrom,
+                'timeTo' => $timeTo,
                 'billiards' => $billiards,
             ]);
         } catch (\Throwable $th) {
