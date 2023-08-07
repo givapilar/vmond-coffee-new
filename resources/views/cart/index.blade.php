@@ -24,7 +24,8 @@
                     {{-- {{ dd($item) }} --}}
                         <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
 
-                        <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+                        <ul class="max-w-md divide-y divide-gray-200 dark
+                        :divide-gray-700">
                             <li class="py-3 sm:py-4">
                                 <div class="flex items-start space-x-4">
                                     <div class="flex-shrink-0">

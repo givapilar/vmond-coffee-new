@@ -23,7 +23,6 @@
         <div class="grid grid-cols-2 sm:grid-cols-1 gap-4 sm:gap-1">
             <div class="max-w-sm h-96 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
                 @foreach ($cart_guest as $key => $item)
-                {{-- {{dd($item)}} --}}
                     @if (Auth::check())
                         <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                     @endif
@@ -280,7 +279,7 @@
                 </li>
                 
                 
-                <li class="py-3 sm:py-3" id="order-total">
+                <li class="py-3 sm:py-3" id="order-total" style="display: none;">
                     <div class="flex items-start space-x-4">
                         <div class="flex-1 min-w-0">
                             <p class="text-xs font-medium text-gray-900 truncate dark:text-white">
@@ -290,6 +289,30 @@
                         <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white" id="total-order-summary">
                             @if (\Cart::getTotal())
                             Rp. {{ number_format((\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100,0)}}
+                            @else
+                            Rp. 0
+                            @endif
+                        </div>
+                    </div>
+                </li>
+
+                <li class="py-3 sm:py-3" id="order-total-packing" style="display: none;">
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs font-medium text-gray-900 truncate dark:text-white">
+                                Order Total With Packing
+                            </p>
+                        </div>
+                        <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white" id="total-order-summary-packing">
+                            <?php
+                                $packing = 5000;
+                                $totalWithoutPacking = (\Cart::getTotal() + (\Cart::getTotal() ?? 0) * $order_settings[0]->layanan/100);
+                                $totalWithPacking = $totalWithoutPacking + ($totalWithoutPacking + (\Cart::getTotal() ?? 0) * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100 + $packing;
+                            ?>
+                            @if (\Cart::getTotal())
+                            {{-- Rp. {{ number_format((\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100,0)}} --}}
+                            Rp. {{ number_format($totalWithPacking, 0) }}
+
                             @else
                             Rp. 0
                             @endif
@@ -322,18 +345,22 @@
     document.addEventListener("DOMContentLoaded", function () {
         const takeawayRadio = document.getElementById("takeaway-radio");
         const dineInRadio = document.getElementById("dine-in-radio");
-        const packingLi = document.getElementById("packingLi");
+        const orderTotal = document.getElementById("order-total");
+        const orderTotalPacking = document.getElementById("order-total-packing");
 
-        if (takeawayRadio && dineInRadio && packingLi) {
+        if (takeawayRadio && dineInRadio && orderTotal && orderTotalPacking) {
             takeawayRadio.addEventListener("change", function () {
-                packingLi.style.display = this.checked ? "block" : "none";
+                orderTotal.style.display = "none";
+                orderTotalPacking.style.display = "block";
             });
 
             dineInRadio.addEventListener("change", function () {
-                packingLi.style.display = "none";
+                orderTotal.style.display = "block";
+                orderTotalPacking.style.display = "none";
             });
         }
     });
+
 
 
     const getDataCart = {!! json_encode($cart_guest) !!};
@@ -406,6 +433,12 @@
         let layanan = (currentPrice * (otherSetting.layanan / 100)).toFixed(3);
         let pb01 = ((parseFloat(currentPrice) + parseFloat(layanan)) * (otherSetting.pb01 / 100)).toFixed(3);
         let totalOrder = (parseFloat(currentPrice) + parseFloat(layanan) + parseFloat(pb01)).toFixed(3);
+        let packaging = (otherSetting.biaya_packing).toLocaleString('id-ID');
+        let totalOrderPacking = (parseFloat(currentPrice) + parseFloat(layanan) + parseFloat(pb01) + parseFloat(packaging)).toFixed(3);
+        console.log(packaging, currentPrice);
+        // // Add 5000 to totalOrderPacking
+
+        // console.log(currentPrice);
 
         const subtotalElement = document.getElementById('subtotal-summary');
         subtotalElement.textContent = `Rp. ${currentPrice}`;
@@ -418,6 +451,9 @@
 
         const totalOrderElement = document.getElementById('total-order-summary');
         totalOrderElement.textContent = `Rp. ${totalOrder.toLocaleString('id-ID')} `;
+
+        const totalOrderPackingElement = document.getElementById('total-order-summary-packing');
+        totalOrderPackingElement.textContent = `Rp. ${totalOrderPacking.toLocaleString('id-ID')} `;
     }
 
     function getValueAndUpdateMin(slug) {
@@ -445,6 +481,9 @@
         let layanan = (currentPrice * (otherSetting.layanan / 100)).toFixed(3);
         let pb01 = ((parseFloat(currentPrice) + parseFloat(layanan)) * (otherSetting.pb01 / 100)).toFixed(3);
         let totalOrder = (parseFloat(currentPrice) + parseFloat(layanan) + parseFloat(pb01)).toFixed(3);
+        let packaging = (otherSetting.biaya_packing).toLocaleString('id-ID');
+        let totalOrderPacking = (parseFloat(currentPrice) + parseFloat(layanan) + parseFloat(pb01) + parseFloat(packaging)).toFixed(3);
+        console.log(packaging, currentPrice);
 
         const subtotalElement = document.getElementById('subtotal-summary');
         subtotalElement.textContent = `Rp. ${currentPrice}`;
@@ -457,6 +496,9 @@
 
         const totalOrderElement = document.getElementById('total-order-summary');
         totalOrderElement.textContent = `Rp. ${totalOrder.toLocaleString('id-ID')} `;
+        
+        const totalOrderPackingElement = document.getElementById('total-order-summary-packing');
+        totalOrderPackingElement.textContent = `Rp. ${totalOrderPacking.toLocaleString('id-ID')} `;
     }
 
     // Function to calculate total price from cart data

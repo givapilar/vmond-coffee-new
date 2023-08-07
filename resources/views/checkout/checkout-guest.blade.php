@@ -143,6 +143,8 @@
                 </div>
             </li>
             
+            @if ($orders->category == 'Dine In')
+                
             <li class="py-3 sm:py-3">
                 <div class="flex items-start space-x-4">
                     <div class="flex-1 min-w-0">
@@ -161,11 +163,36 @@
                     </div>
                 </div>
             </li>
+
+            @else
+            <li class="py-3 sm:py-3">
+                <div class="flex items-start space-x-4">
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs font-medium text-gray-900 truncate dark:text-white">
+                            Order Total Packing
+                        </p>
+                    </div>
+                    <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white">
+                        @if (\Cart::getTotal())
+                            <?php
+                            $totalWithoutPacking = (\Cart::getTotal() + (\Cart::getTotal() ?? 0) * $order_settings[0]->layanan / 100);
+                            $totalWithPacking = $totalWithoutPacking + ($totalWithoutPacking + (\Cart::getTotal() ?? 0) * $order_settings[0]->layanan / 100) * $order_settings[0]->pb01 / 100 + $order_settings[0]->biaya_packing;
+                            ?>
+                            Rp. {{ number_format($totalWithPacking, 2, ',', '.') }}
+                        @else
+                            Rp. 0
+                        @endif
+                    </div>
+                    
+                </div>
+            </li>
+            @endif
+
         </ul>
 
         {{-- @foreach ($order_last as $item) --}}
             
-        @if ($order_last->tipe_pemesanan == 'Edisi' && $users->is_worker == true)
+        @if ($orders->tipe_pemesanan == 'Edisi' && $users->is_worker == true)
             {{-- <button class="fw-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900"  data-modal-toggle="deleteModal">
                 <ion-icon name="trash" class=""></ion-icon>
             </button> --}}

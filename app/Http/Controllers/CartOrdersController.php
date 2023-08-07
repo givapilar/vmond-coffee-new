@@ -232,7 +232,7 @@ class CartOrdersController extends Controller
                 // Buat array baru dengan membawa detail add-on ID yang berbeda
                 $itemAttributes = $existingItem->attributes->toArray();
                 if (!in_array($request->harga_add, $itemAttributes['detail_addon_id'])) {
-                    $itemAttributes['detail_addon_id'][] = $request->harga_add;
+                    $itemAttributes['detail_addon_id'] = $request->harga_add;
                     $existingItem->attributes = $itemAttributes;
                     $existingItem->quantity += $request->qty;
                     \Cart::session(Auth::user()->id)->update($existingItem->id, $existingItem->toArray());
@@ -300,7 +300,7 @@ class CartOrdersController extends Controller
                 // Buat array baru dengan membawa detail add-on ID yang berbeda
                 $itemAttributes = $existingItem->attributes->toArray();
                 if (!in_array($request->harga_add, $itemAttributes['detail_addon_id'])) {
-                    $itemAttributes['detail_addon_id'][] = $request->harga_add;
+                    $itemAttributes['detail_addon_id'] = $request->harga_add;
                     $existingItem->attributes = $itemAttributes;
                     $existingItem->quantity += $request->qty;
                     \Cart::session($user)->update($existingItem->id, $existingItem->toArray());

@@ -244,9 +244,9 @@ class OrderController extends Controller
                 return redirect()->route('homepage')->with(['failed' => 'Tidak dapat mengulang transaksi!']);
             }
 
-            if ($request->meja_restaurant_id == null) {
-                return redirect()->back()->with(['failed' => 'Harap Isi Meja !']);
-            }
+            // if ($request->meja_restaurant_id == null) {
+            //     return redirect()->back()->with(['failed' => 'Harap Isi Meja !']);
+            // }
 
             $idSessions = $request->idSession;
             $qtys = $request->qty;
@@ -423,9 +423,10 @@ class OrderController extends Controller
             // $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
             $user = 'guest';
             $data['data_carts'] = \Cart::session($user)->getContent();
-            $data['order_last'] = Order::latest()->first();
+            // $data['order_last'] = Order::latest()->first();
             $data['order_settings'] = OtherSetting::get();
             $data['users'] = User::first();
+            $data['orders'] = Order::where('token',$token)->get()->first();
             // dsa;
             // return view('checkout.index',$data,compact('snapToken','order'));
             return view('checkout.checkout-guest',$data,compact('snapToken','order'));
