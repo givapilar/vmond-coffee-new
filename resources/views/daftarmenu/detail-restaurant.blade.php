@@ -1,7 +1,12 @@
 @extends('layouts.app')
 
 @push('style-top')
-
+<style>
+    :disabled {
+        cursor: not-allowed!important;
+        pointer-events: all !important;
+    }
+</style>
 @endpush
 
 @push('style-bot')
@@ -45,12 +50,17 @@
             <p class="text-lg font-semibold text-center dark:text-white">Detail Restaurant</p>
         </div>
         <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
-        <form action="{{ route('restaurant-cart',$restaurants->id) }}" method="get">
+        <form action="{{ route('restaurant-cart',$restaurants->id) }}" method="get" id="formCart">
             @csrf
             <div class="grid grid-cols-2 p-3">
                 <div class="text-base sm:text-sm px-1 py-3 w-8/12 items-center mx-auto">
                     <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
+                        
+                        @if ($restaurants->image != null)
+                            <img src="{{ $image.$restaurants->image ?? 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80' }}" alt="." class="object-cover object-center h-full w-full">
+                        @else
                         <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80" alt="." class="object-cover object-center h-full w-full">
+                        @endif
                     </div>
                 </div>
         
@@ -209,6 +219,11 @@
                                                             <input id="{{ str_replace(' ', '',strtolower($item->nama)) }}" value="{{ $item->id }}" name="harga_add[]" type="checkbox" class="{{ str_replace(' ', '-', strtolower($add_on->title)) }} border-gray-200 rounded text-blue-600 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800 normal" aria-describedby="{{ str_replace(' ', '',strtolower($item->nama)) }}-description"
                                                             @if ($loop->index < $add_on->minimum_choice) 
                                                             checked @endif>
+                                                            {{-- <input id="{{ str_replace(' ', '',strtolower($item->nama)) }}-{{ $item->id }}" type="radio" value="{{ $item->id }}" name="harga_add[{{ $groupIdentifier }}]" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 normal"
+                                                            aria-describedby="{{ str_replace(' ', '',strtolower($item->nama)) }}-description"
+                                                            @if ($loop->index < $add_on->minimum_choice) 
+                                                            checked @endif> --}}
+
                                                         </div>
                                                         <label for="{{ str_replace(' ', '',strtolower($item->nama)) }}" class="ml-3">
                                                             <span id="{{ str_replace(' ', '',strtolower($item->nama)) }}-description" class="text-sm text-gray-600 dark:text-gray-300">{{ $item->nama ?? '' }}</span> <br>
@@ -239,7 +254,7 @@
                 <input type="hidden" name="image" value="{{ $image.$restaurants->image }}" id="">
 
                 {{-- <input type="hidden" name="quantity" value="1" id=""> --}}
-                <button type="submit" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Add Cart</button>
+                <button type="button" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900" id="submitButton" onclick="submitDisabled()">Add Cart</button>
             </div>
         </form>
     </div>
@@ -395,5 +410,14 @@ function remove(slug, $id) {
             });
         });
     });
+</script>
+{{-- Disable Button After Click --}}
+<script>
+    function submitDisabled()
+    {
+        $('#submitButton').prop('disabled', true);
+        $('#submitButton').addClass('disabled');
+        $('#formCart').submit();
+    }
 </script>
 @endpush

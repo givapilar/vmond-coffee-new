@@ -58,8 +58,19 @@ class DetailController extends Controller
         $data['menu_package_pivots'] = MenuPackagePivots::where('menu_packages_id', $id)
         ->pluck('restaurant_id')
         ->all();
+
+        $rest_api_url = 'https://managementvmond.controlindo.com/api/v1/vmond/user/get-role';
+
+        $getData = file_get_contents($rest_api_url);
+        try {
+            $role = json_decode($getData);
+            // dd($role);
+            // $data = $data->data;
+        } catch (\Throwable $th) {
+            $role = [];
+        }
         
-        return view('daftarmenu.detail-billiard',$data);
+        return view('daftarmenu.detail-billiard',$data,compact(['role']));
     }
 
     public function detailBilliardGuest($id)
@@ -70,14 +81,31 @@ class DetailController extends Controller
         $data ['paket_menu'] = MenuPackages::find($id);
         $data ['paket_details'] = MenuPackagePivots::get();
         $data ['billiard'] = Biliard::get();
+        $data ['add_ons'] = AddOn::get();
+        $data['restaurant_add_on'] = RestaurantAddOn::where("restaurant_id",$id)
+        ->pluck('add_on_id')
+        ->all();
+        // dd($data['restaurant_add_on']) ;
         $data ['restaurants'] = Restaurant::get();
+        $data ['userManagement'] = UserManagement::get();
         $data ['order_settings'] = OtherSetting::get();
         $data ['orders'] = Order::get();
         $data['menu_package_pivots'] = MenuPackagePivots::where('menu_packages_id', $id)
         ->pluck('restaurant_id')
         ->all();
+
+        $rest_api_url = 'https://managementvmond.controlindo.com/api/v1/vmond/user/get-role';
+
+        $getData = file_get_contents($rest_api_url);
+        try {
+            $role = json_decode($getData);
+            // dd($role);
+            // $data = $data->data;
+        } catch (\Throwable $th) {
+            $role = [];
+        }
         
-        return view('daftarmenu.detail-billiard-guest',$data);
+        return view('daftarmenu.detail-billiard-guest',$data,compact(['role']));
     }
 
     public function detailMeeting($id)

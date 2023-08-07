@@ -62,7 +62,7 @@
 
     <div class="grid grid-cols-1">
         @foreach ($paket_menus as $item)
-        {{-- {{ dd($item->biliard) }} --}}
+        {{-- {{ dd($image) }} --}}
         @if ($item->category == 'meeting_room')
         <div class="text-base sm:text-sm px-1 py-3">
             <div class="aspect-h-1 h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
@@ -76,6 +76,7 @@
                 
                 <div class="flex gap-1 opacity-75 mt-auto">
                     @foreach ($others as $other)
+                    <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" data-modal-target="description-modal-meeting{{ $item->id }}" data-modal-toggle="description-modal-meeting{{ $item->id }}"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
                     @if ($item->status_konfirmasi == 'Aktif')
                     
                     <form action="{{ route('detail-meeting',$item->id) }}" method="get" class=" w-full">
@@ -94,10 +95,13 @@
                             </div>
                         </a>
                     @endif
+
                     @endforeach
                 </div>
             </div>
         </div>
+        @include('modal.description-meeting-room')
+
         @endif
         @endforeach
        

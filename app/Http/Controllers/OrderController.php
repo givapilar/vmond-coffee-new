@@ -19,7 +19,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
 use Xendit\Xendit;
-use Illuminate\Support\Facades\DB;
+// use Illuminate\Support\Facades\DB;
+use DB;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 // require 'vendor/autoload.php';
@@ -28,142 +29,343 @@ class OrderController extends Controller
 
     public function checkout(Request $request, $token)
     {
-        
-        $checkToken = Order::where('token',$token)->where('status_pembayaran', 'Paid')->get();
-        if (count($checkToken) != 0) {
-            return redirect()->route('homepage')->with(['failed' => 'Tidak dapat mengulang transaksi!']);
-        }
-
-        if ($request->meja_restaurant_id == null) {
-            return redirect()->back()->with(['failed' => 'Harap Isi Meja !']);
-        }
-
-        $today = Carbon::today();
-        $formattedDate = $today->format('ymd');
-
-        $lastOrder = Order::whereDate('created_at',$today)->orderBy('id','desc')->first();
-        if ($lastOrder) {
-            // Cek apakah order dibuat pada tanggal yang sama dengan hari ini
-            $lastInvoiceNumber = $lastOrder->invoice_no;
-            $lastOrderNumber = (int)substr($lastInvoiceNumber, 7);
-            $nextOrderNumber = $lastOrderNumber + 1;
-        } else {
-            $nextOrderNumber = 1;
-        }
-
-        $paddedOrderNumber = str_pad($nextOrderNumber, 3, '0', STR_PAD_LEFT);
-        $invoiceNumber = $formattedDate . '-' . $paddedOrderNumber;
-
         // dd($request->all());
-        $idSessions = $request->idSession;
-        $qtys = $request->qty;
-
-        foreach ($idSessions as $key => $id) {
-            $qty = $qtys[$key];
-
-            \Cart::session(Auth::user()->id)->update($id, [
-                'quantity' => array(
-                    'relative' => false,
-                    'value' => $qty
-                ),
-            ]);
-        }
-        
-        $price = 1;
-        $session_cart = \Cart::session(Auth::user()->id)->getContent();
-        
-
-        foreach ($session_cart as $key => $value) {
-            $price +=$value->price;
-        }
-        $other_setting = OtherSetting::get();
-        $restaurants = Restaurant::get();
-
-        // Replace the 'foreach' loop with a more efficient 'foreach' loop using collections.
-        foreach ($session_cart as $key => $item) {
-            // $restaurant = $restaurants->where('id', $key)->first();
-            $restaurant = $restaurants->where('id', $item->attributes['restaurant']['id'])->first();
-            // dd($restaurant->current_stok);
+        try {
             
-            // if ($restaurant && $restaurant->current_stok <= $item->quantity) {
-            //     return redirect()->route('cart')->with(['failed' => 'Stok ' . $item->name . ' Kurang!']);
-            // }
-        }
-       
-        $time_to = date('Y-m-d', strtotime($request->date)) . ' ' . date('H:i', strtotime($request->time_from . ' + ' . $request->jam . ' hours - 2 minutes'));
-        $time_from = date('Y-m-d', strtotime($request->date)) . ' ' . date('H:i', strtotime($request->time_from));
-        if (Auth::check()) {
-            $total_price = 1;
-            # code...
-            // dd(Auth::user()->membership->level);
+            $checkToken = Order::where('token',$token)->where('status_pembayaran', 'Paid')->get();
+            if (count($checkToken) != 0) {
+                return redirect()->route('homepage')->with(['failed' => 'Tidak dapat mengulang transaksi!']);
+            }
+
+            if ($request->meja_restaurant_id == null) {
+                return redirect()->back()->with(['failed' => 'Harap Isi Meja !']);
+            }
+
+            // dd($request->all());
+            $idSessions = $request->idSession;
+            $qtys = $request->qty;
+
+            foreach ($idSessions as $key => $id) {
+                $qty = $qtys[$key];
+
+                \Cart::session(Auth::user()->id)->update($id, [
+                    'quantity' => array(
+                        'relative' => false,
+                        'value' => $qty
+                    ),
+                ]);
+            }
+            
+            $price = 1;
+            $session_cart = \Cart::session(Auth::user()->id)->getContent();
+            
+
+            foreach ($session_cart as $key => $value) {
+                $price +=$value->price;
+            }
+            $other_setting = OtherSetting::get();
+            $restaurants = Restaurant::get();
+
+            // Replace the 'foreach' loop with a more efficient 'foreach' loop using collections.
+            foreach ($session_cart as $key => $item) {
+                // $restaurant = $restaurants->where('id', $key)->first();
+                $restaurant = $restaurants->where('id', $item->attributes['restaurant']['id'])->first();
+                // dd($restaurant->current_stok);
+                
+                if ($restaurant && $restaurant->current_stok < $item->quantity) {
+                    return redirect()->route('cart')->with(['failed' => 'Stok ' . $item->name . ' Kurang!']);
+                }
+            }
+        
+            $time_to = date('Y-m-d', strtotime($request->date)) . ' ' . date('H:i', strtotime($request->time_from . ' + ' . $request->jam . ' hours - 2 minutes'));
+            $time_from = date('Y-m-d', strtotime($request->date)) . ' ' . date('H:i', strtotime($request->time_from));
+            if (Auth::check()) {
+                $total_price = 1;
+                # code...
+                // dd(Auth::user()->membership->level);
+                if (Auth::user()->membership->level == 'Super Platinum') {
+                    // dd('tes');
+                    // $total_price = 1;
+                    $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    $name = auth()->user()->username;
+                    $phone = auth()->user()->telephone;
+                    $kasir = null;
+                }else if(Auth::user()->telephone == '081818181847') {
+                    $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    $name = $request->nama ?? 'Not Name';
+                    $phone = $request->phone ?? '-';
+                    $kasir = $request->kasir_id;
+                
+                }elseif (Auth::user()->telephone == '081210469621') {
+                    $discount = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    $count = 0.2 * $discount;
+                    $total_price = $discount - $count;
+                    // dd($total_price);
+                    $name = $request->nama ?? 'Not Name';
+                    $phone = $request->phone ?? '-';
+                    $kasir = $request->kasir_id;
+                }
+                else{
+                    // dd('tes2');
+                    $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    $name = auth()->user()->username;
+                    $phone = auth()->user()->telephone;
+                    $kasir = null;
+                }
+            }
+                
+                $order = Order::create([
+                    'user_id' => auth()->user()->id,
+                    'name' => $name,
+                    'phone' => $phone,
+                    'qty' => array_sum($request->qty),
+                    'code' => 'draft',
+                    'date' => $request->date,
+                    'category' => $request->category,
+                    'time_from' => $time_from,
+                    'time_to' => $time_to,
+                    'biliard_id' => $request->biliard_id,
+                    'meeting_room_id' => $request->meeting_room_id,
+                    'meja_restaurant_id' => $request->meja_restaurant_id,
+                    'token' => $token,
+                    'total_price' => $total_price, 
+                    // 'total_price' => 1, 
+                    'status_pembayaran' => 'Unpaid',
+                    'status_pesanan' => 'process',
+                    'tipe_pemesanan' => $request->tipe_pemesanan,
+                    'kasir_id' => $kasir,
+                    'invoice_no' => 'draft',
+                    'created_at' => date('Y-m-d H:i:s'),
+                ]);
+
+                    foreach ($session_cart as $key => $item) {
+                        // dd($item);
+                        $orderPivot = [];
+                        if ($item->conditions == 'Restaurant') {
+                            // $orderPivot[] = [
+                            //     'order_id' => $order->id,
+                            //     'restaurant_id' => $item->attributes['restaurant']['id'],
+                            //     'category' => $item->attributes['restaurant']['category'],
+                            //     'qty' => $item['quantity'],
+                            // ];
+                            // OrderPivot::insert($orderPivot);
+
+                            $order_pivot = new OrderPivot();
+                            $order_pivot->order_id = $order->id;
+                            $order_pivot->restaurant_id = $item->attributes['restaurant']['id'];
+                            $order_pivot->category = $item->attributes['restaurant']['category'];
+                            $order_pivot->qty = $item['quantity'];
+                            $order_pivot->save();
+
+                            // $orderPivotId = DB::getPdo()->lastInsertId();
+                            
+                            if (is_iterable($item->attributes['harga_add']) && is_iterable($item->attributes['add_on_title'])) {
+                                $orderAddOn = []; // Initialize the $orderAddOn array
+                                foreach ($item->attributes['detail_addon_id'] as $innerKey => $detailAddonID) {
+                                    // $detailcheck
+                                    $detailAddonId = $item->attributes['detail_addon_id'][$innerKey];
+                                    $dataaddondetail = AddOnDetail::where('id', $detailAddonId)->first();
+                                    $dataaddon = AddOn::where('id', $dataaddondetail->add_on_id)->first();
+
+                                    $order_add_on = new OrderAddOn();
+                                    $order_add_on->order_pivot_id = $order_pivot->id;
+                                    $order_add_on->add_on_id = $dataaddon->id;
+                                    $order_add_on->add_on_detail_id = $detailAddonId;
+                                    $order_add_on->save();
+
+                                    // $orderAddOn[] = [
+                                    //     'order_pivot_id' => $orderPivotId,
+                                    //     'add_on_id' => $dataaddon->id,
+                                    //     'add_on_detail_id' => $detailAddonId,
+                                    // ];
+                                }
+                                // dd($request->all());
+                                // OrderAddOn::insert($orderAddOn);
+                            }
+                        }
+                    }
+                $checkToken2 = Order::where('token',$token)->get();
+                $data['token'] = $checkToken2->pluck('token');
+
+
+            // Set your Merchant Server Key
+            \Midtrans\Config::$serverKey = config('midtrans.server_key');
+            // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
+            \Midtrans\Config::$isProduction = true;
+            // Set sanitization on (default)
+            \Midtrans\Config::$isSanitized = true;
+            // Set 3DS transaction for credit card to true
+            \Midtrans\Config::$is3ds = true;
+            // dd(number_format($order->total_price, 0));
             if (Auth::user()->membership->level == 'Super Platinum') {
-                // dd('tes');
-                // $total_price = 1;
-                $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
-                $name = auth()->user()->username;
-                $phone = auth()->user()->telephone;
-                $kasir = null;
-            }else if(Auth::user()->telephone == '081818181847') {
-                $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
-                $name = $request->nama ?? 'Not Name';
-                $phone = $request->phone ?? '-';
-                $kasir = $request->kasir_id;
-            
-            }elseif (Auth::user()->telephone == '081210469621') {
-                $discount = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
-                $count = 0.2 * $discount;
-                $total_price = $discount - $count;
-                // dd($total_price);
-                $name = $request->nama ?? 'Not Name';
-                $phone = $request->phone ?? '-';
-                $kasir = $request->kasir_id;
+                $params = array(
+                    'transaction_details' => array(
+                        'order_id' => $order->id,
+                        'gross_amount' => 1,
+                    ),
+                    'customer_details' => array(
+                        'first_name' => auth()->user()->name,
+                        'phone' => $request->phone,
+                    ),
+                );
+            } else {
+                $params = array(
+                    'transaction_details' => array(
+                        'order_id' => $order->id,
+                        'gross_amount' => str_replace(',','',number_format($order->total_price, 0)),
+                        // 'gross_amount' => 1,
+                    ),
+                    'customer_details' => array(
+                        'first_name' => auth()->user()->name,
+                        'phone' => $request->phone,
+                    ),
+                );
             }
-            else{
-                // dd('tes2');
-                $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
-                $name = auth()->user()->username;
-                $phone = auth()->user()->telephone;
-                $kasir = null;
-            }
-        }
-            
-            $order = Order::create([
-                'user_id' => auth()->user()->id,
-                'name' => $name,
-                'phone' => $phone,
-                'qty' => array_sum($request->qty),
-                'code' => $invoiceNumber,
-                'date' => $request->date,
-                'category' => $request->category,
-                'time_from' => $time_from,
-                'time_to' => $time_to,
-                'biliard_id' => $request->biliard_id,
-                'meeting_room_id' => $request->meeting_room_id,
-                'meja_restaurant_id' => $request->meja_restaurant_id,
-                'token' => $token,
-                'total_price' => $total_price, 
-                // 'total_price' => 1, 
-                'status_pembayaran' => 'Unpaid',
-                'status_pesanan' => 'process',
-                'tipe_pemesanan' => $request->tipe_pemesanan,
-                'kasir_id' => $kasir,
-                'invoice_no' => $invoiceNumber,
-                'created_at' => date('Y-m-d H:i:s'),
-            ]);
 
+
+            $snapToken = \Midtrans\Snap::getSnapToken($params);
+            $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
+            $data['order_last'] = Order::latest()->first();
+            $data['order_settings'] = OtherSetting::get();
+            return view('checkout.index',$data,compact('snapToken','order'));
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return redirect()->back()->with('failed', 'Silahkan Hubungi Ke Waiters');
+        }
+        
+    }
+
+    public function checkoutGuest(Request $request, $token)
+    {
+        // dd($request->all());
+        try {
+            $checkToken = Order::where('token',$token)->where('status_pembayaran', 'Paid')->get()->count();
+            if ($checkToken != 0) {
+                return redirect()->route('homepage')->with(['failed' => 'Tidak dapat mengulang transaksi!']);
+            }
+
+            if ($request->meja_restaurant_id == null) {
+                return redirect()->back()->with(['failed' => 'Harap Isi Meja !']);
+            }
+
+            $idSessions = $request->idSession;
+            $qtys = $request->qty;
+            $userUpdate = 'guest';
+            $session_cart = \Cart::session($userUpdate)->getContent();
+            foreach ($idSessions as $key => $id) {
+                $qty = $qtys[$key];
+
+                \Cart::session($userUpdate)->update($id, [
+                    'quantity' => [
+                        'relative' => false,
+                        'value' => $qty
+                    ],
+                ]);
+            }
+            foreach ($session_cart as $key => $item) {
+                // dd($item);
+                $checkCount = Restaurant::where('id', $item->attributes['restaurant']['id'])->get()->map(function ($resto) use ($item, $key) {
+                    $count = $resto->where('id', $item->attributes['restaurant']['id'])->pluck('current_stok');
+                    return (int)$count[0] <= $item->quantity;
+
+                });
+
+                if ($checkCount[0] == true) {
+                    return redirect()->route('cart')->with(['failed' => 'Stok ' . $item->name .' Kurang !']);
+                }
+            }
+
+            $user = User::where('telephone', $request->phone)->first();
+
+            if (!$user) {
+                $user = new User();
+                $user->username = $request->nama;
+                $user->telephone = $request->phone;
+                $user->membership_id = 1;
+                $user->password = Hash::make($request->phone);
+                $user->save();
+            }
+
+            $request->request->add(['qty' => $request->qty]);
+            $price = 1;
+
+            foreach ($session_cart as $key => $value) {
+                $price +=$value->price;
+            }
+
+            $other_setting = OtherSetting::get();
+            // $other_setting = OtherSetting::first(); 
+            
+                $time_to = date('Y-m-d', strtotime($request->date)) . ' ' . date('H:i', strtotime($request->time_from . ' + ' . $request->jam . ' hours - 2 minutes'));
+                $time_from = date('Y-m-d', strtotime($request->date)) . ' ' . date('H:i', strtotime($request->time_from));
+
+                // if (Auth::user()->membership->level == 'Super Platinum') {
+                if (Auth::check()) {
+                $total_price = 1;
+                    # code...
+                    $user = auth()->user()->id;
+                    if (Auth::auth()->id) {
+                        $name = auth()->user()->username;
+                    }else{
+                        $name = $request->nama;
+                        $phone = $request->phone;
+                    }
+                }else {
+                    $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    $user = '2';
+                    if (Auth::check()) {
+                        $name = auth()->user()->username;
+                    }else{
+                        $name = $request->nama;
+                        $phone = $request->phone;
+                    }
+                }
+                $order = Order::create([
+                    'user_id' => $user,
+                    // 'name' => auth()->user()->username,
+                    'name' => $name,
+                    'phone' => $phone,
+                    'qty' => array_sum($request->qty),
+                    'code' => 'draft',
+                    'date' => $request->date,
+                    'category' => $request->category,
+                    'time_from' => $time_from,
+                    'time_to' => $time_to,
+                    'biliard_id' => $request->biliard_id,
+                    'meeting_room_id' => $request->meeting_room_id,
+                    'meja_restaurant_id' => $request->meja_restaurant_id,
+                    'total_price' => $total_price, 
+                    // 'total_price' => 1, 
+                    'token' => $token, 
+                    'status_pembayaran' => 'Unpaid',
+                    'status_pesanan' => 'process',
+                    'kasir_id' => null,
+                    'tipe_pemesanan' => $request->tipe_pemesanan,
+                    'invoice_no' => 'draft',
+                    'created_at' => date('Y-m-d H:i:s'),
+                ]);
+
+                // dd($session_cart);
                 foreach ($session_cart as $key => $item) {
                     $orderPivot = [];
                     if ($item->conditions == 'Restaurant') {
-                        $orderPivot[] = [
-                            'order_id' => $order->id,
-                            'restaurant_id' => $item->attributes['restaurant']['id'],
-                            'category' => $item->attributes['restaurant']['category'],
-                            'qty' => $item['quantity'],
-                        ];
-                        OrderPivot::insert($orderPivot);
+                        // $orderPivot[] = [
+                        //     'order_id' => $order->id,
+                        //     'restaurant_id' => $item->attributes['restaurant']['id'],
+                        //     'category' => $item->attributes['restaurant']['category'],
+                        //     'qty' => $item['quantity'],
+                        // ];
+                        // OrderPivot::insert($orderPivot);
 
-                        $orderPivotId = DB::getPdo()->lastInsertId();
+                        $order_pivot = new OrderPivot();
+                        $order_pivot->order_id = $order->id;
+                        $order_pivot->restaurant_id = $item->attributes['restaurant']['id'];
+                        $order_pivot->category = $item->attributes['restaurant']['category'];
+                        $order_pivot->qty = $item['quantity'];
+                        $order_pivot->save();
 
+                        // $orderPivotId = DB::getPdo()->lastInsertId();
+                        
                         if (is_iterable($item->attributes['harga_add']) && is_iterable($item->attributes['add_on_title'])) {
                             $orderAddOn = []; // Initialize the $orderAddOn array
                             foreach ($item->attributes['detail_addon_id'] as $innerKey => $detailAddonID) {
@@ -171,44 +373,38 @@ class OrderController extends Controller
                                 $detailAddonId = $item->attributes['detail_addon_id'][$innerKey];
                                 $dataaddondetail = AddOnDetail::where('id', $detailAddonId)->first();
                                 $dataaddon = AddOn::where('id', $dataaddondetail->add_on_id)->first();
-                                $orderAddOn[] = [
-                                    'order_pivot_id' => $orderPivotId,
-                                    'add_on_id' => $dataaddon->id,
-                                    'add_on_detail_id' => $detailAddonId,
-                                ];
+
+                                $order_add_on = new OrderAddOn();
+                                $order_add_on->order_pivot_id = $order_pivot->id;
+                                $order_add_on->add_on_id = $dataaddon->id;
+                                $order_add_on->add_on_detail_id = $detailAddonId;
+                                $order_add_on->save();
+
+                                // $orderAddOn[] = [
+                                //     'order_pivot_id' => $orderPivotId,
+                                //     'add_on_id' => $dataaddon->id,
+                                //     'add_on_detail_id' => $detailAddonId,
+                                // ];
                             }
-                        
-                            OrderAddOn::insert($orderAddOn);
+                            // dd($request->all());
+                            // OrderAddOn::insert($orderAddOn);
                         }
-                        
                     }
                     
                 }
-            $checkToken2 = Order::where('token',$token)->get();
-            $data['token'] = $checkToken2->pluck('token');
+                $checkToken2 = Order::where('token',$token)->get();
+                $data['token'] = $checkToken2->pluck('token');
+
+            // Set your Merchant Server Key
+            \Midtrans\Config::$serverKey = config('midtrans.server_key');
+            // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
+            \Midtrans\Config::$isProduction = true;
+            // Set sanitization on (default)
+            \Midtrans\Config::$isSanitized = true;
+            // Set 3DS transaction for credit card to true
+            \Midtrans\Config::$is3ds = true;
 
 
-        // Set your Merchant Server Key
-        \Midtrans\Config::$serverKey = config('midtrans.server_key');
-        // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-        \Midtrans\Config::$isProduction = true;
-        // Set sanitization on (default)
-        \Midtrans\Config::$isSanitized = true;
-        // Set 3DS transaction for credit card to true
-        \Midtrans\Config::$is3ds = true;
-        // dd(number_format($order->total_price, 0));
-        if (Auth::user()->membership->level == 'Super Platinum') {
-            $params = array(
-                'transaction_details' => array(
-                    'order_id' => $order->id,
-                    'gross_amount' => 1,
-                ),
-                'customer_details' => array(
-                    'first_name' => auth()->user()->name,
-                    'phone' => $request->phone,
-                ),
-            );
-        } else {
             $params = array(
                 'transaction_details' => array(
                     'order_id' => $order->id,
@@ -216,231 +412,29 @@ class OrderController extends Controller
                     // 'gross_amount' => 1,
                 ),
                 'customer_details' => array(
-                    'first_name' => auth()->user()->name,
+                    'first_name' => $request->nama,
                     'phone' => $request->phone,
                 ),
             );
+
+
+            $snapToken = \Midtrans\Snap::getSnapToken($params);
+
+            // $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
+            $user = 'guest';
+            $data['data_carts'] = \Cart::session($user)->getContent();
+            $data['order_last'] = Order::latest()->first();
+            $data['order_settings'] = OtherSetting::get();
+            $data['users'] = User::first();
+            // dsa;
+            // return view('checkout.index',$data,compact('snapToken','order'));
+            return view('checkout.checkout-guest',$data,compact('snapToken','order'));
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return redirect()->back()->with('failed', 'Silahkan Hubungi Ke Waiters');
+
         }
-
-
-        $snapToken = \Midtrans\Snap::getSnapToken($params);
-        $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
-        $data['order_last'] = Order::latest()->first();
-        $data['order_settings'] = OtherSetting::get();
-        return view('checkout.index',$data,compact('snapToken','order'));
-    }
-
-    public function checkoutGuest(Request $request, $token)
-    {
-        $checkToken = Order::where('token',$token)->where('status_pembayaran', 'Paid')->get()->count();
-        if ($checkToken != 0) {
-            return redirect()->route('homepage')->with(['failed' => 'Tidak dapat mengulang transaksi!']);
-        }
-
-        if ($request->meja_restaurant_id == null) {
-            return redirect()->back()->with(['failed' => 'Harap Isi Meja !']);
-        }
-
-        $today = Carbon::today();
-        $formattedDate = $today->format('ymd');
-
-        $lastOrder = Order::whereDate('created_at',$today)->orderBy('id','desc')->first();
-        if ($lastOrder) {
-            // Cek apakah order dibuat pada tanggal yang sama dengan hari ini
-            $lastInvoiceNumber = $lastOrder->invoice_no;
-            $lastOrderNumber = (int)substr($lastInvoiceNumber, 7);
-            $nextOrderNumber = $lastOrderNumber + 1;
-            // dd($nextOrderNumber);
-        } else {
-            $nextOrderNumber = 1;
-        }
-
-        $paddedOrderNumber = str_pad($nextOrderNumber, 3, '0', STR_PAD_LEFT);
-        $invoiceNumber = $formattedDate . '-' . $paddedOrderNumber;
-
-        $idSessions = $request->idSession;
-        $qtys = $request->qty;
-        $userUpdate = 'guest';
-        $session_cart = \Cart::session($userUpdate)->getContent();
-        foreach ($idSessions as $key => $id) {
-            $qty = $qtys[$key];
-
-            \Cart::session($userUpdate)->update($id, [
-                'quantity' => [
-                    'relative' => false,
-                    'value' => $qty
-                ],
-            ]);
-        }
-        foreach ($session_cart as $key => $item) {
-            // dd($item);
-            $checkCount = Restaurant::where('id', $item->attributes['restaurant']['id'])->get()->map(function ($resto) use ($item, $key) {
-                $count = $resto->where('id', $item->attributes['restaurant']['id'])->pluck('current_stok');
-                return (int)$count[0] <= $item->quantity;
-
-            });
-
-            if ($checkCount[0] == true) {
-                return redirect()->route('cart')->with(['failed' => 'Stok ' . $item->name .' Kurang !']);
-            }
-        }
-
-        $user = User::where('telephone', $request->phone)->first();
-
-        if (!$user) {
-            $user = new User();
-            $user->username = $request->nama;
-            $user->telephone = $request->phone;
-            $user->membership_id = 1;
-            $user->password = Hash::make($request->phone);
-            $user->save();
-        }
-
-        $request->request->add(['qty' => $request->qty]);
-        $price = 1;
-
-        foreach ($session_cart as $key => $value) {
-            $price +=$value->price;
-        }
-        $currentYear = date('YmdHis');
-        $orderInvoice = Order::orderBy('id', 'desc')->first();
-
-        if ($orderInvoice) {
-            $lastInvoiceNumber = $orderInvoice->invoice_no;
-            $lastInvoiceYear = substr($lastInvoiceNumber, 0, 4);
-
-            if ($lastInvoiceYear == $currentYear) {
-                $lastInvoiceIncrement = (int) substr($lastInvoiceNumber, 4);
-                $newInvoiceNumber = $currentYear . str_pad($lastInvoiceIncrement + 1, 4, '0', STR_PAD_LEFT);
-            } else {
-                $newInvoiceNumber = $currentYear . '1';
-            }
-        } else {
-            $newInvoiceNumber = $currentYear . '1';
-        }
-
-        $other_setting = OtherSetting::get();
-        // $other_setting = OtherSetting::first(); 
         
-            $time_to = date('Y-m-d', strtotime($request->date)) . ' ' . date('H:i', strtotime($request->time_from . ' + ' . $request->jam . ' hours - 2 minutes'));
-            $time_from = date('Y-m-d', strtotime($request->date)) . ' ' . date('H:i', strtotime($request->time_from));
-
-            // if (Auth::user()->membership->level == 'Super Platinum') {
-            if (Auth::check()) {
-            $total_price = 1;
-                # code...
-                $user = auth()->user()->id;
-                if (Auth::auth()->id) {
-                    $name = auth()->user()->username;
-                }else{
-                    $name = $request->nama;
-                    $phone = $request->phone;
-                }
-            }else {
-                $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
-                $user = '2';
-                if (Auth::check()) {
-                    $name = auth()->user()->username;
-                }else{
-                    $name = $request->nama;
-                    $phone = $request->phone;
-                }
-            }
-            $order = Order::create([
-                'user_id' => $user,
-                // 'name' => auth()->user()->username,
-                'name' => $name,
-                'phone' => $phone,
-                'qty' => array_sum($request->qty),
-                'code' => $invoiceNumber,
-                'date' => $request->date,
-                'category' => $request->category,
-                'time_from' => $time_from,
-                'time_to' => $time_to,
-                'biliard_id' => $request->biliard_id,
-                'meeting_room_id' => $request->meeting_room_id,
-                'meja_restaurant_id' => $request->meja_restaurant_id,
-                'total_price' => $total_price, 
-                // 'total_price' => 1, 
-                'token' => $token, 
-                'status_pembayaran' => 'Unpaid',
-                'status_pesanan' => 'process',
-                'kasir_id' => null,
-                'tipe_pemesanan' => $request->tipe_pemesanan,
-                'invoice_no' => $invoiceNumber,
-                'created_at' => date('Y-m-d H:i:s'),
-            ]);
-
-            // dd($session_cart);
-            foreach ($session_cart as $key => $item) {
-                $orderPivot = [];
-                if ($item->conditions == 'Restaurant') {
-                    $orderPivot[] = [
-                        'order_id' => $order->id,
-                        'restaurant_id' => $item->attributes['restaurant']['id'],
-                        'category' => $item->attributes['restaurant']['category'],
-                        'qty' => $item['quantity'],
-                    ];
-                    OrderPivot::insert($orderPivot);
-
-                    $orderPivotId = DB::getPdo()->lastInsertId();
-
-                    if (is_iterable($item->attributes['harga_add']) && is_iterable($item->attributes['add_on_title'])) {
-                        $orderAddOn = []; // Initialize the $orderAddOn array
-                        foreach ($item->attributes['detail_addon_id'] as $innerKey => $detailAddonID) {
-                            // $detailcheck
-                            $detailAddonId = $item->attributes['detail_addon_id'][$innerKey];
-                            $dataaddondetail = AddOnDetail::where('id', $detailAddonId)->first();
-                            $dataaddon = AddOn::where('id', $dataaddondetail->add_on_id)->first();
-                            $orderAddOn[] = [
-                                'order_pivot_id' => $orderPivotId,
-                                'add_on_id' => $dataaddon->id,
-                                'add_on_detail_id' => $detailAddonId,
-                            ];
-                        }
-                    
-                        OrderAddOn::insert($orderAddOn);
-                    }
-                    
-                }
-                
-            }
-            $checkToken2 = Order::where('token',$token)->get();
-            $data['token'] = $checkToken2->pluck('token');
-
-        // Set your Merchant Server Key
-        \Midtrans\Config::$serverKey = config('midtrans.server_key');
-        // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-        \Midtrans\Config::$isProduction = true;
-        // Set sanitization on (default)
-        \Midtrans\Config::$isSanitized = true;
-        // Set 3DS transaction for credit card to true
-        \Midtrans\Config::$is3ds = true;
-
-
-        $params = array(
-            'transaction_details' => array(
-                'order_id' => $order->id,
-                'gross_amount' => str_replace(',','',number_format($order->total_price, 0)),
-                // 'gross_amount' => 1,
-            ),
-            'customer_details' => array(
-                'first_name' => $request->nama,
-                'phone' => $request->phone,
-            ),
-        );
-
-
-        $snapToken = \Midtrans\Snap::getSnapToken($params);
-
-        // $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
-        $user = 'guest';
-        $data['data_carts'] = \Cart::session($user)->getContent();
-        $data['order_last'] = Order::latest()->first();
-        $data['order_settings'] = OtherSetting::get();
-        $data['users'] = User::first();
-        // return view('checkout.index',$data,compact('snapToken','order'));
-        return view('checkout.checkout-guest',$data,compact('snapToken','order'));
     }
     
     public function index()
@@ -477,12 +471,14 @@ class OrderController extends Controller
             return redirect()->route('homepage')->with(['failed' => 'Tidak dapat mengulang transaksi!']);
         }
 
-        // $latestOrder = Order::latest()->first();
-        $latestOrder = Order::where('token',$token)->first();
+
+        $latestOrder = Order::where('token',$token)->orderBy('id', 'desc')->first();
+
         // dd($latestOrder);
         if ($latestOrder) {
             // Ubah status pembayaran menjadi "Paid"
-            $latestOrder->update(['status_pembayaran' => 'Paid']);
+            $latestOrder->update(['status_pembayaran' => 'Paid', 'invoice_no' => $this->generateInvoice()]);
+
             $userID = $latestOrder->user_id;
             $cart = \Cart::session($userID)->getContent();
 
@@ -793,7 +789,7 @@ class OrderController extends Controller
         if ($hashed == $request->signature_key) {
             if ($request->transaction_status == 'capture' or $request->transaction_status == 'settlement') {
                 $order = Order::find($request->order_id);
-                $order->update(['status_pembayaran' => 'Paid']);
+                $order->update(['status_pembayaran' => 'Paid','invoice_no' => $this->generateInvoice()]);
                 // Get User ID
 
                 $orderFinishSubtotal = Order::where('user_id', $order->user_id)->where('status_pembayaran','Paid')->sum('total_price');
@@ -869,6 +865,7 @@ class OrderController extends Controller
     }   
 
     public function checkoutBilliard(Request $request, $token){
+        // dd($request->all());
         $checkToken = Order::where('token',$token)->where('status_pembayaran', 'Paid')->get();
         if (count($checkToken) != 0) {
             return redirect()->route('homepage')->with(['failed' => 'Tidak dapat mengulang transaksi!']);
@@ -876,6 +873,10 @@ class OrderController extends Controller
 
         if ($request->time_from == null) {
             return redirect()->back()->with(['failed' => 'Harap Isi Jam !']);
+        }
+
+        if ($request->billiard_id == null) {
+            return redirect()->back()->with(['failed' => 'Harap Isi Meja Billiard !']);
         }
 
         // generate Invoice NO
@@ -899,33 +900,6 @@ class OrderController extends Controller
         $data['other_setting'] = OtherSetting::get()->first();
         $other_setting = OtherSetting::get();
         $request->request->add(['qty' => $request->qty]);
-        // dd($request->all());
-        $biaya_layanan = 5000;
-        $price = 1;
-        // $session_cart = \Cart::session(Auth::user()->id)->getContent();
-        $session_cart = \Cart::session(Auth::user()->id)->getContent();
-
-        // dd($request->all());
-
-        foreach ($session_cart as $key => $value) {
-            $price +=$value->price;
-        }
-        $currentYear = date('YmdHis');
-        $orderInvoice = Order::orderBy('id', 'desc')->first();
-
-        if ($orderInvoice) {
-            $lastInvoiceNumber = $orderInvoice->invoice_no;
-            $lastInvoiceYear = substr($lastInvoiceNumber, 0, 4);
-
-            if ($lastInvoiceYear == $currentYear) {
-                $lastInvoiceIncrement = (int) substr($lastInvoiceNumber, 4);
-                $newInvoiceNumber = $currentYear . str_pad($lastInvoiceIncrement + 1, 4, '0', STR_PAD_LEFT);
-            } else {
-                $newInvoiceNumber = $currentYear . '1';
-            }
-        } else {
-            $newInvoiceNumber = $currentYear . '1';
-        }
             
             $restaurant = Restaurant::get();
             
@@ -946,169 +920,129 @@ class OrderController extends Controller
             $data['pb01'] = $pb01;
             $data['total_harga'] = $total_harga;
 
-            // dd($request->paket_menu_id);
         
-            if (Auth::user()->membership->level == 'Super Platinum') {
-                $order = Order::create([
-                    // $request->all()
-                    'user_id' => auth()->user()->id,
-                    'name' => auth()->user()->username,
-                    'qty' => $request->qty,
-                    'code' => $invoiceNumber,
-                    'date' => $request->date,
-                    'category' => $request->category,
-                    'time_from' => $time_from,
-                    'time_to' => $time_to ,
-                    'biliard_id' => $request->billiard_id,
-                    'meeting_room_id' => $request->meeting_room_id,
-                    'token' => $token,
-                    // 'total_price' => \Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan, 
-                    // 'total_price' =>  \Cart::getTotal(), 
-                    'total_price' => 1, 
-                    'status_pembayaran' => 'Unpaid',
-                    'status_pesanan' => 'process',
-                    'tipe_pemesanan' => $request->tipe_pemesanan,
-                    'status_lamp' => 'OFF',
-                    'kasir_id' => null,
-                    'status_running' => 'NOT START',
-                    'invoice_no' => $invoiceNumber,
-                    'created_at' => date('Y-m-d H:i:s'),
-                ]);
-                if ($request->paket_restaurant_id) {
-                    $orderBilliard = [];
+            if (Auth::check()) {
+                $total_price = 1;
+                # code...
+                // dd(Auth::user()->membership->level);
+                if (Auth::user()->membership->level == 'Super Platinum') {
+                    // dd('tes');
+                    // $total_price = 1;
+                    $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    $name = auth()->user()->username;
+                    $phone = auth()->user()->telephone;
+                    $kasir = null;
+                }else if(Auth::user()->telephone == '081818181847') {
+                    $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    $name = $request->nama ?? 'Not Name';
+                    $phone = $request->phone ?? '-';
+                    $kasir = $request->kasir_id;
                 
-                    // dd($request->paket_restaurant_id);
-                    foreach ($request->paket_restaurant_id as $key => $value) {
-                        $restaurant = Restaurant::find($value);
-                        if ($restaurant) {
-                            $category = $restaurant->category;
-                            $orderBilliard[] = [
-                                'order_id' => $order->id,
-                                'restaurant_id' => $value,
-                                'category' => $category,
-                                'paket_menu_id' => $request->paket_menu_id[0],
-                                'qty' => $request->quantity, // Use $key to access the corresponding quantity
-                                'time_from' => $time_from,
-                                'time_to' => $time_to,
-                            ];
-                        }
-                    }
-                    
-                    // dd($orderBilliard);
-                    OrderBilliard::insert($orderBilliard);
+                }elseif (Auth::user()->telephone == '081210469621') {
+                    $discount = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    $count = 0.2 * $discount;
+                    $total_price = $discount - $count;
+                    // dd($total_price);
+                    $name = $request->nama ?? 'Not Name';
+                    $phone = $request->phone ?? '-';
+                    $kasir = $request->kasir_id;
                 }
-            }else if(Auth::user()->telephone == '081818181847') {
-                $biaya_layanan = 0;
-                $order = Order::create([
-                    // $request->all()
-                    'user_id' => auth()->user()->id,
-                    'name' => $request->nama_customer,
-                    'phone' => $request->phone ?? null,
-                    'qty' => $request->quantity,
-                    'code' => $invoiceNumber,
-                    'date' => $request->date,
-                    'category' => $request->category,
-                    'time_from' => $time_from,
-                    'time_to' => $time_to,
-                    'biliard_id' => $request->billiard_id,
-                    'meeting_room_id' => $request->meeting_room_id,
-                    'token' => $token,
-                    'meja_restaurant_id' => $request->meja_restaurant_id,
-                    'kasir_id' => $request->kasir_id,
-                    // 'total_price' => \Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan, 
-                    // 'total_price' =>  \Cart::getTotal(), 
-                    // 'total_price' => $request->total_paket + ($request->total_paket *10/100) + $biaya_layanan, 
-                    'total_price' => $total_harga, 
-                    // 'total_price' => 1, 
-                    'status_pembayaran' => 'Unpaid',
-                    'status_pesanan' => 'process',
-                    'tipe_pemesanan' => $request->tipe_pemesanan,
-                    'status_lamp' => 'OFF',
-                    'status_running' => 'NOT START',
-                    'invoice_no' => $invoiceNumber,
-                    'created_at' => date('Y-m-d H:i:s'),
-                ]);
-
-                // dd('masok');
-                if ($request->paket_restaurant_id) {
-                    $orderBilliard = [];
-                
-                    // dd($request->paket_restaurant_id);
-                    foreach ($request->paket_restaurant_id as $key => $value) {
-                        $restaurant = Restaurant::find($value);
-                        if ($restaurant) {
-                            $category = $restaurant->category;
-                            $orderBilliard[] = [
-                                'order_id' => $order->id,
-                                'restaurant_id' => $value,
-                                'category' => $category,
-                                'paket_menu_id' => $request->paket_menu_id[0],
-                                'qty' => $request->quantity, // Use $key to access the corresponding quantity
-                                'time_from' => $time_from,
-                                'time_to' => $time_to,
-                            ];
-                        }
-                    }
-                    
-                    // dd($orderBilliard);
-                    OrderBilliard::insert($orderBilliard);
-                }
-            }else{
-                $biaya_layanan = 0;
-                $order = Order::create([
-                    // $request->all()
-                    'user_id' => auth()->user()->id,
-                    'name' => auth()->user()->username,
-                    'phone' => $request->phone ?? null,
-                    'qty' => $request->quantity,
-                    'code' => $invoiceNumber,
-                    'date' => $request->date,
-                    'category' => $request->category,
-                    'time_from' => $time_from,
-                    'time_to' => $time_to,
-                    'biliard_id' => $request->billiard_id,
-                    'meeting_room_id' => $request->meeting_room_id,
-                    'token' => $token,
-                    'meja_restaurant_id' => $request->meja_restaurant_id,
-                    'kasir_id' => $request->kasir_id,
-                    // 'total_price' => \Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan, 
-                    // 'total_price' =>  \Cart::getTotal(), 
-                    // 'total_price' => $request->total_paket + ($request->total_paket *10/100) + $biaya_layanan, 
-                    'total_price' => $total_harga, 
-                    // 'total_price' => 1, 
-                    'status_pembayaran' => 'Unpaid',
-                    'status_pesanan' => 'process',
-                    'tipe_pemesanan' => $request->tipe_pemesanan,
-                    'status_lamp' => 'OFF',
-                    'status_running' => 'NOT START',
-                    'invoice_no' => $invoiceNumber,
-                    'created_at' => date('Y-m-d H:i:s'),
-                ]);
-
-                if ($request->paket_restaurant_id) {
-                    $orderBilliard = [];
-                
-                    // dd($request->paket_restaurant_id);
-                    foreach ($request->paket_restaurant_id as $key => $value) {
-                        $restaurant = Restaurant::find($value);
-                        if ($restaurant) {
-                            $category = $restaurant->category;
-                            $orderBilliard[] = [
-                                'order_id' => $order->id,
-                                'restaurant_id' => $value,
-                                'category' => $category,
-                                'paket_menu_id' => $request->paket_menu_id[0],
-                                'qty' => $request->quantity, // Use $key to access the corresponding quantity
-                                'time_from' => $time_from,
-                                'time_to' => $time_to,
-                            ];
-                        }
-                    }
-                    
-                    // dd($orderBilliard);
-                    OrderBilliard::insert($orderBilliard);
+                else{
+                    // dd('tes2');
+                    $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    $name = auth()->user()->username;
+                    $phone = auth()->user()->telephone;
+                    $kasir = null;
                 }
             }
+                
+                $order = Order::create([
+                    'user_id' => auth()->user()->id,
+                    'name' => $name,
+                    'phone' => $phone,
+                    'qty' => 1,
+                    'code' => 'draft',
+                    'date' => $request->date,
+                    'category' => $request->category,
+                    'time_from' => $time_from,
+                    'time_to' => $time_to,
+                    'biliard_id' => $request->billiard_id,
+                    'meeting_room_id' => $request->meeting_room_id,
+                    'meja_restaurant_id' => $request->meja_restaurant_id,
+                    'token' => $token,
+                    'total_price' => $total_harga, 
+                    // 'total_price' => 1, 
+                    'status_pembayaran' => 'Unpaid',
+                    'status_lamp' => 'OFF',
+                    'status_running' => 'NOT START',
+                    'status_pesanan' => 'process',
+                    'tipe_pemesanan' => $request->tipe_pemesanan,
+                    'kasir_id' => $kasir,
+                    'invoice_no' => 'draft',
+                    'created_at' => date('Y-m-d H:i:s'),
+                ]);
+    
+
+                if ($request->paket_restaurant_id) {
+                    $orderBilliard = [];
+                
+                    // dd($request->paket_restaurant_id);
+                    foreach ($request->paket_restaurant_id as $key => $value) {
+                        $restaurant = Restaurant::find($value);
+                        if ($restaurant) {
+                            $category = $restaurant->category;
+                            $orderBilliard[] = [
+                                'order_id' => $order->id,
+                                'restaurant_id' => $value,
+                                'category' => $category,
+                                'paket_menu_id' => $request->paket_menu_id[0],
+                                'qty' => $request->quantity, // Use $key to access the corresponding quantity
+                                'time_from' => $time_from,
+                                'time_to' => $time_to,
+                            ];
+                        }
+                    }
+                    // dd($orderBilliard);
+                    OrderBilliard::insert($orderBilliard);
+                }
+                    // $orderBilliardId = DB::getPdo()->lastInsertId();
+                    // if ($request->paket_restaurant_id) {
+                    //     # code...
+                    //     $orderAddOn = []; // Initialize the $orderAddOn array
+                    //     foreach ($request->paket_restaurant_id as $innerKey => $detailAddonID) {
+                    //         $detailAddonId = $request->harga_add_menu [$innerKey];
+                    //         $dataaddondetail = AddOnDetail::where('id', $detailAddonId)->first();
+                    //         $dataaddon = AddOn::where('id', $dataaddondetail->add_on_id)->first();
+
+                    //         $orderAddOn[] = [
+                    //             'order_billiard_id' => $orderBilliardId,
+                    //             'add_on_id' => $dataaddon->id,
+                    //             'add_on_detail_id' => $detailAddonId,
+                    //         ];
+                    //     }
+                    //     OrderAddOn::insert($orderAddOn);
+                    // }
+                    // dd($request->all());
+
+                    // dd($request->harga_addmenu_1);
+                    // $orderBilliardId = DB::getPdo()->lastInsertId();
+                    // if ($request->paket_restaurant_id) {
+                    //     $orderAddOn = []; // Initialize the $orderAddOn array
+                    
+                    //     foreach ($request->harga_addmenu_1 as $groupIdentifier => $selectedItemID) {
+                    //         list($groupIdentifier, $addOnID) = explode('_', $groupIdentifier);
+                            
+                    //         $dataaddondetail = AddOnDetail::where('id', $selectedItemID)->first();
+                    //         $dataaddon = AddOn::where('id', $addOnID)->first();
+                    
+                    //         $orderAddOn[] = [
+                    //             'order_billiard_id' => $orderBilliardId,
+                    //             'add_on_detail_id' => $selectedItemID,
+                    //         ];
+                    //     }
+                    
+                    //     OrderAddOn::insert($orderAddOn);
+                    // }
 
             $checkToken2 = Order::where('token',$token)->get();
             $data['token'] = $checkToken2->pluck('token');
@@ -1164,176 +1098,280 @@ class OrderController extends Controller
         return view('checkout.billiard-index',$data,compact('snapToken','order'));
     }
 
-
-
     public function checkoutBilliardGuest(Request $request, $token){
-        $checkToken = Order::where('token',$token)->where('status_pembayaran', 'Paid')->get();
-        if (count($checkToken) != 0) {
-            return redirect()->route('homepage')->with(['failed' => 'Tidak dapat mengulang transaksi!']);
-        }
-
-        if ($request->time_from == null) {
-            return redirect()->back()->with(['failed' => 'Harap Isi Jam !']);
-        }
-        
-        $data['other_setting'] = OtherSetting::get()->first();
-        $other_setting = OtherSetting::get();
-        $request->request->add(['qty' => $request->qty]);
+        DB::beginTransaction();
         // dd($request->all());
-        $price = 1;
-        $user = User::where('username', $request->nama_user)->first();
-
-        $today = Carbon::today();
-        $formattedDate = $today->format('ymd');
-
-        $lastOrder = Order::whereDate('created_at',$today)->orderBy('id','desc')->first();
-        if ($lastOrder) {
-            // Cek apakah order dibuat pada tanggal yang sama dengan hari ini
-            $lastInvoiceNumber = $lastOrder->invoice_no;
-            $lastOrderNumber = (int)substr($lastInvoiceNumber, 7);
-            $nextOrderNumber = $lastOrderNumber + 1;
-            // dd($nextOrderNumber);
-        } else {
-            $nextOrderNumber = 1;
-        }
-
-        $paddedOrderNumber = str_pad($nextOrderNumber, 3, '0', STR_PAD_LEFT);
-        $invoiceNumber = $formattedDate . '-' . $paddedOrderNumber;
-
-        if (!$user) {
-            $user = new User();
-            $user->username = $request->nama_user;
-            $user->telephone = $request->phone;
-            $user->membership_id = 1;
-            $user->password = Hash::make($request->phone);
-            $user->save();
-        }
-
-
-        $currentYear = date('YmdHis');
-        $orderInvoice = Order::orderBy('id', 'desc')->first();
-
-        if ($orderInvoice) {
-            $lastInvoiceNumber = $orderInvoice->invoice_no;
-            $lastInvoiceYear = substr($lastInvoiceNumber, 0, 4);
-
-            if ($lastInvoiceYear == $currentYear) {
-                $lastInvoiceIncrement = (int) substr($lastInvoiceNumber, 4);
-                $newInvoiceNumber = $currentYear . str_pad($lastInvoiceIncrement + 1, 4, '0', STR_PAD_LEFT);
+        try {
+            $checkToken = Order::where('token',$token)->where('status_pembayaran', 'Paid')->get();
+            if (count($checkToken) != 0) {
+                return redirect()->route('homepage')->with(['failed' => 'Tidak dapat mengulang transaksi!']);
+            }
+    
+            if ($request->time_from == null) {
+                return redirect()->back()->with(['failed' => 'Harap Isi Jam !']);
+            }
+            
+            $data['other_setting'] = OtherSetting::get()->first();
+            $other_setting = OtherSetting::get();
+            $request->request->add(['qty' => $request->qty]);
+            // dd($request->all());
+            $price = 1;
+            $user = User::where('username', $request->nama_user)->first();
+    
+            $today = Carbon::today();
+            $formattedDate = $today->format('ymd');
+    
+            $lastOrder = Order::whereDate('created_at',$today)->orderBy('id','desc')->first();
+            if ($lastOrder) {
+                // Cek apakah order dibuat pada tanggal yang sama dengan hari ini
+                $lastInvoiceNumber = $lastOrder->invoice_no;
+                $lastOrderNumber = (int)substr($lastInvoiceNumber, 7);
+                $nextOrderNumber = $lastOrderNumber + 1;
+                // dd($nextOrderNumber);
+            } else {
+                $nextOrderNumber = 1;
+            }
+    
+            $paddedOrderNumber = str_pad($nextOrderNumber, 3, '0', STR_PAD_LEFT);
+            $invoiceNumber = $formattedDate . '-' . $paddedOrderNumber;
+    
+            if (!$user) {
+                $user = new User();
+                $user->username = $request->nama_user;
+                $user->telephone = $request->phone;
+                $user->membership_id = 1;
+                $user->password = Hash::make($request->phone);
+                $user->save();
+            }
+    
+    
+            $currentYear = date('YmdHis');
+            $orderInvoice = Order::orderBy('id', 'desc')->first();
+    
+            if ($orderInvoice) {
+                $lastInvoiceNumber = $orderInvoice->invoice_no;
+                $lastInvoiceYear = substr($lastInvoiceNumber, 0, 4);
+    
+                if ($lastInvoiceYear == $currentYear) {
+                    $lastInvoiceIncrement = (int) substr($lastInvoiceNumber, 4);
+                    $newInvoiceNumber = $currentYear . str_pad($lastInvoiceIncrement + 1, 4, '0', STR_PAD_LEFT);
+                } else {
+                    $newInvoiceNumber = $currentYear . '1';
+                }
             } else {
                 $newInvoiceNumber = $currentYear . '1';
             }
-        } else {
-            $newInvoiceNumber = $currentYear . '1';
-        }
-            
-            $restaurant = Restaurant::get();
-            
-            $member = Membership::get();
-            $time_to = date('Y-m-d', strtotime($request->date)) . ' ' . date('H:i', strtotime($request->time_from . ' + ' . $request->jam . ' hours - 2 minutes'));
-            $time_from = date('Y-m-d', strtotime($request->date)) . ' ' . date('H:i', strtotime($request->time_from));
+                
+                $restaurant = Restaurant::get();
+                
+                $member = Membership::get();
+                $time_to = date('Y-m-d', strtotime($request->date)) . ' ' . date('H:i', strtotime($request->time_from . ' + ' . $request->jam . ' hours - 2 minutes'));
+                $time_from = date('Y-m-d', strtotime($request->date)) . ' ' . date('H:i', strtotime($request->time_from));
+    
+                // Harga
+                $harga = $request->total_paket;
+                $layanan = (($request->total_paket ?? 0) * $other_setting[0]->layanan/100);
+                $pb01 = ($harga + $layanan) * ($other_setting[0]->pb01 / 100);
+                $total_harga = $harga + $layanan + $pb01;
+    
+                // Passing Harga
+                $data['harga'] = $harga;
+                $data['layanan'] = $layanan;
+                $data['pb01'] = $pb01;
+                $data['total_harga'] = $total_harga;
+    
+                $nama = $request->nama_user;
+                $phone = $request->phone;
+              
+                $order = Order::create([
+                    'user_id' => auth()->guest(),
+                    'name' => $nama,
+                    'phone' => $request->phone ?? null,
+                    'qty' => $request->quantity,
+                    'code' => 'draft',
+                    'date' => $request->date,
+                    'category' => $request->category,
+                    'time_from' => $time_from,
+                    'time_to' => $time_to,
+                    'biliard_id' => $request->billiard_id,
+                    'meeting_room_id' => $request->meeting_room_id,
+                    'token' => $token,
+                    'meja_restaurant_id' => $request->meja_restaurant_id,
+                    // 'total_price' => \Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan, 
+                    // 'total_price' =>  \Cart::getTotal(), 
+                    // 'total_price' => $request->total_paket + ($request->total_paket *10/100) + $biaya_layanan, 
+                    'total_price' => $total_harga, 
+                    // 'total_price' => 1, 
+                    'status_pembayaran' => 'Unpaid',
+                    'status_pesanan' => 'process',
+                    'tipe_pemesanan' => $request->tipe_pemesanan,
+                    'status_lamp' => 'OFF',
+                    'status_running' => 'NOT START',
+                    'invoice_no' => 'draft',
+                    'created_at' => date('Y-m-d H:i:s'),
+                ]);
+                
+                // if ($request->paket_restaurant_id) {
+                    $orderBilliard = [];
+                    $orderBiliardIDTemp = [];
+                    foreach ($request->paket_restaurant_id as $key => $value) {
+                        $restaurant = Restaurant::find($value);
+                        if ($restaurant) {
+                            $category = $restaurant->category;
+                            // $orderBilliard[] = [
+                            //     'order_id' => $order->id,
+                            //     'restaurant_id' => $value,
+                            //     'category' => $category,
+                            //     'paket_menu_id' => $request->paket_menu_id[0],
+                            //     'qty' => $request->quantity, // Use $key to access the corresponding quantity
+                            //     'time_from' => $time_from,
+                            //     'time_to' => $time_to,
+                            // ];
+                            $orderBilliard = new OrderBilliard;
+                            $orderBilliard->order_id = $order->id;
+                            $orderBilliard->restaurant_id = $value;
+                            $orderBilliard->category = $category;
+                            $orderBilliard->paket_menu_id = $request->paket_menu_id[0];
+                            $orderBilliard->qty = $request->quantity;
+                            $orderBilliard->time_from = $time_from;
+                            $orderBilliard->time_to = $time_to;
+                            $orderBilliard->save();
+                            $orderBiliardIDTemp[] = $orderBilliard->id;
+                        }
 
-            // Harga
-            $harga = $request->total_paket;
-            $layanan = (($request->total_paket ?? 0) * $other_setting[0]->layanan/100);
-            $pb01 = ($harga + $layanan) * ($other_setting[0]->pb01 / 100);
-            $total_harga = $harga + $layanan + $pb01;
-
-            // Passing Harga
-            $data['harga'] = $harga;
-            $data['layanan'] = $layanan;
-            $data['pb01'] = $pb01;
-            $data['total_harga'] = $total_harga;
-
-            $nama = $request->nama_user;
-            $phone = $request->phone;
-          
-            $biaya_layanan = 0;
-            $order = Order::create([
-                'user_id' => auth()->guest(),
-                'name' => $nama,
-                'phone' => $request->phone ?? null,
-                'qty' => $request->quantity,
-                'code' => $invoiceNumber,
-                'date' => $request->date,
-                'category' => $request->category,
-                'time_from' => $time_from,
-                'time_to' => $time_to,
-                'biliard_id' => $request->billiard_id,
-                'meeting_room_id' => $request->meeting_room_id,
-                'token' => $token,
-                'meja_restaurant_id' => $request->meja_restaurant_id,
-                // 'total_price' => \Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan, 
-                // 'total_price' =>  \Cart::getTotal(), 
-                // 'total_price' => $request->total_paket + ($request->total_paket *10/100) + $biaya_layanan, 
-                'total_price' => $total_harga, 
-                // 'total_price' => 1, 
-                'status_pembayaran' => 'Unpaid',
-                'status_pesanan' => 'process',
-                'tipe_pemesanan' => $request->tipe_pemesanan,
-                'status_lamp' => 'OFF',
-                'status_running' => 'NOT START',
-                'invoice_no' => $invoiceNumber,
-                'created_at' => date('Y-m-d H:i:s'),
-            ]);
-
-            if ($request->paket_restaurant_id) {
-                $orderBilliard = [];
-            
-                foreach ($request->paket_restaurant_id as $key => $value) {
-                    $restaurant = Restaurant::find($value);
-                    if ($restaurant) {
-                        $category = $restaurant->category;
-                        $orderBilliard[] = [
-                            'order_id' => $order->id,
-                            'restaurant_id' => $value,
-                            'category' => $category,
-                            'paket_menu_id' => $request->paket_menu_id[0],
-                            'qty' => $request->quantity, // Use $key to access the corresponding quantity
-                            'time_from' => $time_from,
-                            'time_to' => $time_to,
-                        ];
+                        // $orderBilliard = OrderBilliard::insert($orderBilliard);
                     }
+                    
+                    // dd($orderBilliard);
+                    // $orderBilliard = DB::getPdo()->lastInsertId();
+                    // }
+                    
+                    // dd($request->all());
+                    // $orderBilliardId = DB::getPdo()->lastInsertId();
+                    // foreach ($orderBiliardIDTemp as $key => $value) {
+                    //     dd($value, $key);
+                    // }
+                    // dd($request->all(), 'masuk 1', $orderBiliardIDTemp);
+                    // $orderBilliardId = $orderBiliardIDTemp[0];
+                if ($request->paket_restaurant_id) {
+                    foreach ($orderBiliardIDTemp as $key => $billiarID) {
+                        $keyNo = $key + 1;
+                        // dd($request->{'harga_addmenu_' . $keyNo}, $request->all());
+                        $orderAddOn = []; // Initialize the $orderAddOn array
+                        if ($request->{'harga_addmenu_' . $keyNo}) {
+                            foreach ($request->{'harga_addmenu_' . $keyNo} as $key => $addOns) {
+                                $addOnsData = AddOnDetail::where('id', $addOns)->first();
+                                // dd($addOns, $addOnsData);
+                                $orderAddOn[] = [
+                                    'order_billiard_id' => $billiarID,
+                                    'add_on_id' => $addOnsData->add_on_id,
+                                    'add_on_detail_id' => $addOnsData->id,
+                                ];
+                            }
+                            OrderAddOn::insert($orderAddOn);
+                        }
+                    }
+                    // foreach ($request->paket_restaurant_id as $key => $value) {
+                        // $orderAddOn = []; // Initialize the $orderAddOn array
+                        // foreach ($request->harga_addmenu_1 as $key => $addOns) {
+                        //     $addOnsData = AddOn::where('id', $addOns)->first();
+                        //     $orderAddOn[] = [
+                        //         'order_billiard_id' => $orderBilliardId,
+                        //         'add_on_id' => $addOnsData->add_on_id,
+                        //         'add_on_detail_id' => $addOnsData->id,
+                        //     ];
+                        // }
+                        // // OrderAddOn::insert($orderAddOn);
+                        
+                        // $orderAddOn2 = []; // Initialize the $orderAddOn array
+                        // foreach ($request->harga_addmenu_2 as $key => $addOns2) {
+                        //     $addOnsData2 = AddOn::where('id', $addOns2)->first();
+                        //     $orderAddOn2[] = [
+                        //         'order_billiard_id' => $orderBilliardId,
+                        //         'add_on_id' => $addOnsData2->add_on_id,
+                        //         'add_on_detail_id' => $addOnsData2->id,
+                        //     ];
+                        // }
+
+                        // dd($orderAddOn, $orderAddOn2);
+                        // OrderAddOn::insert($orderAddOn2);
+                    // }
+                    // foreach ($request->harga_addmenu_1 as $groupIdentifier => $selectedItemID) {
+                        
+                    //     $dataaddondetail = AddOnDetail::where('id', $selectedItemID)->first();
+                    //     $dataaddon = AddOn::where('id', $addOnID)->first();
+                
+                    //     $orderAddOn[] = [
+                    //         'order_billiard_id' => $orderBilliardId,
+                    //         // 'add_on_id' => $dataaddon->id,
+                    //         'add_on_detail_id' => $selectedItemID,
+                    //         // 'add_on_detail_id' => $request->harga_addmenu_2,
+                    //     ];
+                    // }
+                
+                    // OrderAddOn::insert($orderAddOn);
                 }
                 
-                // dd($orderBilliard);
-                OrderBilliard::insert($orderBilliard);
-            }
+    
+                // $orderPivotId = DB::getPdo()->lastInsertId();
+    
+                //         if (is_iterable($item->attributes['harga_add']) && is_iterable($item->attributes['add_on_title'])) {
+                //             $orderAddOn = []; // Initialize the $orderAddOn array
+                //             foreach ($item->attributes['detail_addon_id'] as $innerKey => $detailAddonID) {
+                //                 // $detailcheck
+                //                 $detailAddonId = $item->attributes['detail_addon_id'][$innerKey];
+                //                 $dataaddondetail = AddOnDetail::where('id', $detailAddonId)->first();
+                //                 $dataaddon = AddOn::where('id', $dataaddondetail->add_on_id)->first();
+                //                 $orderAddOn[] = [
+                //                     'order_pivot_id' => $orderPivotId,
+                //                     'add_on_id' => $dataaddon->id,
+                //                     'add_on_detail_id' => $detailAddonId,
+                //                 ];
+                //             }
+                        
+                //             OrderAddOn::insert($orderAddOn);
+                //         }
+    
+                $checkToken2 = Order::where('token',$token)->get();
+                $data['token'] = $checkToken2->pluck('token');
+    
+            // Set your Merchant Server Key
+            \Midtrans\Config::$serverKey = config('midtrans.server_key');
+            // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
+            \Midtrans\Config::$isProduction = true;
+            // Set sanitization on (default)
+            \Midtrans\Config::$isSanitized = true;
+            // Set 3DS transaction for credit card to true
+            \Midtrans\Config::$is3ds = true;
+            
+                $params = array(
+                    'transaction_details' => array(
+                        'order_id' => $order->id,
+                        // 'gross_amount' => $order->total_price,
+                        // 'gross_amount' => str_replace(',','',number_format($order->total_price, 0)),
+                        // 'gross_amount' => 1,
+                        'gross_amount' => $total_harga,
+                    ),
+                    'customer_details' => array(
+                        'first_name' => $request->name,
+                        'phone' => $request->phone,
+                        // 'code' => rand(),
+                    ),
+                );
+    
+            $snapToken = \Midtrans\Snap::getSnapToken($params);
+            // dd($snapToken);
+            $data['data_carts'] = \Cart::session(Auth::guest())->getContent();
+            // $data['orders'] = Order::get();
+            $data['orders'] = Order::latest()->first();
+            $data['order_last'] = Order::latest()->first();
+            DB::commit();
+            return view('checkout.billiard-index-guest',$data,compact('snapToken','order'));
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return redirect()->back()->with('failed', $th->getMessage());
+        }
 
-            $checkToken2 = Order::where('token',$token)->get();
-            $data['token'] = $checkToken2->pluck('token');
-
-        // Set your Merchant Server Key
-        \Midtrans\Config::$serverKey = config('midtrans.server_key');
-        // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-        \Midtrans\Config::$isProduction = true;
-        // Set sanitization on (default)
-        \Midtrans\Config::$isSanitized = true;
-        // Set 3DS transaction for credit card to true
-        \Midtrans\Config::$is3ds = true;
-        
-            $params = array(
-                'transaction_details' => array(
-                    'order_id' => $order->id,
-                    // 'gross_amount' => $order->total_price,
-                    // 'gross_amount' => str_replace(',','',number_format($order->total_price, 0)),
-                    'gross_amount' => 1,
-                    // 'gross_amount' => $total_harga,
-                ),
-                'customer_details' => array(
-                    'first_name' => $request->name,
-                    'phone' => $request->phone,
-                    // 'code' => rand(),
-                ),
-            );
-
-        $snapToken = \Midtrans\Snap::getSnapToken($params);
-        // dd($snapToken);
-        $data['data_carts'] = \Cart::session(Auth::guest())->getContent();
-        // $data['orders'] = Order::get();
-        $data['orders'] = Order::latest()->first();
-        $data['order_last'] = Order::latest()->first();
-        return view('checkout.billiard-index-guest',$data,compact('snapToken','order'));
     }
 
     public function checkoutMeeting(Request $request){
@@ -1515,8 +1553,8 @@ class OrderController extends Controller
             $params = array(
                 'transaction_details' => array(
                     'order_id' => $order->id,
-                    // 'gross_amount' => $order->total_price,
-                    'gross_amount' => 1,
+                    'gross_amount' => $order->total_price,
+                    // 'gross_amount' => 1,
                 ),
                 'customer_details' => array(
                     'first_name' => auth()->user()->name,
@@ -1574,25 +1612,18 @@ class OrderController extends Controller
                     foreach ($cart as $item) {
                         \Cart::session($userUpdate)->remove($item->id);
                     }
-            
+
                     foreach ($cart as $key => $item) {
                         $restoStock = Restaurant::where('id', $item->attributes['restaurant']['id'])->first();
                         $stockAvailable = ($restoStock->current_stok - $item->quantity);
                         
                         // Memperbarui stok restoran
-                        $restoStock->update(['current_stok' => $stockAvailable]);
-                    }
+                        $restoStock->update(['current_stok' => $stockAvailable,]);
+
+                }
                 }else{
                     $cart = \Cart::session($userID)->getContent();
                     
-                    // foreach ($session_cart as $key => $item) {
-                    //     // dd($item->attributes['restaurant']['id']);
-                    //     $restoStock = Restaurant::where('id', $item->attributes['restaurant']['id'])->first();
-                    //     $stockAvailable = ($restoStock->current_stok - $item->quantity);
-                    
-                    //     // Memperbarui stok restoran
-                    //     $restoStock->update(['current_stok' => $stockAvailable]);
-                    // }
                     // Menghapus item dari session cart
                     foreach ($cart as $item) {
                         \Cart::session($userID)->remove($item->id);
@@ -1605,6 +1636,7 @@ class OrderController extends Controller
                         // Memperbarui stok restoran
                         $restoStock->update(['current_stok' => $stockAvailable]);
                     }
+
 
                 }
             }else if($order->billiard_id != null){
@@ -1806,19 +1838,28 @@ class OrderController extends Controller
         }
     }
 
-    private function isBooked($request)
+    private function generateInvoice()
     {
-        $meja = $request->billiard_id;
-        $jam = $request->time_from;
-        $date = $request->date;
+        
+        $today = Carbon::today();
+        $formattedDate = $today->format('ymd');
 
-        $checkOrder = Order::whereDate('date', $date)->whereTime('time_from', $jam)->where('biliard_id', $meja)->where('status_pembayaran', 'Paid')->first();
-        $statusBooked = false;
-        if ($checkOrder) {
-            $statusBooked = true;
+        $lastOrder = Order::whereDate('created_at', $today)->where('status_pembayaran', 'Paid')->orderBy('id','desc')->first();
+        if ($lastOrder) {
+            // Cek apakah order dibuat pada tanggal yang sama dengan hari ini
+            $lastInvoiceNumber = $lastOrder->invoice_no;
+            $lastOrderNumber = (int)substr($lastInvoiceNumber, 7);
+            $nextOrderNumber = $lastOrderNumber + 1;
+            // dd($nextOrderNumber);
+        } else {
+            $nextOrderNumber = 1;
         }
 
-        return $statusBooked;
+        $paddedOrderNumber = str_pad($nextOrderNumber, 3, '0', STR_PAD_LEFT);
+        $invoiceNumber = $formattedDate . '-' . $paddedOrderNumber;
 
+        return $invoiceNumber;
     }
+
+    
 }

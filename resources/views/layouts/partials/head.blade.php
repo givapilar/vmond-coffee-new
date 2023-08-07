@@ -14,8 +14,8 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css">
 
-@yield('style-top')
-@yield('style-bot')
+@stack('style-top')
+@stack('style-bot')
 
 <style>
     .slick-next{

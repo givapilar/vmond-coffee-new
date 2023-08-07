@@ -23,6 +23,7 @@
         <div class="grid grid-cols-2 sm:grid-cols-1 gap-4 sm:gap-1">
             <div class="max-w-sm h-96 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
                 @foreach ($cart_guest as $key => $item)
+                {{-- {{dd($item)}} --}}
                     @if (Auth::check())
                         <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                     @endif
@@ -121,7 +122,7 @@
                 <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
                 
                 <ul class="max-w-sm divide-y divide-gray-200 dark:divide-gray-700 px-3">
-                    {{-- <li class="py-3 sm:py-2">
+                    <li class="py-3 sm:py-2">
                         <div class="flex items-center space-x-4">
                         <div class="flex-shrink-0">
                             <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/takeaway.png') }}" alt="Neil image">
@@ -135,34 +136,23 @@
                             <input id="takeaway-radio" required type="radio" value="Takeaway" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                         </div>
                         </div>
-                    </li> --}}
+                    </li>
                     <li class="py-3 sm:py-2">
                         <div class="flex items-center space-x-4">
-                        <div class="flex-shrink-0">
-                            <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/dinein.png') }}" alt="Neil image">
+                            <div class="flex-shrink-0">
+                                <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/dinein.png') }}" alt="Neil image">
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                    Dine In
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                <input id="dine-in-radio" required type="radio" value="Dine In" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            </div>
                         </div>
-                        <div class="flex-1 min-w-0">
-                            <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                Dine In
-                            </p>
-                        </div>
-                        <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                            <input id="dine-in-radio" required type="radio" value="Dine In" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                        </div>
-                    </div>
-                </li>
-                {{-- <li class="py-3 sm:py-2" style="display: none;" id="meja-wrapper">
-                    <div id="select-input-wrapper">
-                            <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja</label>
-                            <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option disabled selected>Pilih Meja Restaurant</option>
-                                @foreach ($meja_restaurants as $key => $meja_restaurant)
-                                    <option value="{{ $meja_restaurant->id }}">{{ $meja_restaurant->nama }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </li> --}}
-                <li class="py-3 sm:py-2" id="meja-wrapper">
+                    </li>
+                <li class="py-3 sm:py-2" style="display: none;" id="meja-wrapper">
                     <div id="select-input-wrapper">
                             <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja</label>
                             <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -173,6 +163,17 @@
                             </select>
                         </div>
                     </li>
+                {{-- <li class="py-3 sm:py-2" id="meja-wrapper">
+                    <div id="select-input-wrapper">
+                            <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja</label>
+                            <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option disabled selected>Pilih Meja Restaurant</option>
+                                @foreach ($meja_restaurants as $key => $meja_restaurant)
+                                    <option value="{{ $meja_restaurant->id }}">{{ $meja_restaurant->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </li> --}}
                 </ul>
             </div>
 
@@ -260,8 +261,26 @@
                         </div>
                     </div>
                 </li>
+
+                <li class="py-3 sm:py-3 takeaway" id="packingLi" style="display: none;">
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
+                                Packing
+                            </p>
+                        </div>
+                        <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white" id="packing">
+                            <?php
+                                $packing = 5000;
+                            ?>
                 
-                <li class="py-3 sm:py-3">
+                            Rp. {{ $packing }} 
+                        </div>
+                    </div>
+                </li>
+                
+                
+                <li class="py-3 sm:py-3" id="order-total">
                     <div class="flex items-start space-x-4">
                         <div class="flex-1 min-w-0">
                             <p class="text-xs font-medium text-gray-900 truncate dark:text-white">
@@ -297,28 +316,48 @@
 <!-- Inside your Blade template or in a separate JavaScript file -->
 
 <script>
+
+    // Packing
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const takeawayRadio = document.getElementById("takeaway-radio");
+        const dineInRadio = document.getElementById("dine-in-radio");
+        const packingLi = document.getElementById("packingLi");
+
+        if (takeawayRadio && dineInRadio && packingLi) {
+            takeawayRadio.addEventListener("change", function () {
+                packingLi.style.display = this.checked ? "block" : "none";
+            });
+
+            dineInRadio.addEventListener("change", function () {
+                packingLi.style.display = "none";
+            });
+        }
+    });
+
+
     const getDataCart = {!! json_encode($cart_guest) !!};
     const otherSetting = {!! json_encode($order_settings[0]) !!};
 
     // // Mengambil elemen radio button "Takeaway" dan "Dine In"
-    // const takeawayRadio = document.getElementById('takeaway-radio');
-    // const dineInRadio = document.getElementById('dine-in-radio');
+    const takeawayRadio = document.getElementById('takeaway-radio');
+    const dineInRadio = document.getElementById('dine-in-radio');
 
-    // // Mengambil elemen wrapper "Pilih Meja"
-    // const mejaWrapper = document.getElementById('meja-wrapper');
+    // Mengambil elemen wrapper "Pilih Meja"
+    const mejaWrapper = document.getElementById('meja-wrapper');
 
-    // // Menambahkan event listener saat radio button berubah
-    // takeawayRadio.addEventListener('change', toggleMejaWrapper);
-    // dineInRadio.addEventListener('change', toggleMejaWrapper);
+    // Menambahkan event listener saat radio button berubah
+    takeawayRadio.addEventListener('change', toggleMejaWrapper);
+    dineInRadio.addEventListener('change', toggleMejaWrapper);
 
-    // // Fungsi untuk mengubah visibilitas "Pilih Meja"
-    // function toggleMejaWrapper() {
-    //     if (takeawayRadio.checked) {
-    //         mejaWrapper.style.display = 'none';
-    //     } else if (dineInRadio.checked) {
-    //         mejaWrapper.style.display = 'block';
-    //     }
-    // }
+    // Fungsi untuk mengubah visibilitas "Pilih Meja"
+    function toggleMejaWrapper() {
+        if (takeawayRadio.checked) {
+            mejaWrapper.style.display = 'none';
+        } else if (dineInRadio.checked) {
+            mejaWrapper.style.display = 'block';
+        }
+    }
 
 </script>
 
