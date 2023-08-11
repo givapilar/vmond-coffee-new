@@ -38,8 +38,8 @@ class AppServiceProvider extends ServiceProvider
         Carbon::setLocale('id');
         date_default_timezone_set('Asia/Jakarta');
 
-        // $this->app['request']->server->set('HTTPS', true);
-        // URL::forceScheme('https');
+        //$this->app['request']->server->set('HTTPS', true);
+        //URL::forceScheme('https');
         
         view()->composer('*', function (){
             if (Auth::user()) {
