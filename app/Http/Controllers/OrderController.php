@@ -37,11 +37,18 @@ class OrderController extends Controller
                 return redirect()->route('homepage')->with(['failed' => 'Tidak dapat mengulang transaksi!']);
             }
 
-            if ($request->meja_restaurant_id == null) {
+           
+            if($request->category == 'Dine In' && $request->meja_restaurant_id == null){
+                return redirect()->back()->with(['failed' => 'Harap Isi Meja !']);
+            }elseif($request->category == 'Takeaway' && $request->meja_restaurant_id == null) {
                 return redirect()->back()->with(['failed' => 'Harap Isi Meja !']);
             }
-
+            
             // dd($request->all());
+            $restaurants = Restaurant::get();
+
+            
+
             $idSessions = $request->idSession;
             $qtys = $request->qty;
 
@@ -64,7 +71,6 @@ class OrderController extends Controller
                 $price +=$value->price;
             }
             $other_setting = OtherSetting::get();
-            $restaurants = Restaurant::get();
 
             // Replace the 'foreach' loop with a more efficient 'foreach' loop using collections.
             foreach ($session_cart as $key => $item) {
@@ -184,6 +190,13 @@ class OrderController extends Controller
                             }
                         }
                     }
+
+                // if($order->category == 'Dine In'){
+                    
+                //     if ($request->meja_restaurant_id == null) {
+                //         return redirect()->back()->with(['failed' => 'Harap Isi Meja !']);
+                //     }
+                // }
                 $checkToken2 = Order::where('token',$token)->get();
                 $data['token'] = $checkToken2->pluck('token');
 
@@ -247,6 +260,12 @@ class OrderController extends Controller
             // if ($request->meja_restaurant_id == null) {
             //     return redirect()->back()->with(['failed' => 'Harap Isi Meja !']);
             // }
+
+            if($request->category == 'Dine In' && $request->meja_restaurant_id == null){
+                return redirect()->back()->with(['failed' => 'Harap Isi Meja !']);
+            }elseif($request->category == 'Takeaway' && $request->meja_restaurant_id == null) {
+                return redirect()->back()->with(['failed' => 'Harap Isi Meja !']);
+            }
 
             $idSessions = $request->idSession;
             $qtys = $request->qty;
@@ -392,6 +411,9 @@ class OrderController extends Controller
                     }
                     
                 }
+
+                
+                
                 $checkToken2 = Order::where('token',$token)->get();
                 $data['token'] = $checkToken2->pluck('token');
 
@@ -880,6 +902,25 @@ class OrderController extends Controller
             return redirect()->back()->with(['failed' => 'Harap Isi Meja Billiard !']);
         }
 
+        if ($request->paket_restaurant_id == null) {
+            return redirect()->back()->with(['failed' => 'Harap Pilih Menu !']);
+        }
+        
+        $selectedPackages = $request->input('paket_restaurant_id');
+
+        foreach ($selectedPackages as $groupIdentifier => $restaurantId) {
+            // Extract the numeric portion from the groupIdentifier
+            $menuItemIndex = (int) str_replace('menu_', '', $groupIdentifier);
+
+            $restaurant = Restaurant::findOrFail($restaurantId);
+
+            if ($restaurant->current_stok <= 0) {
+                return redirect()->back()->with(['failed' => 'Stok ' . $restaurant->nama . ' Kurang!, Silahkan pilih yang lain']);
+            }
+
+            // Process the selected package
+            // ... (your existing code to process the selected package)
+        }
         // generate Invoice NO
         $today = Carbon::today();
         $formattedDate = $today->format('ymd');
@@ -902,7 +943,11 @@ class OrderController extends Controller
         $other_setting = OtherSetting::get();
         $request->request->add(['qty' => $request->qty]);
             
-            $restaurant = Restaurant::get();
+        $restaurant = Restaurant::get();
+
+        // if ($restaurant->current_stok <= 0) {
+        //     return redirect()->back()->with(['failed' => 'Stok ' . $restaurant->name . ' Kurang!']);
+        // }
             
             $member = Membership::get();
             $time_to = date('Y-m-d', strtotime($request->date)) . ' ' . date('H:i', strtotime($request->time_from . ' + ' . $request->jam . ' hours - 2 minutes'));
@@ -935,7 +980,7 @@ class OrderController extends Controller
                     $kasir = null;
                 }else if(Auth::user()->telephone == '081818181847') {
                     $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
-                    $name = $request->nama ?? 'Not Name';
+                    $name = $request->nama_customer ?? 'Not Name';
                     $phone = $request->phone ?? '-';
                     $kasir = $request->kasir_id;
                 
@@ -944,7 +989,7 @@ class OrderController extends Controller
                     $count = 0.2 * $discount;
                     $total_price = $discount - $count;
                     // dd($total_price);
-                    $name = $request->nama ?? 'Not Name';
+                    $name = $request->nama_customer ?? 'Not Name';
                     $phone = $request->phone ?? '-';
                     $kasir = $request->kasir_id;
                 }
@@ -1111,6 +1156,28 @@ class OrderController extends Controller
             if ($request->time_from == null) {
                 return redirect()->back()->with(['failed' => 'Harap Isi Jam !']);
             }
+
+            if ($request->paket_restaurant_id == null) {
+                return redirect()->back()->with(['failed' => 'Harap Pilih Menu !']);
+            }
+            
+            $restaurant = Restaurant::get();
+
+            $selectedPackages = $request->input('paket_restaurant_id');
+
+            foreach ($selectedPackages as $groupIdentifier => $restaurantId) {
+                // Extract the numeric portion from the groupIdentifier
+                $menuItemIndex = (int) str_replace('menu_', '', $groupIdentifier);
+
+                $restaurant = Restaurant::findOrFail($restaurantId);
+
+                if ($restaurant->current_stok <= 0) {
+                    return redirect()->back()->with(['failed' => 'Stok ' . $restaurant->nama . ' Kurang!, Silahkan pilih yang lain']);
+                }
+
+                // Process the selected package
+                // ... (your existing code to process the selected package)
+            }
             
             $data['other_setting'] = OtherSetting::get()->first();
             $other_setting = OtherSetting::get();
@@ -1163,7 +1230,7 @@ class OrderController extends Controller
                 $newInvoiceNumber = $currentYear . '1';
             }
                 
-                $restaurant = Restaurant::get();
+                
                 
                 $member = Membership::get();
                 $time_to = date('Y-m-d', strtotime($request->date)) . ' ' . date('H:i', strtotime($request->time_from . ' + ' . $request->jam . ' hours - 2 minutes'));

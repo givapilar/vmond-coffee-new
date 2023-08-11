@@ -179,7 +179,7 @@
                         <option disabled selected>Select Time From</option>
                         <?php
                         $startTime = strtotime('09:00');
-                        $endTime = strtotime('21:00');
+                        $endTime = strtotime('22:00');
                     
                         while ($startTime <= $endTime) {
                             $optionValue = date('H:i', $startTime);

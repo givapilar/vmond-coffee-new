@@ -312,8 +312,37 @@
                             </div>
                         </div>
 
-                        
+                        @if ($item->category == 'Takeaway')
+                        <div class="flex justify-between mb-4">
+                            <div class="text-sm text-gray-400 text-right flex-1">Packing</div>
+                            <div class="text-right w-40">
+                                <div class="text-sm text-gray-400">
+                                    <?php
+                                        $biaya_packing = number_format($otherSetting[0]->biaya_packing,0);
+                                    ?>
+                                    Rp.{{ $biaya_packing }} 
+                                </div>
+                            </div>
+                        </div>
 
+                        <div class="py-2 border-t border-b">
+                            <div class="flex justify-between">
+                                <div class="text-xl text-gray-400 text-right flex-1">Order Total</div>
+                                <div class="text-right w-40">
+                                    <div class="text-xl text-gray-400">
+                                        @php
+                                            $totalLayanan = ($totalPrice ?? 0) * ($otherSetting[0]->layanan / 100);
+                                            $totalPB01 = (($totalPrice ?? 0) + $totalLayanan) * ($otherSetting[0]->pb01 / 100);
+                                            $orderTotal = $totalPrice + $totalLayanan + $totalPB01 + $otherSetting[0]->biaya_packing;
+                                        @endphp
+
+                                        Rp.{{ number_format($orderTotal, 0) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @else
                         <div class="py-2 border-t border-b">
                             <div class="flex justify-between">
                                 <div class="text-xl text-gray-400 text-right flex-1">Order Total</div>
@@ -330,6 +359,8 @@
                                 </div>
                             </div>
                         </div>
+                        @endif
+
                     </div>
                 @endif
                 <!-- Print Template -->

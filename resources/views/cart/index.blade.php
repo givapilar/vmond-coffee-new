@@ -44,7 +44,7 @@
                                             <span class="block text-[10px] dark:text-yellow-300">Stock {{ $item->attributes['restaurant']['current_stok'] ?? '-' }}</span>
                                         </p>
 
-                                        {{-- <p>
+                                        <p>
                                             @if(isset($item->attributes['detail_addon_id']))
                                                 @foreach($item->attributes['detail_addon_id'] as $addonId)
                                                     @if(isset($addonId))
@@ -64,7 +64,7 @@
                                             @else
                                                 <span class="block text-[10px] dark:text-yellow-300">Tidak Ada Note</span>
                                             @endif
-                                        </p> --}}
+                                        </p>
 
                                         {{-- <p>
                                             <span class="block text-[10px] dark:text-yellow-300">Note :</span>
@@ -147,7 +147,7 @@
                         </div>
                         <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
                         <ul class="max-w-sm divide-y divide-gray-200 dark:divide-gray-700 px-3">
-                            {{-- <li class="py-3 sm:py-2">
+                            <li class="py-3 sm:py-2">
                                 <div class="flex items-center space-x-4">
                                 <div class="flex-shrink-0">
                                     <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/takeaway.png') }}" alt="Neil image">
@@ -161,7 +161,20 @@
                                     <input id="takeaway-radio" required type="radio" value="Takeaway" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                 </div>
                                 </div>
-                            </li> --}}
+                            </li>
+    
+                            <li class="py-3 sm:py-2" style="display: none;" id="meja-takeaway">
+                                <div id="select-input-wrapper">
+                                    <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja Untuk Takeaway</label>
+                                    <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option disabled selected>Pilih Meja Restaurant</option>
+                                        @foreach ($meja_restaurants as $key => $meja_restaurant)
+                                            <option value="{{ $meja_restaurant->id }}">{{ $meja_restaurant->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </li>
+                            
                             <li class="py-3 sm:py-2">
                                 <div class="flex items-center space-x-4">
                                 <div class="flex-shrink-0">
@@ -177,7 +190,7 @@
                                 </div>
                             </div>
                         </li>
-                        {{-- <li class="py-3 sm:py-2" style="display: none;" id="meja-wrapper">
+                        <li class="py-3 sm:py-2" style="display: none;" id="meja-wrapper">
                             <div id="select-input-wrapper">
                                 <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja</label>
                                 <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -187,8 +200,8 @@
                                     @endforeach
                                 </select>
                             </div>
-                        </li> --}}
-                        <li class="py-3 sm:py-2" id="meja-wrapper">
+                        </li>
+                        {{-- <li class="py-3 sm:py-2" id="meja-wrapper">
                             <div id="select-input-wrapper">
                                 <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja</label>
                                 <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -198,7 +211,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                        </li>
+                        </li> --}}
                         </ul>
                     </div>
                 @else
@@ -208,7 +221,7 @@
                     </div>
                     <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
                     <ul class="max-w-sm divide-y divide-gray-200 dark:divide-gray-700 px-3">
-                        {{-- <li class="py-3 sm:py-2">
+                        <li class="py-3 sm:py-2">
                             <div class="flex items-center space-x-4">
                             <div class="flex-shrink-0">
                                 <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/takeaway.png') }}" alt="Neil image">
@@ -219,10 +232,23 @@
                                 </p>
                             </div>
                             <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                <input id="takeaway-radiooo" required type="radio" value="Takeaway" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" disabled>
+                                <input id="takeaway-radio" required type="radio" value="Takeaway" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                             </div>
                             </div>
-                        </li> --}}
+                        </li>
+
+                        <li class="py-3 sm:py-2" style="display: none;" id="meja-takeaway">
+                            <div id="select-input-wrapper">
+                                <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja Untuk Takeaway</label>
+                                <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option disabled selected>Pilih Meja Restaurant</option>
+                                    @foreach ($meja_restaurants as $key => $meja_restaurant)
+                                        <option value="{{ $meja_restaurant->id }}">{{ $meja_restaurant->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </li>
+
                         <li class="py-3 sm:py-2">
                             <div class="flex items-center space-x-4">
                                 <div class="flex-shrink-0">
@@ -245,7 +271,7 @@
                                     <option disabled selected>Pilih Meja Restaurant</option>
                                     @foreach ($meja_restaurants as $key => $meja_restaurant)
                                     @if (Auth::user()->kode_meja == $meja_restaurant->kode_meja)
-                                    <option value="{{ $meja_restaurant->id }}" selected>{{ $meja_restaurant->nama }}</option>
+                                    <option required value="{{ $meja_restaurant->id }}" selected>{{ $meja_restaurant->nama }}</option>
                                     @endif
                                     @endforeach
                                 </select>
@@ -389,7 +415,7 @@
                         </div>
                     </li>
                     
-                    <li class="py-3 sm:py-3">
+                    <li class="py-3 sm:py-3" id="order-total" style="display: none;">
                         <div class="flex items-start space-x-4">
                             <div class="flex-1 min-w-0">
                                 <p class="text-xs font-medium text-gray-900 truncate dark:text-white">
@@ -399,6 +425,30 @@
                             <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white" id="total-order-summary">
                                 @if (\Cart::getTotal())
                                 Rp. {{ number_format((\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100,0)}}
+                                @else
+                                Rp. 0
+                                @endif
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="py-3 sm:py-3" id="order-total-packing" style="display: none;">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-xs font-medium text-gray-900 truncate dark:text-white">
+                                    Order Total
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white" id="total-order-summary-packing">
+                                <?php
+                                    $packing = 5000;
+                                    $totalWithoutPacking = (\Cart::getTotal() + (\Cart::getTotal() ?? 0) * $order_settings[0]->layanan/100);
+                                    $totalWithPacking = $totalWithoutPacking + ($totalWithoutPacking + (\Cart::getTotal() ?? 0) * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100 + $packing;
+                                ?>
+                                @if (\Cart::getTotal())
+                                {{-- Rp. {{ number_format((\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100,0)}} --}}
+                                Rp. {{ number_format($totalWithPacking, 0) }}
+    
                                 @else
                                 Rp. 0
                                 @endif
@@ -440,28 +490,53 @@
 </script>
 
 <script>
+
+    // Packing
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const takeawayRadio = document.getElementById("takeaway-radio");
+        const dineInRadio = document.getElementById("dine-in-radio");
+        const orderTotal = document.getElementById("order-total");
+        const orderTotalPacking = document.getElementById("order-total-packing");
+
+        if (takeawayRadio && dineInRadio && orderTotal && orderTotalPacking) {
+            takeawayRadio.addEventListener("change", function () {
+                orderTotal.style.display = "none";
+                orderTotalPacking.style.display = "block";
+            });
+
+            dineInRadio.addEventListener("change", function () {
+                orderTotal.style.display = "block";
+                orderTotalPacking.style.display = "none";
+            });
+        }
+    });
+
     const getDataCart = {!! json_encode($data_carts) !!};
     const otherSetting = {!! json_encode($order_settings[0]) !!};
 
     // // Mengambil elemen radio button "Takeaway" dan "Dine In"
-    // const takeawayRadio = document.getElementById('takeaway-radio');
-    // const dineInRadio = document.getElementById('dine-in-radio');
+    const takeawayRadio = document.getElementById('takeaway-radio');
+    const dineInRadio = document.getElementById('dine-in-radio');
 
-    // // Mengambil elemen wrapper "Pilih Meja"
-    // const mejaWrapper = document.getElementById('meja-wrapper');
+    // Mengambil elemen wrapper "Pilih Meja"
+    const mejaWrapper = document.getElementById('meja-wrapper');
+    const mejaTakeaway = document.getElementById('meja-takeaway');
 
-    // // Menambahkan event listener saat radio button berubah
-    // takeawayRadio.addEventListener('change', toggleMejaWrapper);
-    // dineInRadio.addEventListener('change', toggleMejaWrapper);
+    // Menambahkan event listener saat radio button berubah
+    takeawayRadio.addEventListener('change', toggleMejaWrapper);
+    dineInRadio.addEventListener('change', toggleMejaWrapper);
 
-    // // Fungsi untuk mengubah visibilitas "Pilih Meja"
-    // function toggleMejaWrapper() {
-    //     if (takeawayRadio.checked) {
-    //         mejaWrapper.style.display = 'none';
-    //     } else if (dineInRadio.checked) {
-    //         mejaWrapper.style.display = 'block';
-    //     }
-    // }
+    // Fungsi untuk mengubah visibilitas "Pilih Meja"
+    function toggleMejaWrapper() {
+        if (takeawayRadio.checked) {
+            mejaWrapper.style.display = 'none';
+            mejaTakeaway.style.display = 'block';
+        } else if (dineInRadio.checked) {
+            mejaWrapper.style.display = 'block';
+            mejaTakeaway.style.display = 'none';
+        }
+    }
 
 </script>
 
@@ -509,6 +584,9 @@
         let layanan = (currentPrice * (otherSetting.layanan / 100)).toFixed(3);
         let pb01 = ((parseFloat(currentPrice) + parseFloat(layanan)) * (otherSetting.pb01 / 100)).toFixed(3);
         let totalOrder = (parseFloat(currentPrice) + parseFloat(layanan) + parseFloat(pb01)).toFixed(3);
+        let packaging = (otherSetting.biaya_packing).toLocaleString('id-ID');
+        let totalOrderPacking = (parseFloat(currentPrice) + parseFloat(layanan) + parseFloat(pb01) + parseFloat(packaging)).toFixed(3);
+        console.log(packaging, currentPrice);
 
         const subtotalElement = document.getElementById('subtotal-summary');
         subtotalElement.textContent = `Rp. ${currentPrice}`;
@@ -521,6 +599,9 @@
 
         const totalOrderElement = document.getElementById('total-order-summary');
         totalOrderElement.textContent = `Rp. ${totalOrder.toLocaleString('id-ID')} `;
+
+        const totalOrderPackingElement = document.getElementById('total-order-summary-packing');
+        totalOrderPackingElement.textContent = `Rp. ${totalOrderPacking.toLocaleString('id-ID')} `;
     }
 
     function getValueAndUpdateMin(slug) {
@@ -548,6 +629,9 @@
         let layanan = (currentPrice * (otherSetting.layanan / 100)).toFixed(3);
         let pb01 = ((parseFloat(currentPrice) + parseFloat(layanan)) * (otherSetting.pb01 / 100)).toFixed(3);
         let totalOrder = (parseFloat(currentPrice) + parseFloat(layanan) + parseFloat(pb01)).toFixed(3);
+        let packaging = (otherSetting.biaya_packing).toLocaleString('id-ID');
+        let totalOrderPacking = (parseFloat(currentPrice) + parseFloat(layanan) + parseFloat(pb01) + parseFloat(packaging)).toFixed(3);
+        console.log(packaging, currentPrice);
 
         const subtotalElement = document.getElementById('subtotal-summary');
         subtotalElement.textContent = `Rp. ${currentPrice}`;
@@ -560,6 +644,9 @@
 
         const totalOrderElement = document.getElementById('total-order-summary');
         totalOrderElement.textContent = `Rp. ${totalOrder.toLocaleString('id-ID')} `;
+
+        const totalOrderPackingElement = document.getElementById('total-order-summary-packing');
+        totalOrderPackingElement.textContent = `Rp. ${totalOrderPacking.toLocaleString('id-ID')} `;
     }
 
     // Function to calculate total price from cart data

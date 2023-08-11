@@ -144,11 +144,8 @@ class CartOrdersController extends Controller
         
         // Jika waktu saat ini melebihi batas pesanan, maka kembalikan pesan error
         if ($restaurant->category == 'Minuman') {
-            $orderOpenTime = $other_setting->time_start_weekdays_minuman;
-            $orderDeadline = $other_setting->time_close_weekdays_minuman;
-            // $orderOpenTime = $other_setting->time_start_weekend;
-            // $orderDeadline = $other_setting->time_close_weekend;
-            // dd($currentTime);
+            $orderOpenTime = $other_setting->time_start_weekend_minuman;
+            $orderDeadline = $other_setting->time_close_weekend_minuman;
             if ($currentTime > $orderDeadline) {
                 return redirect()->back()->with(['failed' => 'Maaf, Kita Sudah Close Order']);
             } elseif ($currentTime < $orderOpenTime) {
@@ -156,8 +153,8 @@ class CartOrdersController extends Controller
                 return redirect()->back()->with(['failed' => 'Maaf, Cafe belum dibuka. Silakan coba lagi nanti']);
             }
         }else{
-            $orderOpenTimeMakanan = $other_setting->time_start;
-            $orderDeadlineMakanan = $other_setting->time_close;
+            $orderOpenTimeMakanan = $other_setting->time_start_weekend;
+            $orderDeadlineMakanan = $other_setting->time_close_weekend;
             if ($currentTime > $orderDeadlineMakanan) {
                 return redirect()->back()->with(['failed' => 'Maaf, Kita Sudah Close Order']);
             } elseif ($currentTime < $orderOpenTimeMakanan) {

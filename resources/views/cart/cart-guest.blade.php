@@ -136,6 +136,17 @@
                         </div>
                         </div>
                     </li>
+                    <li class="py-3 sm:py-2" style="display: none;" id="meja-takeaway">
+                        <div id="select-input-wrapper">
+                            <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja Untuk Takeaway</label>
+                            <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option disabled selected>Pilih Meja Restaurant</option>
+                                @foreach ($meja_restaurants as $key => $meja_restaurant)
+                                    <option value="{{ $meja_restaurant->id }}">{{ $meja_restaurant->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </li>
                     <li class="py-3 sm:py-2">
                         <div class="flex items-center space-x-4">
                             <div class="flex-shrink-0">
@@ -151,8 +162,8 @@
                             </div>
                         </div>
                     </li>
-                <li class="py-3 sm:py-2" style="display: none;" id="meja-wrapper">
-                    <div id="select-input-wrapper">
+                    <li class="py-3 sm:py-2" style="display: none;" id="meja-wrapper">
+                        <div id="select-input-wrapper">
                             <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja</label>
                             <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option disabled selected>Pilih Meja Restaurant</option>
@@ -162,17 +173,7 @@
                             </select>
                         </div>
                     </li>
-                {{-- <li class="py-3 sm:py-2" id="meja-wrapper">
-                    <div id="select-input-wrapper">
-                            <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja</label>
-                            <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option disabled selected>Pilih Meja Restaurant</option>
-                                @foreach ($meja_restaurants as $key => $meja_restaurant)
-                                    <option value="{{ $meja_restaurant->id }}">{{ $meja_restaurant->nama }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </li> --}}
+                    
                 </ul>
             </div>
 
@@ -300,7 +301,7 @@
                     <div class="flex items-start space-x-4">
                         <div class="flex-1 min-w-0">
                             <p class="text-xs font-medium text-gray-900 truncate dark:text-white">
-                                Order Total With Packing
+                                Order Total
                             </p>
                         </div>
                         <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white" id="total-order-summary-packing">
@@ -372,6 +373,7 @@
 
     // Mengambil elemen wrapper "Pilih Meja"
     const mejaWrapper = document.getElementById('meja-wrapper');
+    const mejaTakeaway = document.getElementById('meja-takeaway');
 
     // Menambahkan event listener saat radio button berubah
     takeawayRadio.addEventListener('change', toggleMejaWrapper);
@@ -381,8 +383,10 @@
     function toggleMejaWrapper() {
         if (takeawayRadio.checked) {
             mejaWrapper.style.display = 'none';
+            mejaTakeaway.style.display = 'block';
         } else if (dineInRadio.checked) {
             mejaWrapper.style.display = 'block';
+            mejaTakeaway.style.display = 'none';
         }
     }
 
