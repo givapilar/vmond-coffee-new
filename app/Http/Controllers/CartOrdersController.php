@@ -51,13 +51,7 @@ class CartOrdersController extends Controller
 
 
         $data ['userManagement'] = UserManagement::orderby('id', 'asc')->get();
-        // $data['role'] = Role::where('name', 'Barista')->first();
-        // dd($role);
         $data ['order_settings'] = OtherSetting::get();
-        // foreach ($data ['userManagement'] as $key => $value) {
-        //     # code...
-        //     dd($value->getrolenames);
-        // }
         if (Auth::check()) {
             # code...
             $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
@@ -116,9 +110,6 @@ class CartOrdersController extends Controller
             return view('cart.cart-guest',$data);
         }
 
-        // $data['processedCartItems'] = $processedCartItems;
-
-        // return view('cart.index',$data);
     }
 
     public function addCartRestaurant(Request $request,$id)
@@ -143,9 +134,19 @@ class CartOrdersController extends Controller
         // Jam batas untuk mulai menerima pesanan lagi (misalnya, jam 7:00 AM)
         
         // Jika waktu saat ini melebihi batas pesanan, maka kembalikan pesan error
+        $currentDay = date('N'); // Mendapatkan hari dalam format 1 (Senin) hingga 7 (Minggu)
         if ($restaurant->category == 'Minuman') {
-            $orderOpenTime = $other_setting->time_start_weekend_minuman;
-            $orderDeadline = $other_setting->time_close_weekend_minuman;
+            
+            if ($currentDay >= 1 && $currentDay <= 4) {
+                // Weekdays (Senin-Kamis)
+                $orderOpenTime = $other_setting->time_start_weekdays_minuman;
+                $orderDeadline = $other_setting->time_close_weekdays_minuman;
+            } else if ($currentDay >= 6 && $currentDay <= 7) {
+                // Weekend (Sabtu/Minggu)
+                $orderOpenTime = $other_setting->time_start_weekend_minuman;
+                $orderDeadline = $other_setting->time_close_weekend_minuman;
+            }
+            
             if ($currentTime > $orderDeadline) {
                 return redirect()->back()->with(['failed' => 'Maaf, Kita Sudah Close Order']);
             } elseif ($currentTime < $orderOpenTime) {
@@ -153,8 +154,19 @@ class CartOrdersController extends Controller
                 return redirect()->back()->with(['failed' => 'Maaf, Cafe belum dibuka. Silakan coba lagi nanti']);
             }
         }else{
-            $orderOpenTimeMakanan = $other_setting->time_start_weekend;
-            $orderDeadlineMakanan = $other_setting->time_close_weekend;
+            if ($currentDay >= 1 && $currentDay <= 4) {
+                // Weekdays (Senin-Kamis)
+                $orderOpenTime = $other_setting->time_start;
+                $orderDeadline = $other_setting->time_close;
+            } else if ($currentDay >= 6 && $currentDay <= 7) {
+                // Weekend (Sabtu/Minggu)
+                $orderOpenTime = $other_setting->time_start_weekend;
+                $orderDeadline = $other_setting->time_close_weekend;
+            }
+            // $orderOpenTimeMakanan = $other_setting->time_start_weekend;
+            // $orderDeadlineMakanan = $other_setting->time_close_weekend;
+            $orderOpenTimeMakanan = $other_setting->time_start;
+            $orderDeadlineMakanan = $other_setting->time_close;
             if ($currentTime > $orderDeadlineMakanan) {
                 return redirect()->back()->with(['failed' => 'Maaf, Kita Sudah Close Order']);
             } elseif ($currentTime < $orderOpenTimeMakanan) {

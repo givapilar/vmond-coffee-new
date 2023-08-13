@@ -36,26 +36,28 @@
                             </div>
 
                             <div class="flex-1 min-w-0">
-                                @if ($item->attributes['restaurant']['nama'])
-                                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                        {{ $item->attributes['restaurant']['nama'] }}
-                                    </p>
-                                @endif
+                                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                    {{ $item->attributes['restaurant']['nama'] }}
+                                </p>
 
                                 <p>
                                     <span class="block text-[10px] dark:text-yellow-300">Stock {{ $item->attributes['restaurant']['current_stok'] ?? 0 }}</span>
                                 </p>
+                                <span class="text-xs italic line-through text-gray-500 truncate dark:text-slate-500">
+                                    Rp. {{ number_format(array_sum((array) ($item->attributes['harga_add'] ?? [])) + ($item->attributes['restaurant']['harga'] ?? 0), 0) }}
+                                </span>
+                                <p class="text-xs text-gray-500 truncate dark:text-red-500">
+                                    Rp. {{ number_format(array_sum((array) ($item->attributes['harga_add'] ?? [])) + ($item->attributes['restaurant']['harga_diskon'] ?? 0), 0) }}
+                                </p>
                                 
-                                @if ($item->conditions == 'Restaurant')
-                                    <p class="text-xs text-gray-500 truncate dark:text-red-500">
-                                        Rp. {{ number_format(array_sum((array) ($item->attributes['harga_add'] ?? [])) + ($item->attributes['restaurant']['harga_diskon'] ?? 0), 0) }}
-                                    </p>
-                                @else   
+                                
+                                {{-- @if ($item->conditions == 'Restaurant') --}}
+                                {{-- @else   
                                     <p class="text-xs text-gray-500 truncate dark:text-red-500">
                                         Rp. {{ number_format(array_sum((array) ($item->attributes['harga_paket'] ?? [])) + ($item->attribnutes['restaurant']['harga'] ?? 0), 0) }}
 
                                     </p>
-                                @endif
+                                @endif --}}
 
                                 <div class="rounded-full h-7 w-32 border border-gray-500 mt-2">
                                     <div class="grid h-full w-full grid-cols-3 mx-auto">
