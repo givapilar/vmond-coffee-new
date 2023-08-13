@@ -1156,7 +1156,11 @@ class OrderController extends Controller
             if ($request->time_from == null) {
                 return redirect()->back()->with(['failed' => 'Harap Isi Jam !']);
             }
-
+    
+            if ($request->billiard_id == null) {
+                return redirect()->back()->with(['failed' => 'Harap Isi Meja Billiard !']);
+            }
+    
             if ($request->paket_restaurant_id == null) {
                 return redirect()->back()->with(['failed' => 'Harap Pilih Menu !']);
             }

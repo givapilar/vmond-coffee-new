@@ -24,8 +24,7 @@
                     {{-- {{ dd($item) }} --}}
                         <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
 
-                        <ul class="max-w-md divide-y divide-gray-200 dark
-                        :divide-gray-700">
+                        <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
                             <li class="py-3 sm:py-4">
                                 <div class="flex items-start space-x-4">
                                     <div class="flex-shrink-0">
@@ -33,12 +32,9 @@
 
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        @if ($item->attributes['restaurant']['nama'])
                                         <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
                                             {{ $item->attributes['restaurant']['nama'] ?? '' }}
                                         </p>
-                                        
-                                        @endif
 
                                         <p>
                                             <span class="block text-[10px] dark:text-yellow-300">Stock {{ $item->attributes['restaurant']['current_stok'] ?? '-' }}</span>
@@ -75,16 +71,13 @@
                                             @endforeach
                                         </p> --}}
                                         
-                                        @if ($item->conditions == 'Restaurant')
+                                        <p class="text-xs italic line-through text-gray-500 truncate dark:text-slate-500">
+                                            Rp. {{ number_format(array_sum((array) ($item->attributes['harga_add'] ?? [])) + ($item->attributes['restaurant']['harga_diskon'] ?? 0), 0) }}
+                                        </p>
+
                                         <p class="text-xs text-gray-500 truncate dark:text-red-500">
                                             Rp. {{ number_format(array_sum((array) ($item->attributes['harga_add'] ?? [])) + ($item->attributes['restaurant']['harga_diskon'] ?? 0), 0) }}
                                         </p>
-                                        @else
-                                        <p class="text-xs text-gray-500 truncate dark:text-red-500">
-                                            Rp. {{ number_format(array_sum((array) ($item->attributes['harga_paket'] ?? [])) + ($item->attributes['restaurant']['harga'] ?? 0), 0) }}
-
-                                        </p>
-                                        @endif
 
                                         <div class="rounded-full h-7 w-32 border border-gray-500 mt-2">
                                             <div class="grid h-full w-full grid-cols-3 mx-auto">

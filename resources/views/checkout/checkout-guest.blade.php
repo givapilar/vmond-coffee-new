@@ -33,17 +33,12 @@
                         <p class="text-xs text-gray-500 truncate dark:text-gray-400" id="note">
                             Qty: {{ $item['quantity'] }}
                         </p>
-                        @if ($item->conditions == 'Restaurant')
+                        <p class="text-xs line-through italic text-gray-500 truncate dark:text-red-500">
+                            Rp. {{ number_format(array_sum((array) ($item->attributes['harga_add'] ?? [])) + ($item->attributes['restaurant']['harga_diskon'] ?? 0), 0) }}
+                        </p>
                         <p class="text-xs text-gray-500 truncate dark:text-red-500">
                             Rp. {{ number_format(array_sum((array) ($item->attributes['harga_add'] ?? [])) + ($item->attributes['restaurant']['harga_diskon'] ?? 0), 0) }}
-
                         </p>
-                        @else
-                        <p class="text-xs text-gray-500 truncate dark:text-red-500">
-                            Rp. {{ number_format(array_sum((array) ($item->attributes['harga_paket'] ?? [])) + ($item->attributes['restaurant']['harga_diskon'] ?? 0), 0) }}
-
-                        </p>
-                        @endif
                     </div>
                 </div>
             </li>
