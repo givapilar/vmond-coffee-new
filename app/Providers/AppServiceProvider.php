@@ -47,7 +47,7 @@ class AppServiceProvider extends ServiceProvider
                 $yesterday = Carbon::yesterday();
 if (Auth::user()->telephone == '081818181847') {
     $orderTable = Order::orderBy('id', 'desc')
-        ->whereDate('created_at', $yesterday)
+	->whereDate('created_at', $today)
         ->where('user_id', Auth::user()->id)
         ->where('status_pembayaran', 'Paid')
         ->get();
