@@ -32,6 +32,15 @@ class RegisterController extends Controller
         $user->telephone    = $validate['telephone'];
         $user->membership_id     = 1;
         $user->password     = Hash::make($validate['password']);
+
+        $user = User::where('username', $request->email)->orWhere('telephone', $request->email)->first();
+            // dd($request->kode_meja); 
+        if ($request->has('jenis_meja') && $request->has('kode_meja')) {
+            $user->kode_meja = $request->kode_meja;
+            $user->jenis_meja = $request->jenis_meja;
+            $user->save();
+        } 
+
         $user->save();
 
         return redirect()->route('login')->with(['message_success' => 'Register account successfully!']);

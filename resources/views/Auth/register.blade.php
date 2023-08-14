@@ -18,7 +18,8 @@
         </div>
         <div class="w-full bg-transparent md:mt-0 max-w-md xl:p-0">
             <div class="px-6 py-2 space-y-4 md:space-y-6 ">
-                <form class="space-y-4 md:space-y-6" action="{{ route('register') }}" method="POST">
+                <form class="space-y-4 md:space-y-6" action="{{ route('register', ['jenis_meja' => Request::query('jenis_meja'), 'kode_meja' => Request::query('kode_meja')]) }}" method="POST">
+
                     @csrf
                     <div>
                         <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
