@@ -1,7 +1,18 @@
 @extends('layouts.app')
 
 @push('style-top')
+<style>
+    .billiard{
+        margin-top: -143px;
+        height: auto;
+    }
 
+    @media (max-width: 640px) {
+        .billiard {
+            margin-top: -40px; /* Adjust this value based on your preference */
+        }
+    }
+</style>
 @endpush
 
 @push('style-bot')
@@ -52,7 +63,7 @@
         <a href="{{ route('homepage-restaurant') }}">
             <div class="text-base sm:text-sm p-1">
                 <div class="aspect-h-1 h-36 sm:h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg">
-                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80" alt="" class="object-cover object-center h-full w-full">
+                    <img src="{{ asset('assetku/dataku/img/resto.jpg') }}" alt="" class="object-cover h-full w-full">
                     {{-- <span class="absolute top-0 left-0 inline-flex items-center justify-center w-6 h-6 bg-blue-600 rounded-full">
                         <svg aria-hidden="true" class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm1 3a1 1 0 100 2h3a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
                         <span class="sr-only">Message icon</span>
@@ -65,7 +76,7 @@
         <a href="{{ route('daftar-billiard') }}">
             <div class="text-base sm:text-sm p-1">
                 <div class="aspect-h-1 h-36 sm:h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg">
-                    <img src="https://images.unsplash.com/photo-1544070928-135893793bdc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=627&q=80" alt="." class="object-cover object-center h-full w-full">
+                    <img src="{{ asset('assetku/dataku/img/billiard.jpg') }}" alt="" class="object-cover object-center h-full w-full billiard">
                 </div>
 
                 <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300" style="font-weight: 500;">F w B</p>

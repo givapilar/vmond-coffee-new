@@ -91,8 +91,8 @@ class OrderController extends Controller
                 // dd(Auth::user()->membership->level);
                 if (Auth::user()->membership->level == 'Super Platinum') {
                     // dd('tes');
-                    // $total_price = 1;
-                    $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    $total_price = 1;
+                    // $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $name = auth()->user()->username;
                     $phone = auth()->user()->telephone;
                     $kasir = null;
