@@ -56,162 +56,83 @@
                                         <div class="w-full" id="choice-{{ $i }}">
                                             <div class="relative flex items-center px-3 py-2" id="detail-{{ $i }}">
                                                 <div class="flex items-center h-5">
-                                                    <input
-                                                        id="choice-menu-{{ $restaurant->nama }}-{{ $i }}"
-                                                        type="radio"
-                                                        value="{{ $restaurant->id }}"
-                                                        name="paket_restaurant_id[{{ $groupIdentifier }}]"
-                                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 custom"
-                                                    />
+                                                    {{-- Inputan Makanan/Minuman --}}
+                                                    <input id="choice-menu-{{ $restaurant->nama }}-{{ $i }}" onclick="getAddOn('{{ $restaurant->id . '-' . $i }}', '{{ $i }}')" type="radio" value="{{ $restaurant->id }}" name="paket_restaurant_id[{{ $groupIdentifier }}]" class="restaurant-input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 custom"/>
                                                 </div>
                                                 <label for="choice-menu-{{ $restaurant->nama }}-{{ $i }}" class="ml-3">
-                                                    <span
-                                                        id="choice-menu-{{ $restaurant->nama }}-{{ $i }}-description"
-                                                        class="text-sm text-white dark:text-white"
-                                                    >
+                                                    <span id="choice-menu-{{ $restaurant->nama }}-{{ $i }}-description" class="text-sm text-white dark:text-white">
                                                         {{ $restaurant->nama ?? '' }}
                                                     </span>
                                                     <br />
                                                 </label>
                                             </div>
-                                        
-                                            {{-- <div id="normal-content" class="relative flex items-center px-3 py-2">
-                                                <div class="flex items-center h-5">
-                                                    <input id="normal-radio" type="radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 custom"/>
-                                                </div>
-                                                <label class="ml-3">
-                                                    <span class="text-sm text-white dark:text-white">Normal</span>
-                                                    @foreach ($add_ons as $add_on)  
-                                                        @foreach ($restaurant->addOns as $resto)
-                                                            @if ($resto->add_on_id == $add_on->id)
-                                                            <div class="w-full" id="{{ str_replace(' ', '',strtolower($add_on->title)) }}">
-                                                                <input type="hidden" class="custom" name="add_on_title[]" value="{{ $add_on->title }}" id="">
-                                                                <div class="flex justify-center align-center py-2 px-3">
-                                                                    <p aria-hidden="true" class="text-sm font-semibold dark:text-white text-center">{{ $add_on->title ?? 'Error' }} </p>
-                                                                    <p class="text-xs font-semibold dark:text-white text-center mt-1">&nbsp;(Pilih {{ $add_on->minimum_choice }} )</p>
-                                                                </div>
-                                                                <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
-                                                                @foreach ($add_on->detailAddOn as $item)
-                                                                    <div class="relative flex items-center px-3" id="detail-{{ $item->id }}">
-                                                                        <div class="flex items-center h-5">
-                                                                            <input id="{{ str_replace(' ', '',strtolower($item->nama)) }}-{{ $item->id }}" type="radio" value="{{ $item->id }}" name="harga_add[{{ $groupIdentifier }}]" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 custom">
-                                                                        </div>
-                                                                        <label for="{{ str_replace(' ', '',strtolower($item->nama)) }}-{{ $item->id }}" class="ml-3">
-                                                                            <span id="{{ str_replace(' ', '',strtolower($item->nama)) }}-description" class="text-sm text-white dark:text-white">{{ $item->nama ?? '' }}</span> <br>
-                                                                            <span id="{{ str_replace(' ', '',strtolower($item->nama)) }}-description" class="text-sm text-white dark:text-white">Rp. {{ $item->harga ?? '' }}</span>
-                                                                        </label>
-                                                                    </div>
-                                                                    <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
-                                                                @endforeach
-                                                            </div>
-                                                            @endif
-                                                        @endforeach
-                                                    @endforeach
-                                                </label>
-                                            </div> --}}
                                             <div class="w-full">
                                                 @php
                                                     $min = 0;
                                                 @endphp
-                                        
-                                                <ul class="max-w-sm divide-y divide-gray-200 dark:divide-gray-700">
-                                        
-                                                    <li class="py-3 sm:py-2">
-                                                        <div class="flex items-center space-x-4 px-3">
-                                                            {{-- <div class="flex-shrink-0">
-                                                                <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/takeaway.png') }}" alt="Neil image">
-                                                            </div> --}}
-                                                            <div class="flex-1 min-w-0">
-                                                                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                                                    1. Normal
-                                                                </p>
-                                                            </div>
-                                                            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                                                <input id="normal-radio" required type="radio" value="Normal" name="addOnChange" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                        
-                                                    <li class="py-3 sm:py-2">
-                                                        <div class="flex items-center space-x-4 px-3">
-                                                            {{-- <div class="flex-shrink-0">
-                                                                <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/dinein.png') }}" alt="Neil image">
-                                                            </div> --}}
-                                                            <div class="flex-1 min-w-0">
-                                                                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                                                    2. Custom
-                                                                </p>
-                                                            </div>
-                                                            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                                                <input id="custome-radio" required type="radio" value="Custom" name="addOnChange" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    
-                                                    <li class="" style="display: none;" id="custom">
+                                                <div id="add-ons-{{ $restaurant->id . '-' . $i }}" style="display: none;" class="add-ons-list-{{ $i }} divide-y divide-gray-200 dark:divide-gray-700">
+                                                    {{-- Pilihan Normal dan custom --}}
+                                                    @if ($restaurant->addOns->count() > 0)
+                                                        <ul>
+                                                            <li class="py-3 sm:py-2">
+                                                                <div class="flex items-center space-x-4 px-3">
+                                                                    <div class="flex-1 min-w-0">
+                                                                        <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                                                            1. Add On
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                                                        <input id="normal-radio" type="radio" onchange="getAddOnDetail('{{ $restaurant->id . '-' . $i }}', 'normal')" value="Normal" name="addOnChange{{ $restaurant->id }}" class="typeAddOn w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                
+                                                            {{-- <li class="py-3 sm:py-2">
+                                                                <div class="flex items-center space-x-4 px-3">
+                                                                    <div class="flex-1 min-w-0">
+                                                                        <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                                                            2. Custom
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                                                        <input id="custome-radio" type="radio" onchange="getAddOnDetail('{{ $restaurant->id . '-' . $i }}', 'custom')" value="Custom" name="addOnChange{{ $restaurant->id }}" class="typeAddOn w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                                                    </div>
+                                                                </div>
+                                                            </li> --}}
+                                                        </ul>
+                                                    @endif
+                                                    {{-- end of Pilihan Normal dan custom --}}
+                                                    <div class="grid grid-cols-3 detail-add-ons" id="detail-add-ons-{{ $restaurant->id . '-' . $i }}" style="margin: 10px 30px; display:none;">
                                                         @foreach ($add_ons as $add_on)  
-                                                            @foreach ($restaurant->addOns as $resto)
+                                                            @foreach ($restaurant->addOns as $key => $resto)
                                                                 @if ($resto->add_on_id == $add_on->id)
-                                                                {{-- @foreach ($add_ons->where('restaurant_id', $restaurant->id) as $add_on) --}}
                                                                 <div class="w-full" id="{{ str_replace(' ', '',strtolower($add_on->title)) }}">
-                                                                    <input type="hidden" class="custom" name="add_on_title[]" value="{{ $add_on->title }}" id="">
+                                                                    <input style="display: none;" type="hidden" class="custom add-ons-title" name="add_on_title[]" value="{{ $add_on->title }}" id="">
                                                                     <div class="flex justify-center align-center py-2 px-3">
-                                                                        <p aria-hidden="true" class="text-sm font-semibold dark:text-white text-center">{{ $add_on->title ?? 'Error' }} </p>
-                                                                        <p class="text-xs font-semibold dark:text-white text-center mt-1">&nbsp;(Pilih {{ $add_on->minimum_choice }} )</p>
+                                                                        <p aria-hidden="true" class="text-sm font-semibold dark:text-white text-center break-words">{{ $add_on->title . '(Pilih '. $add_on->minimum_choice .')'?? 'Error' }} </p>
                                                                     </div>
                                                                     <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
                                                                     @foreach ($add_on->detailAddOn as $item)
                                                                         <div class="relative flex items-center px-3" id="detail-{{ $item->id }}">
                                                                             <div class="flex items-center h-5">
-                                                                                <input id="{{ str_replace(' ', '',strtolower($item->nama)) }}-{{ $item->id }}" type="radio" value="{{ $item->id }}" name="harga_add[{{ $groupIdentifier }}]" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 custom">
+                                                                                <input id="{{ str_replace(' ', '',strtolower($item->nama)) }}-{{ $item->id }}" type="radio" value="{{ $item->id }}" name="harga_add{{ $groupIdentifier }}[{{ $groupIdentifier . '_' . $add_on->id }}]" class="normal-choice w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 custom {{ substr(strtolower($item->nama), 0, 6) }}">
+                                                                                {{-- <input id="{{ str_replace(' ', '',strtolower($item->nama)) }}-{{ $item->id }}" type="radio" value="{{ $item->id }}" name="harga_add[{{ $groupIdentifier }}]" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 custom"> --}}
                                                                             </div>
                                                                             <label for="{{ str_replace(' ', '',strtolower($item->nama)) }}-{{ $item->id }}" class="ml-3">
                                                                                 <span id="{{ str_replace(' ', '',strtolower($item->nama)) }}-description" class="text-sm text-white dark:text-white">{{ $item->nama ?? '' }}</span> <br>
                                                                                 <span id="{{ str_replace(' ', '',strtolower($item->nama)) }}-description" class="text-sm text-white dark:text-white">Rp. {{ $item->harga ?? '' }}</span>
                                                                             </label>
                                                                         </div>
-                                                                        <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
+                                                                        @if (!$loop->last)
+                                                                            <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
+                                                                        @endif
                                                                     @endforeach
                                                                 </div>
                                                                 @endif
                                                             @endforeach
                                                         @endforeach
-                                                    </li>
-                                                    
-                                                    <li class="py-3 sm:py-2" style="display: none;" id="normal">
-                                                        <div id="select-input-wrapper">
-                                                            <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Normal</label>
-                                                            @foreach ($add_ons as $add_on)  
-                                                                @foreach ($restaurant->addOns as $resto)
-                                                                    @if ($resto->add_on_id == $add_on->id)
-                                                                    {{-- @foreach ($add_ons->where('restaurant_id', $restaurant->id) as $add_on) --}}
-                                                                    <div class="w-full" id="{{ str_replace(' ', '',strtolower($add_on->title)) }}">
-                                                                        <input type="hidden" class="custom" name="add_on_title[]" value="{{ $add_on->title }}" id="">
-                                                                        <div class="flex justify-center align-center py-2 px-3">
-                                                                            <p aria-hidden="true" class="text-sm font-semibold dark:text-white text-center">{{ $add_on->title ?? 'Error' }} </p>
-                                                                            <p class="text-xs font-semibold dark:text-white text-center mt-1">&nbsp;(Pilih {{ $add_on->minimum_choice }} )</p>
-                                                                        </div>
-                                                                        <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
-                                                                        @foreach ($add_on->detailAddOn as $item)
-                                                                            <div class="relative flex items-center px-3" id="detail-{{ $item->id }}">
-                                                                                <div class="flex items-center h-5">
-                                                                                    <input id="{{ str_replace(' ', '',strtolower($item->nama)) }}-{{ $item->id }}" type="radio" value="{{ $item->id }}" name="harga_add[{{ $groupIdentifier }}]" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 custom">
-                                                                                </div>
-                                                                                <label for="{{ str_replace(' ', '',strtolower($item->nama)) }}-{{ $item->id }}" class="ml-3">
-                                                                                    <span id="{{ str_replace(' ', '',strtolower($item->nama)) }}-description" class="text-sm text-white dark:text-white">{{ $item->nama ?? '' }}</span> <br>
-                                                                                    <span id="{{ str_replace(' ', '',strtolower($item->nama)) }}-description" class="text-sm text-white dark:text-white">Rp. {{ $item->harga ?? '' }}</span>
-                                                                                </label>
-                                                                            </div>
-                                                                            <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
-                                                                        @endforeach
-                                                                    </div>
-                                                                    @endif
-                                                                @endforeach
-                                                            @endforeach
-                                                        </div>
-                                                    </li>
-                                                    
-                                                </ul>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
                                         </div>
@@ -219,7 +140,6 @@
                                 @endforeach
                             </div>
                         @endforeach
-                        
                    @endfor
                 </div>
             </div>
@@ -261,7 +181,7 @@
                         <option disabled selected>Select Time From</option>
                         <?php
                         $startTime = strtotime('07:00');
-                        $endTime = strtotime('21:00');
+                        $endTime = strtotime('22:00');
                     
                         while ($startTime <= $endTime) {
                             $optionValue = date('H:i', $startTime);
@@ -374,8 +294,8 @@
                             <label for="kasir_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Nama Kasir</label>
                             <select id="kasir_id" name="kasir_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 mt-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option disabled selected>Pilih Nama Kasir</option>
-                                @foreach ($userManagement as $key => $item)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @foreach ($role as $item)
+                                    <option value="{{ $item->id }}" {{ old('kasir_id') == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -399,7 +319,7 @@
                         </p>
                     </div>
                     </div>
-                    <input placeholder="Massukan Nama" required name="nama" id="" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('password') is-invalid @enderror">
+                    <input placeholder="Massukan Nama" required name="nama_customer" id="" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('password') is-invalid @enderror">
                     
                 </li>
                 <li class="py-3 sm:py-2">
@@ -515,71 +435,6 @@
 @endpush
 
 @push('script-bot')
-<script>
-    // Mengambil elemen radio button "Takeaway" dan "Dine In"
-    const normalChecked = document.getElementById('normal-radio');
-    const customeChecked = document.getElementById('custome-radio');
-
-    // Mengambil elemen wrapper "Pilih Meja"
-    const normal = document.getElementById('normal');
-    const custom = document.getElementById('custom');
-
-    // Menambahkan event listener saat radio button berubah
-    normalChecked.addEventListener('change', toggleSections);
-    customeChecked.addEventListener('change', toggleSections);
-
-    // Fungsi untuk mengubah visibilitas "Pilih Meja" dan "Normal"
-    function toggleSections() {
-        if (normalChecked.checked) {
-            $('.custom').prop('disabled', true);
-            $('.normal').prop('disabled', false);
-            custom.style.display = 'none';
-            normal.style.display = 'block';
-            console.log('normal change');
-        } else if (customeChecked.checked) {
-            console.log('custom change');
-            $('.custom').prop('disabled', false);
-            $('.normal').prop('disabled', true);
-            custom.style.display = 'block';
-            normal.style.display = 'none';
-        }
-    }
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Function to handle the click event of the first radio button
-        function handleChoiceMenuRadioChange() {
-            const normalContent = document.getElementById("normal-content");
-            const choiceMenuRadio = document.getElementById("choice-menu-{{ $restaurant->nama }}-{{ $i }}");
-
-            // Check if the first radio button is checked
-            if (choiceMenuRadio.checked) {
-                // Show the "Normal" content
-                normalContent.style.display = "block";
-            } else {
-                // Hide the "Normal" content
-                normalContent.style.display = "none";
-            }
-        }
-
-        // Add event listener to the first radio button
-        const choiceMenuRadio = document.getElementById("choice-menu-{{ $restaurant->nama }}-{{ $i }}");
-        if (choiceMenuRadio) {
-            choiceMenuRadio.addEventListener("change", handleChoiceMenuRadioChange);
-        }
-
-        // Function to handle the click event of the "Normal" radio button
-        function handleNormalRadioChange() {
-            // Add your logic here for the "Normal" radio button, if needed
-        }
-
-        // Add event listener to the "Normal" radio button
-        const normalRadio = document.getElementById("normal-radio");
-        if (normalRadio) {
-            normalRadio.addEventListener("change", handleNormalRadioChange);
-        }
-    });
-</script>
 <script>
      function pad(number) {
     return (number < 10) ? '0' + number : number;
@@ -1200,6 +1055,24 @@ toggleTimeFrom();
         });
 
         // document.getElementById('date').addEventListener('change', toggleTimeFrom);
+</script>
+
+{{-- Get The Detail Add On --}}
+<script>
+    function getAddOn(id, no) {
+        console.log('masuk');
+        $('.add-ons-list-' + no).css('display', 'none');
+        $('#add-ons-' + id).css('display', 'block');
+    }
+    function getAddOnDetail(id, type)
+    {
+        if (type === 'normal') {
+            $('#detail-add-ons-'+id).css('display', 'block');
+        } 
+        // else {
+        //     $('#detail-add-ons-'+id).css('display', 'none');
+        // }
+    }
 </script>
 
 @endpush

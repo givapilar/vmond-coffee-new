@@ -143,5 +143,6 @@ return [
             // 'window' => 0,
         ]),
     ],
+    'login_response' => \App\Http\Responses\CustomLoginResponse::class,
 
 ];

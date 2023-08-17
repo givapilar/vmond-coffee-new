@@ -95,7 +95,7 @@
                         {{-- <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button> --}}
                         <button class="w-4/12 bg-orange-500 text-xs rounded-lg mt-2 p-1 hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-300" data-modal-target="description-modal{{ $item->id }}" data-modal-toggle="description-modal{{ $item->id }}"><ion-icon name="eye" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
                         {{-- <button class="w-8/12 bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button> --}}
-                        {{-- @if (Auth::check())
+                        @if (Auth::check())
                         <form action="{{ route('detail-billiard',$item->id) }}" method="get" class=" w-8/12">
                             <div class="flex gap-1 opacity-75">
                                 <button class="w-full bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
@@ -105,13 +105,13 @@
                         <form action="{{ route('detail-billiard-guest',$item->id) }}" method="get" class=" w-8/12">
                             <div class="flex gap-1 opacity-75">
                                 <button class="w-full bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                                {{-- <button class="w-full text-gray-500 text-xs rounded-lg mt-2 p-1 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-sky-300 dark:text-white flex items-center justify-center" style="background-color: gray;" disabled>
+                                    <ion-icon name="bag-add" class="mt-[0.2rem] mb-1 dark:text-white" style="font-size: 15px; margin-right: 5px;"></ion-icon>
+                                    <p class="mt-1 mb-1">Sedang Pebaikan</p>
+                                </button> --}}
                             </div>
                         </form>    
-                        @endif --}}
-                        <button class="w-full text-gray-500 text-xs rounded-lg mt-2 p-1 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-sky-300 dark:text-white flex items-center justify-center" style="background-color: gray;" disabled>
-                            <ion-icon name="bag-add" class="mt-[0.2rem] mb-1 dark:text-white" style="font-size: 15px; margin-right: 5px;"></ion-icon>
-                            <p class="mt-1 mb-1">Sedang Pebaikan</p>
-                        </button>
+                        @endif
                     </div>
                 </div>
                 @include('modal.description-billiard')

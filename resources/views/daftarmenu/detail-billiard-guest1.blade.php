@@ -9,6 +9,36 @@
 @endpush
 
 @section('content')
+{{-- <section class="p-3">
+    <div id="default-carousel" class="relative w-full" data-carousel="slide">
+        <!-- Carousel wrapper -->
+        <div class="relative h-36 overflow-hidden rounded-2xl shadow-2xl md:h-96">
+            <!-- Item 1 -->
+            <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                <img src="https://images.unsplash.com/photo-1563897539633-7374c276c212?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1046&q=80" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+            </div>
+            <!-- Item 2 -->
+            <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                <img src="https://images.unsplash.com/photo-1466814314367-45323ac74e2b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2085&q=80" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+            </div>
+            <!-- Item 3 -->
+            <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                <img src="https://images.unsplash.com/photo-1545062080-a71640ea75a1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1469&q=80" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+            </div>
+            <!-- Item 4 -->
+            <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                <img src="https://images.unsplash.com/photo-1462826303086-329426d1aef5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+            </div>
+        </div>
+        <!-- Slider indicators -->
+        <div class="absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
+            <button type="button" class="w-2 h-2 rounded-full" aria-current="true" aria-label="Slide 1" data-carousel-slide-to="0"></button>
+            <button type="button" class="w-2 h-2 rounded-full" aria-current="false" aria-label="Slide 2" data-carousel-slide-to="1"></button>
+            <button type="button" class="w-2 h-2 rounded-full" aria-current="false" aria-label="Slide 3" data-carousel-slide-to="2"></button>
+            <button type="button" class="w-2 h-2 rounded-full" aria-current="false" aria-label="Slide 4" data-carousel-slide-to="3"></button>
+        </div>
+    </div>
+</section> --}}
 
 <form action="{{ route('checkout-billiard-guest',md5(strtotime("now"))) }}" method="POST">
     @csrf
@@ -58,8 +88,7 @@
                                         <div class="w-full" id="choice-{{ $i }}">
                                             <div class="relative flex items-center px-3 py-2" id="detail-{{ $i }}">
                                                 <div class="flex items-center h-5">
-                                                    {{-- Inputan Makanan/Minuman --}}
-                                                    <input id="choice-menu-{{ $restaurant->nama }}-{{ $i }}" onclick="getAddOn('{{ $restaurant->id . '-' . $i }}', '{{ $i }}')" type="radio" value="{{ $restaurant->id }}" name="paket_restaurant_id[{{ $groupIdentifier }}]" class="restaurant-input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 custom"/>
+                                                    <input id="choice-menu-{{ $restaurant->nama }}-{{ $i }}" type="radio" value="{{ $restaurant->id }}" name="paket_restaurant_id[{{ $groupIdentifier }}]" class="restaurant-input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 custom"/>
                                                 </div>
                                                 <label for="choice-menu-{{ $restaurant->nama }}-{{ $i }}" class="ml-3">
                                                     <span id="choice-menu-{{ $restaurant->nama }}-{{ $i }}-description" class="text-sm text-white dark:text-white">
@@ -68,56 +97,58 @@
                                                     <br />
                                                 </label>
                                             </div>
+                                        
                                             <div class="w-full">
                                                 @php
                                                     $min = 0;
                                                 @endphp
-                                                <div id="add-ons-{{ $restaurant->id . '-' . $i }}" style="display: none;" class="add-ons-list-{{ $i }} divide-y divide-gray-200 dark:divide-gray-700">
-                                                    {{-- Pilihan Normal dan custom --}}
-                                                    @if ($restaurant->addOns->count() > 0)
-                                                        <ul>
-                                                            <li class="py-3 sm:py-2">
-                                                                <div class="flex items-center space-x-4 px-3">
-                                                                    <div class="flex-1 min-w-0">
-                                                                        <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                                                            1. Add On
-                                                                        </p>
-                                                                    </div>
-                                                                    <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                                                        <input id="normal-radio" type="radio" onchange="getAddOnDetail('{{ $restaurant->id . '-' . $i }}', 'normal')" value="Normal" name="addOnChange{{ $restaurant->id }}" class="typeAddOn{{ $i }} w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                
-                                                            {{-- <li class="py-3 sm:py-2">
-                                                                <div class="flex items-center space-x-4 px-3">
-                                                                    <div class="flex-1 min-w-0">
-                                                                        <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                                                            2. Custom
-                                                                        </p>
-                                                                    </div>
-                                                                    <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                                                        <input id="custome-radio" type="radio" onchange="getAddOnDetail('{{ $restaurant->id . '-' . $i }}', 'custom')" value="Custom" name="addOnChange{{ $restaurant->id }}" class="typeAddOn w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                                                    </div>
-                                                                </div>
-                                                            </li> --}}
-                                                        </ul>
-                                                    @endif
-                                                    {{-- end of Pilihan Normal dan custom --}}
-                                                    <div class="grid grid-cols-3 detail-add-ons-{{ $i }}" id="detail-add-ons-{{ $restaurant->id . '-' . $i }}" style="margin: 10px 30px; display:none;">
+                                        
+                                                <ul id="add-ons-{{ $restaurant->id }}" style="display: none;" class="add-ons-list max-w-sm divide-y divide-gray-200 dark:divide-gray-700">
+                                        
+                                                    <li class="py-3 sm:py-2">
+                                                        <div class="flex items-center space-x-4 px-3">
+                                                            <div class="flex-1 min-w-0">
+                                                                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                                                    1. Normal
+                                                                </p>
+                                                            </div>
+                                                            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                                                <input id="normal-radio" required type="radio" value="Normal" name="addOnChange" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                        
+                                                    <li class="py-3 sm:py-2">
+                                                        <div class="flex items-center space-x-4 px-3">
+                                                            <div class="flex-1 min-w-0">
+                                                                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                                                    2. Custom
+                                                                </p>
+                                                            </div>
+                                                            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                                                <input id="custome-radio" required type="radio" value="Custom" name="addOnChange" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    
+                                                    <li class="" id="custom">
+                                                        {{-- <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">custom</label> --}}
                                                         @foreach ($add_ons as $add_on)  
-                                                            @foreach ($restaurant->addOns as $key => $resto)
+                                                            @foreach ($restaurant->addOns as $resto)
                                                                 @if ($resto->add_on_id == $add_on->id)
                                                                 <div class="w-full" id="{{ str_replace(' ', '',strtolower($add_on->title)) }}">
+                                                                    
                                                                     <input style="display: none;" type="hidden" class="custom add-ons-title" name="add_on_title[]" value="{{ $add_on->title }}" id="">
+                                                                    
                                                                     <div class="flex justify-center align-center py-2 px-3">
-                                                                        <p aria-hidden="true" class="text-sm font-semibold dark:text-white text-center break-words">{{ $add_on->title . '(Pilih '. $add_on->minimum_choice .')'?? 'Error' }} </p>
+                                                                        <p aria-hidden="true" class="text-sm font-semibold dark:text-white text-center">{{ $add_on->title ?? 'Error' }} </p>
+                                                                        <p class="text-xs font-semibold dark:text-white text-center mt-1">&nbsp;(Pilih {{ $add_on->minimum_choice }} )</p>
                                                                     </div>
                                                                     <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
                                                                     @foreach ($add_on->detailAddOn as $item)
                                                                         <div class="relative flex items-center px-3" id="detail-{{ $item->id }}">
                                                                             <div class="flex items-center h-5">
-                                                                                <input id="{{ str_replace(' ', '',strtolower($item->nama)) }}-{{ $item->id }}" type="radio" value="{{ $item->id }}" name="harga_add{{ $groupIdentifier }}[{{ $groupIdentifier . '-' . $add_on->id }}]" class="detail-add-ons-input-{{ $i }} w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 custom {{ substr(strtolower($item->nama), 0, 6) }}">
+                                                                                <input id="{{ str_replace(' ', '',strtolower($item->nama)) }}-{{ $item->id }}" type="radio" value="{{ $item->id }}" name="harga_add[{{ $groupIdentifier }}]" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 custom">
                                                                                 {{-- <input id="{{ str_replace(' ', '',strtolower($item->nama)) }}-{{ $item->id }}" type="radio" value="{{ $item->id }}" name="harga_add[]" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 custom"> --}}
                                                                             </div>
                                                                             <label for="{{ str_replace(' ', '',strtolower($item->nama)) }}-{{ $item->id }}" class="ml-3">
@@ -125,23 +156,56 @@
                                                                                 <span id="{{ str_replace(' ', '',strtolower($item->nama)) }}-description" class="text-sm text-white dark:text-white">Rp. {{ $item->harga ?? '' }}</span>
                                                                             </label>
                                                                         </div>
-                                                                        @if (!$loop->last)
-                                                                            <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
-                                                                        @endif
+                                                                        <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
                                                                     @endforeach
                                                                 </div>
                                                                 @endif
                                                             @endforeach
                                                         @endforeach
-                                                    </div>
-                                                </div>
+                                                    </li>
+                                                    
+                                                    <li class="py-3 sm:py-2" style="display: none;" id="normal">
+                                                        <div id="select-input-wrapper">
+                                                            <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Normal</label>
+                                                            @foreach ($add_ons as $add_on)  
+                                                                @foreach ($restaurant->addOns as $resto)
+                                                                    @if ($resto->add_on_id == $add_on->id)
+                                                                    <div class="w-full" id="{{ str_replace(' ', '',strtolower($add_on->title)) }}">
+                                                                        <input type="hidden" class="custom" name="add_on_title[]" value="{{ $add_on->title }}" id="">
+                                                                        <div class="flex justify-center align-center py-2 px-3">
+                                                                            <p aria-hidden="true" class="text-sm font-semibold dark:text-white text-center">{{ $add_on->title ?? 'Error' }} </p>
+                                                                            <p class="text-xs font-semibold dark:text-white text-center mt-1">&nbsp;(Pilih {{ $add_on->minimum_choice }} )</p>
+                                                                        </div>
+                                                                        <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
+                                                                        @foreach ($add_on->detailAddOn as $item)
+                                                                            <div class="relative flex items-center px-3" id="detail-{{ $item->id }}">
+                                                                                <div class="flex items-center h-5">
+                                                                                    <input id="{{ str_replace(' ', '',strtolower($item->nama)) }}-{{ $item->id }}" type="radio" value="{{ $item->id }}" name="harga_add[{{ $groupIdentifier }}]" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 custom">
+                                                                                </div>
+                                                                                <label for="{{ str_replace(' ', '',strtolower($item->nama)) }}-{{ $item->id }}" class="ml-3">
+                                                                                    <span id="{{ str_replace(' ', '',strtolower($item->nama)) }}-description" class="text-sm text-white dark:text-white">{{ $item->nama ?? '' }}</span> <br>
+                                                                                    <span id="{{ str_replace(' ', '',strtolower($item->nama)) }}-description" class="text-sm text-white dark:text-white">Rp. {{ $item->harga ?? '' }}</span>
+                                                                                </label>
+                                                                            </div>
+                                                                            <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
+                                                                        @endforeach
+                                                                    </div>
+                                                                    @endif
+                                                                @endforeach
+                                                            @endforeach
+                                                        </div>
+                                                    </li>
+                                                    
+                                                </ul>
                                             </div>
+                                            
                                             <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
                                         </div>
                                     @endif
                                 @endforeach
                             </div>
                         @endforeach
+                        
                    @endfor
                 </div>
             </div>
@@ -171,6 +235,8 @@
                 <div class="mt-4">
                     <label for="date" class="mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Date</label>
                     <input type="text" id="date" required name="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ date('Y-m-d') }}">
+                    {{-- <input type="date" id="date" required name="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ date('Y-m-d') }}" onchange="toggleTimeFrom()"> --}}
+                    {{-- <input datepicker datepicker-buttons type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date"> --}}
                 </div>
                 
                 <div class="mt-4" id="timeFromContainer" style="display: none;">
@@ -179,7 +245,7 @@
                         <option disabled selected>Select Time From</option>
                         <?php
                         $startTime = strtotime('09:00');
-                        $endTime = strtotime('22:00');
+                        $endTime = strtotime('21:00');
                     
                         while ($startTime <= $endTime) {
                             $optionValue = date('H:i', $startTime);
@@ -234,7 +300,7 @@
                         </p>
                     </div>
                     </div>
-                    <input placeholder="Massukan Nama" required name="nama_user" id="" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('nama_user') is-invalid @enderror">
+                    <input placeholder="Massukan Nama" required name="nama_user" id="" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('password') is-invalid @enderror">
                     
                 </li>
                 <li class="py-3 sm:py-2">
@@ -271,6 +337,7 @@
                             </p>
                         </div>
                         <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
+                            {{-- {{ number_format($paket_menu->harga_diskon  ?? '0',2 )  }} --}}
                             Rp. {{ number_format($paket_menu->harga_diskon ?? 0, 0) }}
                         </div>
                     </div>
@@ -287,6 +354,7 @@
                             <?php
                                 $biaya_layanan = number_format(($paket_menu->harga_diskon ?? '0') * $order_settings[0]->layanan/100,0 );
                             ?>
+                            {{-- {{ $order_settings[0]->layanan }} --}}
                             Rp. {{  $biaya_layanan }}
                         </div>
                     </div>
@@ -303,6 +371,7 @@
                             $biaya_pb01 = number_format((($paket_menu->harga_diskon   ?? '0') + ($paket_menu->harga_diskon  ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100,0);
                         ?>
 
+                        {{-- {{dd($order_settings[0]->pb01)}} --}}
                         Rp. {{ $biaya_pb01 }} 
                         </div>
                     </div>
@@ -316,6 +385,8 @@
                         </div>
                         <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white">
                             @if ($paket_menu->harga_diskon)
+                            {{-- Rp. {{ number_format($paket_menu->harga_diskon *$order_settings[0]->pb01/100 + $paket_menu->harga_diskon + $order_settings[0]->layanan ,0 ) }} --}}
+                            {{-- Rp. {{ number_format($paket_menu->harga_diskon  ?? '0',0 ) }} --}}
                             Rp. {{ number_format(($paket_menu->harga_diskon + (($paket_menu->harga_diskon ?? '0') * $order_settings[0]->layanan/100)) + (($paket_menu->harga_diskon  ?? '0') + ($paket_menu->harga_diskon ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100,0)}}
                             @else
                             Rp. 0
@@ -349,6 +420,75 @@
 
 @push('script-bot')
 
+<script>
+    // Get all the restaurant inputs
+    const restaurantInputs = document.querySelectorAll('.restaurant-input');
+    
+    // Add click event listener to each restaurant input
+    restaurantInputs.forEach((input) => {
+        input.addEventListener('click', function() {
+            const restaurantId = this.value;
+            const addOnsLists = document.querySelectorAll('.add-ons-list');
+            const addOnsTitle = document.querySelectorAll('.add-ons-title');
+            
+            // Hide all add-ons lists
+            addOnsLists.forEach((list) => {
+                list.style.display = 'none';
+            });
+
+            addOnsTitle.forEach((list) => {
+                list.style.display = 'none';
+            });
+            
+            // Show the add-ons list for the selected restaurant
+            const selectedAddOnsList = document.getElementById(`add-ons-${restaurantId}`);
+            selectedAddOnsList.style.display = 'block';
+            
+            // Check if there is a selected harga_add value for this restaurant
+            const selectedHargaAdd = "{{ $harga_add['menu_" + restaurantId + "'] ?? '' }}";
+            
+            // If a selected harga_add value exists, find the corresponding radio input and select it
+            if (selectedHargaAdd) {
+                const hargaAddInput = selectedAddOnsList.querySelector(`input[value="${selectedHargaAdd}"]`);
+                if (hargaAddInput) {
+                    hargaAddInput.checked = true;
+                }
+            }
+        });
+    });
+</script>
+
+
+<script>
+    // Mengambil elemen radio button "Takeaway" dan "Dine In"
+    const normalChecked = document.getElementById('normal-radio');
+    const customeChecked = document.getElementById('custome-radio');
+
+    // Mengambil elemen wrapper "Pilih Meja"
+    const normal = document.getElementById('normal');
+    const custom = document.getElementById('custom');
+
+    // Menambahkan event listener saat radio button berubah
+    normalChecked.addEventListener('change', toggleSections);
+    customeChecked.addEventListener('change', toggleSections);
+
+    // Fungsi untuk mengubah visibilitas "Pilih Meja" dan "Normal"
+    function toggleSections() {
+        if (normalChecked.checked) {
+            $('.custom').prop('disabled', true);
+            $('.normal').prop('disabled', false);
+            custom.style.display = 'none';
+            normal.style.display = 'block';
+            console.log('normal change');
+        } else if (customeChecked.checked) {
+            console.log('custom change');
+            $('.custom').prop('disabled', false);
+            $('.normal').prop('disabled', true);
+            custom.style.display = 'block';
+            normal.style.display = 'none';
+        }
+    }
+</script>
 <script>
     function pad(number) {
    return (number < 10) ? '0' + number : number;
@@ -638,7 +778,7 @@ toggleTimeFrom();
                "billiard_id": billiardId
            },
            success: function (data) {
-            //    console.log(data);
+               // console.log(data);
                // Enable all options before disabling the appropriate ones
                $("#time_from_weekdays option").prop('disabled', false);
                $("#time_from_weekend option").prop('disabled', false);
@@ -649,15 +789,14 @@ toggleTimeFrom();
                
                for (const index in data.timeFrom) {
                    const dateFrom = data.timeFrom[index];
-                //    console.log(dateFrom);
+                   console.log(dateFrom);
                    const dateTo = data.timeTo[index];
                    let valHourFrom = dateFrom.substring(0, 5);
                    let valHourTo = dateTo.substring(0, 5);
                    const hourPart = parseInt(valHourFrom.substring(0, 2), 10);
 
                    // Loop through options and disable past hours and the current hour for weekdays
-                    // ubah manual
-                   const timeFromWeekdaysSelect = $("#time_from_weekend");
+                   const timeFromWeekdaysSelect = $("#time_from_weekdays");
                    for (const i in timeFromWeekdaysSelect[0].options) {
                        const elem = timeFromWeekdaysSelect[0].options[i];
                        const elid = parseInt($(elem).val());
@@ -678,7 +817,7 @@ toggleTimeFrom();
 
                                const toHour = parseInt(dateTo.split(":")[0]);
                                const toMinute = parseInt(dateTo.split(":")[1]);
-                            //    console.log('From',fromHour);
+                               console.log('From',fromHour);
 
                                // Check if the current option time is within the dateFrom and dateTo range
                                if (
@@ -686,7 +825,7 @@ toggleTimeFrom();
                                    (elemHour === toHour && elemMinute <= toMinute) ||
                                    (elemHour > fromHour && elemHour < toHour)
                                ) {
-                                   console.log(fromHour, fromMinute, fromMinute, toMinute, elem);
+                                   // console.log(fromHour, fromMinute, fromMinute, toMinute);
                                    $(elem).prop('disabled', true);
                                }
                            }
@@ -970,28 +1109,6 @@ toggleTimeFrom();
        });
 
        // document.getElementById('date').addEventListener('change', toggleTimeFrom);
-</script>
-
-{{-- Get The Detail Add On --}}
-<script>
-    function getAddOn(id, no) {
-        console.log('masuk');
-        $('.add-ons-list-' + no).css('display', 'none');
-        $('#add-ons-' + id).css('display', 'block');
-        // Remove All selected add on
-        $('.typeAddOn'+no).prop('checked', false);
-        $('.detail-add-ons-'+no).css('display', 'none');
-        $('.detail-add-ons-input-'+no).prop('checked', false);
-    }
-    function getAddOnDetail(id, type)
-    {
-        if (type === 'normal') {
-            $('#detail-add-ons-'+id).css('display', 'block');
-        } 
-        // else {
-        //     $('#detail-add-ons-'+id).css('display', 'none');
-        // }
-    }
 </script>
 
 @endpush

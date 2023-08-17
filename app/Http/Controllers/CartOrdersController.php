@@ -51,13 +51,7 @@ class CartOrdersController extends Controller
 
 
         $data ['userManagement'] = UserManagement::orderby('id', 'asc')->get();
-        // $data['role'] = Role::where('name', 'Barista')->first();
-        // dd($role);
         $data ['order_settings'] = OtherSetting::get();
-        // foreach ($data ['userManagement'] as $key => $value) {
-        //     # code...
-        //     dd($value->getrolenames);
-        // }
         if (Auth::check()) {
             # code...
             $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
@@ -116,32 +110,72 @@ class CartOrdersController extends Controller
             return view('cart.cart-guest',$data);
         }
 
-        // $data['processedCartItems'] = $processedCartItems;
-
-        // return view('cart.index',$data);
     }
 
     public function addCartRestaurant(Request $request,$id)
     {
+        // dd($request->all());
+
+        // Replace the 'foreach' loop with a more efficient 'foreach' loop using collections.
+            
+        
+        $restaurant = Restaurant::findOrFail($id);
+        
+        if ($restaurant->current_stok <= 0) {
+            return redirect()->back()->with(['failed' => 'Stok ' . $restaurant->name . ' Kurang!']);
+        }
+
         $currentTime = Carbon::now()->format('H:i');
 
         $other_setting = OtherSetting::get()->first();
 
         // Jam batas untuk menerima pesanan (misalnya, jam 11:00 PM)
-        // dd($other_setting);
-        $orderDeadline = $other_setting->time_close;
-
-
+        
         // Jam batas untuk mulai menerima pesanan lagi (misalnya, jam 7:00 AM)
-        $orderOpenTime = $other_setting->time_start;
-
+        
         // Jika waktu saat ini melebihi batas pesanan, maka kembalikan pesan error
-        if ($currentTime > $orderDeadline) {
-            return redirect()->back()->with(['failed' => 'Maaf, pesanan tidak dapat diterima setelah jam 11 malam.']);
-        } elseif ($currentTime < $orderOpenTime) {
-            // Jika waktu saat ini masih sebelum batas pemesanan pagi, maka tampilkan pesan bahwa pemesanan belum dibuka
-            return redirect()->back()->with(['failed' => 'Maaf, pemesanan belum dibuka. Silakan coba lagi setelah jam 7 pagi.']);
+        $currentDay = date('N'); // Mendapatkan hari dalam format 1 (Senin) hingga 7 (Minggu)
+        if ($restaurant->category == 'Minuman') {
+            
+            if ($currentDay >= 1 && $currentDay <= 4) {
+                // Weekdays (Senin-Kamis)
+                $orderOpenTime = $other_setting->time_start_weekdays_minuman;
+                $orderDeadline = $other_setting->time_close_weekdays_minuman;
+            } else if ($currentDay >= 6 && $currentDay <= 7) {
+                // Weekend (Sabtu/Minggu)
+                $orderOpenTime = $other_setting->time_start_weekend_minuman;
+                $orderDeadline = $other_setting->time_close_weekend_minuman;
+            }
+            
+            if ($currentTime > $orderDeadline) {
+                return redirect()->back()->with(['failed' => 'Maaf, Kita Sudah Close Order']);
+            } elseif ($currentTime < $orderOpenTime) {
+                // Jika waktu saat ini masih sebelum batas pemesanan pagi, maka tampilkan pesan bahwa pemesanan belum dibuka
+                return redirect()->back()->with(['failed' => 'Maaf, Cafe belum dibuka. Silakan coba lagi nanti']);
+            }
+        }else{
+            if ($currentDay >= 1 && $currentDay <= 4) {
+                // Weekdays (Senin-Kamis)
+                $orderOpenTime = $other_setting->time_start;
+                $orderDeadline = $other_setting->time_close;
+            } else if ($currentDay >= 6 && $currentDay <= 7) {
+                // Weekend (Sabtu/Minggu)
+                $orderOpenTime = $other_setting->time_start_weekend;
+                $orderDeadline = $other_setting->time_close_weekend;
+            }
+            // $orderOpenTimeMakanan = $other_setting->time_start_weekend;
+            // $orderDeadlineMakanan = $other_setting->time_close_weekend;
+            $orderOpenTimeMakanan = $other_setting->time_start;
+            $orderDeadlineMakanan = $other_setting->time_close;
+            if ($currentTime > $orderDeadlineMakanan) {
+                return redirect()->back()->with(['failed' => 'Maaf, Kita Sudah Close Order']);
+            } elseif ($currentTime < $orderOpenTimeMakanan) {
+                // Jika waktu saat ini masih sebelum batas pemesanan pagi, maka tampilkan pesan bahwa pemesanan belum dibuka
+                return redirect()->back()->with(['failed' => 'Maaf, Cafe belum dibuka. Silakan coba lagi nanti']);
+            }
         }
+        
+        
 
         $dataHargaAddon = [];
         if ($request->harga_add != null) {
@@ -152,7 +186,6 @@ class CartOrdersController extends Controller
         }
 
 
-        $restaurant = Restaurant::findOrFail($id);
 
         $countAddOn = $request->harga_add ? count($request->harga_add) : 0;
 
@@ -208,7 +241,7 @@ class CartOrdersController extends Controller
                 // Buat array baru dengan membawa detail add-on ID yang berbeda
                 $itemAttributes = $existingItem->attributes->toArray();
                 if (!in_array($request->harga_add, $itemAttributes['detail_addon_id'])) {
-                    $itemAttributes['detail_addon_id'][] = $request->harga_add;
+                    $itemAttributes['detail_addon_id'] = $request->harga_add;
                     $existingItem->attributes = $itemAttributes;
                     $existingItem->quantity += $request->qty;
                     \Cart::session(Auth::user()->id)->update($existingItem->id, $existingItem->toArray());
@@ -259,6 +292,8 @@ class CartOrdersController extends Controller
                 'add_on_title' => $request->add_on_title,
                 'harga_add' => $dataHargaAddon,
                 'detail_addon_id' => $request->harga_add,
+                'add_on_nama_title' => $request->add_on_nama_title,
+                'add_nama' => $request->add_nama,
             );
         
             // Mengkonversi array add-on detail menjadi JSON untuk digunakan sebagai kunci unik
@@ -274,7 +309,7 @@ class CartOrdersController extends Controller
                 // Buat array baru dengan membawa detail add-on ID yang berbeda
                 $itemAttributes = $existingItem->attributes->toArray();
                 if (!in_array($request->harga_add, $itemAttributes['detail_addon_id'])) {
-                    $itemAttributes['detail_addon_id'][] = $request->harga_add;
+                    $itemAttributes['detail_addon_id'] = $request->harga_add;
                     $existingItem->attributes = $itemAttributes;
                     $existingItem->quantity += $request->qty;
                     \Cart::session($user)->update($existingItem->id, $existingItem->toArray());
@@ -291,7 +326,7 @@ class CartOrdersController extends Controller
                     'associatedModel' => Restaurant::class
                 ));
             }
-            // dd($cart);
+            
             $category = $request->category;
             return redirect()->route('daftar-restaurant', ['category' => $category])->with('success', 'Berhasil Masuk Cart !');
         }

@@ -67,6 +67,8 @@ class DaftarMenuController extends Controller
 
     public function meetingRoom()
     {
+        $global_url_image = 'https://managementvmond.controlindo.com/assets/images/paket-menu/';
+
         $global_url = 'https://managementvmond.controlindo.com/api/v1/vmond/tokoonline/';
         $rest_api_url = $global_url .'paket-menu';
         if (Auth::check()) {
@@ -77,15 +79,15 @@ class DaftarMenuController extends Controller
         try {
             $json_data = file_get_contents($rest_api_url);
             // Decodes the JSON data into a PHP array.
-            $billiard = json_decode($json_data);
+            $meeting_room = json_decode($json_data);
         } catch (\Throwable $th) {
-            $billiard = [];
+            $meeting_room = [];
         }
 
         $paket_menus = MenuPackages::get();
         $others = OtherSetting::get();
         $data['banners'] = Banner::get();
 
-        return view('daftarmenu.meeting-room', $data, compact(['billiard','paket_menus','others','orderFinishSubtotal']));
+        return view('daftarmenu.meeting-room', $data, compact(['meeting_room','paket_menus','others','orderFinishSubtotal','global_url_image']));
     }
 }

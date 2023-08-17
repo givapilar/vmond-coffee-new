@@ -29,7 +29,8 @@
                             </div>
                             <div class="grow ml-3 text-sm font-normal text-start">
                                 <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ $item->name ?? 'Not' }}</div>
-                                <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ number_format($item->total_price,0 ?? 'Not') }}</div>
+                                {{-- <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ number_format($item->total_price,0 ?? 'Not') }}</div> --}}
+                                <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ $item->invoice_no ?? 'Not' }}</div>
                                 <span class="text-xs font-medium text-blue-600 dark:text-blue-500">a few seconds ago</span>
                             </div>
                             <div class="shrink-0">
@@ -50,7 +51,8 @@
                         </div>
                         <div class="grow ml-3 text-sm font-normal text-start">
                             <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ $item->name ?? 'Not' }}</div>
-                            <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ number_format($item->total_price,0) ?? 'Not' }}</div>
+                            <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ $item->invoice_no ?? 'Not' }}</div>
+                            {{-- <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ number_format($item->total_price,0) ?? 'Not' }}</div> --}}
                             <span class="text-xs font-medium text-blue-600 dark:text-blue-500">a few seconds ago</span>
                         </div>
                         <div class="shrink-0">

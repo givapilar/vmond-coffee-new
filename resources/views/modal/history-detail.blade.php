@@ -179,21 +179,29 @@
 
                     @php
                         $firstOrderBilliard = $item->orderBilliard->first();
+
+                        $harga_billiard  =  $firstOrderBilliard->paketMenu->harga_diskon ?? 0;
+                        // if ($firstOrderBilliard->paketMenu->harga_diskon != 0) {
+                        //     $harga_billiard  =  $firstOrderBilliard->paketMenu->harga_diskon;
+                        // }else{
+                        //     $harga_billiard  =  $firstOrderBilliard->paketMenu->harga_diskon;
+                        // }
                     @endphp
 
                     @if ($item->biliard_id)
-                        
+                    
                     {{-- @foreach ($item->orderBilliard as $order_billiard) --}}
                         <?php
                             $totalHargaBilliard = $item->total_price;
                         ?>
+                        
                         <div class="flex -mx-1 border-b py-2 items-center">
                             <div class="px-1 w-3/12 text-center">
                                 <p class="text-gray-800 dark:text-gray-400 uppercase tracking-wide text-sm font-bold">{{ $firstOrderBilliard->paketMenu->nama_paket ?? '' }}</p>
                             </div>
 
                             <div class="px-1  w-3/12 text-center">
-                                <p class="text-gray-800 dark:text-gray-400 uppercase tracking-wide text-sm font-bold">Rp.{{ number_format(($item->total_price ?? 0))}}</p>
+                                <p class="text-gray-800 dark:text-gray-400 uppercase tracking-wide text-sm font-bold">Rp.{{ number_format(($harga_billiard ?? 0))}}</p>
                             </div>
 
                             <div class="px-1  w-3/12 text-center">
@@ -204,9 +212,10 @@
 
                             <div class="px-1  w-3/12 text-center">
                                 <p class="leading-none">
-                                    <span class="block uppercase tracking-wide text-sm font-bold text-gray-800 dark:text-gray-400">Rp.{{ number_format(($item->total_price ?? 0) * ($order_billiard->qty ?? 1)), 2}}</span>
+                                    <span class="block uppercase tracking-wide text-sm font-bold text-gray-800 dark:text-gray-400">Rp.{{ number_format(($harga_billiard ?? 0) * ($order_billiard->qty ?? 1)), 2}}</span>
                                 </p>
                             </div>
+                            
                         </div>
                     @endif
 
@@ -224,11 +233,11 @@
                     <div class="py-2 ml-auto mt-5 w-full w-2/4">
 
                         <div class="flex justify-between mb-4">
-                            <div class="text-sm text-gray-400 text-right flex-1">Service({{ $otherSetting[0]->layanan }}%)</div>
+                            <div class="text-sm text-gray-400 text-right flex-1">layanan({{ $otherSetting[0]->layanan }}%)</div>
                             <div class="text-right w-40">
                                 <div class="text-sm text-gray-400" >
                                     <?php
-                                        $biaya_layanan = number_format(($totalHargaBilliard ?? 0) * $otherSetting[0]->layanan/100,0 );
+                                        $biaya_layanan = number_format(($harga_billiard ?? 0) * $otherSetting[0]->layanan/100,0 );
                                     ?>
                                     Rp.{{  $biaya_layanan }}
                                 </div>
@@ -240,7 +249,7 @@
                             <div class="text-right w-40">
                                 <div class="text-sm text-gray-400">
                                     <?php
-                                        $biaya_pb01 = number_format((($totalHargaBilliard  ?? 0) + ($totalHargaBilliard ?? 0) * $otherSetting[0]->layanan/100) * $otherSetting[0]->pb01/100,0);
+                                        $biaya_pb01 = number_format((($harga_billiard  ?? 0) + ($harga_billiard ?? 0) * $otherSetting[0]->layanan/100) * $otherSetting[0]->pb01/100,0);
                                     ?>
 
                                     Rp.{{ $biaya_pb01 }} 
@@ -256,7 +265,7 @@
                                 <div class="text-right w-40">
                                     <div class="text-xl text-gray-400">
                                         @if ($totalHargaBilliard)
-                                        Rp.{{ number_format(($totalHargaBilliard + (($totalHargaBilliard ?? '0') * $otherSetting[0]->layanan/100)) + (($totalHargaBilliard  ?? '0') + ($totalHargaBilliard ?? '0') * $otherSetting[0]->layanan/100) * $otherSetting[0]->pb01/100,0)}}
+                                        Rp.{{ number_format(($harga_billiard + (($harga_billiard ?? '0') * $otherSetting[0]->layanan/100)) + (($firstOrderBilliard->paketMenu->harga_diskon  ?? '0') + ($firstOrderBilliard->paketMenu->harga_diskon ?? '0') * $otherSetting[0]->layanan/100) * $otherSetting[0]->pb01/100,0)}}
                                         @else
                                         Rp.0
                                         @endif    
@@ -303,8 +312,37 @@
                             </div>
                         </div>
 
-                        
+                        @if ($item->category == 'Takeaway')
+                        <div class="flex justify-between mb-4">
+                            <div class="text-sm text-gray-400 text-right flex-1">Packing</div>
+                            <div class="text-right w-40">
+                                <div class="text-sm text-gray-400">
+                                    <?php
+                                        $biaya_packing = number_format($otherSetting[0]->biaya_packing,0);
+                                    ?>
+                                    Rp.{{ $biaya_packing }} 
+                                </div>
+                            </div>
+                        </div>
 
+                        <div class="py-2 border-t border-b">
+                            <div class="flex justify-between">
+                                <div class="text-xl text-gray-400 text-right flex-1">Order Total</div>
+                                <div class="text-right w-40">
+                                    <div class="text-xl text-gray-400">
+                                        @php
+                                            $totalLayanan = ($totalPrice ?? 0) * ($otherSetting[0]->layanan / 100);
+                                            $totalPB01 = (($totalPrice ?? 0) + $totalLayanan) * ($otherSetting[0]->pb01 / 100);
+                                            $orderTotal = $totalPrice + $totalLayanan + $totalPB01 + $otherSetting[0]->biaya_packing;
+                                        @endphp
+
+                                        Rp.{{ number_format($orderTotal, 0) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @else
                         <div class="py-2 border-t border-b">
                             <div class="flex justify-between">
                                 <div class="text-xl text-gray-400 text-right flex-1">Order Total</div>
@@ -321,6 +359,8 @@
                                 </div>
                             </div>
                         </div>
+                        @endif
+
                     </div>
                 @endif
                 <!-- Print Template -->
