@@ -72,7 +72,7 @@
                                         </p> --}}
                                         
                                         <p class="text-xs italic line-through text-gray-500 truncate dark:text-slate-500">
-                                            Rp. {{ number_format(array_sum((array) ($item->attributes['harga_add'] ?? [])) + ($item->attributes['restaurant']['harga_diskon'] ?? 0), 0) }}
+                                            Rp. {{ number_format(array_sum((array) ($item->attributes['harga_add'] ?? [])) + ($item->attributes['restaurant']['harga'] ?? 0), 0) }}
                                         </p>
 
                                         <p class="text-xs text-gray-500 truncate dark:text-red-500">
