@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnHargaToOrderPivotsTable extends Migration
+class AddColumnHargaToOrderBilliardsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class AddColumnHargaToOrderPivotsTable extends Migration
      */
     public function up()
     {
-        Schema::table('order_pivots', function (Blueprint $table) {
+        Schema::table('order_billiards', function (Blueprint $table) {
             $table->float('harga')->nullable();
             $table->float('harga_diskon')->nullable();
+            
         });
     }
 
@@ -26,7 +27,7 @@ class AddColumnHargaToOrderPivotsTable extends Migration
      */
     public function down()
     {
-        Schema::table('order_pivots', function (Blueprint $table) {
+        Schema::table('order_billiards', function (Blueprint $table) {
             $table->dropColumn('harga');
             $table->dropColumn('harga_diskon');
             

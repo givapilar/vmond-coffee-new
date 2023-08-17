@@ -161,6 +161,7 @@ class OrderController extends Controller
                             $order_pivot->restaurant_id = $item->attributes['restaurant']['id'];
                             $order_pivot->category = $item->attributes['restaurant']['category'];
                             $order_pivot->qty = $item['quantity'];
+                            $order_pivot->harga_diskon = $item->attributes['harga_add'] + $item->attributes['restaurant']['harga_diskon'];
                             $order_pivot->save();
 
                             // $orderPivotId = DB::getPdo()->lastInsertId();
@@ -381,6 +382,7 @@ class OrderController extends Controller
                         $order_pivot->restaurant_id = $item->attributes['restaurant']['id'];
                         $order_pivot->category = $item->attributes['restaurant']['category'];
                         $order_pivot->qty = $item['quantity'];
+                        $order_pivot->harga_diskon = $item->attributes['harga_add'] + $item->attributes['restaurant']['harga_diskon'];
                         $order_pivot->save();
 
                         // $orderPivotId = DB::getPdo()->lastInsertId();
