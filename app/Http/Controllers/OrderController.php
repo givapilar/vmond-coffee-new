@@ -377,7 +377,7 @@ class OrderController extends Controller
                         // ];
                         // OrderPivot::insert($orderPivot);
 
-                        $harga_diskon = array_sum((array) ($item->attributes['harga_add'] ?? [])) + ($item->attributes['restaurant']['harga'] ?? 0);
+                        $harga_diskon = array_sum((array) ($item->attributes['harga_add'] ?? [])) + ($item->attributes['restaurant']['harga_diskon'] ?? 0);
 
                         $order_pivot = new OrderPivot();
                         $order_pivot->order_id = $order->id;
