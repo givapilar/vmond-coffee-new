@@ -155,13 +155,16 @@ class OrderController extends Controller
                             //     'qty' => $item['quantity'],
                             // ];
                             // OrderPivot::insert($orderPivot);
+                            $harga_diskon = array_sum((array) ($item->attributes['harga_add'] ?? [])) + ($item->attributes['restaurant']['harga_diskon'] ?? 0);
+
 
                             $order_pivot = new OrderPivot();
                             $order_pivot->order_id = $order->id;
                             $order_pivot->restaurant_id = $item->attributes['restaurant']['id'];
                             $order_pivot->category = $item->attributes['restaurant']['category'];
                             $order_pivot->qty = $item['quantity'];
-                            $order_pivot->harga_diskon = $item->attributes['harga_add'] + $item->attributes['restaurant']['harga_diskon'];
+                            $order_pivot->harga_diskon = $harga_diskon;
+
                             $order_pivot->save();
 
                             // $orderPivotId = DB::getPdo()->lastInsertId();
@@ -244,7 +247,7 @@ class OrderController extends Controller
             return view('checkout.index',$data,compact('snapToken','order'));
         } catch (\Throwable $th) {
             DB::rollback();
-            return redirect()->back()->with('failed', 'Silahkan Hubungi Ke Waiters');
+            return redirect()->back()->with('failed', $th->getMessage());
         }
         
     }
@@ -384,7 +387,6 @@ class OrderController extends Controller
                         $order_pivot->restaurant_id = $item->attributes['restaurant']['id'];
                         $order_pivot->category = $item->attributes['restaurant']['category'];
                         $order_pivot->qty = $item['quantity'];
-                        // $order_pivot->harga_diskon = $item->attributes['harga_add'] + $item->attributes['restaurant']['harga_diskon'];
                         $order_pivot->harga_diskon = $harga_diskon;
 
                         $order_pivot->save();
