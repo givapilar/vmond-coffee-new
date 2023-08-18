@@ -456,7 +456,7 @@ class OrderController extends Controller
             return view('checkout.checkout-guest',$data,compact('snapToken','order'));
         } catch (\Throwable $th) {
             DB::rollback();
-            return redirect()->back()->with('failed', 'Silahkan Hubungi Ke Waiters');
+            return redirect()->back()->with('failed', $th->getMessage());
 
         }
         
