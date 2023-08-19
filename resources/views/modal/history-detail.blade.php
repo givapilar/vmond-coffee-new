@@ -55,6 +55,10 @@
 
                         @if ($item->biliard_id)
                         <div class="mb-2 md:mb-1 md:flex items-center">
+                            <label class="w-32 text-gray-800 dark:text-gray-400 block font-bold text-sm uppercase tracking-wide">Date</label>
+                        </div>
+
+                        <div class="mb-2 md:mb-1 md:flex items-center">
                             <label class="w-32 text-gray-800 dark:text-gray-400 block font-bold text-sm uppercase tracking-wide">Time Start</label>
                         </div>
 
@@ -105,6 +109,10 @@
 
                         @if ($item->biliard_id)
                             
+                        <div class="mb-2 md:mb-1 md:flex items-center">
+                            <label class="w-32 text-gray-800 dark:text-gray-400 block font-bold text-sm uppercase tracking-wide">{{ $item->date }}</label>
+                        </div>
+
                         <div class="mb-2 md:mb-1 md:flex items-center">
                             <label class="w-32 text-gray-800 dark:text-gray-400 block font-bold text-sm uppercase tracking-wide">{{ $item->time_from }}</label>
                         </div>
