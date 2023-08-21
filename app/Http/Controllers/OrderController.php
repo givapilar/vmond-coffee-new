@@ -93,11 +93,13 @@ class OrderController extends Controller
                     // dd('tes');
                     $total_price = 1;
                     // $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
                     $name = auth()->user()->username;
                     $phone = auth()->user()->telephone;
                     $kasir = null;
                 }else if(Auth::user()->telephone == '081818181847') {
                     $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
                     $name = $request->nama ?? 'Not Name';
                     $phone = $request->phone ?? '-';
                     $kasir = $request->kasir_id;
@@ -106,7 +108,7 @@ class OrderController extends Controller
                     $discount = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $count = 0.2 * $discount;
                     $total_price = $discount - $count;
-                    // dd($total_price);
+                    $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
                     $name = $request->nama ?? 'Not Name';
                     $phone = $request->phone ?? '-';
                     $kasir = $request->kasir_id;
@@ -114,6 +116,8 @@ class OrderController extends Controller
                 else{
                     // dd('tes2');
                     $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
+                    $pb01 = ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $name = auth()->user()->username;
                     $phone = auth()->user()->telephone;
                     $kasir = null;
@@ -142,6 +146,8 @@ class OrderController extends Controller
                     'kasir_id' => $kasir,
                     'invoice_no' => 'draft',
                     'created_at' => date('Y-m-d H:i:s'),
+                    'service' => $service,
+                    'pb01' => $pb01,
                 ]);
 
                     foreach ($session_cart as $key => $item) {
@@ -324,7 +330,7 @@ class OrderController extends Controller
 
                 // if (Auth::user()->membership->level == 'Super Platinum') {
                 if (Auth::check()) {
-                $total_price = 1;
+                    // $total_price = 1;
                     # code...
                     $user = auth()->user()->id;
                     if (Auth::auth()->id) {
@@ -335,6 +341,8 @@ class OrderController extends Controller
                     }
                 }else {
                     $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
+                    $pb01 = ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $user = '2';
                     if (Auth::check()) {
                         $name = auth()->user()->username;
@@ -366,6 +374,8 @@ class OrderController extends Controller
                     'tipe_pemesanan' => $request->tipe_pemesanan,
                     'invoice_no' => 'draft',
                     'created_at' => date('Y-m-d H:i:s'),
+                    'service' => $service,
+                    'pb01' => $pb01,
                 ]);
 
                 // dd($session_cart);
@@ -1924,7 +1934,7 @@ class OrderController extends Controller
         $today = Carbon::today();
         $formattedDate = $today->format('ymd');
 
-        $lastOrder = Order::whereDate('created_at', $today)->where('status_pembayaran', 'Paid')->orderBy('id','desc')->first();
+        $lastOrder = Order::whereDate('updated_at', $today)->where('status_pembayaran', 'Paid')->orderBy('id','desc')->first();
         if ($lastOrder) {
             // Cek apakah order dibuat pada tanggal yang sama dengan hari ini
             $lastInvoiceNumber = $lastOrder->invoice_no;
