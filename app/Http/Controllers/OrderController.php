@@ -100,6 +100,7 @@ class OrderController extends Controller
                 }else if(Auth::user()->telephone == '081818181847') {
                     $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
+                    $pb01 = ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $name = $request->nama ?? 'Not Name';
                     $phone = $request->phone ?? '-';
                     $kasir = $request->kasir_id;
@@ -109,6 +110,7 @@ class OrderController extends Controller
                     $count = 0.2 * $discount;
                     $total_price = $discount - $count;
                     $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
+                    $pb01 = ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $name = $request->nama ?? 'Not Name';
                     $phone = $request->phone ?? '-';
                     $kasir = $request->kasir_id;
@@ -253,7 +255,7 @@ class OrderController extends Controller
             return view('checkout.index',$data,compact('snapToken','order'));
         } catch (\Throwable $th) {
             DB::rollback();
-            return redirect()->back()->with('failed', 'Silahkan Hubungi Ke Waiters');
+            return redirect()->back()->with('failed', $th->getMessage());
         }
         
     }
