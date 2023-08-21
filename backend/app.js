@@ -13,7 +13,7 @@ app.use('/v1/api', userRoutes);
 
 // Konfigurasi SSL
 const sslOptions = {
-  key: fs.readFileSync('/etc/letsencrypt/live/vmondcoffee.controlindo.com/privkey.pem'),
+  key: process.env.PRIVATE_KEY_CONTENT,
   cert: fs.readFileSync('/etc/letsencrypt/live/vmondcoffee.controlindo.com/fullchain.pem')
 };
 // Jalankan server pada port tertentu
