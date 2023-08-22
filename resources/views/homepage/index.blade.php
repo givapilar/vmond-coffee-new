@@ -33,16 +33,20 @@
                     <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
                         Total Transaksi 
                     </p>
-                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                        Meja
-                        {{ $kodeMeja }}
-                    </p>
                     <p class="text-sm text-gray-500 truncate dark:text-gray-400">
                         @if (Auth::check())
                             Rp. {{ number_format($orderFinishSubtotal, 0) ?? '' }}
                             ( {{ ucwords(Auth::user()->membership->level ?? '') }} Member )
                         @else
                             Daftarkan <a href="{{ route('register') }}" class="font-medium text-blue-600 hover:underline dark:text-blue-500">akun anda</a>
+                        @endif
+                    </p>
+                </div>
+                <div class="flex-shrink-0 min-w-0">
+                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                        @if($kodeMeja)
+                        Meja
+                        {{ $kodeMeja }}
                         @endif
                     </p>
                 </div>
