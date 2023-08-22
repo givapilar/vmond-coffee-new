@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Cache;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -40,39 +41,40 @@ class AppServiceProvider extends ServiceProvider
 
         //$this->app['request']->server->set('HTTPS', true);
         //URL::forceScheme('https');
-        
         view()->composer('*', function (){
             if (Auth::user()) {
                 $today = Carbon::today();
-                $yesterday = Carbon::yesterday();
-if (Auth::user()->telephone == '081818181847') {
-    $orderTable = Order::orderBy('id', 'desc')
-	->whereDate('created_at', $today)
-        ->where('user_id', Auth::user()->id)
-        ->where('status_pembayaran', 'Paid')
-        ->get();
-}
-else{
+                if (Auth::user()->telephone == '081818181847') {
+                    $orderTable = Order::orderBy('id', 'desc')
+                        ->whereDate('created_at', $today)
+                        ->where('user_id', Auth::user()->id)
+                        ->where('status_pembayaran', 'Paid')
+                        ->get();
+                }else{
                     $orderTable = Order::orderBy('id','desc')->where('user_id', Auth::user()->id)->where('status_pembayaran', 'Paid')->get();
                 }
-                
             }else{
                 $orderTable = [];
             }
             if (Auth::check()) {
-                View::share('order_table',$orderTable);
                 $restaurantMenu = Restaurant::get();
-                View::share('restaurantMenu',$restaurantMenu);
                 $otherSetting = OtherSetting::get();
+
+                View::share('restaurantMenu',$restaurantMenu);
+                View::share('order_table',$orderTable);
                 View::share('otherSetting',$otherSetting);
             }else{
-                View::share('order_table',$orderTable);
                 $restaurantMenu = Restaurant::get();
-                View::share('restaurantMenu',$restaurantMenu);
                 $otherSetting = OtherSetting::get();
+                $kodeMeja = request()->query('kode_meja');
+                Cache::put('kode_meja', $kodeMeja, now()->addSeconds(3600));
+
+                // dd($kodeMeja);
+                View::share('order_table',$orderTable);
+                View::share('restaurantMenu',$restaurantMenu);
                 View::share('otherSetting',$otherSetting);
+                View::share('kodeMeja',$kodeMeja);
             }
-            
         });
 
     }

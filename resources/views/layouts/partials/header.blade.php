@@ -13,7 +13,7 @@
             @endphp
             <div class="flex items-center sm:order-2">
 
-                <a href="{{ route('cart') }}" class="flex mr-5">
+                <a href="{{ route('cart', ['jenis_meja' => Request::get('jenis_meja'), 'kode_meja' => Request::get('kode_meja')]) }}" class="flex mr-5">
                     <ion-icon name="cart" class="text-2xl dark:text-white"></ion-icon>
                     @if (Auth::check())
                         <p class="text-white">({{count(\Cart::session(Auth::user()->id)->getContent())}})</p>
@@ -46,7 +46,7 @@
                         </li>
                         @else
                         <li>
-                            <a href="{{ route('login') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Login</a>
+                            <a href="{{ route('login', ['jenis_meja' => Request::get('jenis_meja'), 'kode_meja' => Request::get('kode_meja')]) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Login</a>
                         </li>
                         @endif
                     </ul>
