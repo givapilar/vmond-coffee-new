@@ -42,6 +42,12 @@
                         @endif
                     </p>
                 </div>
+                @if ($kodeMeja == null)
+                <div class="flex-shrink-0 min-w-0">
+                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                    </p>
+                </div>
+                @endif
                 <div class="flex-shrink-0 min-w-0">
                     <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
                         @if($kodeMeja)
