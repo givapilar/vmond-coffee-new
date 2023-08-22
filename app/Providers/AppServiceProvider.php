@@ -69,8 +69,12 @@ class AppServiceProvider extends ServiceProvider
             }else{
                 $restaurantMenu = Restaurant::get();
                 $otherSetting = OtherSetting::get();
-                $kodeMeja = request()->query('kode_meja');
-                if ($kodeMeja) {
+                if (request()->query('kode_meja')) {
+                    $kodeMeja = request()->query('kode_meja');
+                }else{
+                    $kodeMeja = null;
+                }
+                if ($kodeMeja != null) {
                     Cache::put('kode_meja', $kodeMeja, now()->addSeconds(3600));
                 }
                 $getKodeMeja = Cache::get('kode_meja'); // Mengambil nilai dari cache
