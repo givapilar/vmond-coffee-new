@@ -67,13 +67,15 @@ class AppServiceProvider extends ServiceProvider
                 $restaurantMenu = Restaurant::get();
                 $otherSetting = OtherSetting::get();
                 $kodeMeja = request()->query('kode_meja');
-                $getKodeMeja = Cache::put('kode_meja', $kodeMeja, now()->addSeconds(3600));
+                Cache::put('kode_meja', $kodeMeja, now()->addSeconds(3600));
+                $getKodeMeja = Cache::get('kode_meja'); // Mengambil nilai dari cache
                 dd($getKodeMeja);
                 // dd($kodeMeja);
-                View::share('order_table',$orderTable);
-                View::share('restaurantMenu',$restaurantMenu);
-                View::share('otherSetting',$otherSetting);
-                View::share('kodeMeja',$getKodeMeja);
+                View::share('order_table', $orderTable);
+                View::share('restaurantMenu', $restaurantMenu);
+                View::share('otherSetting', $otherSetting);
+                View::share('kodeMeja', $getKodeMeja);
+
             }
         });
 
