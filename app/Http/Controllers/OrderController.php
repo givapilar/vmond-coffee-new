@@ -116,7 +116,8 @@ class OrderController extends Controller
                     $phone = $request->phone ?? '-';
                     $kasir = $request->kasir_id;
                 }elseif (Auth::user()->username == 'syahrul') {
-                    $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    $total_price = 1;
+                    // $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
                     $pb01 = ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $name = $request->nama ?? 'Not Name';
@@ -860,6 +861,16 @@ class OrderController extends Controller
                 //     }
                 //     $user->save();
                 // }
+
+                $paymentType = $request->payment_type; // This is the field containing "QRIS" or other payment types
+            
+                if ($paymentType === 'QRIS') {
+                    // Update the payment method to "QRIS"
+                    $order = Order::find($request->order_id);
+                    $order->update(['metode_pembayaran' => 'QRIS']);
+
+                    // Handle QRIS payment further if needed
+                }
 
                 $user = User::where('id', $order->user_id)->first(); // Gunakan first() untuk mendapatkan objek user
                 $memberships = Membership::orderBy('id','asc')->get();
