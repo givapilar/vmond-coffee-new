@@ -154,12 +154,12 @@ class OrderController extends Controller
                     'status_pembayaran' => 'Unpaid',
                     'status_pesanan' => 'process',
                     'tipe_pemesanan' => $request->tipe_pemesanan,
-                    'kasir_id' => $kasir,
+                    // 'kasir_id' => $kasir,
                     'invoice_no' => 'draft',
                     'created_at' => date('Y-m-d H:i:s'),
                     'service' => $service,
                     'pb01' => $pb01,
-                    // 'nama_kasir' => $nama_kasir,
+                    'nama_kasir' => $nama_kasir,
                 ]);
 
                     foreach ($session_cart as $key => $item) {
