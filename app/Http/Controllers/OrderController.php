@@ -37,17 +37,17 @@ class OrderController extends Controller
                 return redirect()->route('homepage')->with(['failed' => 'Tidak dapat mengulang transaksi!']);
             }
 
-           
             if($request->category == 'Dine In' && $request->meja_restaurant_id == null){
                 return redirect()->back()->with(['failed' => 'Harap Isi Meja !']);
             }elseif($request->category == 'Takeaway' && $request->meja_restaurant_id == null) {
                 return redirect()->back()->with(['failed' => 'Harap Isi Meja !']);
             }
             
-            // dd($request->all());
-            $restaurants = Restaurant::get();
-
+            if ($request->edisi == 'EDC' && $request->tipe_pemesanan == null) {
+                return redirect()->back()->with(['failed' => 'Harap Pilih EDC !']);
+            }
             
+            $restaurants = Restaurant::get();
 
             $idSessions = $request->idSession;
             $qtys = $request->qty;
@@ -103,7 +103,7 @@ class OrderController extends Controller
                     $pb01 = ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $name = $request->nama ?? 'Not Name';
                     $phone = $request->phone ?? '-';
-                    $kasir = $request->kasir_id;
+                    // $kasir = $request->kasir_id;
                     $nama_kasir = $request->kasir_id;
                 
                 }elseif (Auth::user()->telephone == '081210469621') {
@@ -160,6 +160,7 @@ class OrderController extends Controller
                     'service' => $service,
                     'pb01' => $pb01,
                     'nama_kasir' => $nama_kasir,
+                    // 'kode_meja' => $request->meja_restaurant_id,
                 ]);
 
                     foreach ($session_cart as $key => $item) {
@@ -239,7 +240,7 @@ class OrderController extends Controller
                         'gross_amount' => 1,
                     ),
                     'customer_details' => array(
-                        'first_name' => auth()->user()->name,
+                        'first_name' => auth()->user()->username,
                         'phone' => $request->phone,
                     ),
                 );
@@ -251,7 +252,7 @@ class OrderController extends Controller
                         // 'gross_amount' => 1,
                     ),
                     'customer_details' => array(
-                        'first_name' => auth()->user()->name,
+                        'first_name' => auth()->user()->username,
                         'phone' => $request->phone,
                     ),
                 );
@@ -265,7 +266,8 @@ class OrderController extends Controller
             return view('checkout.index',$data,compact('snapToken','order'));
         } catch (\Throwable $th) {
             DB::rollback();
-            return redirect()->back()->with('failed', $th->getMessage());
+            // return redirect()->back()->with('failed', $th->getMessage());
+            return redirect()->back()->with('failed', 'Silahkan Tanya Waiters');
         }
         
     }
@@ -1013,7 +1015,7 @@ class OrderController extends Controller
                     $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $name = $request->nama_customer ?? 'Not Name';
                     $phone = $request->phone ?? '-';
-                    $kasir = $request->kasir_id;
+                    $nama_kasir = $request->kasir_id;
                 
                 }elseif (Auth::user()->telephone == '081210469621') {
                     $discount = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
@@ -1054,9 +1056,12 @@ class OrderController extends Controller
                     'status_running' => 'NOT START',
                     'status_pesanan' => 'process',
                     'tipe_pemesanan' => $request->tipe_pemesanan,
-                    'kasir_id' => $kasir,
+                    // 'kasir_id' => $kasir,
                     'invoice_no' => 'draft',
                     'created_at' => date('Y-m-d H:i:s'),
+                    'service' => $layanan,
+                    'pb01' => $pb01,
+                    'nama_kasir' => $nama_kasir,
                 ]);
     
 
@@ -1142,7 +1147,7 @@ class OrderController extends Controller
                     'gross_amount' => 1,
                 ),
                 'customer_details' => array(
-                    'first_name' => auth()->user()->name,
+                    'first_name' => auth()->user()->username,
                     'phone' => $request->phone,
                     // 'code' => rand(),
                 ),
@@ -1157,7 +1162,7 @@ class OrderController extends Controller
                     'gross_amount' => $total_harga,
                 ),
                 'customer_details' => array(
-                    'first_name' => auth()->user()->name,
+                    'first_name' => auth()->user()->username,
                     'phone' => $request->phone,
                     // 'code' => rand(),
                 ),
@@ -1660,7 +1665,7 @@ class OrderController extends Controller
                     // 'gross_amount' => 1,
                 ),
                 'customer_details' => array(
-                    'first_name' => auth()->user()->name,
+                    'first_name' => auth()->user()->username,
                     'phone' => $request->phone,
                     // 'code' => rand(),
                 ),
