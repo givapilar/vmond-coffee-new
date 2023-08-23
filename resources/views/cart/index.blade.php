@@ -308,6 +308,19 @@
                             </div>
                             <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                                 <input id="edisi" required type="radio" value="Edisi" name="tipe_pemesanan" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <li class="py-3 sm:py-2" style="" id="meja-wrapper">
+                                    <div id="select-input-wrapper">
+                                        <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja</label>
+                                        <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                            <option disabled selected>Pilih Meja Restaurant</option>
+                                            @foreach ($meja_restaurants as $key => $meja_restaurant)
+                                            @if (Auth::user()->kode_meja == $meja_restaurant->kode_meja)
+                                            <option required value="{{ $meja_restaurant->id }}" selected>{{ $meja_restaurant->nama }}</option>
+                                            @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </li>
                             </div>
                         </div>
                     </li>

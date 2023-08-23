@@ -842,6 +842,7 @@ class OrderController extends Controller
             if ($request->transaction_status == 'capture' or $request->transaction_status == 'settlement') {
                 $order = Order::find($request->order_id);
                 $paymentType = $request->payment_type;
+                
                 $order->update(['status_pembayaran' => 'Paid','invoice_no' => $this->generateInvoice(), 'metode_pembayaran' => $paymentType]);
                 // Get User ID
 
