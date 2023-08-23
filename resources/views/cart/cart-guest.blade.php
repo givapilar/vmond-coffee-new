@@ -17,7 +17,9 @@
 {{-- @if (session('message'))
     <div>{{ session('message') }}</div>
 @endif --}}
+
 <section class="p-3">
+    @if ($cart_guest->count() >= 1)
     <form action="{{ route('checkout-order-guest', md5(strtotime("now"))) }}" method="POST">
         @csrf
         <div class="grid grid-cols-2 sm:grid-cols-1 gap-4 sm:gap-1">
@@ -398,6 +400,12 @@
             </div>
         </div>
     </form>
+    @else
+    <div class="w-100 h-96 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+        <img src="{{ asset('images/empty-cart.png') }}" width="25%">
+        <h3>Keranjangmu Kosong, Harap masukkan product terlebih dahulu</h3>
+    </div>
+    @endif
 </section>
 
 <div class="pb-[5rem]"></div>

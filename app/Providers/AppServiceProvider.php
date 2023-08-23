@@ -71,15 +71,21 @@ class AppServiceProvider extends ServiceProvider
             }else{
                 $restaurantMenu = Restaurant::get();
                 $otherSetting = OtherSetting::get();
+                $ipAddress = request()->ip();
+
                 if (request()->query('kode_meja')) {
                     $kodeMeja = request()->query('kode_meja');
                 }else{
                     $kodeMeja = null;
                 }
                 if ($kodeMeja != null) {
-                    Cache::put('kode_meja', $kodeMeja, now()->addSeconds(3600));
+                     $cacheKey = 'kode_meja_' . $ipAddress; // Membuat kunci cache unik berdasarkan alamat IP
+                    Cache::put($cacheKey, $kodeMeja, now()->addSeconds(3600));
                 }
-                $getKodeMeja = Cache::get('kode_meja'); // Mengambil nilai dari cache
+                $cacheKey = 'kode_meja_' . $ipAddress; // Kembali membuat kunci yang sesuai untuk mengambil nilai dari cache
+                $getKodeMeja = Cache::get($cacheKey);
+
+                // dd($getKodeMeja);
                 // dd($getKodeMeja);
                 // dd($kodeMeja);
                 View::share('order_table', $orderTable);
