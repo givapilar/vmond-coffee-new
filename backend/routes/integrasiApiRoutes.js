@@ -9,31 +9,25 @@ router.get('/', integrasiApiController.getURL);
  * @swagger
  * /v1/api/callback:
  *   post:
+ *     summary: Handle callback
+ *     description: Endpoint to handle callback from external service.
  *     responses:
  *       200:
- *          code:
- *              200
- *          method:
- *              POST
- *          url:
- *              /v1/api/callback
- *          headers:
- *              ....
- *          message:
- *              Successfully!
+ *         description: Successfully callback.
+ *         content:
+ *           application/json:
+ *             example:
+ *               status: 200
+ *               message: Successfully!
  *       500:
- *          code:
- *              500
- *          method:
- *              POST
- *          url:
- *              /v1/api/callback
- *          headers:
- *              ....
- *          message:
- *              Failed! Error: msg
- *
+ *         description: Failed callback.
+ *         content:
+ *           application/json:
+ *             example:
+ *               status: 500
+ *               message: Failed! Error: An error occurred.
  */
+
 
 // Definisikan rute untuk mendapatkan pengguna berdasarkan ID
 router.post('/callback', integrasiApiController.callbackFromBJB);
