@@ -6,6 +6,8 @@ use App\Models\Order;
 use App\Models\OrderPivot;
 use App\Models\OtherSetting;
 use App\Models\Restaurant;
+use App\Models\User;
+use App\Models\UserManagement;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
@@ -59,7 +61,8 @@ class AppServiceProvider extends ServiceProvider
             if (Auth::check()) {
                 $restaurantMenu = Restaurant::get();
                 $otherSetting = OtherSetting::get();
-
+                $kodeMeja = User::where('id', Auth::user()->id)->get()->pluck('kode_meja')->first();
+                View::share('kodeMeja', $kodeMeja);
                 View::share('restaurantMenu',$restaurantMenu);
                 View::share('order_table',$orderTable);
                 View::share('otherSetting',$otherSetting);
