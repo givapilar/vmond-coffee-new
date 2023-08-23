@@ -270,7 +270,7 @@
 
 @push('script-bot')
 <script type="text/javascript" src="{{ config('midtrans.snap_url') }}" data-client-key="{{ config('midtrans.client_key') }}"></script>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     //  var username = {{ \Cart::session(Auth::user()->id)->getContent() }};
         // console.log(username);
