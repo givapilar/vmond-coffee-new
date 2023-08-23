@@ -840,17 +840,11 @@ class OrderController extends Controller
         $hashed = hash('sha512',$request->order_id.$request->status_code.$request->gross_amount.$serverKey);
         if ($hashed == $request->signature_key) {
             if ($request->transaction_status == 'capture' or $request->transaction_status == 'settlement') {
-                // $order = Order::find($request->order_id);
-                // $order->update(['status_pembayaran' => 'Paid','invoice_no' => $this->generateInvoice()]);
+                $order = Order::find($request->order_id);
+                $order->update(['status_pembayaran' => 'Paid','invoice_no' => $this->generateInvoice()]);
                 // Get User ID
 
-                $paymentType = $request->payment_type;
-
-                if ($paymentType === 'QRIS') {
-                    $order = Order::find($request->order_id);
-                    $order->update(['status_pembayaran' => 'Paid','invoice_no' => $this->generateInvoice(),'metode_pembayaran' => 'QRIS']);
-                    $orderFinishSubtotal = Order::where('user_id', $order->user_id)->where('status_pembayaran','Paid')->sum('total_price');
-                }
+                $orderFinishSubtotal = Order::where('user_id', $order->user_id)->where('status_pembayaran','Paid')->sum('total_price');
 
                 // $user = User::find($order->user_id);
                 // if ($user) {
@@ -867,9 +861,6 @@ class OrderController extends Controller
                 //     }
                 //     $user->save();
                 // }
-
-            
-                
 
                 $user = User::where('id', $order->user_id)->first(); // Gunakan first() untuk mendapatkan objek user
                 $memberships = Membership::orderBy('id','asc')->get();
