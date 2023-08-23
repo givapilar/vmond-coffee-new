@@ -9,7 +9,7 @@ const options = {
       description: 'A sample API with Swagger documentation',
     },
   },
-  apis: ['./routes/*.js'], // Letakkan sesuai dengan path file-route Anda
+  apis: ['../routes/*.js'], // Letakkan sesuai dengan path file-route Anda
 };
 
 const swaggerSpec = swaggerJSDoc(options);
