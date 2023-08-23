@@ -25,9 +25,8 @@ router.get('/', integrasiApiController.getURL);
  *           application/json:
  *             example:
  *               status: 500
- *               message: Failed! Error: An error occurred.
+ *               message: Failed!, Error: An error occurred.
  */
-
 
 // Definisikan rute untuk mendapatkan pengguna berdasarkan ID
 router.post('/callback', integrasiApiController.callbackFromBJB);
