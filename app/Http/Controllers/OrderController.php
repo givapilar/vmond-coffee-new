@@ -120,7 +120,7 @@ class OrderController extends Controller
                     // $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
                     $pb01 = ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
-                    $name = $request->nama ?? 'Not Name';
+                    $name = auth()->user()->username ?? 'Not Name';
                     $phone = $request->phone ?? '-';
                     $kasir = $request->kasir_id;
                     $nama_kasir = $request->kasir_id;
