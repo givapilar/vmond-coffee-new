@@ -7,6 +7,6 @@ const integrasiApiController = require('../controllers/integrasiApiController');
 router.get('/', integrasiApiController.getURL);
 
 // Definisikan rute untuk mendapatkan pengguna berdasarkan ID
-router.post('/callback-api', integrasiApiController.callbackFromBJB);
+router.post('/callback', integrasiApiController.callbackFromBJB);
 
 module.exports = router;

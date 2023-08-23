@@ -1,3 +1,6 @@
+const jwt = require('jwt-simple');
+const secretKey = 'yUyOSXBD8ZB96JKv5e5K4aETVLJcGkubL8d6UlrqERJSVtvDJr';
+
 const getURL = (req, res) => {
     const resCallback = "Success Connect!";
     res.json(resCallback);
@@ -5,6 +8,20 @@ const getURL = (req, res) => {
   
   const callbackFromBJB = (req, res) => {
     try {
+      // ===================================================================
+      // JWT TOKEN
+      // ===================================================================
+      // const decodedToken = jwt.decode(req.body.token, secretKey);
+      
+      // // Lakukan verifikasi data, misalnya cek 'sub' dalam payload
+      // if (!decodedToken || !decodedToken.sub) {
+      //   throw new Error('Invalid your token!');
+      // }
+
+      // ===================================================================
+      // JWT TOKEN
+      // ===================================================================
+        
       // Logika pengolahan data
   
       const responseData = {
@@ -14,7 +31,6 @@ const getURL = (req, res) => {
         headers: req.headers,
         message: 'Successfully!'
       };
-      
       res.status(200).json(responseData);
     } catch (error) {
       const responseData = {
