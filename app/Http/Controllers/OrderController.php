@@ -43,7 +43,7 @@ class OrderController extends Controller
                 return redirect()->back()->with(['failed' => 'Harap Isi Meja !']);
             }
             
-            if ($request->edisi == 'EDC' && $request->tipe_pemesanan == null) {
+            if ($request->tipe_pemesanan == 'Edisi' && $request->metode_edisi == null) {
                 return redirect()->back()->with(['failed' => 'Harap Pilih EDC !']);
             }
             
@@ -161,6 +161,7 @@ class OrderController extends Controller
                     'pb01' => $pb01,
                     'nama_kasir' => $nama_kasir,
                     // 'kode_meja' => $request->meja_restaurant_id,
+                    'metode_edisi' => $request->metode_edisi,
                 ]);
 
                     foreach ($session_cart as $key => $item) {
@@ -938,6 +939,10 @@ class OrderController extends Controller
         if ($request->paket_restaurant_id == null) {
             return redirect()->back()->with(['failed' => 'Harap Pilih Menu !']);
         }
+
+        if ($request->tipe_pemesanan == 'Edisi' && $request->metode_edisi == null) {
+            return redirect()->back()->with(['failed' => 'Harap Pilih EDC !']);
+        }
         
         $selectedPackages = $request->input('paket_restaurant_id');
 
@@ -1062,6 +1067,8 @@ class OrderController extends Controller
                     'service' => $layanan,
                     'pb01' => $pb01,
                     'nama_kasir' => $nama_kasir,
+                    'metode_edisi' => $request->metode_edisi,
+
                 ]);
     
 
