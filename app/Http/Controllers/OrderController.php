@@ -841,7 +841,8 @@ class OrderController extends Controller
         if ($hashed == $request->signature_key) {
             if ($request->transaction_status == 'capture' or $request->transaction_status == 'settlement') {
                 $order = Order::find($request->order_id);
-                $order->update(['status_pembayaran' => 'Paid','invoice_no' => $this->generateInvoice()]);
+                $paymentType = $request->payment_type;
+                $order->update(['status_pembayaran' => 'Paid','invoice_no' => $this->generateInvoice(), 'metode_pembayaran' => $paymentType]);
                 // Get User ID
 
                 $orderFinishSubtotal = Order::where('user_id', $order->user_id)->where('status_pembayaran','Paid')->sum('total_price');

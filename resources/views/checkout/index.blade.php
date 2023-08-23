@@ -349,6 +349,7 @@
                 }
             });
           console.log(result);
+          console.log('Payment Method:', paymentType);
         },
         onPending: function(result){
           /* You may add your own implementation here */

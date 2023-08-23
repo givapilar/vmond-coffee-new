@@ -2,17 +2,6 @@ const express = require('express');
 const router = express.Router();
 const integrasiApiController = require('../controllers/integrasiApiController');
 
-/**
- * @swagger
- * /api/users:
- *   get:
- *     summary: Get a list of users
- *     description: Retrieve a list of users from the database.
- *     responses:
- *       200:
- *         description: A list of users.
- */
-
 // Definisikan rute untuk mendapatkan semua pengguna
 router.get('/', integrasiApiController.getURL);
 
