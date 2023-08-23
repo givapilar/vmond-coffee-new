@@ -25,7 +25,7 @@ router.get('/', integrasiApiController.getURL);
  *           application/json:
  *             example:
  *               status: 500
- *               message: Failed!, Error: An error occurred.
+ *               message: Failed!.
  */
 
 // Definisikan rute untuk mendapatkan pengguna berdasarkan ID
