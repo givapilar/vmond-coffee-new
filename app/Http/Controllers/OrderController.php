@@ -159,6 +159,7 @@ class OrderController extends Controller
                     'created_at' => date('Y-m-d H:i:s'),
                     'service' => $service,
                     'pb01' => $pb01,
+                    'packing' => $request->packing,
                     'nama_kasir' => $nama_kasir,
                     // 'kode_meja' => $request->meja_restaurant_id,
                     'metode_edisi' => $request->metode_edisi,
