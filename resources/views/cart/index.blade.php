@@ -429,6 +429,20 @@
                             </div>
                         </div>
                     </li>
+
+                    <li class="py-3 sm:py-3" style="display: none;" id="packing">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
+                                    Packing
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white" id="PB01-summary">
+                                <input type="hidden" name="packing" >
+                                Rp. 5,000 
+                            </div>
+                        </div>
+                    </li>
                     
                     <li class="py-3 sm:py-3" id="order-total" style="display: none;">
                         <div class="flex items-start space-x-4">
@@ -554,6 +568,8 @@
     // Mengambil elemen wrapper "Pilih Meja"
     const mejaWrapper = document.getElementById('meja-wrapper');
     const mejaTakeaway = document.getElementById('meja-takeaway');
+    const packing = document.getElementById('packing');
+    const packingInput = document.querySelector('input[name="packing"]');
 
     // Menambahkan event listener saat radio button berubah
     takeawayRadio.addEventListener('change', toggleMejaWrapper);
@@ -564,9 +580,13 @@
         if (takeawayRadio.checked) {
             mejaWrapper.style.display = 'none';
             mejaTakeaway.style.display = 'block';
+            packing.style.display = 'block';
+            packingInput.value = '5000';
         } else if (dineInRadio.checked) {
             mejaWrapper.style.display = 'block';
             mejaTakeaway.style.display = 'none';
+            packing.style.display = 'none';
+            packingInput.value = '0';
         }
     }
 
