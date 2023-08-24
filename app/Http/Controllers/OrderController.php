@@ -268,8 +268,8 @@ class OrderController extends Controller
             return view('checkout.index',$data,compact('snapToken','order'));
         } catch (\Throwable $th) {
             DB::rollback();
-            // return redirect()->back()->with('failed', $th->getMessage());
-            return redirect()->back()->with('failed', 'Silahkan Tanya Waiters');
+            return redirect()->back()->with('failed', $th->getMessage());
+            // return redirect()->back()->with('failed', 'Silahkan Tanya Waiters');
         }
         
     }
