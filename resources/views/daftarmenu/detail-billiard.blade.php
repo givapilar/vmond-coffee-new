@@ -375,6 +375,7 @@
                         <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
                             {{-- {{ number_format($paket_menu->harga_diskon  ?? '0',2 )  }} --}}
                             Rp. {{ number_format($paket_menu->harga_diskon ?? 0, 0) }}
+                            <input type="hidden" name="harga_diskon_billiard" value="{{ $paket_menu->harga_diskon }}">
                         </div>
                     </div>
                 </li>
