@@ -270,7 +270,7 @@ class OrderController extends Controller
                 $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
             }
             // $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
-            $data['order_last'] = Order::latest()->first();
+            $data['order_last'] = Order::where('token', $token)->latest()->first();
             $data['order_settings'] = OtherSetting::get();
             return view('checkout.index',$data,compact('snapToken','order'));
         } catch (\Throwable $th) {
