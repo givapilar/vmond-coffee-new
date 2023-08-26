@@ -1024,6 +1024,8 @@ class OrderController extends Controller
                     $name = auth()->user()->username;
                     $phone = auth()->user()->telephone;
                     $kasir = null;
+                    $nama_kasir = $request->kasir_id;
+                    
                 }else if(Auth::user()->telephone == '081818181847') {
                     $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $name = $request->nama_customer ?? 'Not Name';
@@ -1037,7 +1039,8 @@ class OrderController extends Controller
                     // dd($total_price);
                     $name = $request->nama_customer ?? 'Not Name';
                     $phone = $request->phone ?? '-';
-                    $kasir = $request->kasir_id;
+                    // $kasir = $request->kasir_id;
+                    $nama_kasir = $request->kasir_id;
                 }
                 else{
                     // dd('tes2');
@@ -1045,6 +1048,7 @@ class OrderController extends Controller
                     $name = auth()->user()->username;
                     $phone = auth()->user()->telephone;
                     $kasir = null;
+                    $nama_kasir = $request->kasir_id;
                 }
             }
                 
