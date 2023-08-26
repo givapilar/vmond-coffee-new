@@ -46,6 +46,10 @@ class OrderController extends Controller
             if ($request->tipe_pemesanan == 'Edisi' && $request->metode_edisi == null) {
                 return redirect()->back()->with(['failed' => 'Harap Pilih EDC !']);
             }
+
+            if ($request->kasir_id == null) {
+                return redirect()->back()->with(['failed' => 'Harap Isi Nama Kasir !']);
+            }
             
             $restaurants = Restaurant::get();
 
@@ -225,7 +229,6 @@ class OrderController extends Controller
                 $checkToken2 = Order::where('token',$token)->get();
                 $data['token'] = $checkToken2->pluck('token');
 
-
             // Set your Merchant Server Key
             \Midtrans\Config::$serverKey = config('midtrans.server_key');
             // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
@@ -262,7 +265,11 @@ class OrderController extends Controller
 
 
             $snapToken = \Midtrans\Snap::getSnapToken($params);
-            $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
+            $tokenCart = Order::where('token', $token)->first(); // Menggunakan first() karena Anda mencari satu record
+            if ($tokenCart) {
+                $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
+            }
+            // $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
             $data['order_last'] = Order::latest()->first();
             $data['order_settings'] = OtherSetting::get();
             return view('checkout.index',$data,compact('snapToken','order'));
@@ -1069,6 +1076,7 @@ class OrderController extends Controller
                     'pb01' => $pb01,
                     'nama_kasir' => $nama_kasir,
                     'metode_edisi' => $request->metode_edisi,
+                    'harga_diskon_billiard' => $request->harga_diskon_billiard,
 
                 ]);
     
