@@ -199,6 +199,24 @@
             <li class="py-3 sm:py-3">
                 <div class="flex items-start space-x-4">
                     <div class="flex-1 min-w-0">
+                        <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
+                            Packing 
+                        </p>
+                    </div>
+                    <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
+                        <?php
+                            $packing = 5000;
+                        ?>
+
+                        {{-- {{dd($order_settings[0]->pb01)}} --}}
+                        Rp. {{ $packing }} 
+                    </div>
+                </div>
+            </li>
+
+            <li class="py-3 sm:py-3">
+                <div class="flex items-start space-x-4">
+                    <div class="flex-1 min-w-0">
                         <p class="text-xs font-medium text-gray-900 truncate dark:text-white">
                             Order Total
                         </p>
@@ -206,8 +224,8 @@
                     <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white" id="total-order-summary-packing">
                         <?php
                             $packing = 5000;
-                            $totalWithoutPacking = (\Cart::getTotal() + (\Cart::getTotal() ?? 0) * $order_settings[0]->layanan/100);
-                            $totalWithPacking = $totalWithoutPacking + ($totalWithoutPacking + (\Cart::getTotal() ?? 0) * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100 + $packing;
+                            $totalWithoutPacking = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100;
+                            $totalWithPacking = $totalWithoutPacking + $packing;
                         ?>
                         @if (\Cart::getTotal())
                         {{-- Rp. {{ number_format((\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100,0)}} --}}
