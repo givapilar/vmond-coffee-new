@@ -47,9 +47,9 @@ class OrderController extends Controller
                 return redirect()->back()->with(['failed' => 'Harap Pilih EDC !']);
             }
 
-            if ($request->kasir_id == null) {
-                return redirect()->back()->with(['failed' => 'Harap Isi Nama Kasir !']);
-            }
+            // if ($request->kasir_id == null) {
+            //     return redirect()->back()->with(['failed' => 'Harap Isi Nama Kasir !']);
+            // }
             
             $restaurants = Restaurant::get();
 
