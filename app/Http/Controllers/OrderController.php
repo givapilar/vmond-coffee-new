@@ -1040,7 +1040,7 @@ class OrderController extends Controller
                     $name = $request->nama_customer ?? 'Not Name';
                     $phone = $request->phone ?? '-';
                     // $kasir = $request->kasir_id;
-                    $nama_kasir = $request->kasir_id;
+                    // $nama_kasir = $request->kasir_id;
                 }
                 else{
                     // dd('tes2');
@@ -1048,7 +1048,7 @@ class OrderController extends Controller
                     $name = auth()->user()->username;
                     $phone = auth()->user()->telephone;
                     $kasir = null;
-                    $nama_kasir = $request->kasir_id;
+                    // $nama_kasir = $request->kasir_id;
                 }
             }
                 
