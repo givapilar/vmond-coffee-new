@@ -100,7 +100,7 @@ class OrderController extends Controller
                     $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
                     $name = auth()->user()->username;
                     $phone = auth()->user()->telephone;
-                    $kasir = null;
+                    $nama_kasir = null;
                 }else if(Auth::user()->telephone == '081818181847') {
                     $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
@@ -118,7 +118,7 @@ class OrderController extends Controller
                     $pb01 = ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $name = $request->nama ?? 'Not Name';
                     $phone = $request->phone ?? '-';
-                    $kasir = $request->kasir_id;
+                    $nama_kasir = null;
                 }elseif (Auth::user()->username == 'syahrul') {
                     $total_price = 1;
                     // $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
@@ -136,6 +136,7 @@ class OrderController extends Controller
                     $name = auth()->user()->username;
                     $phone = auth()->user()->telephone;
                     $kasir = null;
+                    $nama_kasir = null;
                 }
             }
                 

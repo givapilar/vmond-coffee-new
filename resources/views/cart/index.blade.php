@@ -521,21 +521,22 @@
 <script>
 
     // Pilihan EDC
-    const paymentGatewayRadio = document.getElementById('payment_gateaway');
-    const edcRadio = document.getElementById('edisi');
-    const edisiPembayaranWrapper = document.getElementById('edisi-pembayaran');
-
-    paymentGatewayRadio.addEventListener('change', function() {
-        if (this.checked) {
-            edisiPembayaranWrapper.style.display = 'none';
-        }
-    });
-
-    edcRadio.addEventListener('change', function() {
-        if (this.checked) {
-            edisiPembayaranWrapper.style.display = 'block';
-        }
-    });
+    if ($("#payment_gateaway").length) {
+        const paymentGatewayRadio = document.getElementById('payment_gateaway');
+        const edcRadio = document.getElementById('edisi');
+        const edisiPembayaranWrapper = document.getElementById('edisi-pembayaran');
+        paymentGatewayRadio.addEventListener('change', function() {
+            if (this.checked) {
+                edisiPembayaranWrapper.style.display = 'none';
+            }
+        });
+    
+        edcRadio.addEventListener('change', function() {
+            if (this.checked) {
+                edisiPembayaranWrapper.style.display = 'block';
+            }
+        });
+    }
 
     // Packing
 
