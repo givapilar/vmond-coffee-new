@@ -20,8 +20,8 @@
     <div class="grid grid-cols-1 gap-3">
         <a href="{{ route('daftar-restaurant', ['category' => 'food']) }}">
             <div class="text-base sm:text-sm p-1">
-                <div class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg" style="height: 7.5rem;">
-                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80" alt="" class="object-cover object-center h-full w-full">
+                <div class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg" style="height: 15.5rem;">
+                    <img src="{{ asset('assetku/dataku/img/cover.jpg') }}" alt="" class="object-cover object-center h-full w-full">
                 </div>
 
                 <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300" style="font-weight: 700;">FOODS</p>
@@ -29,8 +29,8 @@
         </a>
         <a href="{{ route('daftar-restaurant', ['category' => 'drink']) }}">
             <div class="text-base sm:text-sm p-1">
-                <div class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg" style="height: 7.5rem;">
-                    <img src="https://images.unsplash.com/photo-1470337458703-46ad1756a187?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=869&q=80" alt="." class="object-cover object-center h-full w-full">
+                <div class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg" style="height: 15.5rem;">
+                    <img src="{{ asset('assetku/dataku/img/drink.jpg') }}" alt="." class="object-cover object-center h-full w-full">
                 </div>
 
                 <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300" style="font-weight: 700;">DRINKS</p>
