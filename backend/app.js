@@ -15,21 +15,31 @@ const passwordDev = "c3e4bbf32a586b2011e0eaf11d841c3dccd07665ff7d7e0be7e0af98152
 // ====================================================================
 // Get Token API BJB
 // ====================================================================
-const headers = {
-  "Content-Type": "application/json"
-};  
-
-const bodyData = {
-  msisdn: msisdnDev,
-  password: passwordDev,
+const sendGetRequest = async () => {
+  try {
+    const headers = {
+      "Content-Type": "application/json"
+    };  
+    
+    const bodyData = {
+      msisdn: msisdnDev,
+      password: passwordDev,
+    };
+    
+    const result = await axios.post(urlGlobal+"/mobile-webconsole/apps/pocket/requestTokenFintech/", bodyData, {
+      headers: headers
+    });
+    console.log("AllResult :: ",result);
+    console.log("Result Data :: ",result.data);
+  } catch (err) {
+      // Handle Error Here
+      console.error(err);
+  }
 };
 
-const result = axios.post(urlGlobal+"/mobile-webconsole/apps/pocket/requestTokenFintech/", bodyData, {
-  headers: headers
-});
+sendGetRequest();
 
-console.log("AllResult :: ",result);
-console.log("Result Data :: ",result.data);
+
 // ====================================================================
 
 
