@@ -39,7 +39,7 @@ const sendGetRequest = async () => {
     };
     
     const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/pocket/requestTokenFintech/", 
-    {"body": bodyData, "metadata": metaData}, 
+    {"metadata": metaData, "body": bodyData}, 
     {headers: headers});
     
     console.log("AllResult :: ", result);
