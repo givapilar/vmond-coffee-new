@@ -21,7 +21,7 @@ const sendGetRequest = async () => {
       "Content-Type": "application/json"
     };
     
-    const metadata = {
+    const metaData = {
       datetime: "2019-12-27T09:40:21.450Z",
       deviceId: "bjbdigi",
       devicePlatform: "Linux",
@@ -38,10 +38,9 @@ const sendGetRequest = async () => {
       password: passwordDev,
     };
     
-    const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/pocket/requestTokenFintech/", bodyData, {
-      headers: headers,
-      metadata: metadata  // Add the metadata to the request
-    });
+    const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/pocket/requestTokenFintech/", 
+    {body: bodyData, metadata: metaData}, 
+    {headers: headers});
     
     console.log("AllResult :: ", result);
     console.log("Result Data :: ", result.data);
