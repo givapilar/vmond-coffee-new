@@ -22,7 +22,7 @@ const sendGetRequest = async () => {
     };
     
     const metaData = {
-      "datetime": "2019-12-27T09:40:21.450Z",
+      "datetime": "2022-08-29T09:40:21.450Z",
       "deviceId": "bjbdigi",
       "devicePlatform": "Linux",
       "deviceOSVersion": "bjbdigi-version",
@@ -40,7 +40,7 @@ const sendGetRequest = async () => {
     
     const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/pocket/requestTokenFintech/", 
     {"metadata": metaData, "body": bodyData}, 
-    {headers: headers});
+    {"headers": headers});
     
     console.log("AllResult :: ", result);
     console.log("Result Data :: ", result.data);
