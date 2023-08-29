@@ -10,8 +10,8 @@ app.use('/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // Gunakan rute untuk pengguna
 app.use('/v1/api', userRoutes);
 const urlGlobal = "http://10.44.124.164:8080";
-const msisdnDev = "080000000002";
-const passwordDev = "c3e4bbf32a586b2011e0eaf11d841c3dccd07665ff7d7e0be7e0af981527994b";
+const msisdnDev = "080000000001";
+const passwordDev = "111111";
 // ====================================================================
 // Get Token API BJB
 // ====================================================================
@@ -26,10 +26,10 @@ const sendGetRequest = async () => {
       "deviceId": "bjbdigi",
       "devicePlatform": "Linux",
       "deviceOSVersion": "bjbdigi-version",
-      "deviceType": "",
-      "latitude": "",
-      "longitude": "",
-      "appId": 4,
+      "deviceType": "SM-M205G",
+      "latitude": -4.690455,
+      "longitude": 105.6308059,
+      "appId": "4",
       "appVersion": "1.0",
     };
     
