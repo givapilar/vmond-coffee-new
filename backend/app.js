@@ -30,7 +30,7 @@ const sendGetRequest = async () => {
       latitude: "",
       longitude: "",
       appId: 4,
-      appVersion: "1.0",
+      appVersion: 1.0,
     };
     
     const bodyData = {
