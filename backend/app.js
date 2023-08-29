@@ -24,7 +24,7 @@ const bodyData = {
   password: passwordDev,
 };
 
-const result = await axios.post(urlGlobal+"/mobile-webconsole/apps/pocket/requestTokenFintech/", bodyData, {
+const result = axios.post(urlGlobal+"/mobile-webconsole/apps/pocket/requestTokenFintech/", bodyData, {
   headers: headers
 });
 
