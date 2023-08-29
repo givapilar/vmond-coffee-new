@@ -24,6 +24,14 @@ const sendGetRequest = async () => {
     const bodyData = {
       msisdn: msisdnDev,
       password: passwordDev,
+      datetime: "2019-12-27T09:40:21.450Z",
+      deviceId: "bjbdigi",
+      devicePlatform: "Linux",
+      deviceOSVersion: "bjbdigi-version",
+      deviceType: "",
+      latitude: "",
+      longitude: "",
+      appId: 4,
     };
     
     const result = await axios.post(urlGlobal+"/mobile-webconsole/apps/pocket/requestTokenFintech/", bodyData, {
