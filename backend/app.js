@@ -32,6 +32,7 @@ const sendGetRequest = async () => {
       latitude: "",
       longitude: "",
       appId: 4,
+      appVersion: 1.0,
     };
     
     const result = await axios.post(urlGlobal+"/mobile-webconsole/apps/pocket/requestTokenFintech/", bodyData, {
