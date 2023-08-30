@@ -212,7 +212,7 @@ const requestTokenAuthMerchant = async () => {
     const bodyData = {
       "msisdn": "081717181988",
       "username": "VMO937192988",
-      "pin": "111111",
+      "pin": 111111,
     };
     
     const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/pocket/requestTokenFintech/", 
