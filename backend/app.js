@@ -81,15 +81,15 @@ const createQrisFintech = async () => {
     };
     
     const metaData = {
-      "datetime": "2022-08-29T09:40:21.450Z",
-      "deviceId": "bjbdigi",
+      "datetime": "2023-08-30T09:40:21.450Z",
+      "deviceId": "TBI",
       "devicePlatform": "Linux",
-      "deviceOSVersion": "bjbdigi-version",
-      "deviceType": "SM-M205G",
-      "latitude": "-4.690455",
-      "longitude": "105.6308059",
-      "appId": 4,
-      "appVersion": "1.0",
+      "deviceOSVersion": "TBI",
+      "deviceType": "",
+      "latitude": "",
+      "longitude": "",
+      "appId": "TBI",
+      "appVersion": "TBI",
       "appIdName": "Third Party 01" // Replace with actual appIdName value
     };
     
