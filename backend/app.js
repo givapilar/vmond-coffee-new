@@ -10,44 +10,44 @@ app.use('/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // Gunakan rute untuk pengguna
 app.use('/v1/api', userRoutes);
 const urlGlobal = "http://10.44.124.164:8080";
-const msisdnDev = "080000000001";
+const msisdnDev = "081717181988";
 const passwordDev = "51cbc137951976fa96deaa8899ce7dba641e0f309b8d50e02698436f8939150d";
 // ====================================================================
 // Get Token API BJB
 // ====================================================================
 
 // Request Token Fintech
-// const sendGetRequest = async () => {
-//   try {
-//     const headers = {
-//       "Content-Type": "application/json"
-//     };
+const sendGetRequest = async () => {
+  try {
+    const headers = {
+      "Content-Type": "application/json"
+    };
     
-//     const metaData = {
-//       "datetime": "2022-08-29T09:40:21.450Z",
-//       "deviceId": "bjbdigi",
-//       "devicePlatform": "Linux",
-//       "deviceOSVersion": "bjbdigi-version",
-//       "deviceType": "SM-M205G",
-//       "latitude": -4.690455,
-//       "longitude": 105.6308059,
-//       "appId": "4",
-//       "appVersion": "1.0",
-//     };
+    const metaData = {
+      "datetime": "2022-08-29T09:40:21.450Z",
+      "deviceId": "bjbdigi",
+      "devicePlatform": "Linux",
+      "deviceOSVersion": "bjbdigi-version",
+      "deviceType": "",
+      "latitude": "",
+      "longitude": "",
+      "appId": 4,
+      "appVersion": "1.0",
+    };
     
-//     const bodyData = {
-//       "msisdn": msisdnDev,
-//       "password": passwordDev,
-//     };
+    const bodyData = {
+      "msisdn": msisdnDev,
+      "password": passwordDev,
+    };
     
-//     const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/pocket/requestTokenFintech/", 
-//     {"metadata": metaData, "body": bodyData}, 
-//     {"headers": headers});
+    const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/pocket/requestTokenFintech/", 
+    {"metadata": metaData, "body": bodyData}, 
+    {"headers": headers});
     
-//     console.log("AllResult :: ", result);
-//     console.log("Result Data :: ", result.data);
+    console.log("AllResult :: ", result);
+    console.log("Result Data :: ", result.data);
     
-//     // check console
+    // check console
     // if (result && result.data && result.data.body && result.data.body.CreateTokenFintechResponse) {
     //   const customer = result.data.body.CreateTokenFintechResponse.customer;
     //   const attr = result.data.body.CreateTokenFintechResponse._attr;
@@ -62,13 +62,13 @@ const passwordDev = "51cbc137951976fa96deaa8899ce7dba641e0f309b8d50e02698436f893
     //   console.log("Response structure is not as expected.");
     // }
 
-//   } catch (err) {
-//     // Handle Error Here
-//     console.error(err);
-//   }
-// };
+  } catch (err) {
+    // Handle Error Here
+    console.error(err);
+  }
+};
 
-// sendGetRequest();
+sendGetRequest();
 
 // ====================================================================
 // Send OTP By phone number
@@ -191,59 +191,59 @@ const passwordDev = "51cbc137951976fa96deaa8899ce7dba641e0f309b8d50e02698436f893
 // aktivasi();
 
 // Request Token for Transaction Authentication as Merchant
-const requestTokenAuthMerchant = async () => {
-  try {
-    const headers = {
-      "Content-Type": "application/json"
-    };
+// const requestTokenAuthMerchant = async () => {
+//   try {
+//     const headers = {
+//       "Content-Type": "application/json"
+//     };
     
-    const metaData = {
-      "datetime": "2023-08-30T09:40:21.450Z",
-      "deviceId": "bjbdigi",
-      "devicePlatform": "Linux",
-      "deviceOSVersion": "bjbdigi-version",
-      "deviceType": "",
-      "latitude": "",
-      "longitude": "",
-      "appId": 4,
-      "appVersion": "1.0",
-    };
+//     const metaData = {
+//       "datetime": "2023-08-30T09:40:21.450Z",
+//       "deviceId": "bjbdigi",
+//       "devicePlatform": "Linux",
+//       "deviceOSVersion": "bjbdigi-version",
+//       "deviceType": "",
+//       "latitude": "",
+//       "longitude": "",
+//       "appId": 4,
+//       "appVersion": "1.0",
+//     };
     
-    const bodyData = {
-      "msisdn": "081717181988",
-      "username": "VMO937192988",
-      "pin": 111111,
-    };
+//     const bodyData = {
+//       "msisdn": "081717181988",
+//       "username": "VMO937192988",
+//       "pin": 111111,
+//     };
     
-    const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/pocket/requestTokenFintech/", 
-      {"metadata": metaData, "body": bodyData}, 
-      {"headers": headers}
-    );
+//     const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/pocket/requestTokenFintech", 
+//       {"metadata": metaData, "body": bodyData}, 
+//       {"headers": headers}
+//     );
     
-    console.log("AllResult :: ", result);
-    console.log("Result Data :: ", result.data);
+//     console.log("AllResult :: ", result);
+//     console.log("Result Data :: ", result.data);
     
 
-    // if (result && result.data && result.data.body && result.data.body.AuthorizationRegisterResponse) {
-    //   const response = result.data.body.AuthorizationRegisterResponse;
-    //   const attr = response._attr;
-    //   const customer = response.customer;
+//     if (result && result.data && result.data.body && result.data.body.AuthorizationRegisterResponse) {
+//       const response = result.data.body.AuthorizationRegisterResponse;
+//       const attr = response._attr;
+//       const customer = response.customer;
     
-    //   console.log("Attr:", attr);
-    //   console.log("Customer:", customer);
-    // } else {
-    //   console.log("Response structure is not as expected.");
-    // }
+//       console.log("Attr:", attr);
+//       console.log("Customer:", customer);
+//     } else {
+//       console.log("Response structure is not as expected.");
+//     }
     
     
-  } catch (err) {
-    // Handle Error Here
-    console.error(err);
-  }
-};
+//   } catch (err) {
+//     // Handle Error Here
+//     console.error(err);
+//   }
+// };
 
 
-requestTokenAuthMerchant();
+// requestTokenAuthMerchant();
 
 // ====================================================================
 // Create Qris Dinamis BJB
@@ -262,7 +262,7 @@ requestTokenAuthMerchant();
 //       "deviceType": "",
 //       "latitude": "",
 //       "longitude": "",
-//       "appId": "4",
+//       "appId": 4,
 //       "appVersion": "1.0",
 //       "appIdName": "Third Party 01" // Replace with actual appIdName value
 //     };
