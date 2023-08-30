@@ -93,7 +93,7 @@ const sendOtpByPhoneNumber = async () => {
     };
     
     const bodyData = {
-      "phoneNo": "089629600054" // Replace with actual appIdName value
+      "phoneNo": "081717181988" // Replace with actual appIdName value
     };
     
     const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/4/pbNonFinancialAdapter/resendOTPByPhone", 
