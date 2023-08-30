@@ -47,19 +47,20 @@ const sendGetRequest = async () => {
     console.log("AllResult :: ", result);
     console.log("Result Data :: ", result.data);
     
-    if (result && result.data && result.data.body && result.data.body.CreateTokenFintechResponse) {
-      const customer = result.data.body.CreateTokenFintechResponse.customer;
-      const attr = result.data.body.CreateTokenFintechResponse._attr;
-      const channel = result.data.body.CreateTokenFintechResponse.channel;
-      const key = result.data.body.CreateTokenFintechResponse.key;
+    // check console
+    // if (result && result.data && result.data.body && result.data.body.CreateTokenFintechResponse) {
+    //   const customer = result.data.body.CreateTokenFintechResponse.customer;
+    //   const attr = result.data.body.CreateTokenFintechResponse._attr;
+    //   const channel = result.data.body.CreateTokenFintechResponse.channel;
+    //   const key = result.data.body.CreateTokenFintechResponse.key;
   
-      console.log("Attr:", attr);
-      console.log("Customer:", customer);
-      console.log("Channel:", channel);
-      console.log("Key:", key);
-    } else {
-      console.log("Response structure is not as expected.");
-    }
+    //   console.log("Attr:", attr);
+    //   console.log("Customer:", customer);
+    //   console.log("Channel:", channel);
+    //   console.log("Key:", key);
+    // } else {
+    //   console.log("Response structure is not as expected.");
+    // }
 
   } catch (err) {
     // Handle Error Here
@@ -67,13 +68,53 @@ const sendGetRequest = async () => {
   }
 };
 
-
 sendGetRequest();
 
 
 // ====================================================================
 
+const createQrisFintech = async () => {
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+      "X-AUTH-TOKEN": "6be2a2e6-f715-4421-86f7-4252efe9ca00" // Replace with actual X-AUTH-TOKEN value
+    };
+    
+    const metaData = {
+      "datetime": "2022-08-29T09:40:21.450Z",
+      "deviceId": "bjbdigi",
+      "devicePlatform": "Linux",
+      "deviceOSVersion": "bjbdigi-version",
+      "deviceType": "SM-M205G",
+      "latitude": "-4.690455",
+      "longitude": "105.6308059",
+      "appId": 4,
+      "appVersion": "1.0",
+      "appIdName": "Third Party 01" // Replace with actual appIdName value
+    };
+    
+    const bodyData = {
+      "merchantAccountNumber": msisdnDev, // Replace with actual merchant account number
+      "amount": "1000", // Replace with actual amount
+      "expInSecond": 3600 // Replace with actual expiry in seconds or remove if not needed
+    };
+    
+    const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/4/pbTransactionAdapter/createQrisTransactionFintech", 
+      {"metadata": metaData, "body": bodyData}, 
+      {"headers": headers}
+    );
+    
+    console.log("AllResult :: ", result);
+    console.log("Result Data :: ", result.data);
+    
+  } catch (err) {
+    // Handle Error Here
+    console.error(err);
+  }
+};
 
+
+createQrisFintech();
 
 // Jalankan server pada port tertentu
 const port = 2222;
