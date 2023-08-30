@@ -17,74 +17,14 @@ const passwordDev = "51cbc137951976fa96deaa8899ce7dba641e0f309b8d50e02698436f893
 // ====================================================================
 
 // Request Token Fintech
-const sendGetRequest = async () => {
-  try {
-    const headers = {
-      "Content-Type": "application/json"
-    };
-    
-    const metaData = {
-      "datetime": "2022-08-29T09:40:21.450Z",
-      "deviceId": "bjbdigi",
-      "devicePlatform": "Linux",
-      "deviceOSVersion": "bjbdigi-version",
-      "deviceType": "",
-      "latitude": "",
-      "longitude": "",
-      "appId": 4,
-      "appVersion": "1.0",
-    };
-    
-    const bodyData = {
-      "msisdn": msisdnDev,
-      "password": "1c1bbf7b79bc9b97cafb7488946a6001f05980f62dbeb5bc093dd680b8241197",
-    };
-    
-    const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/pocket/requestTokenFintech/", 
-    {"metadata": metaData, "body": bodyData}, 
-    {"headers": headers});
-    
-    console.log("AllResult :: ", result);
-    console.log("Result Data :: ", result.data);
-    
-    // check console
-    if (result && result.data && result.data.body && result.data.body.CreateTokenFintechResponse) {
-      const customer = result.data.body.CreateTokenFintechResponse.customer;
-      const attr = result.data.body.CreateTokenFintechResponse._attr;
-      const channel = result.data.body.CreateTokenFintechResponse.channel;
-      const key = result.data.body.CreateTokenFintechResponse.key;
-      const xAuthToken = result.headers['x-auth-token'];
-
-      console.log("X-AUTH-TOKEN:", xAuthToken)
-  
-      console.log("Attr:", attr);
-      console.log("Customer:", customer);
-      console.log("Channel:", channel);
-      console.log("Key:", key);
-    } else {
-      console.log("Response structure is not as expected.");
-    }
-
-  } catch (err) {
-    // Handle Error Here
-    console.error(err);
-  }
-};
-
-sendGetRequest();
-
-// ====================================================================
-// Send OTP By phone number
-
-// const sendOtpByPhoneNumber = async () => {
+// const sendGetRequest = async () => {
 //   try {
 //     const headers = {
-//       "Content-Type": "application/json",
-//       "X-AUTH-TOKEN": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI1ZGRjOTI0NC01ZDdhLTRhNjItOTdmNi1mNTg0ZmY1ZDk1ZjMiLCJzdWIiOiJ0aGlyZHBhcnR5MDEiLCJleHAiOjE2OTM0MDMwNjcsImlhdCI6MTY5MzM3MzA2NywiaWRlbnRpZmllciI6ImtkZXpLSUpNR3JTdWlEbSIsInVzZXJuYW1lIjoidGhpcmRwYXJ0eTAxIn0.yzz5VkMJdkHfc66V4Svhhsngk7BtZrildMiPe1QQDlIl5CvajicDwMngqt5OdnOMTPW0ikRTiPIAoqKQEZRmcw" // Replace with actual X-AUTH-TOKEN value
+//       "Content-Type": "application/json"
 //     };
     
 //     const metaData = {
-//       "datetime": "2023-08-30T09:40:21.450Z",
+//       "datetime": "2022-08-29T09:40:21.450Z",
 //       "deviceId": "bjbdigi",
 //       "devicePlatform": "Linux",
 //       "deviceOSVersion": "bjbdigi-version",
@@ -96,41 +36,103 @@ sendGetRequest();
 //     };
     
 //     const bodyData = {
-//       "phoneNo": "081717181988" // Replace with actual appIdName value
+//       "msisdn": msisdnDev,
+//       "password": "1c1bbf7b79bc9b97cafb7488946a6001f05980f62dbeb5bc093dd680b8241197",
 //     };
     
-//     const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/4/pbNonFinancialAdapter/resendOTPByPhone", 
-//       {"metadata": metaData, "body": bodyData}, 
-//       {"headers": headers}
-//     );
+//     const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/pocket/requestTokenFintech/", 
+//     {"metadata": metaData, "body": bodyData}, 
+//     {"headers": headers});
     
 //     console.log("AllResult :: ", result);
 //     console.log("Result Data :: ", result.data);
     
+//     // check console
+//     if (result && result.data && result.data.body && result.data.body.CreateTokenFintechResponse) {
+//       const customer = result.data.body.CreateTokenFintechResponse.customer;
+//       const attr = result.data.body.CreateTokenFintechResponse._attr;
+//       const channel = result.data.body.CreateTokenFintechResponse.channel;
+//       const key = result.data.body.CreateTokenFintechResponse.key;
+//       const xAuthToken = result.headers['x-auth-token'];
 
-//     // Check Console detail qris
-//     if (result && result.data && result.data.body && result.data.body.ResendOTPByPhoneResponse) {
-//       const response = result.data.body.ResendOTPByPhoneResponse;
-//       const attr = response._attr;
-//       const status = response.Status;
-//       const reference = response.reference;
-    
+//       console.log("X-AUTH-TOKEN:", xAuthToken)
+  
 //       console.log("Attr:", attr);
-//       console.log("Status:", status);
-//       console.log("Reference:", reference);
+//       console.log("Customer:", customer);
+//       console.log("Channel:", channel);
+//       console.log("Key:", key);
 //     } else {
 //       console.log("Response structure is not as expected.");
 //     }
-    
-    
+
 //   } catch (err) {
 //     // Handle Error Here
 //     console.error(err);
 //   }
 // };
 
+// sendGetRequest();
 
-// sendOtpByPhoneNumber();
+// ====================================================================
+// Send OTP By phone number
+
+const sendOtpByPhoneNumber = async () => {
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+      "X-AUTH-TOKEN": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiIxYWVhNjczNi1jNjU5LTQwNmEtOTRlNi00NTI2YzdlNjVhYTgiLCJzdWIiOiJWTU85MzcxOTI5ODgiLCJleHAiOjE2OTM0MjMwMTAsImlhdCI6MTY5MzM5MzAxMCwiaWRlbnRpZmllciI6IkVKSkJheTFEcVVYWHFCSyIsInVzZXJuYW1lIjoiVk1POTM3MTkyOTg4In0.7YzRn3AM7LV9YnLdHBi87nhSYvzkyL4V7M2ZAvZZ8h7hl-z4WAaCiAK1NpmFAkjCI5zfW1bmE_WAbXbJLkapUg" // Replace with actual X-AUTH-TOKEN value
+    };
+    
+    const metaData = {
+      "datetime": "2023-08-30T09:40:21.450Z",
+      "deviceId": "bjbdigi",
+      "devicePlatform": "Linux",
+      "deviceOSVersion": "bjbdigi-version",
+      "deviceType": "",
+      "latitude": "",
+      "longitude": "",
+      "appId": 4,
+      "appVersion": "1.0",
+    };
+    
+    const bodyData = {
+      "phoneNo": "081717181988" // Replace with actual appIdName value
+    };
+    
+    const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/4/pbNonFinancialAdapter/resendOTPByPhone", 
+      {"metadata": metaData, "body": bodyData}, 
+      {"headers": headers}
+    );
+    
+    console.log("AllResult :: ", result);
+    console.log("Result Data :: ", result.data);
+    
+
+    // Check Console detail qris
+    if (result && result.data && result.data.body && result.data.body.ResendOTPByPhoneResponse) {
+      const response = result.data.body.ResendOTPByPhoneResponse;
+      const attr = response._attr;
+      const status = response.Status;
+      const reference = response.reference;
+      const xAuthToken = result.headers['x-auth-token'];
+
+      console.log("X-AUTH-TOKEN:", xAuthToken)
+      console.log("Attr:", attr);
+      console.log("Status:", status);
+      console.log("Reference:", reference);
+    } else {
+      console.log("Response structure is not as expected.");
+    }
+    
+    
+  } catch (err) {
+    // Handle Error Here
+    console.error(err);
+  }
+};
+
+
+sendOtpByPhoneNumber();
 
 
 // ====================================================================
