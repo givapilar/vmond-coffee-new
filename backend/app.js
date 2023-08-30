@@ -96,7 +96,7 @@ const sendOtpByPhoneNumber = async () => {
       "phoneNo": "081717181988" // Replace with actual appIdName value
     };
     
-    const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/4/pbTransactionAdapter/createInvoiceQRISDinamisExt", 
+    const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/4/pbNonFinancialAdapter/resendOTPByPhone", 
       {"metadata": metaData, "body": bodyData}, 
       {"headers": headers}
     );
