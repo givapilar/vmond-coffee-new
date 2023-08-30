@@ -107,6 +107,19 @@ const createQrisFintech = async () => {
     console.log("AllResult :: ", result);
     console.log("Result Data :: ", result.data);
     
+
+    // Check Console detail qris
+    if (result && result.data && result.data.body && result.data.body.CreateInvoiceQRISDinamisExtResponse) {
+      const attr = result.data.body.CreateInvoiceQRISDinamisExtResponse._attr;
+      const responseCode = result.data.body.CreateInvoiceQRISDinamisExtResponse.responseCode;
+      const responseMessage = result.data.body.CreateInvoiceQRISDinamisExtResponse.responseMessage;
+  
+      console.log("Attr:", attr);
+      console.log("Response Code:", responseCode);
+      console.log("response Message:", responseMessage);
+    } else {
+      console.log("Response structure is not as expected.");
+    }
   } catch (err) {
     // Handle Error Here
     console.error(err);
