@@ -15,6 +15,8 @@ const passwordDev = "51cbc137951976fa96deaa8899ce7dba641e0f309b8d50e02698436f893
 // ====================================================================
 // Get Token API BJB
 // ====================================================================
+
+// Request Token Fintech
 const sendGetRequest = async () => {
   try {
     const headers = {
@@ -45,8 +47,18 @@ const sendGetRequest = async () => {
     console.log("AllResult :: ", result);
     console.log("Result Data :: ", result.data);
     
-    const customer = result.body.CreateTokenFintechResponse.customer;
-    console.log("Customer :: ", customer);
+    if (result && result.data && result.data.body && result.data.body.CreateTokenFintechResponse) {
+      const customer = result.data.body.CreateTokenFintechResponse.customer;
+      const channel = result.data.body.CreateTokenFintechResponse.channel;
+      const key = result.data.body.CreateTokenFintechResponse.key;
+  
+      console.log("Customer:", customer);
+      console.log("Channel:", channel);
+      console.log("Key:", key);
+    } else {
+      console.log("Response structure is not as expected.");
+    }
+    
   } catch (err) {
     // Handle Error Here
     console.error(err);
