@@ -106,18 +106,19 @@ const sendOtpByPhoneNumber = async () => {
     
 
     // Check Console detail qris
-    // if (result && result.data && result.data.body && result.data.body.CreateInvoiceQRISDinamisExtResponse) {
-    //   const response = result.data.body.CreateInvoiceQRISDinamisExtResponse;
-    //   const attr = response._attr;
-    //   const responseCode = response.responseCode;
-    //   const responseMessage = response.responseMessage;
+    if (result && result.data && result.data.body && result.data.body.ResendOTPByPhoneResponse) {
+      const response = result.data.body.ResendOTPByPhoneResponse;
+      const attr = response._attr;
+      const status = response.Status;
+      const reference = response.reference;
     
-    //   console.log("Attr:", attr);
-    //   console.log("Response Code:", responseCode);
-    //   console.log("Response Message:", responseMessage);
-    // } else {
-    //   console.log("Response structure is not as expected.");
-    // }
+      console.log("Attr:", attr);
+      console.log("Status:", status);
+      console.log("Reference:", reference);
+    } else {
+      console.log("Response structure is not as expected.");
+    }
+    
     
   } catch (err) {
     // Handle Error Here
