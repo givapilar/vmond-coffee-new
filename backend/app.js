@@ -139,69 +139,11 @@ const passwordDev = "51cbc137951976fa96deaa8899ce7dba641e0f309b8d50e02698436f893
 
 // Aktivasi
 
-const aktivasi = async () => {
-  try {
-    const headers = {
-      "Content-Type": "application/json",
-      "X-AUTH-TOKEN": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiIxYWVhNjczNi1jNjU5LTQwNmEtOTRlNi00NTI2YzdlNjVhYTgiLCJzdWIiOiJWTU85MzcxOTI5ODgiLCJleHAiOjE2OTM0MjMwMTAsImlhdCI6MTY5MzM5MzAxMCwiaWRlbnRpZmllciI6IkVKSkJheTFEcVVYWHFCSyIsInVzZXJuYW1lIjoiVk1POTM3MTkyOTg4In0.7YzRn3AM7LV9YnLdHBi87nhSYvzkyL4V7M2ZAvZZ8h7hl-z4WAaCiAK1NpmFAkjCI5zfW1bmE_WAbXbJLkapUg" // Replace with actual X-AUTH-TOKEN value
-    };
-    
-    const metaData = {
-      "datetime": "2023-08-30T09:40:21.450Z",
-      "deviceId": "bjbdigi",
-      "devicePlatform": "Linux",
-      "deviceOSVersion": "bjbdigi-version",
-      "deviceType": "",
-      "latitude": "",
-      "longitude": "",
-      "appId": 4,
-      "appVersion": "1.0",
-    };
-    
-    const bodyData = {
-      "msisdn": "081717181988",
-      "pin": "808080",
-      "reference": "04832a86-313e-4a1c-9b92-ad8399ca3e3a",
-      "product": "MERCHANT",
-    };
-    
-    const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/4/pbNonFinancialAdapter//authorizationRegistration", 
-      {"metadata": metaData, "body": bodyData}, 
-      {"headers": headers}
-    );
-    
-    console.log("AllResult :: ", result);
-    console.log("Result Data :: ", result.data);
-    
-
-    if (result && result.data && result.data.body && result.data.body.AuthorizationRegisterResponse) {
-      const response = result.data.body.AuthorizationRegisterResponse;
-      const attr = response._attr;
-      const customer = response.customer;
-      const xAuthToken = result.headers['x-auth-token'];
-
-      console.log("X-AUTH-TOKEN:", xAuthToken)
-      console.log("Attr:", attr);
-      console.log("Customer:", customer);
-    } else {
-      console.log("Response structure is not as expected.");
-    }
-    
-    
-  } catch (err) {
-    // Handle Error Here
-    console.error(err);
-  }
-};
-
-
-aktivasi();
-
-// Request Token for Transaction Authentication as Merchant
-// const requestTokenAuthMerchant = async () => {
+// const aktivasi = async () => {
 //   try {
 //     const headers = {
-//       "Content-Type": "application/json"
+//       "Content-Type": "application/json",
+//       "X-AUTH-TOKEN": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiIxYWVhNjczNi1jNjU5LTQwNmEtOTRlNi00NTI2YzdlNjVhYTgiLCJzdWIiOiJWTU85MzcxOTI5ODgiLCJleHAiOjE2OTM0MjMwMTAsImlhdCI6MTY5MzM5MzAxMCwiaWRlbnRpZmllciI6IkVKSkJheTFEcVVYWHFCSyIsInVzZXJuYW1lIjoiVk1POTM3MTkyOTg4In0.7YzRn3AM7LV9YnLdHBi87nhSYvzkyL4V7M2ZAvZZ8h7hl-z4WAaCiAK1NpmFAkjCI5zfW1bmE_WAbXbJLkapUg" // Replace with actual X-AUTH-TOKEN value
 //     };
     
 //     const metaData = {
@@ -218,11 +160,12 @@ aktivasi();
     
 //     const bodyData = {
 //       "msisdn": "081717181988",
-//       "username": "VMO937192988",
-//       "pin": 111111,
+//       "pin": "808080",
+//       "reference": "04832a86-313e-4a1c-9b92-ad8399ca3e3a",
+//       "product": "MERCHANT",
 //     };
     
-//     const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/pocket/requestTokenFintech", 
+//     const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/4/pbNonFinancialAdapter//authorizationRegistration", 
 //       {"metadata": metaData, "body": bodyData}, 
 //       {"headers": headers}
 //     );
@@ -235,7 +178,9 @@ aktivasi();
 //       const response = result.data.body.AuthorizationRegisterResponse;
 //       const attr = response._attr;
 //       const customer = response.customer;
-    
+//       const xAuthToken = result.headers['x-auth-token'];
+
+//       console.log("X-AUTH-TOKEN:", xAuthToken)
 //       console.log("Attr:", attr);
 //       console.log("Customer:", customer);
 //     } else {
@@ -250,7 +195,65 @@ aktivasi();
 // };
 
 
-// requestTokenAuthMerchant();
+// aktivasi();
+
+// Request Token for Transaction Authentication as Merchant
+const requestTokenAuthMerchant = async () => {
+  try {
+    const headers = {
+      "Content-Type": "application/json"
+    };
+    
+    const metaData = {
+      "datetime": "2023-08-30T09:40:21.450Z",
+      "deviceId": "bjbdigi",
+      "devicePlatform": "Linux",
+      "deviceOSVersion": "bjbdigi-version",
+      "deviceType": "",
+      "latitude": "",
+      "longitude": "",
+      "appId": 4,
+      "appVersion": "1.0",
+    };
+    
+    const bodyData = {
+      "msisdn": "081717181988",
+      "username": "VMO937192988",
+      "pin": 111111,
+    };
+    
+    const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/pocket/requestTokenFintech", 
+      {"metadata": metaData, "body": bodyData}, 
+      {"headers": headers}
+    );
+    
+    console.log("AllResult :: ", result);
+    console.log("Result Data :: ", result.data);
+    
+
+    if (result && result.data && result.data.body && result.data.body.AuthorizationRegisterResponse) {
+      const response = result.data.body.AuthorizationRegisterResponse;
+      const attr = response._attr;
+      const customer = response.customer;
+      const xAuthToken = result.headers['x-auth-token'];
+
+      console.log("X-AUTH-TOKEN:", xAuthToken)
+    
+      console.log("Attr:", attr);
+      console.log("Customer:", customer);
+    } else {
+      console.log("Response structure is not as expected.");
+    }
+    
+    
+  } catch (err) {
+    // Handle Error Here
+    console.error(err);
+  }
+};
+
+
+requestTokenAuthMerchant();
 
 // ====================================================================
 // Create Qris Dinamis BJB
