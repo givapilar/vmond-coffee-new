@@ -10,7 +10,7 @@ app.use('/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // Gunakan rute untuk pengguna
 app.use('/v1/api', userRoutes);
 const urlGlobal = "http://10.44.124.164:8080";
-const msisdnDev = "080000000001";
+const msisdnDev = "081717181988";
 const passwordDev = "111111";
 // ====================================================================
 // Get Token API BJB
