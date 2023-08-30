@@ -77,19 +77,19 @@ const createQrisFintech = async () => {
   try {
     const headers = {
       "Content-Type": "application/json",
-      "X-AUTH-TOKEN": "6be2a2e6-f715-4421-86f7-4252efe9ca00" // Replace with actual X-AUTH-TOKEN value
+      "X-AUTH-TOKEN": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI1ZGRjOTI0NC01ZDdhLTRhNjItOTdmNi1mNTg0ZmY1ZDk1ZjMiLCJzdWIiOiJ0aGlyZHBhcnR5MDEiLCJleHAiOjE2OTM0MDMwNjcsImlhdCI6MTY5MzM3MzA2NywiaWRlbnRpZmllciI6ImtkZXpLSUpNR3JTdWlEbSIsInVzZXJuYW1lIjoidGhpcmRwYXJ0eTAxIn0.yzz5VkMJdkHfc66V4Svhhsngk7BtZrildMiPe1QQDlIl5CvajicDwMngqt5OdnOMTPW0ikRTiPIAoqKQEZRmcw" // Replace with actual X-AUTH-TOKEN value
     };
     
     const metaData = {
       "datetime": "2023-08-30T09:40:21.450Z",
-      "deviceId": "TBI",
+      "deviceId": "bjbdigi",
       "devicePlatform": "Linux",
-      "deviceOSVersion": "TBI",
+      "deviceOSVersion": "bjbdigi-version",
       "deviceType": "",
       "latitude": "",
       "longitude": "",
-      "appId": "TBI",
-      "appVersion": "TBI",
+      "appId": "4",
+      "appVersion": "1.0",
       "appIdName": "Third Party 01" // Replace with actual appIdName value
     };
     
