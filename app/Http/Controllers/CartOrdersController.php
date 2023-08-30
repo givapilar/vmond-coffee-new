@@ -114,12 +114,9 @@ class CartOrdersController extends Controller
 
     public function addCartRestaurant(Request $request,$id)
     {
-        // dd($request->all());
 
-        // Replace the 'foreach' loop with a more efficient 'foreach' loop using collections.
-            
-        
-        $restaurant = Restaurant::findOrFail($id);
+        // try {
+            $restaurant = Restaurant::findOrFail($id);
         
         if ($restaurant->current_stok <= 0) {
             return redirect()->back()->with(['failed' => 'Stok ' . $restaurant->name . ' Kurang!']);
@@ -304,6 +301,7 @@ class CartOrdersController extends Controller
                 return $item->id === $itemIdentifier;
             });
         
+            // kode lama
             if ($existingItem !== null) {
                 // Jika item dengan add-on detail yang sama sudah ada di dalam Cart
                 // Buat array baru dengan membawa detail add-on ID yang berbeda
@@ -314,7 +312,25 @@ class CartOrdersController extends Controller
                     $existingItem->quantity += $request->qty;
                     \Cart::session($user)->update($existingItem->id, $existingItem->toArray());
                 }
-            } else {
+            } 
+            // if ($existingItem !== null) {
+            //     // Jika item dengan add-on detail yang sama sudah ada di dalam Cart
+            //     // Buat array baru dengan membawa detail add-on ID yang berbeda
+            //     $itemAttributes = $existingItem->attributes->toArray();
+                
+            //     // Check if the detail_addon_id is an array
+            //     if (!is_array($itemAttributes['detail_addon_id'])) {
+            //         $itemAttributes['detail_addon_id'] = []; // Initialize as an array
+            //     }
+            
+            //     if (!in_array($request->harga_add, $itemAttributes['detail_addon_id'])) {
+            //         $itemAttributes['detail_addon_id'][] = $request->harga_add;
+            //         $existingItem->attributes = $itemAttributes;
+            //         $existingItem->quantity += $request->qty;
+            //         \Cart::session($user)->update($existingItem->id, $existingItem->toArray());
+            //     }
+            // }
+                else {
                 // Jika item dengan add-on detail tertentu belum ada di dalam Cart, tambahkan data cart baru
                 \Cart::session($user)->add(array(
                     'id' => $itemIdentifier, // Gunakan kunci unik sebagai ID item
@@ -330,6 +346,10 @@ class CartOrdersController extends Controller
             $category = $request->category;
             return redirect()->route('daftar-restaurant', ['category' => $category])->with('success', 'Berhasil Masuk Cart !');
         }
+        // } catch (\Throwable $th) {
+        //     return redirect()->back()->with('failed', $th->getMessage());
+        // }
+        
     }
 
     public function updateCart(Request $request)
