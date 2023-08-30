@@ -44,6 +44,9 @@ const sendGetRequest = async () => {
     
     console.log("AllResult :: ", result);
     console.log("Result Data :: ", result.data);
+    
+    const customer = result.body.CreateTokenFintechResponse.customer;
+    console.log("Customer :: ", customer);
   } catch (err) {
     // Handle Error Here
     console.error(err);
