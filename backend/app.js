@@ -71,9 +71,70 @@ const passwordDev = "51cbc137951976fa96deaa8899ce7dba641e0f309b8d50e02698436f893
 // sendGetRequest();
 
 // ====================================================================
-// aktivasi
+// Send OTP By phone number
 
-const sendOtpByPhoneNumber = async () => {
+// const sendOtpByPhoneNumber = async () => {
+//   try {
+//     const headers = {
+//       "Content-Type": "application/json",
+//       "X-AUTH-TOKEN": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI1ZGRjOTI0NC01ZDdhLTRhNjItOTdmNi1mNTg0ZmY1ZDk1ZjMiLCJzdWIiOiJ0aGlyZHBhcnR5MDEiLCJleHAiOjE2OTM0MDMwNjcsImlhdCI6MTY5MzM3MzA2NywiaWRlbnRpZmllciI6ImtkZXpLSUpNR3JTdWlEbSIsInVzZXJuYW1lIjoidGhpcmRwYXJ0eTAxIn0.yzz5VkMJdkHfc66V4Svhhsngk7BtZrildMiPe1QQDlIl5CvajicDwMngqt5OdnOMTPW0ikRTiPIAoqKQEZRmcw" // Replace with actual X-AUTH-TOKEN value
+//     };
+    
+//     const metaData = {
+//       "datetime": "2023-08-30T09:40:21.450Z",
+//       "deviceId": "bjbdigi",
+//       "devicePlatform": "Linux",
+//       "deviceOSVersion": "bjbdigi-version",
+//       "deviceType": "",
+//       "latitude": "",
+//       "longitude": "",
+//       "appId": 4,
+//       "appVersion": "1.0",
+//     };
+    
+//     const bodyData = {
+//       "phoneNo": "081717181988" // Replace with actual appIdName value
+//     };
+    
+//     const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/4/pbNonFinancialAdapter/resendOTPByPhone", 
+//       {"metadata": metaData, "body": bodyData}, 
+//       {"headers": headers}
+//     );
+    
+//     console.log("AllResult :: ", result);
+//     console.log("Result Data :: ", result.data);
+    
+
+//     // Check Console detail qris
+//     if (result && result.data && result.data.body && result.data.body.ResendOTPByPhoneResponse) {
+//       const response = result.data.body.ResendOTPByPhoneResponse;
+//       const attr = response._attr;
+//       const status = response.Status;
+//       const reference = response.reference;
+    
+//       console.log("Attr:", attr);
+//       console.log("Status:", status);
+//       console.log("Reference:", reference);
+//     } else {
+//       console.log("Response structure is not as expected.");
+//     }
+    
+    
+//   } catch (err) {
+//     // Handle Error Here
+//     console.error(err);
+//   }
+// };
+
+
+// sendOtpByPhoneNumber();
+
+
+// ====================================================================
+
+// Aktivasi
+
+const aktivasi = async () => {
   try {
     const headers = {
       "Content-Type": "application/json",
@@ -93,10 +154,13 @@ const sendOtpByPhoneNumber = async () => {
     };
     
     const bodyData = {
-      "phoneNo": "081717181988" // Replace with actual appIdName value
+      "msisdn": "081717181988",
+      "pin": "808080",
+      "reference": "04832a86-313e-4a1c-9b92-ad8399ca3e3a",
+      "product": "CUSTOMER",
     };
     
-    const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/4/pbNonFinancialAdapter/resendOTPByPhone", 
+    const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/4/pbNonFinancialAdapter//authorizationRegistration", 
       {"metadata": metaData, "body": bodyData}, 
       {"headers": headers}
     );
@@ -106,18 +170,18 @@ const sendOtpByPhoneNumber = async () => {
     
 
     // Check Console detail qris
-    if (result && result.data && result.data.body && result.data.body.ResendOTPByPhoneResponse) {
-      const response = result.data.body.ResendOTPByPhoneResponse;
-      const attr = response._attr;
-      const status = response.Status;
-      const reference = response.reference;
+    // if (result && result.data && result.data.body && result.data.body.ResendOTPByPhoneResponse) {
+    //   const response = result.data.body.ResendOTPByPhoneResponse;
+    //   const attr = response._attr;
+    //   const status = response.Status;
+    //   const reference = response.reference;
     
-      console.log("Attr:", attr);
-      console.log("Status:", status);
-      console.log("Reference:", reference);
-    } else {
-      console.log("Response structure is not as expected.");
-    }
+    //   console.log("Attr:", attr);
+    //   console.log("Status:", status);
+    //   console.log("Reference:", reference);
+    // } else {
+    //   console.log("Response structure is not as expected.");
+    // }
     
     
   } catch (err) {
@@ -127,7 +191,7 @@ const sendOtpByPhoneNumber = async () => {
 };
 
 
-sendOtpByPhoneNumber();
+aktivasi();
 
 // ====================================================================
 // Create Qris Dinamis BJB
