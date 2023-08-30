@@ -37,7 +37,7 @@ const sendGetRequest = async () => {
     
     const bodyData = {
       "msisdn": msisdnDev,
-      "password": passwordDev,
+      "password": "1c1bbf7b79bc9b97cafb7488946a6001f05980f62dbeb5bc093dd680b8241197",
     };
     
     const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/pocket/requestTokenFintech/", 
