@@ -53,6 +53,9 @@ const sendGetRequest = async () => {
       const attr = result.data.body.CreateTokenFintechResponse._attr;
       const channel = result.data.body.CreateTokenFintechResponse.channel;
       const key = result.data.body.CreateTokenFintechResponse.key;
+      const xAuthToken = result.headers['x-auth-token'];
+
+      console.log("X-AUTH-TOKEN:", xAuthToken)
   
       console.log("Attr:", attr);
       console.log("Customer:", customer);
