@@ -49,16 +49,18 @@ const sendGetRequest = async () => {
     
     if (result && result.data && result.data.body && result.data.body.CreateTokenFintechResponse) {
       const customer = result.data.body.CreateTokenFintechResponse.customer;
+      const attr = result.data.body.CreateTokenFintechResponse._attr;
       const channel = result.data.body.CreateTokenFintechResponse.channel;
       const key = result.data.body.CreateTokenFintechResponse.key;
   
+      console.log("Attr:", attr);
       console.log("Customer:", customer);
       console.log("Channel:", channel);
       console.log("Key:", key);
     } else {
       console.log("Response structure is not as expected.");
     }
-    
+
   } catch (err) {
     // Handle Error Here
     console.error(err);
