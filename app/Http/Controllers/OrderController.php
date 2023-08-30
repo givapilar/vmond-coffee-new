@@ -285,7 +285,7 @@ class OrderController extends Controller
     public function checkoutGuest(Request $request, $token)
     {
         // dd($request->all());
-        try {
+        // try {
             $checkToken = Order::where('token',$token)->where('status_pembayaran', 'Paid')->get()->count();
             if ($checkToken != 0) {
                 return redirect()->route('homepage')->with(['failed' => 'Tidak dapat mengulang transaksi!']);
@@ -447,7 +447,6 @@ class OrderController extends Controller
                                 //     'add_on_detail_id' => $detailAddonId,
                                 // ];
                             }
-                            // dd($request->all());
                             // OrderAddOn::insert($orderAddOn);
                         }
                     }
@@ -494,11 +493,11 @@ class OrderController extends Controller
             // dsa;
             // return view('checkout.index',$data,compact('snapToken','order'));
             return view('checkout.checkout-guest',$data,compact('snapToken','order'));
-        } catch (\Throwable $th) {
-            DB::rollback();
-            return redirect()->back()->with('failed', $th->getMessage());
+        // } catch (\Throwable $th) {
+        //     DB::rollback();
+        //     return redirect()->back()->with('failed', $th->getMessage());
 
-        }
+        // }
         
     }
     
