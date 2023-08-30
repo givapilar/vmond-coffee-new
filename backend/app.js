@@ -149,15 +149,15 @@ const aktivasi = async () => {
       "deviceType": "",
       "latitude": "",
       "longitude": "",
-      "appId": "4",
+      "appId": 4,
       "appVersion": "1.0",
     };
     
     const bodyData = {
       "msisdn": "081717181988",
-      "pin": "192772",
+      "pin": "808080",
       "reference": "04832a86-313e-4a1c-9b92-ad8399ca3e3a",
-      "product": "CUSTOMER",
+      "product": "MERCHANT",
     };
     
     const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/4/pbNonFinancialAdapter//authorizationRegistration", 
