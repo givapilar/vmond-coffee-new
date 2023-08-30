@@ -169,19 +169,17 @@ const aktivasi = async () => {
     console.log("Result Data :: ", result.data);
     
 
-    // Check Console detail qris
-    // if (result && result.data && result.data.body && result.data.body.ResendOTPByPhoneResponse) {
-    //   const response = result.data.body.ResendOTPByPhoneResponse;
-    //   const attr = response._attr;
-    //   const status = response.Status;
-    //   const reference = response.reference;
+    if (result && result.data && result.data.body && result.data.body.Fault) {
+      const fault = result.data.body.Fault;
+      const faultcode = fault.faultcode;
+      const faultstring = fault.faultstring;
     
-    //   console.log("Attr:", attr);
-    //   console.log("Status:", status);
-    //   console.log("Reference:", reference);
-    // } else {
-    //   console.log("Response structure is not as expected.");
-    // }
+      console.log("Fault Code:", faultcode);
+      console.log("Fault String:", faultstring);
+    } else {
+      console.log("Response structure is not as expected.");
+    }
+    
     
     
   } catch (err) {
