@@ -48,19 +48,19 @@ const passwordDev = "51cbc137951976fa96deaa8899ce7dba641e0f309b8d50e02698436f893
 //     console.log("Result Data :: ", result.data);
     
 //     // check console
-//     // if (result && result.data && result.data.body && result.data.body.CreateTokenFintechResponse) {
-//     //   const customer = result.data.body.CreateTokenFintechResponse.customer;
-//     //   const attr = result.data.body.CreateTokenFintechResponse._attr;
-//     //   const channel = result.data.body.CreateTokenFintechResponse.channel;
-//     //   const key = result.data.body.CreateTokenFintechResponse.key;
+    // if (result && result.data && result.data.body && result.data.body.CreateTokenFintechResponse) {
+    //   const customer = result.data.body.CreateTokenFintechResponse.customer;
+    //   const attr = result.data.body.CreateTokenFintechResponse._attr;
+    //   const channel = result.data.body.CreateTokenFintechResponse.channel;
+    //   const key = result.data.body.CreateTokenFintechResponse.key;
   
-//     //   console.log("Attr:", attr);
-//     //   console.log("Customer:", customer);
-//     //   console.log("Channel:", channel);
-//     //   console.log("Key:", key);
-//     // } else {
-//     //   console.log("Response structure is not as expected.");
-//     // }
+    //   console.log("Attr:", attr);
+    //   console.log("Customer:", customer);
+    //   console.log("Channel:", channel);
+    //   console.log("Key:", key);
+    // } else {
+    //   console.log("Response structure is not as expected.");
+    // }
 
 //   } catch (err) {
 //     // Handle Error Here
@@ -110,16 +110,18 @@ const createQrisFintech = async () => {
 
     // Check Console detail qris
     if (result && result.data && result.data.body && result.data.body.CreateInvoiceQRISDinamisExtResponse) {
-      const attr = result.data.body.CreateInvoiceQRISDinamisExtResponse._attr;
-      const responseCode = result.data.body.CreateInvoiceQRISDinamisExtResponse.responseCode;
-      const responseMessage = result.data.body.CreateInvoiceQRISDinamisExtResponse.responseMessage;
-  
+      const response = result.data.body.CreateInvoiceQRISDinamisExtResponse;
+      const attr = response._attr;
+      const responseCode = response.responseCode;
+      const responseMessage = response.responseMessage;
+    
       console.log("Attr:", attr);
       console.log("Response Code:", responseCode);
-      console.log("response Message:", responseMessage);
+      console.log("Response Message:", responseMessage);
     } else {
       console.log("Response structure is not as expected.");
     }
+    
   } catch (err) {
     // Handle Error Here
     console.error(err);
