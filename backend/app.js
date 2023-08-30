@@ -210,6 +210,7 @@ const requestTokenAuthMerchant = async () => {
     };
     
     const bodyData = {
+      "msisdn": "081717181988",
       "username": "VMO937192988",
       "pin": "111111",
     };
