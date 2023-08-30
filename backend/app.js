@@ -134,11 +134,67 @@ const passwordDev = "51cbc137951976fa96deaa8899ce7dba641e0f309b8d50e02698436f893
 
 // Aktivasi
 
-const aktivasi = async () => {
+// const aktivasi = async () => {
+//   try {
+//     const headers = {
+//       "Content-Type": "application/json",
+//       "X-AUTH-TOKEN": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI1ZGRjOTI0NC01ZDdhLTRhNjItOTdmNi1mNTg0ZmY1ZDk1ZjMiLCJzdWIiOiJ0aGlyZHBhcnR5MDEiLCJleHAiOjE2OTM0MDMwNjcsImlhdCI6MTY5MzM3MzA2NywiaWRlbnRpZmllciI6ImtkZXpLSUpNR3JTdWlEbSIsInVzZXJuYW1lIjoidGhpcmRwYXJ0eTAxIn0.yzz5VkMJdkHfc66V4Svhhsngk7BtZrildMiPe1QQDlIl5CvajicDwMngqt5OdnOMTPW0ikRTiPIAoqKQEZRmcw" // Replace with actual X-AUTH-TOKEN value
+//     };
+    
+//     const metaData = {
+//       "datetime": "2023-08-30T09:40:21.450Z",
+//       "deviceId": "bjbdigi",
+//       "devicePlatform": "Linux",
+//       "deviceOSVersion": "bjbdigi-version",
+//       "deviceType": "",
+//       "latitude": "",
+//       "longitude": "",
+//       "appId": 4,
+//       "appVersion": "1.0",
+//     };
+    
+//     const bodyData = {
+//       "msisdn": "081717181988",
+//       "pin": "808080",
+//       "reference": "04832a86-313e-4a1c-9b92-ad8399ca3e3a",
+//       "product": "MERCHANT",
+//     };
+    
+//     const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/4/pbNonFinancialAdapter//authorizationRegistration", 
+//       {"metadata": metaData, "body": bodyData}, 
+//       {"headers": headers}
+//     );
+    
+//     console.log("AllResult :: ", result);
+//     console.log("Result Data :: ", result.data);
+    
+
+//     if (result && result.data && result.data.body && result.data.body.AuthorizationRegisterResponse) {
+//       const response = result.data.body.AuthorizationRegisterResponse;
+//       const attr = response._attr;
+//       const customer = response.customer;
+    
+//       console.log("Attr:", attr);
+//       console.log("Customer:", customer);
+//     } else {
+//       console.log("Response structure is not as expected.");
+//     }
+    
+    
+//   } catch (err) {
+//     // Handle Error Here
+//     console.error(err);
+//   }
+// };
+
+
+// aktivasi();
+
+// Request Token for Transaction Authentication as Merchant
+const requestTokenAuthMerchant = async () => {
   try {
     const headers = {
-      "Content-Type": "application/json",
-      "X-AUTH-TOKEN": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI1ZGRjOTI0NC01ZDdhLTRhNjItOTdmNi1mNTg0ZmY1ZDk1ZjMiLCJzdWIiOiJ0aGlyZHBhcnR5MDEiLCJleHAiOjE2OTM0MDMwNjcsImlhdCI6MTY5MzM3MzA2NywiaWRlbnRpZmllciI6ImtkZXpLSUpNR3JTdWlEbSIsInVzZXJuYW1lIjoidGhpcmRwYXJ0eTAxIn0.yzz5VkMJdkHfc66V4Svhhsngk7BtZrildMiPe1QQDlIl5CvajicDwMngqt5OdnOMTPW0ikRTiPIAoqKQEZRmcw" // Replace with actual X-AUTH-TOKEN value
+      "Content-Type": "application/json"
     };
     
     const metaData = {
@@ -154,13 +210,11 @@ const aktivasi = async () => {
     };
     
     const bodyData = {
-      "msisdn": "081717181988",
-      "pin": "808080",
-      "reference": "04832a86-313e-4a1c-9b92-ad8399ca3e3a",
-      "product": "MERCHANT",
+      "username": "VMO937192988",
+      "pin": "111111",
     };
     
-    const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/4/pbNonFinancialAdapter//authorizationRegistration", 
+    const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/pocket/requestTokenFintech/", 
       {"metadata": metaData, "body": bodyData}, 
       {"headers": headers}
     );
@@ -169,16 +223,16 @@ const aktivasi = async () => {
     console.log("Result Data :: ", result.data);
     
 
-    if (result && result.data && result.data.body && result.data.body.AuthorizationRegisterResponse) {
-      const response = result.data.body.AuthorizationRegisterResponse;
-      const attr = response._attr;
-      const customer = response.customer;
+    // if (result && result.data && result.data.body && result.data.body.AuthorizationRegisterResponse) {
+    //   const response = result.data.body.AuthorizationRegisterResponse;
+    //   const attr = response._attr;
+    //   const customer = response.customer;
     
-      console.log("Attr:", attr);
-      console.log("Customer:", customer);
-    } else {
-      console.log("Response structure is not as expected.");
-    }
+    //   console.log("Attr:", attr);
+    //   console.log("Customer:", customer);
+    // } else {
+    //   console.log("Response structure is not as expected.");
+    // }
     
     
   } catch (err) {
@@ -188,7 +242,7 @@ const aktivasi = async () => {
 };
 
 
-aktivasi();
+requestTokenAuthMerchant();
 
 // ====================================================================
 // Create Qris Dinamis BJB
