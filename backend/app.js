@@ -169,16 +169,17 @@ const aktivasi = async () => {
     console.log("Result Data :: ", result.data);
     
 
-    if (result && result.data && result.data.body && result.data.body.Fault) {
-      const fault = result.data.body.Fault;
-      const faultcode = fault.faultcode;
-      const faultstring = fault.faultstring;
+    if (result && result.data && result.data.body && result.data.body.AuthorizationRegisterResponse) {
+      const response = result.data.body.AuthorizationRegisterResponse;
+      const attr = response._attr;
+      const customer = response.customer;
     
-      console.log("Fault Code:", faultcode);
-      console.log("Fault String:", faultstring);
+      console.log("Attr:", attr);
+      console.log("Customer:", customer);
     } else {
       console.log("Response structure is not as expected.");
     }
+    
     
   } catch (err) {
     // Handle Error Here
