@@ -313,7 +313,7 @@ sendGetRequest();
 // };
 
 
-createQrisFintech();
+// createQrisFintech();
 
 // Jalankan server pada port tertentu
 const port = 2222;
