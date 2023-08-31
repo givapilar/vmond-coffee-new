@@ -38,7 +38,7 @@
                             Rp. {{ number_format($orderFinishSubtotal, 0) ?? '' }}
                             ( {{ ucwords(Auth::user()->membership->level ?? '') }} Member )
                         @else
-                            Daftarkan <a href="{{ route('register') }}" class="font-medium text-blue-600 hover:underline dark:text-blue-500">akun anda</a>
+                            Daftarkan <a href="{{ route('register', ['jenis_meja' => Request::get('jenis_meja'), 'kode_meja' => Request::get('kode_meja')]) }}" class="font-medium text-blue-600 hover:underline dark:text-blue-500">akun anda</a>
                         @endif
                     </p>
                 </div>
@@ -68,7 +68,7 @@
     </div>
 
     <div class="grid grid-cols-3 gap-3">
-        <a href="{{ route('homepage-restaurant') }}">
+        <a href="{{ route('homepage-restaurant', ['jenis_meja' => Request::get('jenis_meja'), 'kode_meja' => Request::get('kode_meja')]) }}">
             <div class="text-base sm:text-sm p-1">
                 <div class="aspect-h-1 h-36 sm:h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg">
                     <img src="{{ asset('assetku/dataku/img/resto.jpg') }}" alt="" class="object-cover h-full w-full">
@@ -81,7 +81,7 @@
                 <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300" style="font-weight: 500;">RESTAURANT</p>
             </div>
         </a>
-        <a href="{{ route('daftar-billiard') }}">
+        <a href="{{ route('daftar-billiard', ['jenis_meja' => Request::get('jenis_meja'), 'kode_meja' => Request::get('kode_meja')]) }}">
             <div class="text-base sm:text-sm p-1">
                 <div class="aspect-h-1 h-36 sm:h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg">
                     <img src="{{ asset('assetku/dataku/img/billiard.jpg') }}" alt="" class="object-cover object-center h-full w-full billiard">
@@ -90,7 +90,7 @@
                 <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300" style="font-weight: 500;">F w B</p>
             </div>
         </a>
-        <a href="{{ route('daftar-meeting-room') }}">
+        <a href="{{ route('daftar-meeting-room', ['jenis_meja' => Request::get('jenis_meja'), 'kode_meja' => Request::get('kode_meja')]) }}">
             <div class="text-base sm:text-sm p-1">
                 <div class="aspect-h-1 h-36 sm:h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg">
                     <img src="https://images.unsplash.com/photo-1431540015161-0bf868a2d407?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="." class="object-cover object-center h-full w-full">
