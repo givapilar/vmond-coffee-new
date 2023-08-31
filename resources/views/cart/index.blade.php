@@ -205,6 +205,21 @@
                                 </select>
                             </div>
                         </li> --}}
+
+                        <li class="py-3 sm:py-2" id="voucher-get" style="display: none;">
+                            <div id="select-input-wrapper">
+                                <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Voucher</label>
+                                <select id="voucher" name="voucher" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option value="">Pilih Voucher</option> <!-- Use an empty value -->
+                                    @foreach ($vouchers as $key => $voucher)
+                                        @if ($voucher->status == true)
+                                        <option required value="{{ $voucher->id }}">{{ $voucher->code }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                        </li>
+
                         </ul>
                     </div>
                 @else
@@ -228,6 +243,7 @@
                                 <input id="takeaway-radio" required type="radio" value="Takeaway" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                             </div>
                             </div>
+
                         </li>
 
                         <li class="py-3 sm:py-2" style="display: none;" id="meja-takeaway">
@@ -240,6 +256,7 @@
                                     @endforeach
                                 </select>
                             </div>
+                    
                         </li>
 
                         <li class="py-3 sm:py-2">
@@ -256,6 +273,7 @@
                                     <input id="dine-in-radio" required type="radio" value="Dine In" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" checked>
                                 </div>
                             </div>
+                            
                         </li>
                         <li class="py-3 sm:py-2" style="" id="meja-wrapper">
                             <div id="select-input-wrapper">
@@ -273,6 +291,22 @@
                         <a href="{{ route('reset-meja') }}" >
                             <button type="button" class="w-full h-full p-3 bg-blue-500 dark:text-white mt-auto rounded-[30px] hover:bg-red-700 focus:ring-2 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">Reset Meja</button>
                         </a>
+
+                        {{-- Voucher --}}
+                        <li class="py-3 sm:py-2" id="voucher-get" style="display: none;" >
+                            <div id="select-input-wrapper">
+                                <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Voucher</label>
+                                <select id="voucher" name="voucher" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option value="">Pilih Voucher</option> <!-- Use an empty value -->
+                                    @foreach ($vouchers as $key => $voucher)
+                                        @if ($voucher->status == true)
+                                        <option required value="{{ $voucher->id }}">{{ $voucher->code }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                        </li>
+
                     </ul>
                 </div>
 
@@ -377,7 +411,7 @@
                 @endif
             </div>
 
-            <div class="max-w-full mt-2 max-h-[17rem] bg-white border border-gray-200 rounded-[30px] shadow dark:bg-gray-800 dark:border-gray-700 sm:mt-3">
+            <div class="max-w-full mt-2 max-h-[25rem] bg-white border border-gray-200 rounded-[30px] shadow dark:bg-gray-800 dark:border-gray-700 sm:mt-3">
                 <div class="p-3 space-x-4">
                     <p class="text-lg font-semibold text-center dark:text-white">Order Summary</p>
                 </div>
@@ -444,6 +478,20 @@
                         </div>
                     </li>
                     
+                    <li class="py-3 sm:py-3" id="voucher-summary" style="display: none;">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-xs font-medium text-gray-900 truncate dark:text-white">
+                                    Diskon Voucher
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white" id="voucher-price">
+                            </div>
+                        </div>
+                    </li>
+
+                    <input type="hidden" id="voucher-price-input" name="voucher_diskon">
+
                     <li class="py-3 sm:py-3" id="order-total" style="display: none;">
                         <div class="flex items-start space-x-4">
                             <div class="flex-1 min-w-0">
@@ -460,7 +508,9 @@
                             </div>
                         </div>
                     </li>
+                    <input type="hidden" id="order-total-input" name="order_total">
 
+                    {{-- order total without package --}}
                     <li class="py-3 sm:py-3" id="order-total-packing" style="display: none;">
                         <div class="flex items-start space-x-4">
                             <div class="flex-1 min-w-0">
@@ -484,6 +534,7 @@
                             </div>
                         </div>
                     </li>
+
                 </ul>
                 <div class="mt-2">
                     {{-- <button class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900" onclick="pushData()">Checkout</button> --}}
@@ -507,6 +558,76 @@
 @endpush
 
 @push('script-bot')
+
+{{-- Voucher --}}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const voucherSelect = document.getElementById("voucher");
+        const voucherPriceDisplay = document.getElementById("voucher-price");
+        const orderTotalDisplay = document.getElementById("total-order-summary");
+        
+        const orderTotalPackingDisplay = document.getElementById("total-order-summary-packing");
+
+        const voucherPriceInput = document.getElementById("voucher-price-input");
+        const orderTotalInput = document.getElementById("order-total-input");
+        const orderTotalPackageInput = document.getElementById("order-total-package-input");
+
+        const vouchers = {!! json_encode($vouchers) !!};
+        const orderSettings = {!! json_encode($order_settings) !!};
+        
+        console.log(vouchers);
+        
+        voucherSelect.addEventListener("change", function() {
+            const selectedVoucherId = voucherSelect.value;
+            const selectedVoucher = vouchers.find(voucher => voucher.id == selectedVoucherId);
+            const cartTotal = {!! json_encode(\Cart::getTotal()) !!};
+            const layanan = orderSettings[0].layanan;
+            const pb01 = orderSettings[0].pb01;        
+
+            const cartTotalWithLayananCharge = ((cartTotal) + (cartTotal * layanan / 100) + ((cartTotal) + (cartTotal * layanan/100) ) * pb01/100);
+            const roundedCartTotal = Math.round(cartTotalWithLayananCharge);
+
+            const packaging = 5000;
+            const cartTotalWithPackageCharge = ((cartTotal) + (cartTotal * layanan / 100) + ((cartTotal) + (cartTotal * layanan/100) ) * pb01/100)+packaging;
+            const cartTotalPackage = Math.round(cartTotalWithPackageCharge);
+            console.log('Cart Total Packaging' , cartTotalPackage);
+
+            if (selectedVoucher) {
+                const minimumTransaksi = parseFloat(selectedVoucher.minimum_transaksi); // Parse harga as a number
+                console.log('Minimun Transaksi', minimumTransaksi);
+                if (minimumTransaksi <= roundedCartTotal) {
+                    // normal
+                    const voucherHarga = parseFloat(selectedVoucher.harga); // Parse harga as a number
+                    const discountAmount = voucherHarga;
+                    voucherPriceDisplay.textContent = `Rp. ${discountAmount.toFixed(0)}`;
+                    orderTotalDisplay.textContent = `Rp. ${(roundedCartTotal - discountAmount).toFixed(0)}`;
+                    
+                    orderTotalHidden = (roundedCartTotal - discountAmount);
+                    orderTotalInput.value = orderTotalHidden;
+                    
+                    // With package
+                    // orderTotalPackingDisplay.textContent = `Rp. ${(cartTotalPackage - discountAmount).toFixed(0)}`;
+                    // orderTotalPackageInput.value = orderTotalHidden;
+                    
+                    voucherPriceInput.value = discountAmount;
+                    console.log('Order Total hidden',orderTotalInput.value);
+                } else {
+                    voucherPriceDisplay.textContent = "0";
+                    orderTotalDisplay.textContent = `Rp. ${roundedCartTotal.toFixed(0)}`;
+                    orderTotalPackingDisplay.textContent = `Rp. ${cartTotalPackage.toFixed(0)}`;
+                    const alertMessage = `Minimum transaksi ${minimumTransaksi} Anda kurang untuk menggunakan voucher ini.`;
+                    alert(alertMessage);
+                }
+
+
+            } else {
+                voucherPriceDisplay.textContent = "0";
+                orderTotalDisplay.textContent = `Rp. ${roundedCartTotal.toFixed(0)}`;
+                orderTotalPackingDisplay.textContent = `Rp. ${cartTotalPackage.toFixed(0)}`;
+            }
+        });
+    });
+</script>
 
 <script>
     function toggleCheckbox(checkbox, minimal, namaPaket) {
@@ -545,17 +666,30 @@
         const dineInRadio = document.getElementById("dine-in-radio");
         const orderTotal = document.getElementById("order-total");
         const orderTotalPacking = document.getElementById("order-total-packing");
+        const voucherCoupon = document.getElementById("voucher-summary");
+        const voucherGet = document.getElementById("voucher-get");
 
         if (takeawayRadio && dineInRadio && orderTotal && orderTotalPacking) {
             takeawayRadio.addEventListener("change", function () {
                 orderTotal.style.display = "none";
+                voucherCoupon.style.display = "none";
+                voucherGet.style.display = "none";
                 orderTotalPacking.style.display = "block";
             });
 
             dineInRadio.addEventListener("change", function () {
                 orderTotal.style.display = "block";
+                voucherCoupon.style.display = "block";
+                voucherGet.style.display = "block";
                 orderTotalPacking.style.display = "none";
             });
+
+            if (dineInRadio.checked) {
+                orderTotal.style.display = "block";
+                voucherCoupon.style.display = "block";
+                voucherGet.style.display = "block";
+                orderTotalPacking.style.display = "none";
+            }
         }
     });
 

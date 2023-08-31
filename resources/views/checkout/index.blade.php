@@ -228,9 +228,7 @@
                             $totalWithPacking = $totalWithoutPacking + $packing;
                         ?>
                         @if (\Cart::getTotal())
-                        {{-- Rp. {{ number_format((\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100,0)}} --}}
-                        Rp. {{ number_format($totalWithPacking, 0) }}
-
+                            Rp. {{ number_format($totalWithPacking, 0) }}
                         @else
                         Rp. 0
                         @endif
@@ -238,7 +236,7 @@
                 </div>
             </li>
             @else
-            <li class="py-3 sm:py-3">
+            {{-- <li class="py-3 sm:py-3">
                 <div class="flex items-start space-x-4">
                     <div class="flex-1 min-w-0">
                         <p class="text-xs font-medium text-gray-900 truncate dark:text-white">
@@ -251,6 +249,32 @@
                         @else
                         Rp. 0
                         @endif
+                    </div>
+                </div>
+            </li> --}}
+
+            <li class="py-3 sm:py-3">
+                <div class="flex items-start space-x-4">
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs font-medium text-gray-900 truncate dark:text-white">
+                            Voucher Diskon
+                        </p>
+                    </div>
+                    <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white" id="total-order-summary">
+                        {{ number_format($order_last->voucher_diskon,0) }}
+                    </div>
+                </div>
+            </li>
+
+            <li class="py-3 sm:py-3">
+                <div class="flex items-start space-x-4">
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs font-medium text-gray-900 truncate dark:text-white">
+                            Order Total
+                        </p>
+                    </div>
+                    <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white" id="total-order-summary">
+                        {{ number_format($order_last->total_price,0) }}
                     </div>
                 </div>
             </li>

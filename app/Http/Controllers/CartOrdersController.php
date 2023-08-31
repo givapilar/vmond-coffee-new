@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Models\OtherSetting;
 use App\Models\Role;
 use App\Models\UserManagement;
+use App\Models\Voucher;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -52,6 +53,8 @@ class CartOrdersController extends Controller
 
         $data ['userManagement'] = UserManagement::orderby('id', 'asc')->get();
         $data ['order_settings'] = OtherSetting::get();
+        $data['vouchers'] = Voucher::get();
+
         if (Auth::check()) {
             # code...
             $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();

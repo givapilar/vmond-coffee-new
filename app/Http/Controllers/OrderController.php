@@ -14,6 +14,7 @@ use App\Models\Restaurant;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\OtherSetting;
+use App\Models\Voucher;
 use Cart;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -29,8 +30,9 @@ class OrderController extends Controller
 
     public function checkout(Request $request, $token)
     {
-        // dd($request->all());
         try {
+            // dd($request->all());
+            $packing = 5000;
             
             $checkToken = Order::where('token',$token)->where('status_pembayaran', 'Paid')->get();
             if (count($checkToken) != 0) {
@@ -120,8 +122,14 @@ class OrderController extends Controller
                     $phone = $request->phone ?? '-';
                     $nama_kasir = null;
                 }elseif (Auth::user()->username == 'syahrul') {
-                    $total_price = 1;
+                    // $total_price = 1;
                     // $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    if ($request->category == "Takeaway") {
+                        $packing = 5000;
+                        $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100 + $packing;
+                    }else{
+                        $total_price = $request->order_total;
+                    }
                     $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
                     $pb01 = ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $name = auth()->user()->username ?? 'Not Name';
@@ -130,7 +138,13 @@ class OrderController extends Controller
                     $nama_kasir = $request->kasir_id;
                 }else{
                     // dd('tes2');
-                    $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    // $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    if ($request->category == "Takeaway") {
+                        $packing = 5000;
+                        $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100 + $packing;
+                    }else{
+                        $total_price = $request->order_total;
+                    }
                     $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
                     $pb01 = ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $name = auth()->user()->username;
@@ -168,6 +182,7 @@ class OrderController extends Controller
                     'nama_kasir' => $nama_kasir,
                     // 'kode_meja' => $request->meja_restaurant_id,
                     'metode_edisi' => $request->metode_edisi,
+                    'voucher_diskon' => $request->voucher_diskon,
                 ]);
 
                     foreach ($session_cart as $key => $item) {
