@@ -160,7 +160,7 @@ const aktivasi = async () => {
     
     const bodyData = {
       "msisdn": "081717181988",
-      "pin": "808080",
+      "pin": "111111",
       "reference": "04832a86-313e-4a1c-9b92-ad8399ca3e3a",
       "product": "MERCHANT",
     };
