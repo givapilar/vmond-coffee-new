@@ -211,9 +211,9 @@
                             <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option disabled selected>Pilih Meja Restaurant</option>
                                 @foreach ($meja_restaurants as $key => $meja_restaurant)
-                                @if ($kodeMeja == $meja_restaurant->kode_meja)
-                                <option required value="{{ $meja_restaurant->id }}" selected>{{ $meja_restaurant->nama }}</option>
-                                @endif
+                                {{-- @if ($kodeMeja == $meja_restaurant->kode_meja) --}}
+                                <option required value="{{ $meja_restaurant->id }}" {{ $kodeMeja == $meja_restaurant->kode_meja ? 'selected' : '' }}>{{ $meja_restaurant->nama }}</option>
+                                {{-- @endif --}}
                                 @endforeach
                             </select>
                         </div>

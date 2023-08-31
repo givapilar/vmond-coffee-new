@@ -17,61 +17,61 @@ const passwordDev = "51cbc137951976fa96deaa8899ce7dba641e0f309b8d50e02698436f893
 // ====================================================================
 
 // Request Token Fintech
-// const sendGetRequest = async () => {
-//   try {
-//     const headers = {
-//       "Content-Type": "application/json"
-//     };
+const sendGetRequest = async () => {
+  try {
+    const headers = {
+      "Content-Type": "application/json"
+    };
     
-//     const metaData = {
-//       "datetime": "2023-08-31T09:40:21.450Z",
-//       "deviceId": "bjbdigi",
-//       "devicePlatform": "Linux",
-//       "deviceOSVersion": "bjbdigi-version",
-//       "deviceType": "",
-//       "latitude": "",
-//       "longitude": "",
-//       "appId": 4,
-//       "appVersion": "1.0",
-//     };
+    const metaData = {
+      "datetime": "2023-08-31T09:40:21.450Z",
+      "deviceId": "bjbdigi",
+      "devicePlatform": "Linux",
+      "deviceOSVersion": "bjbdigi-version",
+      "deviceType": "",
+      "latitude": "",
+      "longitude": "",
+      "appId": 4,
+      "appVersion": "1.0",
+    };
     
-//     const bodyData = {
-//       "msisdn": msisdnDev,
-//       "password": "1c1bbf7b79bc9b97cafb7488946a6001f05980f62dbeb5bc093dd680b8241197",
-//     };
+    const bodyData = {
+      "msisdn": msisdnDev,
+      "password": "1c1bbf7b79bc9b97cafb7488946a6001f05980f62dbeb5bc093dd680b8241197",
+    };
     
-//     const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/pocket/requestTokenFintech/", 
-//     {"metadata": metaData, "body": bodyData}, 
-//     {"headers": headers});
+    const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/pocket/requestTokenFintech/", 
+    {"metadata": metaData, "body": bodyData}, 
+    {"headers": headers});
     
-//     console.log("AllResult :: ", result);
-//     console.log("Result Data :: ", result.data);
+    console.log("AllResult :: ", result);
+    console.log("Result Data :: ", result.data);
     
-//     // check console
-//     if (result && result.data && result.data.body && result.data.body.CreateTokenFintechResponse) {
-//       const customer = result.data.body.CreateTokenFintechResponse.customer;
-//       const attr = result.data.body.CreateTokenFintechResponse._attr;
-//       const channel = result.data.body.CreateTokenFintechResponse.channel;
-//       const key = result.data.body.CreateTokenFintechResponse.key;
-//       const xAuthToken = result.headers['x-auth-token'];
+    // check console
+    if (result && result.data && result.data.body && result.data.body.CreateTokenFintechResponse) {
+      const customer = result.data.body.CreateTokenFintechResponse.customer;
+      const attr = result.data.body.CreateTokenFintechResponse._attr;
+      const channel = result.data.body.CreateTokenFintechResponse.channel;
+      const key = result.data.body.CreateTokenFintechResponse.key;
+      const xAuthToken = result.headers['x-auth-token'];
 
-//       console.log("X-AUTH-TOKEN:", xAuthToken)
+      console.log("X-AUTH-TOKEN:", xAuthToken)
   
-//       console.log("Attr:", attr);
-//       console.log("Customer:", customer);
-//       console.log("Channel:", channel);
-//       console.log("Key:", key);
-//     } else {
-//       console.log("Response structure is not as expected.");
-//     }
+      console.log("Attr:", attr);
+      console.log("Customer:", customer);
+      console.log("Channel:", channel);
+      console.log("Key:", key);
+    } else {
+      console.log("Response structure is not as expected.");
+    }
 
-//   } catch (err) {
-//     // Handle Error Here
-//     console.error(err);
-//   }
-// };
+  } catch (err) {
+    // Handle Error Here
+    console.error(err);
+  }
+};
 
-// sendGetRequest();
+sendGetRequest();
 
 // ====================================================================
 // Send OTP By phone number
@@ -257,60 +257,60 @@ const passwordDev = "51cbc137951976fa96deaa8899ce7dba641e0f309b8d50e02698436f893
 
 // ====================================================================
 // Create Qris Dinamis BJB
-const createQrisFintech = async () => {
-  try {
-    const headers = {
-      "Content-Type": "application/json",
-      "X-AUTH-TOKEN": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJmMmFlMmVmOS0zZWM5LTQxNDEtYThlZC0xMjZhOTRhMzU1ODUiLCJzdWIiOiJWTU85MzcxOTI5ODgiLCJleHAiOjE2OTM0Nzg1MTgsImlhdCI6MTY5MzQ0ODUxOCwiaWRlbnRpZmllciI6IkRpRFR6S2FsdUdyQkZBRyIsInVzZXJuYW1lIjoiVk1POTM3MTkyOTg4In0.nLa-btcn4aSNTjZO5zSOKnVcio5Xmq5d36ebh27Bs2Wj7DgYwjPk4oxS9SEyxCGq1I30GidvKKYLzUI8jc240A" // Replace with actual X-AUTH-TOKEN value
-    };
+// const createQrisFintech = async () => {
+//   try {
+//     const headers = {
+//       "Content-Type": "application/json",
+//       "X-AUTH-TOKEN": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJmMmFlMmVmOS0zZWM5LTQxNDEtYThlZC0xMjZhOTRhMzU1ODUiLCJzdWIiOiJWTU85MzcxOTI5ODgiLCJleHAiOjE2OTM0Nzg1MTgsImlhdCI6MTY5MzQ0ODUxOCwiaWRlbnRpZmllciI6IkRpRFR6S2FsdUdyQkZBRyIsInVzZXJuYW1lIjoiVk1POTM3MTkyOTg4In0.nLa-btcn4aSNTjZO5zSOKnVcio5Xmq5d36ebh27Bs2Wj7DgYwjPk4oxS9SEyxCGq1I30GidvKKYLzUI8jc240A" // Replace with actual X-AUTH-TOKEN value
+//     };
     
-    const metaData = {
-      "datetime": "2023-08-31T09:40:21.450Z",
-      "deviceId": "bjbdigi",
-      "devicePlatform": "Linux",
-      "deviceOSVersion": "bjbdigi-version",
-      "deviceType": "",
-      "latitude": "",
-      "longitude": "",
-      "appId": 4,
-      "appVersion": "1.0",
-      "appIdName": "vmondcoffee" // Replace with actual appIdName value
-    };
+//     const metaData = {
+//       "datetime": "2023-08-31T09:40:21.450Z",
+//       "deviceId": "bjbdigi",
+//       "devicePlatform": "Linux",
+//       "deviceOSVersion": "bjbdigi-version",
+//       "deviceType": "",
+//       "latitude": "",
+//       "longitude": "",
+//       "appId": 4,
+//       "appVersion": "1.0",
+//       "appIdName": "vmondcoffee" // Replace with actual appIdName value
+//     };
     
-    const bodyData = {
-      "merchantAccountNumber": msisdnDev, // Replace with actual merchant account number
-      "amount": 1000, // Replace with actual amount
-      "expInSecond": 3600 // Replace with actual expiry in seconds or remove if not needed
-    };
+//     const bodyData = {
+//       "merchantAccountNumber": msisdnDev, // Replace with actual merchant account number
+//       "amount": 1000, // Replace with actual amount
+//       "expInSecond": 3600 // Replace with actual expiry in seconds or remove if not needed
+//     };
     
-    const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/4/pbTransactionAdapter/createInvoiceQRISDinamisExt", 
-      {"metadata": metaData, "body": bodyData}, 
-      {"headers": headers}
-    );
+//     const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/4/pbTransactionAdapter/createInvoiceQRISDinamisExt", 
+//       {"metadata": metaData, "body": bodyData}, 
+//       {"headers": headers}
+//     );
     
-    console.log("AllResult :: ", result);
-    console.log("Result Data :: ", result.data);
+//     console.log("AllResult :: ", result);
+//     console.log("Result Data :: ", result.data);
     
 
-    // Check Console detail qris
-    if (result && result.data && result.data.body && result.data.body.CreateInvoiceQRISDinamisExtResponse) {
-      const response = result.data.body.CreateInvoiceQRISDinamisExtResponse;
-      const attr = response._attr;
-      const responseCode = response.responseCode;
-      const responseMessage = response.responseMessage;
+//     // Check Console detail qris
+//     if (result && result.data && result.data.body && result.data.body.CreateInvoiceQRISDinamisExtResponse) {
+//       const response = result.data.body.CreateInvoiceQRISDinamisExtResponse;
+//       const attr = response._attr;
+//       const responseCode = response.responseCode;
+//       const responseMessage = response.responseMessage;
     
-      console.log("Attr:", attr);
-      console.log("Response Code:", responseCode);
-      console.log("Response Message:", responseMessage);
-    } else {
-      console.log("Response structure is not as expected.");
-    }
+//       console.log("Attr:", attr);
+//       console.log("Response Code:", responseCode);
+//       console.log("Response Message:", responseMessage);
+//     } else {
+//       console.log("Response structure is not as expected.");
+//     }
     
-  } catch (err) {
-    // Handle Error Here
-    console.error(err);
-  }
-};
+//   } catch (err) {
+//     // Handle Error Here
+//     console.error(err);
+//   }
+// };
 
 
 createQrisFintech();

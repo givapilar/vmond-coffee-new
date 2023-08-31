@@ -73,7 +73,7 @@
                     <br>
                     <br>
                     <span class="text-sm font-light text-gray-500 dark:text-gray-400">
-                        log in as a non member? <a href="{{ route('homepage') }}" class="font-medium text-blue-600 hover:underline dark:text-blue-500">Click here</a>
+                        log in as a non member? <a href="{{ route('homepage', ['jenis_meja' => Request::get('jenis_meja'), 'kode_meja' => Request::get('kode_meja')]) }}" class="font-medium text-blue-600 hover:underline dark:text-blue-500">Click here</a>
                     </span>
                 </form>
             </div>

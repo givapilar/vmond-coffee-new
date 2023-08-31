@@ -18,7 +18,7 @@
     <hr> --}}
 
     <div class="grid grid-cols-1 gap-3">
-        <a href="{{ route('daftar-restaurant', ['category' => 'food']) }}">
+        <a href="{{ route('daftar-restaurant', ['category' => 'food', 'kode_meja' => Request::get('kode_meja')]) }}">
             <div class="text-base sm:text-sm p-1">
                 <div class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg" style="height: 15.5rem;">
                     <img src="{{ asset('assetku/dataku/img/cover.jpg') }}" alt="" class="object-cover object-center h-full w-full">
@@ -27,7 +27,7 @@
                 <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300" style="font-weight: 700;">FOODS</p>
             </div>
         </a>
-        <a href="{{ route('daftar-restaurant', ['category' => 'drink']) }}">
+        <a href="{{ route('daftar-restaurant', ['category' => 'drink', 'kode_meja' => Request::get('kode_meja')]) }}">
             <div class="text-base sm:text-sm p-1">
                 <div class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg" style="height: 15.5rem;">
                     <img src="{{ asset('assetku/dataku/img/drink.jpg') }}" alt="." class="object-cover object-center h-full w-full">
