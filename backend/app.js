@@ -265,7 +265,7 @@ const createQrisFintech = async () => {
     };
     
     const metaData = {
-      "datetime": "2023-08-30T09:40:21.450Z",
+      "datetime": "2023-08-31T09:40:21.450Z",
       "deviceId": "bjbdigi",
       "devicePlatform": "Linux",
       "deviceOSVersion": "bjbdigi-version",
