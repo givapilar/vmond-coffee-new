@@ -274,7 +274,7 @@ const createQrisFintech = async () => {
       "longitude": "",
       "appId": 4,
       "appVersion": "1.0",
-      "appIdName": "vmondcoffee" // Replace with actual appIdName value
+      "appIdName": "" // Replace with actual appIdName value
     };
     
     const bodyData = {
