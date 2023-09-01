@@ -3,7 +3,7 @@ const secretKey = 'yUyOSXBD8ZB96JKv5e5K4aETVLJcGkubL8d6UlrqERJSVtvDJr';
 const axios = require('axios');
 
 const getURL = (req, res) => {
-    const resCallback = "Success Connect! </br>";
+    const resCallback = "Success Connect! \n";
     res.json(resCallback);
 
     // try {
