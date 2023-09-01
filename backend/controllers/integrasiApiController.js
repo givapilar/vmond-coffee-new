@@ -30,7 +30,7 @@ const getURL = (req, res) => {
       }'
     `;
   
-    res.json(resCallback);
+    res.json(curlCommand);
   };
   
   const callbackFromBJB = (req, res) => {
