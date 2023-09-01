@@ -47,9 +47,10 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('*', function (){
             if (Auth::user()) {
                 $today = Carbon::tomorrow();
+                $oneHourAgo = Carbon::now()->subHour();
                 if (Auth::user()->telephone == '081818181847') {
                     $orderTable = Order::orderBy('id', 'desc')
-                        ->whereDate('created_at', $today)
+                        ->whereDate('created_at', $oneHourAgo)
                         ->where('user_id', Auth::user()->id)
                         ->where('status_pembayaran', 'Paid')
                         ->get();

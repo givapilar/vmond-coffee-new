@@ -236,7 +236,7 @@
                 </div>
             </li>
             @else
-            {{-- <li class="py-3 sm:py-3">
+            <li class="py-3 sm:py-3">
                 <div class="flex items-start space-x-4">
                     <div class="flex-1 min-w-0">
                         <p class="text-xs font-medium text-gray-900 truncate dark:text-white">
@@ -251,9 +251,9 @@
                         @endif
                     </div>
                 </div>
-            </li> --}}
+            </li>
 
-            <li class="py-3 sm:py-3">
+            {{-- <li class="py-3 sm:py-3">
                 <div class="flex items-start space-x-4">
                     <div class="flex-1 min-w-0">
                         <p class="text-xs font-medium text-gray-900 truncate dark:text-white">
@@ -277,7 +277,7 @@
                         {{ number_format($order_last->total_price,0) }}
                     </div>
                 </div>
-            </li>
+            </li> --}}
 
             @endif
 
