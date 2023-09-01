@@ -58,9 +58,9 @@ const getURL = (req, res) => {
     //     console.log("Response structure is not as expected.");
     //   }
   
-    } catch (err) {
-      console.error(err);
-    }
+    // } catch (err) {
+    //   console.error(err);
+    // }
   };
 
   // const requestToken = (req, res) => {
