@@ -478,7 +478,7 @@
                         </div>
                     </li>
                     
-                    <li class="py-3 sm:py-3" id="voucher-summary" style="display: none;">
+                    {{-- <li class="py-3 sm:py-3" id="voucher-summary" style="display: none;">
                         <div class="flex items-start space-x-4">
                             <div class="flex-1 min-w-0">
                                 <p class="text-xs font-medium text-gray-900 truncate dark:text-white">
@@ -488,7 +488,7 @@
                             <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white" id="voucher-price">
                             </div>
                         </div>
-                    </li>
+                    </li> --}}
 
                     <input type="hidden" id="voucher-price-input" name="voucher_diskon">
 
@@ -604,7 +604,7 @@
                     
                     orderTotalHidden = (roundedCartTotal - discountAmount);
                     orderTotalInput.value = orderTotalHidden;
-                    
+                    console.log(orderTotalInput.value);
                     // With package
                     // orderTotalPackingDisplay.textContent = `Rp. ${(cartTotalPackage - discountAmount).toFixed(0)}`;
                     // orderTotalPackageInput.value = orderTotalHidden;
