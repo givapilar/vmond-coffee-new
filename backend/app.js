@@ -71,7 +71,8 @@ const sendGetRequest = async () => {
   }
 };
 
-sendGetRequest();
+//sendGetRequest();
+createQrisFintech();
 
 // ====================================================================
 // Send OTP By phone number
@@ -261,7 +262,7 @@ const createQrisFintech = async () => {
   try {
     const headers = {
       "Content-Type": "application/json",
-      "X-AUTH-TOKEN": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI1YmU0ZDQ2NS0yODgwLTQ0NTEtYTg4Yi0zNmNiYmZiZjM1OWUiLCJzdWIiOiJWTU85MzcxOTI5ODgiLCJleHAiOjE2OTM1NTMyOTIsImlhdCI6MTY5MzUyMzI5MiwiaWRlbnRpZmllciI6IkthdkE3RVlUOExxbmZ2OSIsInVzZXJuYW1lIjoiVk1POTM3MTkyOTg4In0.EPJe7By9kXRVUz9GACNgXhZGxF2eZ6qFJQRS_HPhGNE6qeRqsrZbJoNEqF5qapu9FtZn2vN9tmnKmSloLAxbVg" // Replace with actual X-AUTH-TOKEN value
+      "X-AUTH-TOKEN": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJjMGEyMDQ5OC1mYTNjLTQ3MGYtOGRjOC04OTc0YTNiMWRkNmUiLCJzdWIiOiJWTU85MzcxOTI5ODgiLCJleHAiOjE2OTM1OTcxMDksImlhdCI6MTY5MzU2NzEwOSwiaWRlbnRpZmllciI6IjRLRVRnQTFvODJZRkJRRiIsInVzZXJuYW1lIjoiVk1POTM3MTkyOTg4In0.Pzer_ac_1WjHeIbldUJAnporlHVdUe64gLGrW20N3R8sy6L6OINNpUs_rotYFRHtsbhfIuUYxrOs2jZkb8aMbQ" // Replace with actual X-AUTH-TOKEN value
     };
     
     const metaData = {
@@ -313,7 +314,6 @@ const createQrisFintech = async () => {
 };
 
 
-createQrisFintech();
 
 // Jalankan server pada port tertentu
 const port = 2222;
