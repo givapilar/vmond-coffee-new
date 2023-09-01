@@ -76,63 +76,63 @@ const sendGetRequest = async () => {
 // ====================================================================
 // Send OTP By phone number
 
-// const sendOtpByPhoneNumber = async () => {
-//   try {
-//     const headers = {
-//       "Content-Type": "application/json",
-//       "X-AUTH-TOKEN": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiIxYWVhNjczNi1jNjU5LTQwNmEtOTRlNi00NTI2YzdlNjVhYTgiLCJzdWIiOiJWTU85MzcxOTI5ODgiLCJleHAiOjE2OTM0MjMwMTAsImlhdCI6MTY5MzM5MzAxMCwiaWRlbnRpZmllciI6IkVKSkJheTFEcVVYWHFCSyIsInVzZXJuYW1lIjoiVk1POTM3MTkyOTg4In0.7YzRn3AM7LV9YnLdHBi87nhSYvzkyL4V7M2ZAvZZ8h7hl-z4WAaCiAK1NpmFAkjCI5zfW1bmE_WAbXbJLkapUg" // Replace with actual X-AUTH-TOKEN value
-//     };
+const sendOtpByPhoneNumber = async () => {
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+      "X-AUTH-TOKEN": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJjMGEyMDQ5OC1mYTNjLTQ3MGYtOGRjOC04OTc0YTNiMWRkNmUiLCJzdWIiOiJWTU85MzcxOTI5ODgiLCJleHAiOjE2OTM1OTcxMDksImlhdCI6MTY5MzU2NzEwOSwiaWRlbnRpZmllciI6IjRLRVRnQTFvODJZRkJRRiIsInVzZXJuYW1lIjoiVk1POTM3MTkyOTg4In0.Pzer_ac_1WjHeIbldUJAnporlHVdUe64gLGrW20N3R8sy6L6OINNpUs_rotYFRHtsbhfIuUYxrOs2jZkb8aMbQ" // Replace with actual X-AUTH-TOKEN value
+    };
     
-//     const metaData = {
-//       "datetime": "2023-08-30T09:40:21.450Z",
-//       "deviceId": "bjbdigi",
-//       "devicePlatform": "Linux",
-//       "deviceOSVersion": "bjbdigi-version",
-//       "deviceType": "",
-//       "latitude": "",
-//       "longitude": "",
-//       "appId": 4,
-//       "appVersion": "1.0",
-//     };
+    const metaData = {
+      "datetime": "2023-08-30T09:40:21.450Z",
+      "deviceId": "bjbdigi",
+      "devicePlatform": "Linux",
+      "deviceOSVersion": "bjbdigi-version",
+      "deviceType": "",
+      "latitude": "",
+      "longitude": "",
+      "appId": 4,
+      "appVersion": "1.0",
+    };
     
-//     const bodyData = {
-//       "phoneNo": "081717181988" // Replace with actual appIdName value
-//     };
+    const bodyData = {
+      "phoneNo": "081717181988" // Replace with actual appIdName value
+    };
     
-//     const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/4/pbNonFinancialAdapter/resendOTPByPhone", 
-//       {"metadata": metaData, "body": bodyData}, 
-//       {"headers": headers}
-//     );
+    const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/4/pbNonFinancialAdapter/resendOTPByPhone", 
+      {"metadata": metaData, "body": bodyData}, 
+      {"headers": headers}
+    );
     
-//     console.log("AllResult :: ", result);
-//     console.log("Result Data :: ", result.data);
+    console.log("AllResult :: ", result);
+    console.log("Result Data :: ", result.data);
     
 
-//     // Check Console detail qris
-//     if (result && result.data && result.data.body && result.data.body.ResendOTPByPhoneResponse) {
-//       const response = result.data.body.ResendOTPByPhoneResponse;
-//       const attr = response._attr;
-//       const status = response.Status;
-//       const reference = response.reference;
-//       const xAuthToken = result.headers['x-auth-token'];
+    // Check Console detail qris
+    if (result && result.data && result.data.body && result.data.body.ResendOTPByPhoneResponse) {
+      const response = result.data.body.ResendOTPByPhoneResponse;
+      const attr = response._attr;
+      const status = response.Status;
+      const reference = response.reference;
+      const xAuthToken = result.headers['x-auth-token'];
 
-//       console.log("X-AUTH-TOKEN:", xAuthToken)
-//       console.log("Attr:", attr);
-//       console.log("Status:", status);
-//       console.log("Reference:", reference);
-//     } else {
-//       console.log("Response structure is not as expected.");
-//     }
+      console.log("X-AUTH-TOKEN:", xAuthToken)
+      console.log("Attr:", attr);
+      console.log("Status:", status);
+      console.log("Reference:", reference);
+    } else {
+      console.log("Response structure is not as expected.");
+    }
     
     
-//   } catch (err) {
-//     // Handle Error Here
-//     console.error(err);
-//   }
-// };
+  } catch (err) {
+    // Handle Error Here
+    console.error(err);
+  }
+};
 
 
-// sendOtpByPhoneNumber();
+sendOtpByPhoneNumber();
 
 
 // ====================================================================
@@ -312,7 +312,7 @@ const createQrisFintech = async () => {
   }
 };
 
-createQrisFintech();
+// createQrisFintech();
 
 
 // Jalankan server pada port tertentu
