@@ -72,7 +72,6 @@ const sendGetRequest = async () => {
 };
 
 //sendGetRequest();
-createQrisFintech();
 
 // ====================================================================
 // Send OTP By phone number
@@ -313,6 +312,7 @@ const createQrisFintech = async () => {
   }
 };
 
+createQrisFintech();
 
 
 // Jalankan server pada port tertentu
