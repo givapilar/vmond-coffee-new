@@ -369,7 +369,7 @@
                     </ul>
                 </div>
 
-                <div class="text-left max-w-sm bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700" style="height: 21rem;">
+                <div class="text-left max-w-sm bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700" style="height: 26rem;">
                     <div class="p-2 space-x-4">
                         <p class="text-lg font-semibold text-center dark:text-white">Isi Data Informasi Order</p>
                     </div>
@@ -395,6 +395,18 @@
                             </div>
                             <input placeholder="Massukan No Tlp" name="phone" value="{{ old('phone') }}" id="" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2 mt-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('password') is-invalid @enderror">
                         </li>
+
+                        <li class="py-3 sm:py-2">
+                            <div class="flex items-center space-x-4">
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                        Masukan Jumlah Customer /Table 
+                                    </p>
+                                </div>
+                            </div>
+                            <input type="number" placeholder="Massukan Jumlah Customer/Table" name="jumlah_customer" value="{{ old('jumlah_customer') }}" id="" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2 mt-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('jumlah_customer') is-invalid @enderror">
+                        </li>
+
                         <li class="py-3 sm:py-2">
                             <div id="select-input-wrapper">
                                 <label for="kasir_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Nama Kasir</label>
