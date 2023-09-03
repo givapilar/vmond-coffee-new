@@ -183,6 +183,7 @@ class OrderController extends Controller
                     // 'kode_meja' => $request->meja_restaurant_id,
                     'metode_edisi' => $request->metode_edisi,
                     'voucher_diskon' => $request->voucher_diskon,
+                    'jumlah_customer' => $request->jumlah_customer,
                 ]);
 
                     foreach ($session_cart as $key => $item) {
@@ -415,6 +416,7 @@ class OrderController extends Controller
                     'created_at' => date('Y-m-d H:i:s'),
                     'service' => $service,
                     'pb01' => $pb01,
+                    'jumlah_customer' => $request->jumlah_customer,
                 ]);
 
                 // dd($session_cart);

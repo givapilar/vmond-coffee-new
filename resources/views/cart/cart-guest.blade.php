@@ -251,7 +251,7 @@
             </div>
             @endif
 
-            <div class="text-left max-w-sm h-64 bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+            <div class="text-left max-w-sm h-80 bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
                 <div class="p-2 space-x-4">
                     <p class="text-lg font-semibold text-center dark:text-white">Isi Data Informasi Order</p>
                 </div>
@@ -279,6 +279,19 @@
                         <input placeholder="Massukan No Tlp" required name="phone" id="" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('password') is-invalid @enderror">
                         <small class="text-xs text-center dark:text-red-500">*Otomatis menjadi member (username dan password menggunakan nomer telephone)</small>
                     </li>
+
+                    <li class="py-3 sm:py-2">
+                        <div class="flex items-center space-x-4">
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                Massukan Jumlah orang /Table 
+                            </p>
+                        </div>
+                        </div>
+                        <input type="number" min="0" placeholder="Massukan Jumlah Orang /Table" required name="jumlah_customer" id="" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('jumlah_customer') is-invalid @enderror">
+                        
+                    </li>
+
                 </ul>
             </div>
         </div>
