@@ -99,7 +99,7 @@
                                     @else
                                     <button class="w-full text-gray-500 text-xs rounded-lg mt-2 p-1 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-sky-300 dark:text-white flex items-center justify-center" style="background-color: gray;" disabled>
                                         <ion-icon name="cart" class="mt-[0.2rem] mb-1 dark:text-white" style="font-size: 15px; margin-right: 5px;"></ion-icon>
-                                        <p class="mt-1 mb-1">Sold Old</p>
+                                        <p class="mt-1 mb-1">Sold Out</p>
                                     </button>
                                     @endif
                                 </div>
