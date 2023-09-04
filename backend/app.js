@@ -297,13 +297,22 @@ const createQrisFintech = async () => {
       const attr = response._attr;
       const responseCode = response.responseCode;
       const responseMessage = response.responseMessage;
+      const amount = response.amount ? response.amount[0] : null;
+      const expiryParameter = response.expiryParameter ? response.expiryParameter[0] : null;
+      const stringQR = response.stringQR ? response.stringQR[0] : null;
+      const invoiceId = response.invoiceId ? response.invoiceId[0] : null;
     
       console.log("Attr:", attr);
       console.log("Response Code:", responseCode);
       console.log("Response Message:", responseMessage);
+      console.log("Amount:", amount);
+      console.log("Expiry Parameter:", expiryParameter);
+      console.log("String QR:", stringQR);
+      console.log("Invoice ID:", invoiceId);
     } else {
       console.log("Response structure is not as expected.");
     }
+    
     
   } catch (err) {
     // Handle Error Here
