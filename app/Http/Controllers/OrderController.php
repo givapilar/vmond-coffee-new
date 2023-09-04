@@ -118,7 +118,8 @@ class OrderController extends Controller
                     $total_price = $discount - $count;
                     $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
                     $pb01 = ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
-                    $name = $request->nama ?? 'Not Name';
+                    $name = auth()->user()->username ?? 'Not Name';
+                    // $name = $request->nama ?? 'Not Name';
                     $phone = $request->phone ?? '-';
                     $nama_kasir = null;
                 }elseif (Auth::user()->username == 'syahrul') {
