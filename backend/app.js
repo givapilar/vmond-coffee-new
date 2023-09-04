@@ -278,7 +278,7 @@ const createQrisFintech = async () => {
     
     const bodyData = {
       "merchantAccountNumber": msisdnDev, // Replace with actual merchant account number
-      "amount": "1000", // Replace with actual amount
+      "amount": "1", // Replace with actual amount
       "expInSecond": 0 // Replace with actual expiry in seconds or remove if not needed
     };
     
@@ -297,11 +297,17 @@ const createQrisFintech = async () => {
       const attr = response._attr;
       const responseCode = response.responseCode;
       const responseMessage = response.responseMessage;
+      const amount = response.amount;
+      const exp = response.expiryParameter;
+      const invoiceId = response.invoiceId;
       const stringQR = response.stringQR;
     
       console.log("Attr:", attr);
       console.log("Response Code:", responseCode);
       console.log("Response Message:", responseMessage);
+      console.log("Amount:", amount);
+      console.log("Exp:", expiryParameter);
+      console.log("Invoice Id :", invoiceId);
       console.log("String QR:", stringQR);
     } else {
       console.log("Response structure is not as expected.");

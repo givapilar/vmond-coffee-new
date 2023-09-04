@@ -24,10 +24,20 @@ use Xendit\Xendit;
 use DB;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
-// require 'vendor/autoload.php';
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Writer;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 class OrderController extends Controller
 {
+    public function createQris(){
+        $data = "00020101021226620017ID.CO.BANKBJB.WWW01189360011030001393800208001393800303UMI51470017ID.CO.BANKBJB.WWW0215ID12312312938560303UMI520458125303360540410005802ID5912Vmond Coffee6007Bandung61051232262510124QRIS2023090414583100704602120817171819880703C026304A078";
 
+        // Generate QR Code
+        return QrCode::encoding('UTF-8')
+            ->size(400)
+            ->margin(10)
+            ->generate($data);
+    }
     public function checkout(Request $request, $token)
     {
         try {
