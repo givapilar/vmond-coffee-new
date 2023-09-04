@@ -306,9 +306,9 @@ const createQrisFintech = async () => {
       console.log("Response Code:", responseCode);
       console.log("Response Message:", responseMessage);
       console.log("Amount:", amount);
-      console.log("Exp:", expiryParameter);
-      console.log("Invoice Id :", invoiceId);
       console.log("String QR:", stringQR);
+      console.log("Exp:", exp);
+      console.log("Invoice Id :", invoiceId);
     } else {
       console.log("Response structure is not as expected.");
     }
