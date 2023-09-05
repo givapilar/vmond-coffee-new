@@ -103,10 +103,8 @@ class OrderController extends Controller
             $time_from = date('Y-m-d', strtotime($request->date)) . ' ' . date('H:i', strtotime($request->time_from));
             if (Auth::check()) {
                 $total_price = 1;
-                # code...
-                // dd(Auth::user()->membership->level);
+
                 if (Auth::user()->membership->level == 'Super Platinum') {
-                    // dd('tes');
                     $total_price = 1;
                     // $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
@@ -148,8 +146,13 @@ class OrderController extends Controller
                     $kasir = $request->kasir_id;
                     $nama_kasir = $request->kasir_id;
                 }else{
-                    // dd('tes2');
-                    $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    if ($request->category == "Takeaway") {
+                        $packing = 5000;
+                        $totalWithoutPacking = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                        $total_price = $totalWithoutPacking + $packing;
+                    }else{
+                        $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    }
                     // if ($request->category == "Takeaway") {
                     //     $packing = 5000;
                     //     $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100 + $packing;
