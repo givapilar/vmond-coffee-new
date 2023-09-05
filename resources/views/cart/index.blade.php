@@ -530,11 +530,11 @@
                                     Order Total
                                 </p>
                             </div>
-                            <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white" id="total-order-summary-packing">
+                            <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white">
                                 <?php
                                     $packing = 5000;
-                                    $totalWithoutPacking = (\Cart::getTotal() + (\Cart::getTotal() ?? 0) * $order_settings[0]->layanan/100);
-                                    $totalWithPacking = $totalWithoutPacking + ($totalWithoutPacking + (\Cart::getTotal() ?? 0) * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100 + $packing;
+                                    $totalWithoutPacking = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100;
+                                    $totalWithPacking = $totalWithoutPacking + $packing;
                                 ?>
                                 @if (\Cart::getTotal())
                                 {{-- Rp. {{ number_format((\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100,0)}} --}}
@@ -684,14 +684,14 @@
         if (takeawayRadio && dineInRadio && orderTotal && orderTotalPacking) {
             takeawayRadio.addEventListener("change", function () {
                 orderTotal.style.display = "none";
-                voucherCoupon.style.display = "none";
+                // voucherCoupon.style.display = "none";
                 voucherGet.style.display = "none";
                 orderTotalPacking.style.display = "block";
             });
 
             dineInRadio.addEventListener("change", function () {
                 orderTotal.style.display = "block";
-                voucherCoupon.style.display = "block";
+                // voucherCoupon.style.display = "block";
                 voucherGet.style.display = "block";
                 orderTotalPacking.style.display = "none";
             });
