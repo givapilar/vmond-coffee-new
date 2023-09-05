@@ -106,7 +106,9 @@ const getURL = (req, res) => {
       // ===================================================================
         
       // Logika pengolahan data
-  
+
+      console.log('Result data : ',res);
+
       const responseData = {
         code: 200,
         method: req.method,
