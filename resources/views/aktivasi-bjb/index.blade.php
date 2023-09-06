@@ -13,7 +13,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
 <script>
     function test() {
-        axios.get("http://172.31.32.85/v1/api/").then(function (response) {
+        axios.get("http://172.31.32.85:2222/v1/api/").then(function (response) {
             console.log(response)
             // do whatever you want if console is [object object] then stringify the response
         })
