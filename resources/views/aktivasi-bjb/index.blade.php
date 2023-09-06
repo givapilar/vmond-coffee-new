@@ -96,7 +96,7 @@
                         let dttoken, notelp;
                         
                         dttoken = token;
-                        notelp = this.$content.find('#notelp').val();
+                        notelp = this.$content.find('#no_telp').val();
 
                         $.ajax({
                             type: 'POST',
