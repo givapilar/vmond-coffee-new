@@ -95,7 +95,12 @@ Route::get('/aktivasi-bjb', function () {
     return view('aktivasi-bjb.index');
 });
 
-Route::post('/aktivasi-bjb',[APIController::class,'aktivasi'])->name('aktivasi');
+Route::get('/send-otp', function () {
+    return view('aktivasi-bjb.send-otp');
+})->name('send-otp');
+
+Route::post('/v1/integration/get-token-fintech',[APIController::class,'getTokenFintech'])->name('get-token-fintech');
+Route::post('/v1/integration/send-otp',[APIController::class,'sendOTP'])->name('send-otp');
 
 // User-profile
 // Route::get('/user-profile', [UserController::class, 'userProfile'])->name('user-profile');
