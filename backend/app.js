@@ -23,19 +23,35 @@ const passwordDev = process.env.PASSWORD_DEV;
 let token = '';
 
 async function main() {
-  try {
+    try {
+        // Cek apakah token belum ada atau sudah lebih dari 1 jam
+        if (!token || isTokenExpired()) {
+            token = await getTokenFintech(urlGlobal, msisdnDev, passwordDev);
+            console.log('Token telah diperbarui:', token);
+        }
 
-    if (!token) {
-      token = await getTokenFintech(urlGlobal, msisdnDev, passwordDev);
+        // Lanjutkan dengan pemrosesan hasil sesuai kebutuhan Anda
+    } catch (err) {
+        // Tangani error di sini
+        console.error(err);
     }
-    console.log('AllResult :: ', token);
-
-    // Lanjutkan dengan pemrosesan hasil sesuai kebutuhan Anda
-  } catch (err) {
-    // Tangani error di sini
-    console.error(err);
-  }
 }
+
+// Fungsi untuk memeriksa apakah token sudah lebih dari 1 jam
+function isTokenExpired() {
+    if (!token || !token.timestamp) {
+        return true;
+    }
+
+    const currentTime = new Date().getTime();
+    const tokenTime = token.timestamp.getTime();
+    const oneHourInMilliseconds = 5 * 1000; // 1 jam dalam milidetik
+
+    return currentTime - tokenTime >= oneHourInMilliseconds;
+}
+
+// Jalankan main() untuk pertama kali
+main();
 const interval = 1000;
 setInterval(main, interval);
 
