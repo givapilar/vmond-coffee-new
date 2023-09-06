@@ -35,8 +35,7 @@ let token = '';
 // │    └──────────────────── minute (0 - 59)
 // └───────────────────────── second (0 - 59, OPTIONAL)
 
-// const updateToken = schedule.scheduleJob('0 */1 * * *', function(){
-const updateToken = schedule.scheduleJob('*/3 * * * * *',async function(){
+const updateToken = schedule.scheduleJob(' */30 * * * *', async function(){
     token = await getTokenFintech(urlGlobal, msisdnDev, passwordDev);
 });
 
@@ -44,24 +43,21 @@ const updateToken = schedule.scheduleJob('*/3 * * * * *',async function(){
 
 async function main() {
     try {
-        // Cek apakah token belum ada atau sudah lebih dari 1 jam
+        // Cek ketersediaan token
         if (!token) {
             token = await getTokenFintech(urlGlobal, msisdnDev, passwordDev);
         }
-        console.log("TOKEN :: "+token);
-        // Lanjutkan dengan pemrosesan hasil sesuai kebutuhan Anda
+
+        
     } catch (err) {
-        // Tangani error di sini
+        // Handle Error
         console.error(err);
     }
 }
 
 main();
-
 const interval = 1000;
 setInterval(main, interval);
-
-// sendGetRequest();
 
 // ====================================================================
 // Send OTP By phone number

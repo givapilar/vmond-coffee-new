@@ -28,5 +28,6 @@ router.get('/', integrasiApiController.getURL);
  */
 
 router.post('/callback', integrasiApiController.callbackFromBJB);
+// router.post('/callback', integrasiApiController.callbackFromBJB);
 
 module.exports = router;
