@@ -91,6 +91,10 @@ Route::get('/restaurant/menu', function () {
     return view('homepage.restaurant', $data);
 })->name('homepage-restaurant');
 
+Route::get('/aktivasi-bjb', function () {
+    return view('aktivasi-bjb.index');
+});
+
 // User-profile
 // Route::get('/user-profile', [UserController::class, 'userProfile'])->name('user-profile');
 Route::get('/user-profile/edit/{id}', [UserController::class, 'edit'])->name('edit-account');
