@@ -36,8 +36,8 @@ let token = '';
 // └───────────────────────── second (0 - 59, OPTIONAL)
 
 // const updateToken = schedule.scheduleJob('0 */1 * * *', function(){
-const updateToken = schedule.scheduleJob('*/3 * * * * *', function(){
-    token = getTokenFintech(urlGlobal, msisdnDev, passwordDev);
+const updateToken = schedule.scheduleJob('*/3 * * * * *',async function(){
+    token = await getTokenFintech(urlGlobal, msisdnDev, passwordDev);
 });
 
 // ====================================================
