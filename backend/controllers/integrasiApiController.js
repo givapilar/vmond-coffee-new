@@ -83,7 +83,6 @@ const getTokenFintech = async (req, res) => {
         const responseData = {
             code: 200,
             method: req.method,
-            // res: xAuthToken,
             res: req,
             message: 'Successfully!'
         };
