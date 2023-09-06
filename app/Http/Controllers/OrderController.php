@@ -197,7 +197,7 @@ class OrderController extends Controller
                     // 'kode_meja' => $request->meja_restaurant_id,
                     'metode_edisi' => $request->metode_edisi,
                     'voucher_diskon' => $request->voucher_diskon,
-                    'jumlah_customer' => $request->jumlah_customer,
+                    'jumlah_customer' => $request->jumlah_customer ?? 1,
                 ]);
 
                     foreach ($session_cart as $key => $item) {
