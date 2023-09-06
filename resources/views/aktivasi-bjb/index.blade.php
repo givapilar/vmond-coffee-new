@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Aktivasi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
 </head>
 <body>
     {{-- <button onclick="test()">Test</button> --}}
@@ -39,9 +40,9 @@
                         text: 'Submit',
                         btnClass: 'btn-blue',
                         action: function() {
-                            let getToken, password;
+                            let msisdn, password;
                             
-                            getToken = this.$content.find('#getToken').val();
+                            msisdn = this.$content.find('#msisdn').val();
                             password = this.$content.find('#password').val();
 
                             $.ajax({
@@ -52,7 +53,7 @@
                                 },
                                 data: {
                                     "_token": "{{ csrf_token() }}",
-                                    getToken,
+                                    msisdn,
                                     password,
                                 },
                                 async: false,
