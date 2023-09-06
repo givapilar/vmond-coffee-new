@@ -107,9 +107,12 @@ const getTokenFintech = async (req, res) => {
 
 const sendOtpByPhoneNumber = async (req, res) => {
     try {
+        const token = req.body.dttoken;
+        const notelp = req.body.notelp;
+
         const headers = {
             'Content-Type': 'application/json',
-            'X-AUTH-TOKEN': req.token
+            'X-AUTH-TOKEN': token
         };
 
         const metaData = {
@@ -125,7 +128,7 @@ const sendOtpByPhoneNumber = async (req, res) => {
         };
 
         const bodyData = {
-            phoneNo: msisdnDev
+            phoneNo: notelp
         };
 
         const result = await axios.post(
@@ -134,11 +137,12 @@ const sendOtpByPhoneNumber = async (req, res) => {
             { headers: headers }
         );
 
+        const reference = result.reference;
+
         const responseData = {
             code: 200,
             method: req.method,
-            res: result,
-            res: req,
+            reference: reference,
             message: 'Successfully!'
         };
         res.status(200).json(responseData);

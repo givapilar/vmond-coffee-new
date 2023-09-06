@@ -9,8 +9,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
-    <div class="container my-3">
+    <div class="container my-3 gap-3">
         <button onclick="getToken()" class="btn btn-sm btn-primary">Get Token</button>
+        <button onclick="sendOTP()" class="btn btn-sm btn-warning">Send OTP</button>
     </div>
     {{-- <button onclick="test()">Test</button> --}}
 </body>
@@ -21,72 +22,120 @@
 
 <script>
     let token = '';
-    function test() {
-        axios.post("https://vmondcoffee.controlindo.com/v1/integration/get-token-fintech").then(function (response) {
-            // console.log('RESPONSE DATA:: '+response.data)
-            token = response.data.data.token;
-            // console.log('RESPONSE DATA2:: '+response.data.data)
-            console.log('RESPONSE DATA3:: '+response.data.data.token)
-            // console.log('RES:: ', response)
-            // do whatever you want if console is [object object] then stringify the response
-        })
-    }
-    
-    function getToken() {
-            $.confirm({
-                title: 'Get Token',
-                content: "URL:{{ route('get-token') }}",
-                columnClass: 'medium',
-                type: 'blue',
-                typeAnimated: true,
-                buttons: {
-                    formSubmit: {
-                        text: 'Submit',
-                        btnClass: 'btn-blue',
-                        action: function() {
-                            let msisdn, password;
-                            
-                            msisdn = this.$content.find('#msisdn').val();
-                            password = this.$content.find('#password').val();
+    let reference = '';
 
-                            $.ajax({
-                                type: 'POST',
-                                url: "{{ route('get-token-fintech') }}",
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                },
-                                data: {
-                                    "_token": "{{ csrf_token() }}",
-                                    msisdn,
-                                    password,
-                                },
-                                async: false,
-                                success: function(res) {
-                                    console.log(res);
-                                    token = res.data.token;
-                                    alert('Berhasil! Get Token.');
-                                },
-                                error: function(data) {
-                                    console.log(data);
-                                    $.alert(data.responseJSON.message);
-                                }
-                            });
-                        }
-                    },
-                    cancel: function() {
-                        //close
-                    },
+    function getToken() {
+        $.confirm({
+            title: 'Get Token',
+            content: "URL:{{ route('get-token') }}",
+            columnClass: 'medium',
+            type: 'blue',
+            typeAnimated: true,
+            buttons: {
+                formSubmit: {
+                    text: 'Submit',
+                    btnClass: 'btn-blue',
+                    action: function() {
+                        let msisdn, password;
+                        
+                        msisdn = this.$content.find('#msisdn').val();
+                        password = this.$content.find('#password').val();
+
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{ route('get-token-fintech') }}",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data: {
+                                "_token": "{{ csrf_token() }}",
+                                msisdn,
+                                password,
+                            },
+                            async: false,
+                            success: function(res) {
+                                console.log(res);
+                                token = res.data.token;
+                                alert('Berhasil! Get Token.');
+                            },
+                            error: function(data) {
+                                console.log(data);
+                                $.alert(data.responseJSON.message);
+                            }
+                        });
+                    }
                 },
-                onContentReady: function() {
-                    // bind to events
-                    var jc = this;
-                    this.$content.find('form').on('submit', function(e) {
-                        // if the user submits the form by pressing enter in the field.
-                        e.preventDefault();
-                        jc.$$formSubmit.trigger('click'); // reference the button and click it
-                    });
-                }
-            });
-        }
+                cancel: function() {
+                    //close
+                },
+            },
+            onContentReady: function() {
+                // bind to events
+                var jc = this;
+                this.$content.find('form').on('submit', function(e) {
+                    // if the user submits the form by pressing enter in the field.
+                    e.preventDefault();
+                    jc.$$formSubmit.trigger('click'); // reference the button and click it
+                });
+            }
+        });
+    }
+
+    function sendOTP() {
+        $.confirm({
+            title: 'Send OTP',
+            content: "URL:{{ route('send-otp') }}",
+            columnClass: 'medium',
+            type: 'blue',
+            typeAnimated: true,
+            buttons: {
+                formSubmit: {
+                    text: 'Submit',
+                    btnClass: 'btn-blue',
+                    action: function() {
+                        let dttoken, notelp;
+                        
+                        dttoken = token;
+                        notelp = this.$content.find('#notelp').val();
+
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{ route('send-otp-fintech') }}",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data: {
+                                "_token": "{{ csrf_token() }}",
+                                dttoken,
+                                notelp,
+                            },
+                            async: false,
+                            success: function(res) {
+                                console.log(res);
+                                reference = res.data.reference;
+                                alert('Berhasil! Send OTP.');
+                            },
+                            error: function(data) {
+                                console.log(data);
+                                $.alert(data.responseJSON.message);
+                            }
+                        });
+                    }
+                },
+                cancel: function() {
+                    //close
+                },
+            },
+            onContentReady: function() {
+                // bind to events
+                var jc = this;
+                this.$content.find('form').on('submit', function(e) {
+                    // if the user submits the form by pressing enter in the field.
+                    e.preventDefault();
+                    jc.$$formSubmit.trigger('click'); // reference the button and click it
+                });
+            }
+        });
+    }
 </script>
 </html>
