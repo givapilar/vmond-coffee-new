@@ -79,10 +79,13 @@ const getTokenFintech = (req, res) => {
         // );
 
         // const xAuthToken = result.headers['x-auth-token'];
-
+        const msisdn = req.body.msisdnDev;
+        const password = req.body.passwordDev;
         const responseData = {
             code: 200,
             method: req.method,
+            data1: msisdn,
+            data2: password,
             message: 'Successfully!'
         };
         res.status(200).json(responseData);
