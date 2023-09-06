@@ -102,8 +102,6 @@ class APIController extends Controller
 
         try {
             $dataToSend = [
-                // 'msisdnDev' => '081717181988',
-                // 'passwordDev' => '1c1bbf7b79bc9b97cafb7488946a6001f05980f62dbeb5bc093dd680b8241197',
                 'msisdnDev' => $request->msisdn,
                 'passwordDev' => $request->password,
             ];
@@ -128,18 +126,18 @@ class APIController extends Controller
         }
     }
 
-    public function sendOTP(){
+    public function sendOTP(Request $request){
         // Buat instance dari Guzzle Client
         $client = new Client();
 
         try {
             $dataToSend = [
-                'msisdnDev' => '081717181988',
-                'passwordDev' => '1c1bbf7b79bc9b97cafb7488946a6001f05980f62dbeb5bc093dd680b8241197',
+                'dttoken' => $request->dttoken,
+                'notelp' => $request->notelp,
             ];
     
             // Lakukan permintaan HTTP POST ke URL tertentu dengan data dalam body
-            $response = $client->post('http://172.31.32.85:2222/v1/api/get-token-fintech', [
+            $response = $client->post('http://172.31.32.85:2222/v1/api/send-otp-fintech', [
                 'json' => $dataToSend, // Data yang akan dikirim dalam format JSON
             ]);
     

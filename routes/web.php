@@ -182,7 +182,7 @@ Route::get('/send-otp', function () {
 
 
 Route::post('/v1/integration/get-token-fintech',[APIController::class,'getTokenFintech'])->name('get-token-fintech');
-Route::post('/v1/integration/send-otp',[APIController::class,'sendOTP'])->name('send-otp');
+Route::post('/v1/integration/send-otp',[APIController::class,'sendOTP'])->name('send-otp-fintech');
 // =============================================================
 // End Integrasi Payment Gateway
 // =============================================================
