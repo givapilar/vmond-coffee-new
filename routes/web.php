@@ -95,6 +95,8 @@ Route::get('/aktivasi-bjb', function () {
     return view('aktivasi-bjb.index');
 });
 
+Route::post('/aktivasi-bjb',[APIController::class,'aktivasi'])->name('aktivasi');
+
 // User-profile
 // Route::get('/user-profile', [UserController::class, 'userProfile'])->name('user-profile');
 Route::get('/user-profile/edit/{id}', [UserController::class, 'edit'])->name('edit-account');

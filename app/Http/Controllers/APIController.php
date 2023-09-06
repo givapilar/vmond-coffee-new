@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
+use GuzzleHttp\Client;
 
 class APIController extends Controller
 {
@@ -27,6 +28,25 @@ class APIController extends Controller
     //     }
 
     // }
+    public function aktivasi(){
+        // Buat instance dari Guzzle Client
+        $client = new Client();
+
+        try {
+            // Lakukan permintaan HTTP GET ke URL tertentu
+            $response = $client->get('http://172.31.32.85:2222/v1/api');
+
+            // Ambil isi respons sebagai string
+            $data = $response->getBody()->getContents();
+
+            // Sekarang Anda dapat melakukan sesuatu dengan data yang diterima
+            return response()->json(['data' => $data]);
+        } catch (\Exception $e) {
+            // Tangani kesalahan jika ada
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+    
     public function checkDateSchedule(Request $request)
     {
         try {
