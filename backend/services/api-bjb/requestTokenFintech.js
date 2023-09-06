@@ -27,12 +27,12 @@ async function getTokenFintech(urlGlobal, msisdnDev, passwordDev) {
         // Memeriksa ketersediaan URL
         checkURLAvailability(urlToCheck)
         .then((isAccessible) => {
+            console.log(isAccessible);
             if (!isAccessible) {
                 sendTelegramNotification('getTokenFintech : Endpoint tidak dapat di akses');
                 console.log('Link Error!');
                 return 0;
             }
-            console.log(isAccessible);
             console.log('Lolos');
         })
         .catch((error) => {
