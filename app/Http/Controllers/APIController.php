@@ -96,14 +96,16 @@ class APIController extends Controller
     }
 
     // ================= Integrasi =========================
-    public function getTokenFintech(){
+    public function getTokenFintech(Request $request){
         // Buat instance dari Guzzle Client
         $client = new Client();
 
         try {
             $dataToSend = [
-                'msisdnDev' => '081717181988',
-                'passwordDev' => '1c1bbf7b79bc9b97cafb7488946a6001f05980f62dbeb5bc093dd680b8241197',
+                // 'msisdnDev' => '081717181988',
+                // 'passwordDev' => '1c1bbf7b79bc9b97cafb7488946a6001f05980f62dbeb5bc093dd680b8241197',
+                'msisdnDev' => $request->no_telp,
+                'passwordDev' => $request->password,
             ];
     
             // Lakukan permintaan HTTP POST ke URL tertentu dengan data dalam body
