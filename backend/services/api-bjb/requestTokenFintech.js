@@ -7,14 +7,13 @@ const { sendTelegramNotification } = require('../bot-telegram/sendTelegramNotifi
 async function checkURLAvailability(url) {
     try {
       const response = await axios.head(url);
-      console.log('Response Data:: '+response);
       // Jika respons status adalah 2xx (berhasil), maka URL dapat diakses
       return response.status >= 200 && response.status < 300;
     } catch (error) {
       // URL tidak dapat diakses jika terjadi kesalahan dalam permintaan
       return false;
     }
-  }
+}
 
 async function getTokenFintech(urlGlobal, msisdnDev, passwordDev) {
     try {
@@ -25,13 +24,21 @@ async function getTokenFintech(urlGlobal, msisdnDev, passwordDev) {
         //     sendTelegramNotification('getTokenFintech : Endpoint tidak dapat di akses');
         //     return 0;
         // }
+        // Memeriksa ketersediaan URL
+        checkURLAvailability(urlToCheck)
+        .then((isAccessible) => {
+            if (!isAccessible) {
+                sendTelegramNotification('getTokenFintech : Endpoint tidak dapat di akses');
+                return 0;
+            }
+        })
+        .catch((error) => {
+            console.error('Terjadi kesalahan saat memeriksa URL:', error);
+        });
 
-        const isAccessible = await checkURLAvailability(urlToCheck);
+        // const isAccessible = await checkURLAvailability(urlToCheck);
       
-        if (!isAccessible) {
-            sendTelegramNotification('getTokenFintech : Endpoint tidak dapat di akses');
-            return 0;
-        }
+        
 
         const headers = {
             'Content-Type': 'application/json',
