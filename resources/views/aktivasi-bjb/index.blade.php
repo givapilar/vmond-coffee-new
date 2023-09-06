@@ -63,7 +63,7 @@
                                 async: false,
                                 success: function(res) {
                                     console.log(res);
-                                    token = res.data.data.token;
+                                    token = res.data.token;
                                     alert('Berhasil! Get Token.');
                                 },
                                 error: function(data) {
