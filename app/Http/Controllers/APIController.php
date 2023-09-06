@@ -104,7 +104,7 @@ class APIController extends Controller
             $dataToSend = [
                 // 'msisdnDev' => '081717181988',
                 // 'passwordDev' => '1c1bbf7b79bc9b97cafb7488946a6001f05980f62dbeb5bc093dd680b8241197',
-                'msisdnDev' => $request->no_telp,
+                'msisdnDev' => $request->msisdn,
                 'passwordDev' => $request->password,
             ];
     
