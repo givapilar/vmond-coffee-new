@@ -91,17 +91,6 @@ Route::get('/restaurant/menu', function () {
     return view('homepage.restaurant', $data);
 })->name('homepage-restaurant');
 
-Route::get('/aktivasi-bjb', function () {
-    return view('aktivasi-bjb.index');
-});
-
-Route::get('/send-otp', function () {
-    return view('aktivasi-bjb.send-otp');
-})->name('send-otp');
-
-Route::post('/v1/integration/get-token-fintech',[APIController::class,'getTokenFintech'])->name('get-token-fintech');
-Route::post('/v1/integration/send-otp',[APIController::class,'sendOTP'])->name('send-otp');
-
 // User-profile
 // Route::get('/user-profile', [UserController::class, 'userProfile'])->name('user-profile');
 Route::get('/user-profile/edit/{id}', [UserController::class, 'edit'])->name('edit-account');
@@ -174,3 +163,26 @@ Route::post('/checkout/checkout-waiters/{token}',[OrderController::class,'checko
 
 // delete meja id
 Route::get('/checkout/destroy',[OrderController::class,'resetMeja'])->name('reset-meja');
+
+
+// =============================================================
+// Integrasi Payment Gateway
+// =============================================================
+Route::get('/aktivasi-bjb', function () {
+    return view('aktivasi-bjb.index');
+});
+
+Route::get('/get-token', function () {
+    return view('aktivasi-bjb.get-token');
+})->name('get-token');
+
+Route::get('/send-otp', function () {
+    return view('aktivasi-bjb.send-otp');
+})->name('send-otp');
+
+
+Route::post('/v1/integration/get-token-fintech',[APIController::class,'getTokenFintech'])->name('get-token-fintech');
+Route::post('/v1/integration/send-otp',[APIController::class,'sendOTP'])->name('send-otp');
+// =============================================================
+// End Integrasi Payment Gateway
+// =============================================================
