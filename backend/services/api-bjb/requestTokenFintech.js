@@ -7,6 +7,7 @@ const { sendTelegramNotification } = require('../bot-telegram/sendTelegramNotifi
 async function checkURLAvailability(url) {
     try {
       const response = await axios.head(url);
+      console.log('Response Data:: '+response);
       // Jika respons status adalah 2xx (berhasil), maka URL dapat diakses
       return response.status >= 200 && response.status < 300;
     } catch (error) {
