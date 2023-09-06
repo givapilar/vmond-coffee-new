@@ -20,13 +20,15 @@ app.use('/v1/api', userRoutes);
 const urlGlobal = process.env.URL_GLOBAL;
 const msisdnDev = process.env.MSISDN_DEV;
 const passwordDev = process.env.PASSWORD_DEV;
+let token = '';
 
 async function main() {
   try {
-    const result = await getTokenFintech(urlGlobal, msisdnDev, passwordDev);
 
-    console.log('AllResult :: ', result);
-    console.log('Result Data :: ', result.data);
+    if (!token) {
+      token = await getTokenFintech(urlGlobal, msisdnDev, passwordDev);
+    }
+    console.log('AllResult :: ', token);
 
     // Lanjutkan dengan pemrosesan hasil sesuai kebutuhan Anda
   } catch (err) {
@@ -34,7 +36,8 @@ async function main() {
     console.error(err);
   }
 }
-main();
+const interval = 1000;
+setInterval(main, interval);
 
 // sendGetRequest();
 
