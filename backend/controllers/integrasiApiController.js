@@ -49,17 +49,92 @@ const callbackFromBJB = (req, res) => {
     }
 };
 
-const sendOtpByPhoneNumber = (req, res) => {
+const getTokenFintech = async (req, res) => {
     try {
-        
-        console.log('Result data : ',res);
-        console.log('Request : ',req);
+        // const headers = {
+        //     'Content-Type': 'application/json',
+        // };
+
+        // const metaData = {
+        //     "datetime": "2023-09-05T09:40:21.450Z",
+        //     "deviceId": "9f9cb0504caa5059", 
+        //     "devicePlatform": "Linux",
+        //     "deviceOSVersion": "9",
+        //     "deviceType": "",
+        //     "latitude": "",
+        //     "longitude": "",
+        //     "appId": 4,
+        //     "appVersion": "1.0",
+        // };
+
+        // const bodyData = {
+        //     msisdn: req.msisdnDev,
+        //     password: req.passwordDev
+        // };
+
+        // const result = await axios.post(
+        //     urlGlobal + '/mobile-webconsole/apps/pocket/requestTokenFintech/',
+        //     { metadata: metaData, body: bodyData },
+        //     { headers: headers }
+        // );
+
+        // const xAuthToken = result.headers['x-auth-token'];
 
         const responseData = {
             code: 200,
             method: req.method,
+            // res: xAuthToken,
+            res: req,
+            message: 'Successfully!'
+        };
+        res.status(200).json(responseData);
+    } catch (error) {
+        const responseData = {
+            code: 500,
+            method: req.method,
             url: req.url,
             headers: req.headers,
+            message: 'Failed! Error: ' + error
+        };
+        
+        res.status(500).json(responseData);
+    }
+};
+
+const sendOtpByPhoneNumber = async (req, res) => {
+    try {
+        const headers = {
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': req.token
+        };
+
+        const metaData = {
+            "datetime": "2023-09-04T09:40:21.450Z",
+            "deviceId": "bjbdigi",
+            "devicePlatform": "Linux",
+            "deviceOSVersion": "bjbdigi-version",
+            "deviceType": "",
+            "latitude": "",
+            "longitude": "",
+            "appId": 4,
+            "appVersion": "1.0",
+        };
+
+        const bodyData = {
+            phoneNo: msisdnDev
+        };
+
+        const result = await axios.post(
+            urlGlobal + '/mobile-webconsole/apps/4/pbNonFinancialAdapter/resendOTPByPhone',
+            { metadata: metaData, body: bodyData },
+            { headers: headers }
+        );
+
+        const responseData = {
+            code: 200,
+            method: req.method,
+            res: result,
+            res: req,
             message: 'Successfully!'
         };
         res.status(200).json(responseData);
@@ -79,4 +154,6 @@ const sendOtpByPhoneNumber = (req, res) => {
   module.exports = {
     getURL,
     callbackFromBJB,
+    getTokenFintech,
+    sendOtpByPhoneNumber,
   };
