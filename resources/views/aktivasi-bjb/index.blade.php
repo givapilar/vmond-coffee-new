@@ -17,7 +17,8 @@
     let token = '';
     function test() {
         axios.post("https://vmondcoffee.controlindo.com/v1/integration/get-token-fintech").then(function (response) {
-            console.log(response.data.token)
+            console.log('RESPONSE DATA:: '+response.data)
+            console.log('RES:: ', response)
             // do whatever you want if console is [object object] then stringify the response
         })
     }
