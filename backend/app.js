@@ -5,31 +5,49 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./swaggerAPI/swagger'); // Sesuaikan path jika berbeda
 const axios = require('axios'); 
 require('dotenv').config();
-const isReachable = require('is-reachable');
 
 // =====================Function Import=======================
 // const  = require('./myModule');
 const { getTokenFintech } = require('./services/api-bjb/requestTokenFintech');
 // ===================End Function Import=====================
 
-// Middleware untuk mengizinkan parsing JSON dari permintaan
 app.use(express.json());
 app.use('/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-// Gunakan rute untuk pengguna
 app.use('/v1/api', userRoutes);
+
 const urlGlobal = process.env.URL_GLOBAL;
 const msisdnDev = process.env.MSISDN_DEV;
 const passwordDev = process.env.PASSWORD_DEV;
 let token = '';
 
+// ====================================================
+// Update token berdasarkan schedule per 1 jam sekali
+// ====================================================
+
+// *    *    *    *    *    *
+// ┬    ┬    ┬    ┬    ┬    ┬
+// │    │    │    │    │    │
+// │    │    │    │    │    └ day of week (0 - 7) (0 or 7 is Sun)
+// │    │    │    │    └───── month (1 - 12)
+// │    │    │    └────────── day of month (1 - 31)
+// │    │    └─────────────── hour (0 - 23)
+// │    └──────────────────── minute (0 - 59)
+// └───────────────────────── second (0 - 59, OPTIONAL)
+
+// const updateToken = schedule.scheduleJob('0 */1 * * *', function(){
+const updateToken = schedule.scheduleJob('*/3 * * * * *', function(){
+    token = getTokenFintech(urlGlobal, msisdnDev, passwordDev);
+});
+
+// ====================================================
+
 async function main() {
     try {
         // Cek apakah token belum ada atau sudah lebih dari 1 jam
-        if (!token || isTokenExpired()) {
+        if (!token) {
             token = await getTokenFintech(urlGlobal, msisdnDev, passwordDev);
-            console.log('Token telah diperbarui:', token);
         }
-
+        console.log("TOKEN :: "+token);
         // Lanjutkan dengan pemrosesan hasil sesuai kebutuhan Anda
     } catch (err) {
         // Tangani error di sini
@@ -37,21 +55,8 @@ async function main() {
     }
 }
 
-// Fungsi untuk memeriksa apakah token sudah lebih dari 1 jam
-function isTokenExpired() {
-    if (!token || !token.timestamp) {
-        return true;
-    }
-
-    const currentTime = new Date().getTime();
-    const tokenTime = token.timestamp.getTime();
-    const oneHourInMilliseconds = 5 * 1000; // 1 jam dalam milidetik
-
-    return currentTime - tokenTime >= oneHourInMilliseconds;
-}
-
-// Jalankan main() untuk pertama kali
 main();
+
 const interval = 1000;
 setInterval(main, interval);
 
