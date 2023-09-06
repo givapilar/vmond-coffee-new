@@ -4,16 +4,33 @@
 const axios = require('axios');
 const isReachable = require('is-reachable');
 const { sendTelegramNotification } = require('../bot-telegram/sendTelegramNotification');
+async function checkURLAvailability(url) {
+    try {
+      const response = await axios.head(url);
+      // Jika respons status adalah 2xx (berhasil), maka URL dapat diakses
+      return response.status >= 200 && response.status < 300;
+    } catch (error) {
+      // URL tidak dapat diakses jika terjadi kesalahan dalam permintaan
+      return false;
+    }
+  }
 
 async function getTokenFintech(urlGlobal, msisdnDev, passwordDev) {
     try {
-        // const urlToCheck =  urlGlobal + '/mobile-webconsole/apps/pocket/requestTokenFintech/'; // Ganti dengan URL yang ingin Anda periksa
+        const urlToCheck =  urlGlobal + '/mobile-webconsole/apps/pocket/requestTokenFintech/'; // Ganti dengan URL yang ingin Anda periksa
         // const reachable = await isReachable(urlToCheck);
 
         // if (!reachable) {
         //     sendTelegramNotification('getTokenFintech : Endpoint tidak dapat di akses');
         //     return 0;
         // }
+
+        const isAccessible = await checkURLAvailability(urlToCheck);
+      
+        if (!isAccessible) {
+            sendTelegramNotification('getTokenFintech : Endpoint tidak dapat di akses');
+            return 0;
+        }
 
         const headers = {
             'Content-Type': 'application/json',
