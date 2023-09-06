@@ -77,18 +77,18 @@ const getTokenFintech = async (req, res) => {
             password: dtpassword
         };
 
-        // const result = await axios.post(
-        //     urlGlobal + '/mobile-webconsole/apps/pocket/requestTokenFintech/',
-        //     { metadata: metaData, body: bodyData },
-        //     { headers: headers }
-        // );
+        const result = await axios.post(
+            urlGlobal + '/mobile-webconsole/apps/pocket/requestTokenFintech/',
+            { metadata: metaData, body: bodyData },
+            { headers: headers }
+        );
 
-        // const xAuthToken = result.headers['x-auth-token'];
+        const xAuthToken = result.headers['x-auth-token'];
         
         const responseData = {
             code: 200,
             method: req.method,
-            token: urlGlobal,
+            token: xAuthToken,
             message: 'Successfully!'
         };
         res.status(200).json(responseData);
