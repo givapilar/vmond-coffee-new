@@ -133,7 +133,7 @@ class APIController extends Controller
         try {
             $dataToSend = [
                 'dttoken' => $request->dttoken,
-                'notelp' => $request->notelp,
+                'notelp' => $request->no_telp,
             ];
     
             // Lakukan permintaan HTTP POST ke URL tertentu dengan data dalam body
