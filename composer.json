@@ -12,7 +12,7 @@
         "darryldecode/cart": "^4.2",
         "doctrine/dbal": "^3.6",
         "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.0.1",
+        "guzzlehttp/guzzle": "^7.7",
         "laravel/fortify": "^1.17",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
