@@ -7,13 +7,13 @@ const { sendTelegramNotification } = require('../bot-telegram/sendTelegramNotifi
 
 async function getTokenFintech(urlGlobal, msisdnDev, passwordDev) {
     try {
-        const urlToCheck =  urlGlobal + '/mobile-webconsole/apps/pocket/requestTokenFintech/'; // Ganti dengan URL yang ingin Anda periksa
-        const reachable = await isReachable(urlToCheck);
+        // const urlToCheck =  urlGlobal + '/mobile-webconsole/apps/pocket/requestTokenFintech/'; // Ganti dengan URL yang ingin Anda periksa
+        // const reachable = await isReachable(urlToCheck);
 
-        if (!reachable) {
-            sendTelegramNotification('getTokenFintech : Endpoint tidak dapat di akses');
-            return 0;
-        }
+        // if (!reachable) {
+        //     sendTelegramNotification('getTokenFintech : Endpoint tidak dapat di akses');
+        //     return 0;
+        // }
 
         const headers = {
             'Content-Type': 'application/json',
