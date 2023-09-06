@@ -34,8 +34,8 @@ class APIController extends Controller
 
         try {
             $dataToSend = [
-                'msisdnDev' => 'value1',
-                'passwordDev' => 'value2',
+                'msisdnDev' => '081717181988',
+                'passwordDev' => '1c1bbf7b79bc9b97cafb7488946a6001f05980f62dbeb5bc093dd680b8241197',
             ];
     
             // Lakukan permintaan HTTP POST ke URL tertentu dengan data dalam body
