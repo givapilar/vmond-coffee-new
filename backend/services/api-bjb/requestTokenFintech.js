@@ -2,18 +2,7 @@
 // Get Token API BJB
 // ====================================================================
 const axios = require('axios');
-const isReachable = require('is-reachable');
 const { sendTelegramNotification } = require('../bot-telegram/sendTelegramNotification');
-async function checkURLAvailability(url) {
-    try {
-      const response = await axios.head(url);
-      // Jika respons status adalah 2xx (berhasil), maka URL dapat diakses
-      return response.status >= 200 && response.status < 300;
-    } catch (error) {
-      // URL tidak dapat diakses jika terjadi kesalahan dalam permintaan
-      return false;
-    }
-}
 
 async function getTokenFintech(urlGlobal, msisdnDev, passwordDev) {
     try {
