@@ -32,7 +32,7 @@
         })
     }
     
-    function getToken(id) {
+    function getToken() {
             $.confirm({
                 title: 'Get Token',
                 content: "URL:{{ route('get-token') }}",
