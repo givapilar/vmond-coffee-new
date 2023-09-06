@@ -17,32 +17,6 @@ async function checkURLAvailability(url) {
 
 async function getTokenFintech(urlGlobal, msisdnDev, passwordDev) {
     try {
-        const urlToCheck =  urlGlobal + '/mobile-webconsole/apps/pocket/requestTokenFintech/'; // Ganti dengan URL yang ingin Anda periksa
-        // const reachable = await isReachable(urlToCheck);
-
-        // if (!reachable) {
-        //     sendTelegramNotification('getTokenFintech : Endpoint tidak dapat di akses');
-        //     return 0;
-        // }
-        // Memeriksa ketersediaan URL
-        checkURLAvailability(urlToCheck)
-        .then((isAccessible) => {
-            console.log(isAccessible);
-            if (!isAccessible) {
-                sendTelegramNotification('getTokenFintech : Endpoint tidak dapat di akses');
-                console.log('Link Error!');
-                return 0;
-            }
-            console.log('Lolos');
-        })
-        .catch((error) => {
-            console.error('Terjadi kesalahan saat memeriksa URL:', error);
-        });
-
-        // const isAccessible = await checkURLAvailability(urlToCheck);
-      
-        
-
         const headers = {
             'Content-Type': 'application/json',
         };
