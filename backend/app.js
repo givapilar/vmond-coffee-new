@@ -4,18 +4,37 @@ const userRoutes = require('./routes/integrasiApiRoutes');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./swaggerAPI/swagger'); // Sesuaikan path jika berbeda
 const axios = require('axios'); 
+require('dotenv').config();
+const isReachable = require('is-reachable');
+
 // =====================Function Import=======================
 // const  = require('./myModule');
+const { getTokenFintech } = require('./services/api-bjb/requestTokenFintech');
 // ===================End Function Import=====================
+
 // Middleware untuk mengizinkan parsing JSON dari permintaan
 app.use(express.json());
 app.use('/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // Gunakan rute untuk pengguna
 app.use('/v1/api', userRoutes);
-const urlGlobal = "http://10.44.124.164:8080";
-const msisdnDev = "081717181988";
-const passwordDev = "51cbc137951976fa96deaa8899ce7dba641e0f309b8d50e02698436f8939150d";
+const urlGlobal = process.env.URL_GLOBAL;
+const msisdnDev = process.env.MSISDN_DEV;
+const passwordDev = process.env.PASSWORD_DEV;
 
+async function main() {
+  try {
+    const result = await getTokenFintech(urlGlobal, msisdnDev, passwordDev);
+
+    console.log('AllResult :: ', result);
+    console.log('Result Data :: ', result.data);
+
+    // Lanjutkan dengan pemrosesan hasil sesuai kebutuhan Anda
+  } catch (err) {
+    // Tangani error di sini
+    console.error(err);
+  }
+}
+main();
 
 // sendGetRequest();
 
@@ -203,70 +222,70 @@ const passwordDev = "51cbc137951976fa96deaa8899ce7dba641e0f309b8d50e02698436f893
 
 // ====================================================================
 // Create Qris Dinamis BJB
-const createQrisFintech = async () => {
-  try {
-    const headers = {
-      "Content-Type": "application/json",
-      "X-AUTH-TOKEN": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJjYWVlZmY1Yy1lOTI3LTQ4YTAtYjY5Ny1mYzFiNGRkZTk1ZWQiLCJzdWIiOiJWTU85MzcxOTI5ODgiLCJleHAiOjE2OTM5MjM0ODAsImlhdCI6MTY5Mzg5MzQ4MCwiaWRlbnRpZmllciI6Im5MUGpTdU5tNDA2SEZUUSIsInVzZXJuYW1lIjoiVk1POTM3MTkyOTg4In0.rBHoCLMYnoUITWOYvN0rdnR5y03F1vWjJ8QojkBzHVaQQfMdY31ujCMQdJjSGr52DBoL5gh__RmyUKSnKfeJFw" // Replace with actual X-AUTH-TOKEN value
-    };
+// const createQrisFintech = async () => {
+//   try {
+//     const headers = {
+//       "Content-Type": "application/json",
+//       "X-AUTH-TOKEN": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJjYWVlZmY1Yy1lOTI3LTQ4YTAtYjY5Ny1mYzFiNGRkZTk1ZWQiLCJzdWIiOiJWTU85MzcxOTI5ODgiLCJleHAiOjE2OTM5MjM0ODAsImlhdCI6MTY5Mzg5MzQ4MCwiaWRlbnRpZmllciI6Im5MUGpTdU5tNDA2SEZUUSIsInVzZXJuYW1lIjoiVk1POTM3MTkyOTg4In0.rBHoCLMYnoUITWOYvN0rdnR5y03F1vWjJ8QojkBzHVaQQfMdY31ujCMQdJjSGr52DBoL5gh__RmyUKSnKfeJFw" // Replace with actual X-AUTH-TOKEN value
+//     };
     
-    const metaData = {
-      "datetime": "2023-09-04T09:40:21.450Z",
-      "deviceId": "bjbdigi",
-      "devicePlatform": "Linux",
-      "deviceOSVersion": "bjbdigi-version",
-      "deviceType": "",
-      "latitude": "",
-      "longitude": "",
-      "appId": 4,
-      "appVersion": "1.0",
-    };
+//     const metaData = {
+//       "datetime": "2023-09-04T09:40:21.450Z",
+//       "deviceId": "bjbdigi",
+//       "devicePlatform": "Linux",
+//       "deviceOSVersion": "bjbdigi-version",
+//       "deviceType": "",
+//       "latitude": "",
+//       "longitude": "",
+//       "appId": 4,
+//       "appVersion": "1.0",
+//     };
     
-    const bodyData = {
-      "merchantAccountNumber": msisdnDev, // Replace with actual merchant account number
-      "amount": "2000", // Replace with actual amount
-      "expInSecond": 0 // Replace with actual expiry in seconds or remove if not needed
-    };
+//     const bodyData = {
+//       "merchantAccountNumber": msisdnDev, // Replace with actual merchant account number
+//       "amount": "2000", // Replace with actual amount
+//       "expInSecond": 0 // Replace with actual expiry in seconds or remove if not needed
+//     };
     
-    const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/4/pbTransactionAdapter/createInvoiceQRISDinamisExt", 
-      {"metadata": metaData, "body": bodyData}, 
-      {"headers": headers}
-    );
+//     const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/4/pbTransactionAdapter/createInvoiceQRISDinamisExt", 
+//       {"metadata": metaData, "body": bodyData}, 
+//       {"headers": headers}
+//     );
     
-    console.log("AllResult :: ", result);
-    console.log("Result Data :: ", result.data);
+//     console.log("AllResult :: ", result);
+//     console.log("Result Data :: ", result.data);
     
 
-    // Check Console detail qris
-    if (result && result.data && result.data.body && result.data.body.CreateInvoiceQRISDinamisExtResponse) {
-      const response = result.data.body.CreateInvoiceQRISDinamisExtResponse;
-      const attr = response._attr;
-      const responseCode = response.responseCode;
-      const responseMessage = response.responseMessage;
-      const amount = response.amount;
-      const exp = response.expiryParameter;
-      const invoiceId = response.invoiceId;
-      const stringQR = response.stringQR;
+//     // Check Console detail qris
+//     if (result && result.data && result.data.body && result.data.body.CreateInvoiceQRISDinamisExtResponse) {
+//       const response = result.data.body.CreateInvoiceQRISDinamisExtResponse;
+//       const attr = response._attr;
+//       const responseCode = response.responseCode;
+//       const responseMessage = response.responseMessage;
+//       const amount = response.amount;
+//       const exp = response.expiryParameter;
+//       const invoiceId = response.invoiceId;
+//       const stringQR = response.stringQR;
     
-      console.log("Attr:", attr);
-      console.log("Response Code:", responseCode);
-      console.log("Response Message:", responseMessage);
-      console.log("Amount:", amount);
-      console.log("String QR:", stringQR);
-      console.log("Exp:", exp);
-      console.log("Invoice Id :", invoiceId);
-    } else {
-      console.log("Response structure is not as expected.");
-    }
+//       console.log("Attr:", attr);
+//       console.log("Response Code:", responseCode);
+//       console.log("Response Message:", responseMessage);
+//       console.log("Amount:", amount);
+//       console.log("String QR:", stringQR);
+//       console.log("Exp:", exp);
+//       console.log("Invoice Id :", invoiceId);
+//     } else {
+//       console.log("Response structure is not as expected.");
+//     }
     
     
-  } catch (err) {
-    // Handle Error Here
-    console.error(err);
-  }
-};
+//   } catch (err) {
+//     // Handle Error Here
+//     console.error(err);
+//   }
+// };
 
-createQrisFintech();
+// createQrisFintech();
 
 
 // Jalankan server pada port tertentu
