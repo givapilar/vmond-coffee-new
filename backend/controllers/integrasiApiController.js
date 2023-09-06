@@ -83,7 +83,6 @@ const getTokenFintech = (req, res) => {
         const responseData = {
             code: 200,
             method: req.method,
-            res: req.bodyData,
             message: 'Successfully!'
         };
         res.status(200).json(responseData);
