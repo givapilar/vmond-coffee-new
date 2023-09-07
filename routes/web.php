@@ -180,9 +180,14 @@ Route::get('/send-otp', function () {
     return view('aktivasi-bjb.send-otp');
 })->name('send-otp');
 
+Route::get('/create-qris-dinamis', function () {
+    return view('aktivasi-bjb.create-qris');
+})->name('create-qris-dinamis');
+
 
 Route::post('/v1/integration/get-token-fintech',[APIController::class,'getTokenFintech'])->name('get-token-fintech');
 Route::post('/v1/integration/send-otp',[APIController::class,'sendOTP'])->name('send-otp-fintech');
+Route::post('/v1/integration/create-qris',[APIController::class,'createQris'])->name('create-qris-fintech');
 // =============================================================
 // End Integrasi Payment Gateway
 // =============================================================

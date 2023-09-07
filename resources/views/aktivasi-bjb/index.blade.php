@@ -12,6 +12,7 @@
     <div class="container my-3 gap-3">
         <button onclick="getToken()" class="btn btn-sm btn-primary">Get Token</button>
         <button onclick="sendOTP()" class="btn btn-sm btn-warning">Send OTP</button>
+        {{-- <button onclick="createQrisDinamis()" class="btn btn-sm btn-secondary">Create Qris Dinamis</button> --}}
     </div>
     {{-- <button onclick="test()">Test</button> --}}
 </body>
@@ -97,6 +98,7 @@
                         
                         dttoken = token;
                         notelp = this.$content.find('#no_telp').val();
+                        console.log('no tlp', notelp);
 
                         $.ajax({
                             type: 'POST',
@@ -137,5 +139,62 @@
             }
         });
     }
+
+    // function createQrisDinamis() {
+    //     $.confirm({
+    //         title: 'Get Token',
+    //         content: "URL:{{ route('create-qris-dinamis') }}",
+    //         columnClass: 'medium',
+    //         type: 'blue',
+    //         typeAnimated: true,
+    //         buttons: {
+    //             formSubmit: {
+    //                 text: 'Submit',
+    //                 btnClass: 'btn-blue',
+    //                 action: function() {
+    //                     let msisdn, password;
+                        
+    //                     msisdn = this.$content.find('#msisdn').val();
+    //                     password = this.$content.find('#password').val();
+
+    //                     $.ajax({
+    //                         type: 'POST',
+    //                         url: "{{ route('create-qris-fintech') }}",
+    //                         headers: {
+    //                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //                         },
+    //                         data: {
+    //                             "_token": "{{ csrf_token() }}",
+    //                             msisdn,
+    //                             password,
+    //                         },
+    //                         async: false,
+    //                         success: function(res) {
+    //                             console.log(res);
+    //                             token = res.data.token;
+    //                             alert('Berhasil! Create Qris.');
+    //                         },
+    //                         error: function(data) {
+    //                             console.log(data);
+    //                             $.alert(data.responseJSON.message);
+    //                         }
+    //                     });
+    //                 }
+    //             },
+    //             cancel: function() {
+    //                 //close
+    //             },
+    //         },
+    //         onContentReady: function() {
+    //             // bind to events
+    //             var jc = this;
+    //             this.$content.find('form').on('submit', function(e) {
+    //                 // if the user submits the form by pressing enter in the field.
+    //                 e.preventDefault();
+    //                 jc.$$formSubmit.trigger('click'); // reference the button and click it
+    //             });
+    //         }
+    //     });
+    // }
 </script>
 </html>
