@@ -133,11 +133,43 @@ class APIController extends Controller
         try {
             $dataToSend = [
                 'dttoken' => $request->dttoken,
-                'notelp' => $request->no_telp,
+                'notelp' => $request->notelp,
             ];
     
             // Lakukan permintaan HTTP POST ke URL tertentu dengan data dalam body
             $response = $client->post('http://172.31.32.85:2222/v1/api/send-otp-fintech', [
+                'json' => $dataToSend, // Data yang akan dikirim dalam format JSON
+            ]);
+    
+            // Ambil isi respons sebagai string
+            $data = $response->getBody()->getContents();
+    
+            // Sekarang Anda dapat melakukan sesuatu dengan data yang diterima
+            // Konversi respons JSON menjadi array asosiatif
+            $responseData = json_decode($data, true);
+    
+            // Kembalikan respons JSON
+            return response()->json(['data' => $responseData]);
+        } catch (\Exception $e) {
+            // Tangani kesalahan jika ada
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function createQris(Request $request){
+        // Buat instance dari Guzzle Client
+        $client = new Client();
+
+        try {
+            $dataToSend = [
+                'dttoken' => $request->dttoken,
+                'merchantAccountNumber' => $request->msisdn,
+                'amount' => $request->amount,
+                'expInSecond' => $request->exp_in_second,
+            ];
+    
+            // Lakukan permintaan HTTP POST ke URL tertentu dengan data dalam body
+            $response = $client->post('http://172.31.32.85:2222/v1/api/create-qris', [
                 'json' => $dataToSend, // Data yang akan dikirim dalam format JSON
             ]);
     
