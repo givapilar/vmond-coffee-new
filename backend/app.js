@@ -256,7 +256,7 @@ const createQrisFintech = async () => {
     };
     
     const metaData = {
-      "datetime": "2023-09-07T10:40:21.450Z",
+      "datetime": "2023-09-07T09:40:21.450Z",
       "deviceId": "bjbdigi",
       "devicePlatform": "Linux",
       "deviceOSVersion": "bjbdigi-version",
@@ -269,8 +269,8 @@ const createQrisFintech = async () => {
     
     const bodyData = {
       "merchantAccountNumber": msisdnDev, // Replace with actual merchant account number
-      "amount": "60000", // Replace with actual amount
-      "expInSecond": 0 // Replace with actual expiry in seconds or remove if not needed
+      "amount": "25000", // Replace with actual amount
+      "expInSecond": 100 // Replace with actual expiry in seconds or remove if not needed
     };
     
     const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/4/pbTransactionAdapter/createInvoiceQRISDinamisExt", 
