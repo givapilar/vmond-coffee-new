@@ -186,7 +186,7 @@ Route::get('/create-qris-dinamis', function () {
 
 Route::get('/aktivasi-merchant', function () {
     return view('aktivasi-bjb.aktivasi');
-})->name('aktivasi-merchant');
+})->name('aktivasi');
 
 
 Route::post('/v1/integration/get-token-fintech',[APIController::class,'getTokenFintech'])->name('get-token-fintech');
