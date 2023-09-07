@@ -424,7 +424,7 @@ class OrderController extends Controller
                     'time_to' => $time_to,
                     'biliard_id' => $request->biliard_id,
                     'meeting_room_id' => $request->meeting_room_id,
-                    'meja_restaurant_id' => $request->meja_restaurant_id,
+                    // 'meja_restaurant_id' => $request->meja_restaurant_id,
                     'total_price' => $total_price, 
                     // 'total_price' => 1, 
                     'token' => $token, 
@@ -437,6 +437,7 @@ class OrderController extends Controller
                     'service' => $service,
                     'pb01' => $pb01,
                     'jumlah_customer' => $request->jumlah_customer,
+                    'kode_meja' => $request->meja_restaurant_id,
                 ]);
 
                 // dd($session_cart);
