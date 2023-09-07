@@ -310,7 +310,13 @@ requestTokenAuthMerchant();
 
 
 // Jalankan server pada port tertentu
-const port = 2222;
+// const port = 2222;
+// app.listen(port, () => {
+//   console.log('Backend Node.js server is running on port ' + port);
+// });
+
+
+const port = process.env.PORT || 2222; // Gunakan PORT yang tersedia atau 2222 jika tidak ada yang tersedia
 app.listen(port, () => {
-  console.log('Backend Node.js server is running on port ' + port);
+  console.log(`Server berjalan di port ${port}`);
 });
