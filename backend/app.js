@@ -184,62 +184,62 @@ setInterval(main, interval);
 // aktivasi();
 
 // Request Token for Transaction Authentication as Merchant
-// const requestTokenAuthMerchant = async () => {
-//   try {
-//     const headers = {
-//       "Content-Type": "application/json"
-//     };
+const requestTokenAuthMerchant = async () => {
+  try {
+    const headers = {
+      "Content-Type": "application/json"
+    };
     
-//     const metaData = {
-//       "datetime": "2023-08-30T09:40:21.450Z",
-//       "deviceId": "bjbdigi",
-//       "devicePlatform": "Linux",
-//       "deviceOSVersion": "bjbdigi-version",
-//       "deviceType": "",
-//       "latitude": "",
-//       "longitude": "",
-//       "appId": 4,
-//       "appVersion": "1.0",
-//     };
+    const metaData = {
+      "datetime": "2023-08-30T09:40:21.450Z",
+      "deviceId": "bjbdigi",
+      "devicePlatform": "Linux",
+      "deviceOSVersion": "bjbdigi-version",
+      "deviceType": "",
+      "latitude": "",
+      "longitude": "",
+      "appId": 4,
+      "appVersion": "1.0",
+    };
     
-//     const bodyData = {
-//       "msisdn": "081717181988",
-//       "username": "VMO937192988",
-//       "pin": 111111,
-//     };
+    const bodyData = {
+      "msisdn": "081717181988",
+      "username": "VMO937192988",
+      "pin": 111111,
+    };
     
-//     const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/pocket/requestTokenFintech", 
-//       {"metadata": metaData, "body": bodyData}, 
-//       {"headers": headers}
-//     );
+    const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/pocket/requestTokenFintech", 
+      {"metadata": metaData, "body": bodyData}, 
+      {"headers": headers}
+    );
     
-//     console.log("AllResult :: ", result);
-//     console.log("Result Data :: ", result.data);
+    console.log("AllResult :: ", result);
+    console.log("Result Data :: ", result.data);
     
 
-//     if (result && result.data && result.data.body && result.data.body.AuthorizationRegisterResponse) {
-//       const response = result.data.body.AuthorizationRegisterResponse;
-//       const attr = response._attr;
-//       const customer = response.customer;
-//       const xAuthToken = result.headers['x-auth-token'];
+    if (result && result.data && result.data.body && result.data.body.AuthorizationRegisterResponse) {
+      const response = result.data.body.AuthorizationRegisterResponse;
+      const attr = response._attr;
+      const customer = response.customer;
+      const xAuthToken = result.headers['x-auth-token'];
 
-//       console.log("X-AUTH-TOKEN:", xAuthToken)
+      console.log("X-AUTH-TOKEN:", xAuthToken)
     
-//       console.log("Attr:", attr);
-//       console.log("Customer:", customer);
-//     } else {
-//       console.log("Response structure is not as expected.");
-//     }
+      console.log("Attr:", attr);
+      console.log("Customer:", customer);
+    } else {
+      console.log("Response structure is not as expected.");
+    }
     
     
-//   } catch (err) {
-//     // Handle Error Here
-//     console.error(err);
-//   }
-// };
+  } catch (err) {
+    // Handle Error Here
+    console.error(err);
+  }
+};
 
 
-// requestTokenAuthMerchant();
+requestTokenAuthMerchant();
 
 // ====================================================================
 // Create Qris Dinamis BJB
