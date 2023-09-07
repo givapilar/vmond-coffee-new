@@ -114,7 +114,7 @@
                             },
                             async: false,
                             success: function(res) {
-                                reference = res.data.body.reference;
+                                reference = res.data.reference;
                                 console.log(reference);
                                 alert('Berhasil! Send OTP.');
                             },
