@@ -191,7 +191,7 @@ const requestTokenAuthMerchant = async () => {
     };
     
     const metaData = {
-      "datetime": "2023-08-30T09:40:21.450Z",
+      "datetime": "2023-09-07T10:40:21.450Z",
       "deviceId": "bjbdigi",
       "devicePlatform": "Linux",
       "deviceOSVersion": "bjbdigi-version",
@@ -204,8 +204,9 @@ const requestTokenAuthMerchant = async () => {
     
     const bodyData = {
       "msisdn": "081717181988",
-      "username": "VMO937192988",
-      "pin": 111111,
+      "password": "1c1bbf7b79bc9b97cafb7488946a6001f05980f62dbeb5bc093dd680b8241197",
+      // "username": "VMO937192988",
+      // "pin": 111111,
     };
     
     const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/pocket/requestTokenFintech", 
