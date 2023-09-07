@@ -136,8 +136,8 @@ const sendOtpByPhoneNumber = async (req, res) => {
             { metadata: metaData, body: bodyData },
             { headers: headers }
         );
-
-        const reference = result.reference;
+        const response = result.data.body.ResendOTPByPhoneResponse;
+        const reference = response.reference;
 
         const responseData = {
             code: 200,
