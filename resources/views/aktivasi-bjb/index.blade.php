@@ -144,7 +144,7 @@
     function aktivasi() {
         $.confirm({
             title: 'Aktivasi',
-            content: "URL:{{ route('aktivasi-merchant') }}",
+            content: "URL:{{ route('aktivasi') }}",
             columnClass: 'medium',
             type: 'blue',
             typeAnimated: true,

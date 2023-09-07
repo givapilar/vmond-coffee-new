@@ -200,7 +200,7 @@ class OrderController extends Controller
                     'pb01' => $pb01,
                     'packing' => $request->packing,
                     'nama_kasir' => $nama_kasir,
-                    // 'kode_meja' => $request->meja_restaurant_id,
+                    'kode_meja' => $request->meja_restaurant_id,
                     'metode_edisi' => $request->metode_edisi,
                     'voucher_diskon' => $request->voucher_diskon,
                     'jumlah_customer' => $request->jumlah_customer ?? 1,
