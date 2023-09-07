@@ -12,6 +12,7 @@
     <div class="container my-3 gap-3">
         <button onclick="getToken()" class="btn btn-sm btn-primary">Get Token</button>
         <button onclick="sendOTP()" class="btn btn-sm btn-warning">Send OTP</button>
+        <button onclick="aktivasi()" class="btn btn-sm btn-success">Aktivasi</button>
         {{-- <button onclick="createQrisDinamis()" class="btn btn-sm btn-secondary">Create Qris Dinamis</button> --}}
     </div>
     {{-- <button onclick="test()">Test</button> --}}
@@ -115,8 +116,68 @@
                             async: false,
                             success: function(res) {
                                 reference = res.data.reference;
-                                console.log(reference);
                                 alert('Berhasil! Send OTP.');
+                            },
+                            error: function(data) {
+                                console.log(data);
+                                $.alert(data.responseJSON.message);
+                            }
+                        });
+                    }
+                },
+                cancel: function() {
+                    //close
+                },
+            },
+            onContentReady: function() {
+                // bind to events
+                var jc = this;
+                this.$content.find('form').on('submit', function(e) {
+                    // if the user submits the form by pressing enter in the field.
+                    e.preventDefault();
+                    jc.$$formSubmit.trigger('click'); // reference the button and click it
+                });
+            }
+        });
+    }
+
+    function aktivasi() {
+        $.confirm({
+            title: 'Aktivasi',
+            content: "URL:{{ route('aktivasi-merchant') }}",
+            columnClass: 'medium',
+            type: 'blue',
+            typeAnimated: true,
+            buttons: {
+                formSubmit: {
+                    text: 'Submit',
+                    btnClass: 'btn-blue',
+                    action: function() {
+                        let dttoken, msisdn, pin, product, dtreference;
+                        
+                        dttoken = token;
+                        msisdn = this.$content.find('#msisdn').val();
+                        pin = this.$content.find('#pin').val();
+                        product = this.$content.find('#product').val();
+                        dtreference = reference;
+
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{ route('aktivasi-merchant') }}",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data: {
+                                "_token": "{{ csrf_token() }}",
+                                dttoken,
+                                msisdn,
+                                pin,
+                                product,
+                                dtreference,
+                            },
+                            async: false,
+                            success: function(res) {
+                                alert('Anda Berhasil Aktivasi!');
                             },
                             error: function(data) {
                                 console.log(data);

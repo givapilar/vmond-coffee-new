@@ -30,5 +30,6 @@ router.get('/', integrasiApiController.getURL);
 router.post('/callback', integrasiApiController.callbackFromBJB);
 router.post('/get-token-fintech', integrasiApiController.getTokenFintech);
 router.post('/send-otp-fintech', integrasiApiController.sendOtpByPhoneNumber);
+router.post('/aktivasi', integrasiApiController.aktivasi);
 
 module.exports = router;
