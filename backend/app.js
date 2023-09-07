@@ -218,16 +218,20 @@ const requestTokenAuthMerchant = async () => {
     console.log("Result Data :: ", result.data);
     
 
-    if (result && result.data && result.data.body && result.data.body.AuthorizationRegisterResponse) {
-      const response = result.data.body.AuthorizationRegisterResponse;
+    if (result && result.data && result.data.body && result.data.body.CreateTokenFintechResponse) {
+      const response = result.data.body.CreateTokenFintechResponse;
       const attr = response._attr;
       const customer = response.customer;
+      const channel = response.channel;
+      const key = response.key;
       const xAuthToken = result.headers['x-auth-token'];
 
       console.log("X-AUTH-TOKEN:", xAuthToken)
     
       console.log("Attr:", attr);
       console.log("Customer:", customer);
+      console.log("Channel:", channel);
+      console.log("key:", key);
     } else {
       console.log("Response structure is not as expected.");
     }
