@@ -98,17 +98,26 @@
                         @if (Auth::check())
                         <form action="{{ route('detail-billiard',$item->id) }}" method="get" class=" w-8/12">
                             <div class="flex gap-1 opacity-75">
+                                @if ($item->status == "Tersedia")
                                 <button class="w-full bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
+                                @else
+                                <button class="w-full text-gray-500 text-xs rounded-lg mt-2 p-1 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-sky-300 dark:text-white flex items-center justify-center" style="background-color: gray;" disabled>
+                                    <ion-icon name="bag-add" class="mt-[0.2rem] mb-1 dark:text-white" style="font-size: 15px; margin-right: 5px;"></ion-icon>
+                                </button>
+                                @endif
                             </div>
                         </form>
                         @else
                         <form action="{{ route('detail-billiard-guest',$item->id) }}" method="get" class=" w-8/12">
                             <div class="flex gap-1 opacity-75">
+                                @if ($item->status == "Tersedia")
+                                    
                                 <button class="w-full bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300"><ion-icon name="bag-add" class="mt-[0.2rem] dark:text-white"></ion-icon></button>
-                                {{-- <button class="w-full text-gray-500 text-xs rounded-lg mt-2 p-1 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-sky-300 dark:text-white flex items-center justify-center" style="background-color: gray;" disabled>
+                                @else
+                                <button class="w-full text-gray-500 text-xs rounded-lg mt-2 p-1 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-sky-300 dark:text-white flex items-center justify-center" style="background-color: gray;" disabled>
                                     <ion-icon name="bag-add" class="mt-[0.2rem] mb-1 dark:text-white" style="font-size: 15px; margin-right: 5px;"></ion-icon>
-                                    <p class="mt-1 mb-1">Sedang Pebaikan</p>
-                                </button> --}}
+                                </button>
+                                @endif
                             </div>
                         </form>    
                         @endif
