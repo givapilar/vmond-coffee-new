@@ -184,10 +184,15 @@ Route::get('/create-qris-dinamis', function () {
     return view('aktivasi-bjb.create-qris');
 })->name('create-qris-dinamis');
 
+Route::get('/aktivasi-merchant', function () {
+    return view('aktivasi-bjb.aktivasi');
+})->name('aktivasi-merchant');
+
 
 Route::post('/v1/integration/get-token-fintech',[APIController::class,'getTokenFintech'])->name('get-token-fintech');
 Route::post('/v1/integration/send-otp',[APIController::class,'sendOTP'])->name('send-otp-fintech');
 Route::post('/v1/integration/create-qris',[APIController::class,'createQris'])->name('create-qris-fintech');
+Route::post('/v1/integration/aktivasi-merchant',[APIController::class,'aktivasi'])->name('aktivasi-merchant');
 // =============================================================
 // End Integrasi Payment Gateway
 // =============================================================
