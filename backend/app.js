@@ -248,70 +248,70 @@ setInterval(main, interval);
 
 // ====================================================================
 // Create Qris Dinamis BJB
-// const createQrisFintech = async () => {
-//   try {
-//     const headers = {
-//       "Content-Type": "application/json",
-//       "X-AUTH-TOKEN": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJhYzU5ZWRjMC1hNjU1LTQzNTQtYmM0Ni03ZDI3ZGE2OTgyMTgiLCJzdWIiOiJWTU85MzcxOTI5ODgiLCJleHAiOjE2OTQwNzMyNjIsImlhdCI6MTY5NDA0MzI2MiwiaWRlbnRpZmllciI6IkFDYk9Bbm5nU3ZHWUhraCIsInVzZXJuYW1lIjoiVk1POTM3MTkyOTg4In0.lur0e-k6ycIAyCQq6IgG5v7YYXYBRi9sNDoElYmXFqeMkFh70wN5Mo4xSq7BtknMkNw_gl7-t_ckOXdnLoFPjQ" // Replace with actual X-AUTH-TOKEN value
-//     };
+const createQrisFintech = async () => {
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+      "X-AUTH-TOKEN": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJhYzU5ZWRjMC1hNjU1LTQzNTQtYmM0Ni03ZDI3ZGE2OTgyMTgiLCJzdWIiOiJWTU85MzcxOTI5ODgiLCJleHAiOjE2OTQwNzMyNjIsImlhdCI6MTY5NDA0MzI2MiwiaWRlbnRpZmllciI6IkFDYk9Bbm5nU3ZHWUhraCIsInVzZXJuYW1lIjoiVk1POTM3MTkyOTg4In0.lur0e-k6ycIAyCQq6IgG5v7YYXYBRi9sNDoElYmXFqeMkFh70wN5Mo4xSq7BtknMkNw_gl7-t_ckOXdnLoFPjQ" // Replace with actual X-AUTH-TOKEN value
+    };
     
-//     const metaData = {
-//       "datetime": "2023-09-07T15:00:21.450Z",
-//       "deviceId": "bjbdigi",
-//       "devicePlatform": "Linux",
-//       "deviceOSVersion": "bjbdigi-version",
-//       "deviceType": "",
-//       "latitude": "",
-//       "longitude": "",
-//       "appId": 4,
-//       "appVersion": "1.0",
-//     };
+    const metaData = {
+      "datetime": "2023-09-07T15:00:21.450Z",
+      "deviceId": "bjbdigi",
+      "devicePlatform": "Linux",
+      "deviceOSVersion": "bjbdigi-version",
+      "deviceType": "",
+      "latitude": "",
+      "longitude": "",
+      "appId": 4,
+      "appVersion": "1.0",
+    };
     
-//     const bodyData = {
-//       "merchantAccountNumber": msisdnDev, // Replace with actual merchant account number
-//       "amount": "15000", // Replace with actual amount
-//       "expInSecond": 0 // Replace with actual expiry in seconds or remove if not needed
-//     };
+    const bodyData = {
+      "merchantAccountNumber": msisdnDev, // Replace with actual merchant account number
+      "amount": "20000", // Replace with actual amount
+      "expInSecond": 0 // Replace with actual expiry in seconds or remove if not needed
+    };
     
-//     const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/4/pbTransactionAdapter/createInvoiceQRISDinamisExt", 
-//       {"metadata": metaData, "body": bodyData}, 
-//       {"headers": headers}
-//     );
+    const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/4/pbTransactionAdapter/createInvoiceQRISDinamisExt", 
+      {"metadata": metaData, "body": bodyData}, 
+      {"headers": headers}
+    );
     
-//     console.log("AllResult :: ", result);
-//     console.log("Result Data :: ", result.data);
+    console.log("AllResult :: ", result);
+    console.log("Result Data :: ", result.data);
     
 
-//     // Check Console detail qris
-//     if (result && result.data && result.data.body && result.data.body.CreateInvoiceQRISDinamisExtResponse) {
-//       const response = result.data.body.CreateInvoiceQRISDinamisExtResponse;
-//       const attr = response._attr;
-//       const responseCode = response.responseCode;
-//       const responseMessage = response.responseMessage;
-//       const amount = response.amount;
-//       const exp = response.expiryParameter;
-//       const invoiceId = response.invoiceId;
-//       const stringQR = response.stringQR;
+    // Check Console detail qris
+    if (result && result.data && result.data.body && result.data.body.CreateInvoiceQRISDinamisExtResponse) {
+      const response = result.data.body.CreateInvoiceQRISDinamisExtResponse;
+      const attr = response._attr;
+      const responseCode = response.responseCode;
+      const responseMessage = response.responseMessage;
+      const amount = response.amount;
+      const exp = response.expiryParameter;
+      const invoiceId = response.invoiceId;
+      const stringQR = response.stringQR;
     
-//       console.log("Attr:", attr);
-//       console.log("Response Code:", responseCode);
-//       console.log("Response Message:", responseMessage);
-//       console.log("Amount:", amount);
-//       console.log("String QR:", stringQR);
-//       console.log("Exp:", exp);
-//       console.log("Invoice Id :", invoiceId);
-//     } else {
-//       console.log("Response structure is not as expected.");
-//     }
+      console.log("Attr:", attr);
+      console.log("Response Code:", responseCode);
+      console.log("Response Message:", responseMessage);
+      console.log("Amount:", amount);
+      console.log("String QR:", stringQR);
+      console.log("Exp:", exp);
+      console.log("Invoice Id :", invoiceId);
+    } else {
+      console.log("Response structure is not as expected.");
+    }
     
     
-//   } catch (err) {
-//     // Handle Error Here
-//     console.error(err);
-//   }
-// };
+  } catch (err) {
+    // Handle Error Here
+    console.error(err);
+  }
+};
 
-// createQrisFintech();
+createQrisFintech();
 
 
 // Jalankan server pada port tertentu
