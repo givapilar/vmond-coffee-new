@@ -59,7 +59,7 @@ class DaftarMenuController extends Controller
         }
 
         
-        $paket_menus = MenuPackages::get();
+        $paket_menus = MenuPackages::orderBy('minimal','asc')->get();
         $data['banners'] = Banner::get();
 
         return view('daftarmenu.billiard', $data, compact(['billiard','paket_menus', 'orderFinishSubtotal']));
