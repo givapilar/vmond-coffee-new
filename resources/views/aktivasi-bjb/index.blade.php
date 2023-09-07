@@ -83,6 +83,7 @@
     }
 
     function sendOTP() {
+        console.log(token);
         $.confirm({
             title: 'Send OTP',
             content: "URL:{{ route('send-otp') }}",
