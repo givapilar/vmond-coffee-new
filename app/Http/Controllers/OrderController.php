@@ -186,7 +186,7 @@ class OrderController extends Controller
                     'time_to' => $time_to,
                     'biliard_id' => $request->biliard_id,
                     'meeting_room_id' => $request->meeting_room_id,
-                    'meja_restaurant_id' => $request->meja_restaurant_id,
+                    // 'meja_restaurant_id' => $request->meja_restaurant_id,
                     'token' => $token,
                     'total_price' => $total_price, 
                     // 'total_price' => 1, 

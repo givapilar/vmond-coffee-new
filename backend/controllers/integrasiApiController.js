@@ -196,7 +196,7 @@ const aktivasi = async (req, res) => {
             { metadata: metaData, body: bodyData },
             { headers: headers }
         );
-        const response = result.data.body.AuthorizationRegisterResponse;
+        const response = result.data.body;
         console.log(response);
 
         const responseData = {
