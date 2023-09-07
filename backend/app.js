@@ -269,7 +269,7 @@ const createQrisFintech = async () => {
     
     const bodyData = {
       "merchantAccountNumber": msisdnDev, // Replace with actual merchant account number
-      "amount": "50000", // Replace with actual amount
+      "amount": "60000", // Replace with actual amount
       "expInSecond": 0 // Replace with actual expiry in seconds or remove if not needed
     };
     
