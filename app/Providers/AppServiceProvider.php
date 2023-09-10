@@ -46,13 +46,23 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('*', function (){
             if (Auth::user()) {
                 $today = Carbon::tomorrow();
-                $oneHourAgo = Carbon::now()->subHour();
+                // $oneHourAgo = Carbon::now()->subHour();
+                $query = Order::query();
+
                 if (Auth::user()->telephone == '081818181847') {
-                    $orderTable = Order::orderBy('id', 'desc')
-                        ->whereDate('created_at', $oneHourAgo)
-                        ->where('user_id', Auth::user()->id)
-                        ->where('status_pembayaran', 'Paid')
-                        ->get();
+                    // $orderTable = Order::orderBy('id', 'desc')
+                    //     ->whereDate('created_at', $oneHourAgo)
+                    //     ->where('user_id', Auth::user()->id)
+                    //     ->where('status_pembayaran', 'Paid')
+                    //     ->get();
+
+                    $oneHourAgo = Carbon::now()->subHour();
+                    $query->where('created_at', '>=', $oneHourAgo);
+            
+                    $query->where('status_pembayaran', 'Paid')->where('user_id', Auth::user()->id);
+                    $query->orderBy('id','desc');
+            
+                    $orderTable = $query->get();
                 }else{
                     $orderTable = Order::orderBy('id','desc')->where('user_id', Auth::user()->id)->where('status_pembayaran', 'Paid')->get();
                 }
