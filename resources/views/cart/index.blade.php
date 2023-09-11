@@ -218,7 +218,7 @@
                         <li class="py-3 sm:py-2" style="display: none;" id="meja-wrapper">
                             <div id="select-input-wrapper">
                                 <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja</label>
-                                <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <select id="meja_resto" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option disabled selected>Pilih Meja Restaurant</option>
                                     @foreach ($meja_restaurants as $key => $meja_restaurant)
                                         <option value="{{ $meja_restaurant->nama }}">{{ $meja_restaurant->nama }}</option>
@@ -604,6 +604,44 @@
 @push('script-bot')
 
 {{-- Voucher --}}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Ambil elemen-elemen yang diperlukan
+        var selectMeja = document.getElementById("meja_resto");
+        var mejaRestaurants = <?php echo json_encode($meja_restaurants); ?>; // Anda mungkin perlu mengubah ini sesuai dengan cara meja_restaurants diambil di halaman Anda
+
+        // Fungsi untuk menampilkan alert
+        function showAlert(message) {
+            alert(message);
+        }
+
+        // Event listener untuk perubahan pada select element
+        selectMeja.addEventListener("change", function () {
+            var selectedMeja = selectMeja.value;
+
+            // Temukan meja restoran yang sesuai dengan yang dipilih
+            var matchingMeja = mejaRestaurants.find(function (meja) {
+                return meja.nama === selectedMeja;
+            });
+
+            if (matchingMeja) {
+                var minimalOrder = matchingMeja.minimal_order; // Gantilah 'minimum_order' dengan properti yang sesuai dari meja restoran
+
+                // Cek jika meja sesuai dengan persyaratan minimal
+                if (minimalOrder && minimalOrder <= <?php echo Cart::getTotal(); ?>) {
+                    // showAlert("Meja ini Bisa");
+                } else {
+                    showAlert("Minimal Order Meja Ini Kurang");
+                    selectMeja.value = "Pilih Meja Restaurant";
+                }
+            }
+        });
+    });
+</script>
+
+
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const voucherSelect = document.getElementById("voucher");

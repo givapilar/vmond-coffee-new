@@ -47,6 +47,9 @@ class OrderController extends Controller
     public function checkout(Request $request, $token)
     {
         try {
+            $session_cart = \Cart::session(Auth::user()->id)->getContent();
+            $other_setting = OtherSetting::get();
+
             // dd($request->all());
             $packing = 5000;
             
@@ -68,7 +71,7 @@ class OrderController extends Controller
             // if ($request->kasir_id == null) {
             //     return redirect()->back()->with(['failed' => 'Harap Isi Nama Kasir !']);
             // }
-            
+
             $restaurants = Restaurant::get();
 
             $idSessions = $request->idSession;
@@ -86,13 +89,11 @@ class OrderController extends Controller
             }
             
             $price = 1;
-            $session_cart = \Cart::session(Auth::user()->id)->getContent();
             
 
             foreach ($session_cart as $key => $value) {
                 $price +=$value->price;
             }
-            $other_setting = OtherSetting::get();
 
             // Replace the 'foreach' loop with a more efficient 'foreach' loop using collections.
             foreach ($session_cart as $key => $item) {
@@ -540,7 +541,7 @@ class OrderController extends Controller
                 $successMessage = $other_setting[0]->description_notifikasi . $request->total_lama_waktu;
                 session()->flash('notifikasi', $successMessage);
             }
-            
+
             return view('checkout.checkout-guest',$data,compact('snapToken','order'));
             // return view('checkout.checkout-guest',$data,compact('snapToken','order'))->with('success',$other_setting[0]->description_notifikasi . $request->total_lama_waktu);
             // return redirect()->route('checkout-order-guest',['token',$token])->with(['success' => $other_setting[0]->description_notifikasi . $request->total_lama_waktu],$data,compact('snapToken','order'));
