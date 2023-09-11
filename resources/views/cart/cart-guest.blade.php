@@ -52,7 +52,6 @@
                                     Rp. {{ number_format(array_sum((array) ($item->attributes['harga_add'] ?? [])) + ($item->attributes['restaurant']['harga_diskon'] ?? 0), 0) }}
                                 </p>
                                 
-                                
                                 {{-- @if ($item->conditions == 'Restaurant') --}}
                                 {{-- @else   
                                     <p class="text-xs text-gray-500 truncate dark:text-red-500">
@@ -114,7 +113,38 @@
                 </ul>
                 @endforeach
             </div>
-        
+
+            {{-- Total Waktu --}}
+            @foreach ($cart_guest as $item)
+                @php
+                $totalLamaWaktu = 0;
+                
+                foreach ($cart_guest as $item) {
+                    $lamaWaktu = $item->attributes['restaurant']['lama_waktu'];
+                    $totalLamaWaktu += $lamaWaktu;
+                }
+                
+                // Calculate hours and minutes
+                $hours = floor($totalLamaWaktu / 60);
+                $minutes = $totalLamaWaktu % 60;
+                
+                // Format the hours and minutes into a human-readable string
+                $timeFormatted = "";
+                
+                if ($hours > 0) {
+                    $timeFormatted .= $hours . " jam ";
+                }
+                
+                if ($minutes > 0) {
+                    $timeFormatted .= $minutes . " menit";
+                } else {
+                    $timeFormatted .= "0 menit";
+                }
+                @endphp
+
+                {{-- <input type="hidden" name="total_lama_waktu" value="{{$totalLamaWaktu }}"> --}}
+                <input type="hidden" name="total_lama_waktu" value="{{$timeFormatted }}">
+            @endforeach
 
             @if ($kodeMeja == null)
                 

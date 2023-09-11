@@ -351,4 +351,21 @@
     }).showToast();
 </script>
 @endif
+
+@if(session()->has('notifikasi'))
+<script>
+    Toastify({
+		text: "{{ session()->get('notifikasi') }}",
+		close: true,
+		gravity: "top", // `top` or `bottom`
+		position: "left", // `left`, `center` or `right`
+		stopOnFocus: true, // Prevents dismissing of toast on hover
+		style: {
+			background: "#D5F3E9",
+			color: "#1f7556"
+		},
+		duration: 10000
+	}).showToast();
+</script>
+@endif
 @stack('script-bot')

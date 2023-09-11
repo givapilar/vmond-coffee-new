@@ -309,6 +309,12 @@ class OrderController extends Controller
             // $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
             $data['order_last'] = Order::where('token', $token)->latest()->first();
             $data['order_settings'] = OtherSetting::get();
+
+            if ($other_setting[0]->status_notifikasi == "Active") {
+                $successMessage = $other_setting[0]->description_notifikasi . $request->total_lama_waktu;
+                session()->flash('notifikasi', $successMessage);
+            }
+
             return view('checkout.index',$data,compact('snapToken','order'));
         } catch (\Throwable $th) {
             DB::rollback();
@@ -321,7 +327,7 @@ class OrderController extends Controller
     public function checkoutGuest(Request $request, $token)
     {
         // dd($request->all());
-        // try {
+        try {
             $checkToken = Order::where('token',$token)->where('status_pembayaran', 'Paid')->get()->count();
             if ($checkToken != 0) {
                 return redirect()->route('homepage')->with(['failed' => 'Tidak dapat mengulang transaksi!']);
@@ -528,14 +534,22 @@ class OrderController extends Controller
             $data['order_settings'] = OtherSetting::get();
             $data['users'] = User::first();
             $data['orders'] = Order::where('token',$token)->get()->first();
-            // dsa;
-            // return view('checkout.index',$data,compact('snapToken','order'));
-            return view('checkout.checkout-guest',$data,compact('snapToken','order'));
-        // } catch (\Throwable $th) {
-        //     DB::rollback();
-        //     return redirect()->back()->with('failed', $th->getMessage());
 
-        // }
+            
+            if ($other_setting[0]->status_notifikasi == "Active") {
+                $successMessage = $other_setting[0]->description_notifikasi . $request->total_lama_waktu;
+                session()->flash('notifikasi', $successMessage);
+            }
+            
+            return view('checkout.checkout-guest',$data,compact('snapToken','order'));
+            // return view('checkout.checkout-guest',$data,compact('snapToken','order'))->with('success',$other_setting[0]->description_notifikasi . $request->total_lama_waktu);
+            // return redirect()->route('checkout-order-guest',['token',$token])->with(['success' => $other_setting[0]->description_notifikasi . $request->total_lama_waktu],$data,compact('snapToken','order'));
+
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return redirect()->back()->with('failed', $th->getMessage());
+
+        }
         
     }
     

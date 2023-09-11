@@ -133,6 +133,38 @@
                     @endforeach
                 </div>
 
+                {{-- Total Waktu --}}
+                @foreach ($data_carts as $item)
+                    @php
+                    $totalLamaWaktu = 0;
+                    
+                    foreach ($data_carts as $item) {
+                        $lamaWaktu = $item->attributes['restaurant']['lama_waktu'];
+                        $totalLamaWaktu += $lamaWaktu;
+                    }
+                    
+                    // Calculate hours and minutes
+                    $hours = floor($totalLamaWaktu / 60);
+                    $minutes = $totalLamaWaktu % 60;
+                    
+                    // Format the hours and minutes into a human-readable string
+                    $timeFormatted = "";
+                    
+                    if ($hours > 0) {
+                        $timeFormatted .= $hours . " jam ";
+                    }
+                    
+                    if ($minutes > 0) {
+                        $timeFormatted .= $minutes . " menit";
+                    } else {
+                        $timeFormatted .= "0 menit";
+                    }
+                    @endphp
+
+                    {{-- <input type="hidden" name="total_lama_waktu" value="{{$totalLamaWaktu }}"> --}}
+                    <input type="hidden" name="total_lama_waktu" value="{{$timeFormatted }}">
+                @endforeach
+
                 @if (Auth::user()->kode_meja == null )
                     <div class="text-left max-w-sm h-96 bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700 mb-2 mt-2">
                         <div class="p-2 space-x-4">
