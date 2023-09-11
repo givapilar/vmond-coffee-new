@@ -133,6 +133,38 @@
                     @endforeach
                 </div>
 
+                {{-- Total Waktu --}}
+                @foreach ($data_carts as $item)
+                    @php
+                    $totalLamaWaktu = 0;
+                    
+                    foreach ($data_carts as $item) {
+                        $lamaWaktu = $item->attributes['restaurant']['lama_waktu'];
+                        $totalLamaWaktu += $lamaWaktu;
+                    }
+                    
+                    // Calculate hours and minutes
+                    $hours = floor($totalLamaWaktu / 60);
+                    $minutes = $totalLamaWaktu % 60;
+                    
+                    // Format the hours and minutes into a human-readable string
+                    $timeFormatted = "";
+                    
+                    if ($hours > 0) {
+                        $timeFormatted .= $hours . " jam ";
+                    }
+                    
+                    if ($minutes > 0) {
+                        $timeFormatted .= $minutes . " menit";
+                    } else {
+                        $timeFormatted .= "0 menit";
+                    }
+                    @endphp
+
+                    {{-- <input type="hidden" name="total_lama_waktu" value="{{$totalLamaWaktu }}"> --}}
+                    <input type="hidden" name="total_lama_waktu" value="{{$timeFormatted }}">
+                @endforeach
+
                 @if (Auth::user()->kode_meja == null )
                     <div class="text-left max-w-sm h-96 bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700 mb-2 mt-2">
                         <div class="p-2 space-x-4">
@@ -186,7 +218,7 @@
                         <li class="py-3 sm:py-2" style="display: none;" id="meja-wrapper">
                             <div id="select-input-wrapper">
                                 <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja</label>
-                                <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <select id="meja_resto" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option disabled selected>Pilih Meja Restaurant</option>
                                     @foreach ($meja_restaurants as $key => $meja_restaurant)
                                         <option value="{{ $meja_restaurant->nama }}">{{ $meja_restaurant->nama }}</option>
@@ -572,6 +604,44 @@
 @push('script-bot')
 
 {{-- Voucher --}}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Ambil elemen-elemen yang diperlukan
+        var selectMeja = document.getElementById("meja_resto");
+        var mejaRestaurants = <?php echo json_encode($meja_restaurants); ?>; // Anda mungkin perlu mengubah ini sesuai dengan cara meja_restaurants diambil di halaman Anda
+
+        // Fungsi untuk menampilkan alert
+        function showAlert(message) {
+            alert(message);
+        }
+
+        // Event listener untuk perubahan pada select element
+        selectMeja.addEventListener("change", function () {
+            var selectedMeja = selectMeja.value;
+
+            // Temukan meja restoran yang sesuai dengan yang dipilih
+            var matchingMeja = mejaRestaurants.find(function (meja) {
+                return meja.nama === selectedMeja;
+            });
+
+            if (matchingMeja) {
+                var minimalOrder = matchingMeja.minimal_order; // Gantilah 'minimum_order' dengan properti yang sesuai dari meja restoran
+
+                // Cek jika meja sesuai dengan persyaratan minimal
+                if (minimalOrder && minimalOrder <= <?php echo Cart::getTotal(); ?>) {
+                    // showAlert("Meja ini Bisa");
+                } else {
+                    showAlert("Minimal Order Meja Ini Kurang");
+                    selectMeja.value = "Pilih Meja Restaurant";
+                }
+            }
+        });
+    });
+</script>
+
+
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const voucherSelect = document.getElementById("voucher");
