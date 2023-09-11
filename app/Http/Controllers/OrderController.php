@@ -537,7 +537,7 @@ class OrderController extends Controller
 
             
             if ($other_setting[0]->status_notifikasi == "Active") {
-                $successMessage = $other_setting[0]->description_notifikasi . $request->total_lama_waktu;
+                $successMessage = $other_setting[0]->description_notifikasi;
                 session()->flash('notifikasi', $successMessage);
             }
 
