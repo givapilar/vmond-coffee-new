@@ -115,6 +115,7 @@ class OrderController extends Controller
                     $total_price = 1;
                     // $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
+                    $pb01 = ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $name = auth()->user()->username;
                     $phone = auth()->user()->telephone;
                     $nama_kasir = null;
@@ -311,10 +312,8 @@ class OrderController extends Controller
             $data['order_last'] = Order::where('token', $token)->latest()->first();
             $data['order_settings'] = OtherSetting::get();
 
-            if ($other_setting[0]->status_notifikasi == "Active") {
-                $successMessage = $other_setting[0]->description_notifikasi . $request->total_lama_waktu;
-                session()->flash('notifikasi', $successMessage);
-            }
+            $successMessage = $other_setting[0]->description_notifikasi;
+            session()->flash('notifikasi', $successMessage);
 
             return view('checkout.index',$data,compact('snapToken','order'));
         } catch (\Throwable $th) {
