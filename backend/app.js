@@ -184,64 +184,64 @@ setInterval(main, interval);
 // aktivasi();
 
 // Request Token for Transaction Authentication as Merchant
-// const requestTokenAuthMerchant = async () => {
-//   try {
-//     const headers = {
-//       "Content-Type": "application/json"
-//     };
+const requestTokenAuthMerchant = async () => {
+  try {
+    const headers = {
+      "Content-Type": "application/json"
+    };
     
-//     const metaData = {
-//       "datetime": "2023-09-07T10:40:21.450Z",
-//       "deviceId": "bjbdigi",
-//       "devicePlatform": "Linux",
-//       "deviceOSVersion": "bjbdigi-version",
-//       "deviceType": "",
-//       "latitude": "",
-//       "longitude": "",
-//       "appId": 4,
-//       "appVersion": "1.0",
-//     };
+    const metaData = {
+      "datetime": "2023-09-12T10:40:21.450Z",
+      "deviceId": "bjbdigi",
+      "devicePlatform": "Linux",
+      "deviceOSVersion": "bjbdigi-version",
+      "deviceType": "",
+      "latitude": "",
+      "longitude": "",
+      "appId": 58,
+      "appVersion": "1.0",
+    };
     
-//     const bodyData = {
-//       "msisdn": "081717181988",
-//       "password": "1c1bbf7b79bc9b97cafb7488946a6001f05980f62dbeb5bc093dd680b8241197",
-//       // "username": "VMO937192988",
-//       // "pin": 111111,
-//     };
+    const bodyData = {
+      "msisdn": "980000000058",
+      "password": "08c1d2a9b38cd12a0539772bbe77b9b9989ade895fdf5fbb5936b418dbd08da3",
+      // "username": "VMO937192988",
+      // "pin": 111111,
+    };
     
-//     const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/pocket/requestTokenFintech", 
-//       {"metadata": metaData, "body": bodyData}, 
-//       {"headers": headers}
-//     );
+    const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/pocket/requestTokenFintech", 
+      {"metadata": metaData, "body": bodyData}, 
+      {"headers": headers}
+    );
     
-//     console.log("AllResult :: ", result);
-//     console.log("Result Data :: ", result.data);
+    console.log("AllResult :: ", result);
+    console.log("Result Data :: ", result.data);
     
 
-//     if (result && result.data && result.data.body && result.data.body.CreateTokenFintechResponse) {
-//       const response = result.data.body.CreateTokenFintechResponse;
-//       const attr = response._attr;
-//       const customer = response.customer;
-//       const channel = response.channel;
-//       const key = response.key;
-//       const xAuthToken = result.headers['x-auth-token'];
+    if (result && result.data && result.data.body && result.data.body.CreateTokenFintechResponse) {
+      const response = result.data.body.CreateTokenFintechResponse;
+      const attr = response._attr;
+      const customer = response.customer;
+      const channel = response.channel;
+      const key = response.key;
+      const xAuthToken = result.headers['x-auth-token'];
 
-//       console.log("X-AUTH-TOKEN:", xAuthToken)
+      console.log("X-AUTH-TOKEN:", xAuthToken)
     
-//       console.log("Attr:", attr);
-//       console.log("Customer:", customer);
-//       console.log("Channel:", channel);
-//       console.log("key:", key);
-//     } else {
-//       console.log("Response structure is not as expected.");
-//     }
+      console.log("Attr:", attr);
+      console.log("Customer:", customer);
+      console.log("Channel:", channel);
+      console.log("key:", key);
+    } else {
+      console.log("Response structure is not as expected.");
+    }
     
     
-//   } catch (err) {
-//     // Handle Error Here
-//     console.error(err);
-//   }
-// };
+  } catch (err) {
+    // Handle Error Here
+    console.error(err);
+  }
+};
 
 
 // requestTokenAuthMerchant();
