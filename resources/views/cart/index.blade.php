@@ -460,6 +460,119 @@
                     <p class="text-lg font-semibold text-center dark:text-white">Order Summary</p>
                 </div>
                 <ul class="max-w-full divide-y divide-gray-200 dark:divide-gray-700 px-3">
+                    {{-- super platinum --}}
+
+                    @if (Auth::user()->membership->level == 'Super Platinum')
+                    <li class="py-3 sm:py-3">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
+                                    Subtotal
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white" id="subtotal-summary">
+                                Rp. 1
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="py-3 sm:py-3">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
+                                    Service {{ $order_settings[0]->layanan }}%
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white" id="service-summary">
+                                <?php
+                                    $biaya_layanan = number_format((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100,0 );
+                                ?>
+                                Rp. 1
+
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="py-3 sm:py-3">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
+                                    PB01 10%
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white" id="PB01-summary">
+                                <?php
+                                    $biaya_pb01 = number_format(((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100,0);
+                                ?>
+
+                                Rp. 1 
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="py-3 sm:py-3" style="display: none;" id="packing">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
+                                    Packing
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white" id="PB01-summary">
+                                <input type="hidden" name="packing" >
+                                Rp. 1 
+                            </div>
+                        </div>
+                    </li>
+                    
+                    {{-- <li class="py-3 sm:py-3" id="voucher-summary" style="display: none;">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-xs font-medium text-gray-900 truncate dark:text-white">
+                                    Diskon Voucher
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white" id="voucher-price">
+                            </div>
+                        </div>
+                    </li> --}}
+
+                    <input type="hidden" id="voucher-price-input" name="voucher_diskon">
+
+                    <li class="py-3 sm:py-3" id="order-total" style="display: none;">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-xs font-medium text-gray-900 truncate dark:text-white">
+                                    Order Total
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white" id="total-order-summary">
+                                Rp. 1
+                            </div>
+                        </div>
+                    </li>
+                    <input type="hidden" id="order-total-input" name="order_total">
+
+                    {{-- order total without package --}}
+                    <li class="py-3 sm:py-3" id="order-total-packing" style="display: none;">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-xs font-medium text-gray-900 truncate dark:text-white">
+                                    Order Total
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white">
+                                <?php
+                                    $packing = 5000;
+                                    $totalWithoutPacking = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100;
+                                    $totalWithPacking = $totalWithoutPacking + $packing;
+                                ?>
+                                Rp. 1
+                            </div>
+                        </div>
+                    </li>
+
+                    {{-- User Normal --}}
+                    @else
                     <li class="py-3 sm:py-3">
                         <div class="flex items-start space-x-4">
                             <div class="flex-1 min-w-0">
@@ -578,6 +691,8 @@
                             </div>
                         </div>
                     </li>
+                    @endif
+                    
 
                 </ul>
                 <div class="mt-2">
