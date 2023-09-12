@@ -244,7 +244,7 @@ const requestTokenAuthMerchant = async () => {
 };
 
 
-// requestTokenAuthMerchant();
+requestTokenAuthMerchant();
 
 // ====================================================================
 // Create Qris Dinamis BJB
