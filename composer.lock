@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b21745fd733c2f7f426b94e32c71ec68",
+    "content-hash": "64519efed6b2f4c7e1d70b0bc219c55c",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -323,6 +323,57 @@
                 "source": "https://github.com/bumbummen99/LaravelShoppingcart/tree/4.2.0"
             },
             "time": "2022-05-15T15:32:38+00:00"
+        },
+        {
+            "name": "cr/hashcli",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/DailyMatters/hashCLI.git",
+                "reference": "6ab58fab13b9d54c94a764dbf3fa6812b75d14d8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DailyMatters/hashCLI/zipball/6ab58fab13b9d54c94a764dbf3fa6812b75d14d8",
+                "reference": "6ab58fab13b9d54c94a764dbf3fa6812b75d14d8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7"
+            },
+            "default-branch": true,
+            "bin": [
+                "src/hashCLI"
+            ],
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cláudio Ribeiro",
+                    "email": "claudio.santos.ribeiro@gmail.com"
+                }
+            ],
+            "description": "HashCLI - PHP CLI Tool For hashing",
+            "keywords": [
+                "cli",
+                "hash"
+            ],
+            "support": {
+                "issues": "https://github.com/DailyMatters/hashCLI/issues",
+                "source": "https://github.com/DailyMatters/hashCLI/tree/master"
+            },
+            "time": "2016-12-14T18:39:49+00:00"
         },
         {
             "name": "darryldecode/cart",
@@ -9155,12 +9206,14 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "cr/hashcli": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^7.3|^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
