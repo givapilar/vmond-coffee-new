@@ -11,9 +11,9 @@
     }
 
     .skeleton {
-    width: 100%;
+    /* width: 100%;
     height: 100%;
-    background-size: 200% 100%;
+    background-size: 200% 100%; */
     animation: loading 1.5s infinite;
 }
 
@@ -30,7 +30,7 @@
 
 @section('content')
 <section>
-    <div class="mb-4 border-b border-gray-200 dark:border-gray-700 skeleton">
+    <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
         <swiper-container class="mySwiper" slides-per-view="3" navigation="true" space-between="30" autoplay-delay="1500" data-tabs-toggle="#myTabContent" role="tablist">
             @php
             $processedTags = []; // Array untuk menyimpan tag yang telah diproses
@@ -77,7 +77,7 @@
                 @if ($pivot->tag_id == $item->id)
                 @if ($resto->category == $category)
                 <div class="text-base sm:text-sm px-1 py-3">
-                    <div class="aspect-h-1 h-40 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
+                    <div class="aspect-h-1 h-40 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 skeleton">
                         
                         @if ($resto->image != null)
                         <img src="{{ $global_url_image.$resto->image ?? 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80' }}" alt="." class="object-cover object-center h-full w-full">
