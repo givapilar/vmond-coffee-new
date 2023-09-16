@@ -567,7 +567,7 @@ class OrderController extends Controller
 
             // dd($QrCode);
 
-            return view('checkout.checkout-guest',$data,compact('snapToken','order','QrCode'));
+            return view('checkout.checkout-guest',$data,compact('snapToken','order'));
             // return view('checkout.checkout-guest',$data,compact('snapToken','order'))->with('success',$other_setting[0]->description_notifikasi . $request->total_lama_waktu);
             // return redirect()->route('checkout-order-guest',['token',$token])->with(['success' => $other_setting[0]->description_notifikasi . $request->total_lama_waktu],$data,compact('snapToken','order'));
 
