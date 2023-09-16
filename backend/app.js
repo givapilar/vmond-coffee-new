@@ -16,7 +16,9 @@ app.use(express.json());
 app.use('/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/v1/api', userRoutes);
 
-const urlGlobal = process.env.URL_GLOBAL;
+const appENV = process.env.APP_ENV;
+console.log('STATUS ENV:: ', appENV);
+const urlGlobal = process.env.URL_GLOBAL_DEV;
 const msisdnDev = process.env.MSISDN_DEV;
 const passwordDev = process.env.PASSWORD_DEV;
 let token = '';
