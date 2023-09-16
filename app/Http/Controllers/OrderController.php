@@ -37,16 +37,18 @@ class OrderController extends Controller
         // $data6 = "00020101021226620017ID.CO.BANKBJB.WWW01189360011030001393800208001393800303UMI51470017ID.CO.BANKBJB.WWW0215ID12312312938560303UMI5204581253033605405600005802ID5912Vmond Coffee6007Bandung61051232262510124QRIS2023090710525400715502120817171819880703C026304A4BB";
         // $dataExpired = "00020101021226620017ID.CO.BANKBJB.WWW01189360011030001393800208001393800303UMI51470017ID.CO.BANKBJB.WWW0215ID12312312938560303UMI5204581253033605405350005802ID5912Vmond Coffee6007Bandung61051232262510124QRIS2023090710551200715602120817171819880703C0263048E46";
         
-        // $data1 = "00020101021226620017ID.CO.BANKBJB.WWW01189360011030001393800208001393800303UMI51470017ID.CO.BANKBJB.WWW0215ID12312312938560303UMI5204581253033605405200005802ID5912Vmond Coffee6007Bandung61051232262510124QRIS2023090715063500717102120817171819880703C026304DD65";
-        // // Generate QR Code
-        // return QrCode::encoding('UTF-8')
-        //     ->size(400)
-        //     ->margin(10)
-        //     ->generate($data1);
+        $data1 = "00020101021226620017ID.CO.BANKBJB.WWW01189360011030001393800208001393800303UMI51470017ID.CO.BANKBJB.WWW0215ID12312312938560303UMI5204581253033605405200005802ID5912Vmond Coffee6007Bandung61051232262510124QRIS2023090715063500717102120817171819880703C026304DD65";
+        // Generate QR Code
+        $qrCode = QrCode::encoding('UTF-8')
+            ->size(400)
+            ->margin(10)
+            ->generate($data1);
 
-        $qrCode = QrCode::format('png')->size(200)->generate('Hello, QR Code!');
+        return view('aktivasi-bjb.create-qris', compact('qrCode'));
 
-        return response($qrCode)->header('Content-type', 'image/png');
+        // $qrCode = QrCode::format('png')->size(200)->generate('Hello, QR Code!');
+
+        // return response($qrCode)->header('Content-type', 'image/png');
     }
     public function checkout(Request $request, $token)
     {
@@ -340,6 +342,8 @@ class OrderController extends Controller
     public function checkoutGuest(Request $request, $token)
     {
         // dd($request->all());
+       
+
         try {
             $checkToken = Order::where('token',$token)->where('status_pembayaran', 'Paid')->get()->count();
             if ($checkToken != 0) {
@@ -554,7 +558,16 @@ class OrderController extends Controller
                 session()->flash('notifikasi', $successMessage);
             }
 
-            return view('checkout.checkout-guest',$data,compact('snapToken','order'));
+            $data1 = "00020101021226620017ID.CO.BANKBJB.WWW01189360011030001393800208001393800303UMI51470017ID.CO.BANKBJB.WWW0215ID12312312938560303UMI5204581253033605405200005802ID5912Vmond Coffee6007Bandung61051232262510124QRIS2023090715063500717102120817171819880703C026304DD65";
+            // Generate QR Code
+            $QrCode = QrCode::encoding('UTF-8')
+                ->size(400)
+                ->margin(10)
+                ->generate($data1);
+
+            // dd($QrCode);
+
+            return view('checkout.checkout-guest',$data,compact('snapToken','order','QrCode'));
             // return view('checkout.checkout-guest',$data,compact('snapToken','order'))->with('success',$other_setting[0]->description_notifikasi . $request->total_lama_waktu);
             // return redirect()->route('checkout-order-guest',['token',$token])->with(['success' => $other_setting[0]->description_notifikasi . $request->total_lama_waktu],$data,compact('snapToken','order'));
 

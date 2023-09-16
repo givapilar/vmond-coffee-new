@@ -18,7 +18,8 @@
  <div class="card-body">
     <div class="form-group mb-3">
         <label for="msisdn">Qr 1</label>
-        <img src="{{ $qrcodeUrl }}" alt="QR Code">
+        {{-- <img src="{{ $qrcodeUrl }}" alt="QR Code"> --}}
+        {!! $qrCode !!}
     </div>
 </div>
 

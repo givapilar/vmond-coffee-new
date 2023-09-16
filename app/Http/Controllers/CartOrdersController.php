@@ -25,7 +25,7 @@ use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
 use Mike42\Escpos\Printer;
 use Mike42\Escpos\CapabilityProfile;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
+// use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Cart;
 
 class CartOrdersController extends Controller
@@ -112,13 +112,13 @@ class CartOrdersController extends Controller
                 // $data['processedCartItems'] = $processedCartItems;
             }
 
-            $data1 = "00020101021226620017ID.CO.BANKBJB.WWW01189360011030001393800208001393800303UMI51470017ID.CO.BANKBJB.WWW0215ID12312312938560303UMI5204581253033605405200005802ID5912Vmond Coffee6007Bandung61051232262510124QRIS2023090715063500717102120817171819880703C026304DD65";
+            // $data1 = "00020101021226620017ID.CO.BANKBJB.WWW01189360011030001393800208001393800303UMI51470017ID.CO.BANKBJB.WWW0215ID12312312938560303UMI5204581253033605405200005802ID5912Vmond Coffee6007Bandung61051232262510124QRIS2023090715063500717102120817171819880703C026304DD65";
         
-            // Generate QR Code
-            $data['qrCode'] = QrCode::encoding('UTF-8')
-                ->size(400)
-                ->margin(10)
-                ->generate($data1);
+            // // Generate QR Code
+            // $data['qrCode'] = QrCode::encoding('UTF-8')
+            //     ->size(400)
+            //     ->margin(10)
+            //     ->generate($data1);
 
             return view('cart.cart-guest',$data);
         }

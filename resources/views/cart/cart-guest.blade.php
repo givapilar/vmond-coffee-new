@@ -86,12 +86,11 @@
                                 </button>
 
                                 {{-- <button type="button" class="flex justify-center items-center w-10 h-10 rounded-full p-2 bg-red-500 hover:bg-red-600 focus:ring-red-900 focus:ring-4"  data-modal-toggle="barcode">
-                                    <ion-icon name="bag" class=""></ion-icon>
+                                    <ion-icon name="bag" class="">Barcode</ion-icon>
                                 </button> --}}
 
                                 <div id="deleteModal-{{ $key }}" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full sm:inset-0 h-full delay-200">
                                     <div class="relative p-4 w-full max-w-md h-auto">
-                                        <!-- Modal content -->
                                         <div class="relative p-4 text-center bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
                                             <button type="button" class="text-gray-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="deleteModal-{{ $key }}">
                                                 <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
@@ -122,7 +121,9 @@
                                             <div class="card">
                                                 <div class="card-header">Barcode</div>
                                                 <div class="card-body">
-                                                    <img src="{{ route('createQris') }}" alt="QR Code">
+                                                    <a href="{{ route('createQris') }}" type="button" class="btn btn-danger py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
+                                                        generate Barcode
+                                                    </a>
                                                 </div>
                                                 <div class="card-footer">
                                                 </div>
@@ -131,9 +132,6 @@
                                                 <button data-modal-toggle="barcode" type="button" class="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                                                     No, cancel
                                                 </button>
-                                                <a href="{{ route('delete-cart', $key)}}" type="button" class="btn btn-danger py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
-                                                    Download Barcode
-                                                </a>
                                             </div>
                                         </div>
                                     </div>
