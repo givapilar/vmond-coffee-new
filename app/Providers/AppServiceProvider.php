@@ -61,6 +61,7 @@ class AppServiceProvider extends ServiceProvider
             
                     $query->where('status_pembayaran', 'Paid')->where('user_id', Auth::user()->id);
                     $query->orderBy('id','desc');
+                    $query->limit(10);
             
                     $orderTable = $query->get();
                 }else{
