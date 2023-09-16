@@ -1,7 +1,24 @@
 @extends('layouts.app')
 
 @push('style-top')
+<style>
+    .skeleton {
+    width: 100%;
+    height: 100%;
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
 
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+</style>
 @endpush
 
 @push('style-bot')
@@ -17,7 +34,7 @@
     </div>
     <hr> --}}
 
-    <div class="grid grid-cols-1 gap-3">
+    <div class="grid grid-cols-1 gap-3 skeleton">
         <a href="{{ route('daftar-restaurant', ['category' => 'food', 'kode_meja' => Request::get('kode_meja')]) }}">
             <div class="text-base sm:text-sm p-1">
                 <div class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg" style="height: 15.5rem;">
@@ -40,7 +57,7 @@
 </section>
 
 <section class="p-3">
-    <div id="default-carousel" class="relative w-full" data-carousel="slide">
+    <div id="default-carousel" class="relative w-full skeleton" data-carousel="slide">
         <!-- Carousel wrapper -->
         <div class="relative h-36 overflow-hidden rounded-2xl shadow-2xl md:h-96" style="background: #fff !important;">
             @foreach ($banners as $item)
@@ -62,6 +79,29 @@
 @endpush
 
 @push('script-bot')
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var lazyloadImages = document.querySelectorAll(".lazyload");
+
+        var observer = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    var img = entry.target;
+                    img.src = img.getAttribute("data-src");
+                    img.classList.remove("lazyload");
+                    observer.unobserve(img);
+                }
+            });
+        });
+
+        lazyloadImages.forEach(function(img) {
+            observer.observe(img);
+        });
+    });
+</script>
+
+
 <script>
     $('.slick1').slick({
         infinite:false,

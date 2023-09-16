@@ -9,12 +9,28 @@
     .swiper-button-next svg, .swiper-button-prev svg {
         width:20% !important;
     }
+
+    .skeleton {
+    width: 100%;
+    height: 100%;
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
 </style>
 @endpush
 
 @section('content')
 <section>
-    <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+    <div class="mb-4 border-b border-gray-200 dark:border-gray-700 skeleton">
         <swiper-container class="mySwiper" slides-per-view="3" navigation="true" space-between="30" autoplay-delay="1500" data-tabs-toggle="#myTabContent" role="tablist">
             @php
             $processedTags = []; // Array untuk menyimpan tag yang telah diproses
@@ -122,6 +138,7 @@
 @endpush
 
 @push('script-bot')
+
 <script>
     $(document).ready(function() {
        

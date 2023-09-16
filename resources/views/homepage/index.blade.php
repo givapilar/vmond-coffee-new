@@ -12,6 +12,23 @@
             margin-top: -40px; /* Adjust this value based on your preference */
         }
     }
+
+    .skeleton {
+        width: 100%;
+        height: 100%;
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+    }
+
+    @keyframes loading {
+        0% {
+            background-position: 200% 0;
+        }
+        100% {
+            background-position: -200% 0;
+        }
+}
+
 </style>
 @endpush
 
@@ -21,7 +38,7 @@
 
 @section('content')
 <section>
-    <div class=" w-11/12 mt-5 p-4 bg-[#1d2943] border border-gray-200 rounded-lg shadow mx-auto dark:bg-[#1d2943] dark:border-[#16274b]">
+    <div class=" w-11/12 mt-5 p-4 bg-[#1d2943] border border-gray-200 rounded-lg shadow mx-auto dark:bg-[#1d2943] dark:border-[#16274b] ">
         <div class="grid grid-cols-1">
             <div class="flex items-center space-x-4">
                 <div class="flex-shrink-0 bg-white rounded-full p-2">
@@ -71,7 +88,7 @@
 
     </div>
 
-    <div class="grid grid-cols-3 gap-3">
+    <div class="grid grid-cols-3 gap-3 skeleton">
         <a href="{{ route('homepage-restaurant', ['jenis_meja' => Request::get('jenis_meja'), 'kode_meja' => Request::get('kode_meja')]) }}">
             <div class="text-base sm:text-sm p-1">
                 <div class="aspect-h-1 h-36 sm:h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg">
