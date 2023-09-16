@@ -17,10 +17,19 @@ app.use('/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/v1/api', userRoutes);
 
 const appENV = process.env.APP_ENV;
-console.log('STATUS ENV:: ', appENV);
-const urlGlobal = process.env.URL_GLOBAL_DEV;
-const msisdnDev = process.env.MSISDN_DEV;
-const passwordDev = process.env.PASSWORD_DEV;
+let urlGlobal, msisdn, passwordBJB
+
+if (appENV == 'Development') {
+    urlGlobal = process.env.URL_GLOBAL_DEV;
+    msisdn = process.env.MSISDN_DEV;
+    passwordBJB = process.env.PASSWORD_DEV;
+}else if(appENV == 'Production'){
+    console.log(process.env.URL_GLOBAL_PROD);
+    // urlGlobal = process.env.URL_GLOBAL_PROD;
+    // msisdn = process.env.MSISDN_PROD;
+    // passwordBJB = process.env.PASSWORD_PROD;
+}
+
 let token = '';
 
 // ====================================================
@@ -38,7 +47,7 @@ let token = '';
 // └───────────────────────── second (0 - 59, OPTIONAL)
 
 const updateToken = schedule.scheduleJob(' */30 * * * *', async function(){
-    token = await getTokenFintech(urlGlobal, msisdnDev, passwordDev);
+    token = await getTokenFintech(urlGlobal, msisdn, passwordBJB);
 });
 
 // ====================================================
@@ -47,7 +56,7 @@ async function main() {
     try {
         // Cek ketersediaan token
         if (!token) {
-            token = await getTokenFintech(urlGlobal, msisdnDev, passwordDev);
+            token = await getTokenFintech(urlGlobal, msisdn, passwordBJB);
         }
 
         
@@ -270,7 +279,7 @@ requestTokenAuthMerchant();
 //     };
     
 //     const bodyData = {
-//       "merchantAccountNumber": msisdnDev, // Replace with actual merchant account number
+//       "merchantAccountNumber": msisdn, // Replace with actual merchant account number
 //       "amount": "20000", // Replace with actual amount
 //       "expInSecond": 0 // Replace with actual expiry in seconds or remove if not needed
 //     };
