@@ -24,7 +24,11 @@
                     </p>
                     <p class="text-sm text-gray-500 truncate dark:text-gray-400">
                         @if (Auth::check())
+                            @if (Auth::user()->is_worker == true)
+                                
+                            @else
                             Rp. {{ number_format($orderFinishSubtotal, 0) ?? '' }}
+                            @endif
                             ( {{ ucwords(Auth::user()->membership->level ?? '') }} Member )
                         @else
                             Daftarkan <a href="{{ route('register') }}" class="font-medium text-blue-600 hover:underline dark:text-blue-500">akun anda</a>
