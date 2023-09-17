@@ -221,4 +221,34 @@ class APIController extends Controller
         }
     }
 
+    public function createQR(Request $request){
+        // Buat instance dari Guzzle Client
+        $client = new Client();
+
+        try {
+            $dataToSend = [
+                'amount' => $request->dttoken,
+                'expired' => $request->msisdn,
+            ];
+    
+            // Lakukan permintaan HTTP POST ke URL tertentu dengan data dalam body
+            $response = $client->post('http://172.31.32.85:2222/v1/api/create-qr', [
+                'json' => $dataToSend, // Data yang akan dikirim dalam format JSON
+            ]);
+    
+            // Ambil isi respons sebagai string
+            $data = $response->getBody()->getContents();
+    
+            // Sekarang Anda dapat melakukan sesuatu dengan data yang diterima
+            // Konversi respons JSON menjadi array asosiatif
+            $responseData = json_decode($data, true);
+    
+            // Kembalikan respons JSON
+            return response()->json(['data' => $responseData]);
+        } catch (\Exception $e) {
+            // Tangani kesalahan jika ada
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
 }

@@ -4,7 +4,7 @@
 const axios = require('axios');
 const { sendTelegramNotification } = require('../bot-telegram/sendTelegramNotification');
 
-async function getTokenFintech(urlGlobal, msisdnDev, passwordDev) {
+async function getTokenFintech(urlGlobal, msisdn, passwordBJB) {
     try {
         const headers = {
             'Content-Type': 'application/json',
@@ -23,8 +23,8 @@ async function getTokenFintech(urlGlobal, msisdnDev, passwordDev) {
         };
 
         const bodyData = {
-            msisdn: msisdnDev,
-            password: passwordDev
+            msisdn: msisdn,
+            password: passwordBJB
         };
 
         const result = await axios.post(

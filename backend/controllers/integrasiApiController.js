@@ -2,7 +2,22 @@ const jwt = require('jwt-simple');
 const secretKey = 'yUyOSXBD8ZB96JKv5e5K4aETVLJcGkubL8d6UlrqERJSVtvDJr';
 const axios = require('axios');
 require('dotenv').config();
-const urlGlobal = process.env.URL_GLOBAL_PROD;
+const appENV = process.env.APP_ENV;
+let urlGlobal, msisdn, passwordBJB;
+
+// ====================================================
+// Check APP ENV (Development or Production)
+// ====================================================
+if (appENV == 'Development') {
+    urlGlobal = process.env.URL_GLOBAL_DEV;
+    msisdn = process.env.MSISDN_DEV;
+    passwordBJB = process.env.PASSWORD_DEV;
+}else if(appENV == 'Production'){
+    urlGlobal = process.env.URL_GLOBAL_PROD;
+    msisdn = process.env.MSISDN_PROD;
+    passwordBJB = process.env.PASSWORD_PROD;
+}
+// ====================================================
 
 const getURL = (req, res) => {
     const resCallback = "Success Connect! \n";
@@ -217,6 +232,93 @@ const aktivasi = async (req, res) => {
         res.status(500).json(responseData);
     }
 };
+
+const createQR = async (req, res) => {
+    try {
+        
+        const headers1 = {
+            'Content-Type': 'application/json',
+        };
+
+        const metaData1 = {
+            "datetime": "2023-09-18T00:25:21.450Z",
+            "deviceId": "9f9cb0504caa5059", 
+            "devicePlatform": "Linux",
+            "deviceOSVersion": "9",
+            "deviceType": "",
+            "latitude": "",
+            "longitude": "",
+            "appId": 58,
+            "appVersion": "1.0",
+        };
+
+        const bodyData1 = {
+            msisdn: msisdn,
+            password: passwordBJB
+        };
+
+        const result1 = await axios.post(
+            urlGlobal + '/mobile-webconsole/apps/pocket/requestTokenFintech/',
+            { metadata: metaData1, body: bodyData1 },
+            { headers: headers1 }
+        );
+
+        const xAuthToken = result1.headers['x-auth-token'];
+        const dtamount = req.body.amount;
+        const dtexpired = req.body.expired;
+
+        // Create QR
+        const headers = {
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': xAuthToken
+        };
+
+        const metaData = {
+            "datetime": "2023-09-04T09:40:21.450Z",
+            "deviceId": "bjbdigi",
+            "devicePlatform": "Linux",
+            "deviceOSVersion": "bjbdigi-version",
+            "deviceType": "",
+            "latitude": "",
+            "longitude": "",
+            "appId": 58,
+            "appVersion": "1.0",
+        };
+
+        const bodyData = {
+            merchantAccountNumber: msisdn,
+            amount: dtamount,
+            expInSecond: dtexpired,
+        };
+
+        const result = await axios.post(
+            urlGlobal + '/mobile-webconsole/apps/4/pbNonFinancialAdapter/authorizationRegistration',
+            { metadata: metaData, body: bodyData },
+            { headers: headers }
+        );
+        const response = result.data.body;
+        console.log(response);
+
+        const responseData = {
+            code: 200,
+            method: req.method,
+            message: 'Successfully!'
+        };
+        res.status(200).json(responseData);
+    } catch (error) {
+        const responseData = {
+            code: 500,
+            method: req.method,
+            url: req.url,
+            headers: req.headers,
+            message: 'Failed! Error: ' + error
+        };
+        
+        res.status(500).json(responseData);
+    }
+};
+
+
   
   module.exports = {
     getURL,
@@ -224,4 +326,5 @@ const aktivasi = async (req, res) => {
     getTokenFintech,
     sendOtpByPhoneNumber,
     aktivasi,
+    createQR,
   };
