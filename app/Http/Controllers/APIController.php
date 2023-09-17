@@ -162,10 +162,8 @@ class APIController extends Controller
 
         try {
             $dataToSend = [
-                'dttoken' => $request->dttoken,
-                'merchantAccountNumber' => $request->msisdn,
                 'amount' => $request->amount,
-                'expInSecond' => $request->exp_in_second,
+                'expired' => $request->expired,
             ];
     
             // Lakukan permintaan HTTP POST ke URL tertentu dengan data dalam body

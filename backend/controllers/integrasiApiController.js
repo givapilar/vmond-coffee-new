@@ -42,8 +42,8 @@ const callbackFromBJB = (req, res) => {
             
         // Logika pengolahan data
 
-        console.log('Response data : ',res);
-        console.log('Request : ',req);
+        console.log('Response data : ',res.body);
+        // console.log('Request : ',req);
 
         const responseData = {
             code: 200,
