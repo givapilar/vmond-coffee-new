@@ -8,15 +8,15 @@ let urlGlobal, msisdn, passwordBJB;
 // ====================================================
 // Check APP ENV (Development or Production)
 // ====================================================
-if (appENV == 'Development') {
-    urlGlobal = process.env.URL_GLOBAL_DEV;
-    msisdn = process.env.MSISDN_DEV;
-    passwordBJB = process.env.PASSWORD_DEV;
-}else if(appENV == 'Production'){
+// if (appENV == 'Development') {
+//     urlGlobal = process.env.URL_GLOBAL_DEV;
+//     msisdn = process.env.MSISDN_DEV;
+//     passwordBJB = process.env.PASSWORD_DEV;
+// }else if(appENV == 'Production'){
     urlGlobal = process.env.URL_GLOBAL_PROD;
     msisdn = process.env.MSISDN_PROD;
     passwordBJB = process.env.PASSWORD_PROD;
-}
+// }
 // ====================================================
 
 const getURL = (req, res) => {
@@ -297,7 +297,7 @@ const createQR = async (req, res) => {
             { headers: headers }
         );
         const response = result.data.body;
-        console.log(response);
+        console.log('RESULT CREATE QR::',result);
 
         const responseData = {
             code: 200,
