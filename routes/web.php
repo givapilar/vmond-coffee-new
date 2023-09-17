@@ -180,7 +180,7 @@ Route::get('/send-otp', function () {
     return view('aktivasi-bjb.send-otp');
 })->name('send-otp');
 
-Route::get('/create-qris-dinamis', function () {
+Route::get('/create-qris', function () {
     return view('aktivasi-bjb.create-qris');
 })->name('create-qris');
 

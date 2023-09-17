@@ -238,7 +238,7 @@
                             },
                             async: false,
                             success: function(res) {
-                                alert('Anda Berhasil Aktivasi!');
+                                alert('Anda Berhasil Create QR!');
                             },
                             error: function(data) {
                                 console.log(data);
