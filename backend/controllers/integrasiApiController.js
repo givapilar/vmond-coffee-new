@@ -297,7 +297,7 @@ const createQR = async (req, res) => {
             { headers: headers }
         );
         const response = result.data.body;
-        console.log('RESULT CREATE QR::',result);
+        console.log('RESULT CREATE QR::',response);
 
         const responseData = {
             code: 200,
