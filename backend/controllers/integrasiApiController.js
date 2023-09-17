@@ -298,6 +298,7 @@ const createQR = async (req, res) => {
         );
         const response = result.data.body;
         console.log('RESULT CREATE QR::',response);
+        console.log('MSIDN::',msisdn);
 
         const responseData = {
             code: 200,
