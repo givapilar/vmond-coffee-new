@@ -2,7 +2,7 @@ const jwt = require('jwt-simple');
 const secretKey = 'yUyOSXBD8ZB96JKv5e5K4aETVLJcGkubL8d6UlrqERJSVtvDJr';
 const axios = require('axios');
 require('dotenv').config();
-const urlGlobal = process.env.URL_GLOBAL;
+const urlGlobal = process.env.URL_GLOBAL_PROD;
 
 const getURL = (req, res) => {
     const resCallback = "Success Connect! \n";
