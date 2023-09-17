@@ -292,7 +292,7 @@ const createQR = async (req, res) => {
         };
 
         const result = await axios.post(
-            urlGlobal + '/mobile-webconsole/apps/4/pbNonFinancialAdapter/authorizationRegistration',
+            urlGlobal + '/mobile-webconsole/apps/4/pbTransactionAdapter/createInvoiceQRISDinamisExt',
             { metadata: metaData, body: bodyData },
             { headers: headers }
         );
