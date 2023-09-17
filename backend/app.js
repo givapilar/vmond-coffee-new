@@ -8,7 +8,6 @@ require('dotenv').config();
 const schedule = require('node-schedule');
 
 // =====================Function Import=======================
-// const  = require('./myModule');
 const { getTokenFintech } = require('./services/api-bjb/requestTokenFintech');
 // ===================End Function Import=====================
 
@@ -17,20 +16,21 @@ app.use('/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/v1/api', userRoutes);
 
 const appENV = process.env.APP_ENV;
-let urlGlobal, msisdn, passwordBJB
+let urlGlobal, msisdn, passwordBJB, token;
 
+// ====================================================
+// Check APP ENV (Development or Production)
+// ====================================================
 if (appENV == 'Development') {
     urlGlobal = process.env.URL_GLOBAL_DEV;
     msisdn = process.env.MSISDN_DEV;
     passwordBJB = process.env.PASSWORD_DEV;
 }else if(appENV == 'Production'){
-    console.log(process.env.URL_GLOBAL_PROD);
-    // urlGlobal = process.env.URL_GLOBAL_PROD;
-    // msisdn = process.env.MSISDN_PROD;
-    // passwordBJB = process.env.PASSWORD_PROD;
+    urlGlobal = process.env.URL_GLOBAL_PROD;
+    msisdn = process.env.MSISDN_PROD;
+    passwordBJB = process.env.PASSWORD_PROD;
 }
-
-let token = '';
+// ====================================================
 
 // ====================================================
 // Update token berdasarkan schedule per 1 jam sekali
@@ -58,7 +58,7 @@ async function main() {
         if (!token) {
             token = await getTokenFintech(urlGlobal, msisdn, passwordBJB);
         }
-
+        
         
     } catch (err) {
         // Handle Error

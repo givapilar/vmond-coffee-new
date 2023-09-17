@@ -61,14 +61,14 @@ const getTokenFintech = async (req, res) => {
         };
 
         const metaData = {
-            "datetime": "2023-09-05T09:40:21.450Z",
+            "datetime": "2023-09-18T00:25:21.450Z",
             "deviceId": "9f9cb0504caa5059", 
             "devicePlatform": "Linux",
             "deviceOSVersion": "9",
             "deviceType": "",
             "latitude": "",
             "longitude": "",
-            "appId": 4,
+            "appId": 58,
             "appVersion": "1.0",
         };
 
@@ -123,7 +123,7 @@ const sendOtpByPhoneNumber = async (req, res) => {
             "deviceType": "",
             "latitude": "",
             "longitude": "",
-            "appId": 4,
+            "appId": 58,
             "appVersion": "1.0",
         };
 
@@ -180,7 +180,7 @@ const aktivasi = async (req, res) => {
             "deviceType": "",
             "latitude": "",
             "longitude": "",
-            "appId": 4,
+            "appId": 58,
             "appVersion": "1.0",
         };
 
