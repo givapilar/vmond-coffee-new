@@ -169,7 +169,7 @@ class APIController extends Controller
             ];
     
             // Lakukan permintaan HTTP POST ke URL tertentu dengan data dalam body
-            $response = $client->post('http://172.31.32.85:2222/v1/api/create-qris-merchant', [
+            $response = $client->post('http://172.31.32.85:2222/v1/api/create-qr', [
                 'json' => $dataToSend, // Data yang akan dikirim dalam format JSON
             ]);
     

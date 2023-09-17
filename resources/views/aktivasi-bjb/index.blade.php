@@ -214,13 +214,10 @@
                     text: 'Submit',
                     btnClass: 'btn-blue',
                     action: function() {
-                        let dttoken, msisdn, pin, product, dtreference;
+                        let amount, expired;
                         
-                        dttoken = token;
-                        msisdn = this.$content.find('#msisdn').val();
                         amount = this.$content.find('#amount').val();
                         expired = this.$content.find('#expired').val();
-                        dtreference = reference;
 
                         $.ajax({
                             type: 'POST',
@@ -230,14 +227,12 @@
                             },
                             data: {
                                 "_token": "{{ csrf_token() }}",
-                                dttoken,
-                                msisdn,
-                                pin,
-                                product,
-                                dtreference,
+                                amount,
+                                expired,
                             },
                             async: false,
                             success: function(res) {
+                                console.log(res);
                                 alert('Anda Berhasil Create QR!');
                             },
                             error: function(data) {
