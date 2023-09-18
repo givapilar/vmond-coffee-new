@@ -15,21 +15,21 @@ app.use(express.json());
 app.use('/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/v1/api', userRoutes);
 
-const appENV = process.env.APP_ENV;
-let urlGlobal, msisdn, passwordBJB, token;
+// const appENV = process.env.APP_ENV;
+// let urlGlobal, msisdn, passwordBJB, token;
 
 // ====================================================
 // Check APP ENV (Development or Production)
 // ====================================================
-if (appENV == 'Development') {
-    urlGlobal = process.env.URL_GLOBAL_DEV;
-    msisdn = process.env.MSISDN_DEV;
-    passwordBJB = process.env.PASSWORD_DEV;
-}else if(appENV == 'Production'){
-    urlGlobal = process.env.URL_GLOBAL_PROD;
-    msisdn = process.env.MSISDN_PROD;
-    passwordBJB = process.env.PASSWORD_PROD;
-}
+// if (appENV == 'Development') {
+//     urlGlobal = process.env.URL_GLOBAL_DEV;
+//     msisdn = process.env.MSISDN_DEV;
+//     passwordBJB = process.env.PASSWORD_DEV;
+// }else if(appENV == 'Production'){
+//     urlGlobal = process.env.URL_GLOBAL_PROD;
+//     msisdn = process.env.MSISDN_PROD;
+//     passwordBJB = process.env.PASSWORD_PROD;
+// }
 // ====================================================
 
 // ====================================================
@@ -46,216 +46,29 @@ if (appENV == 'Development') {
 // │    └──────────────────── minute (0 - 59)
 // └───────────────────────── second (0 - 59, OPTIONAL)
 
-const updateToken = schedule.scheduleJob(' */30 * * * *', async function(){
-    token = await getTokenFintech(urlGlobal, msisdn, passwordBJB);
-});
+// const updateToken = schedule.scheduleJob(' */30 * * * *', async function(){
+//     token = await getTokenFintech(urlGlobal, msisdn, passwordBJB);
+// });
 
-// ====================================================
+// // ====================================================
 
-async function main() {
-    try {
-        // Cek ketersediaan token
-        if (!token) {
-            token = await getTokenFintech(urlGlobal, msisdn, passwordBJB);
-        }
+// async function main() {
+//     try {
+//         // Cek ketersediaan token
+//         if (!token) {
+//             token = await getTokenFintech(urlGlobal, msisdn, passwordBJB);
+//         }
 
         
-    } catch (err) {
-        // Handle Error
-        console.error(err);
-    }
-}
-
-main();
-const interval = 1000;
-setInterval(main, interval);
-
-// ====================================================================
-// Send OTP By phone number
-
-// const sendOtpByPhoneNumber = async () => {
-//   try {
-//     const headers = {
-//       "Content-Type": "application/json",
-//       "X-AUTH-TOKEN": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJjYWVlZmY1Yy1lOTI3LTQ4YTAtYjY5Ny1mYzFiNGRkZTk1ZWQiLCJzdWIiOiJWTU85MzcxOTI5ODgiLCJleHAiOjE2OTM5MjM0ODAsImlhdCI6MTY5Mzg5MzQ4MCwiaWRlbnRpZmllciI6Im5MUGpTdU5tNDA2SEZUUSIsInVzZXJuYW1lIjoiVk1POTM3MTkyOTg4In0.rBHoCLMYnoUITWOYvN0rdnR5y03F1vWjJ8QojkBzHVaQQfMdY31ujCMQdJjSGr52DBoL5gh__RmyUKSnKfeJFw" // Replace with actual X-AUTH-TOKEN value
-//     };
-    
-//     const metaData = {
-//       "datetime": "2023-09-04T09:40:21.450Z",
-//       "deviceId": "bjbdigi",
-//       "devicePlatform": "Linux",
-//       "deviceOSVersion": "bjbdigi-version",
-//       "deviceType": "",
-//       "latitude": "",
-//       "longitude": "",
-//       "appId": 4,
-//       "appVersion": "1.0",
-//     };
-    
-//     const bodyData = {
-//       "phoneNo": "081717181988" // Replace with actual appIdName value
-//     };
-    
-//     const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/4/pbNonFinancialAdapter/resendOTPByPhone", 
-//       {"metadata": metaData, "body": bodyData}, 
-//       {"headers": headers}
-//     );
-    
-//     console.log("AllResult :: ", result);
-//     console.log("Result Data :: ", result.data);
-    
-
-//     // Check Console detail qris
-//     if (result && result.data && result.data.body && result.data.body.ResendOTPByPhoneResponse) {
-//       const response = result.data.body.ResendOTPByPhoneResponse;
-//       const attr = response._attr;
-//       const status = response.Status;
-//       const reference = response.reference;
-//       const xAuthToken = result.headers['x-auth-token'];
-
-//       console.log("X-AUTH-TOKEN:", xAuthToken)
-//       console.log("Attr:", attr);
-//       console.log("Status:", status);
-//       console.log("Reference:", reference);
-//     } else {
-//       console.log("Response structure is not as expected.");
+//     } catch (err) {
+//         // Handle Error
+//         console.error(err);
 //     }
-    
-    
-//   } catch (err) {
-//     // Handle Error Here
-//     console.error(err);
-//   }
-// };
+// }
 
-
-// sendOtpByPhoneNumber();
-
-
-// ====================================================================
-
-// Aktivasi
-
-// const aktivasi = async () => {
-//   try {
-//     const headers = {
-//       "Content-Type": "application/json",
-//       "X-AUTH-TOKEN": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJjYWVlZmY1Yy1lOTI3LTQ4YTAtYjY5Ny1mYzFiNGRkZTk1ZWQiLCJzdWIiOiJWTU85MzcxOTI5ODgiLCJleHAiOjE2OTM5MjM0ODAsImlhdCI6MTY5Mzg5MzQ4MCwiaWRlbnRpZmllciI6Im5MUGpTdU5tNDA2SEZUUSIsInVzZXJuYW1lIjoiVk1POTM3MTkyOTg4In0.rBHoCLMYnoUITWOYvN0rdnR5y03F1vWjJ8QojkBzHVaQQfMdY31ujCMQdJjSGr52DBoL5gh__RmyUKSnKfeJFw" // Replace with actual X-AUTH-TOKEN value
-//     };
-    
-//     const metaData = {
-//       "datetime": "2023-09-04T09:40:21.450Z",
-//       "deviceId": "bjbdigi",
-//       "devicePlatform": "Linux",
-//       "deviceOSVersion": "bjbdigi-version",
-//       "deviceType": "",
-//       "latitude": "",
-//       "longitude": "",
-//       "appId": 4,
-//       "appVersion": "1.0",
-//     };
-    
-//     const bodyData = {
-//       "msisdn": "081717181988",
-//       "pin": "111111",
-//       "reference": "04832a86-313e-4a1c-9b92-ad8399ca3e3a",
-//       "product": "MERCHANT",
-//     };
-    
-//     const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/4/pbNonFinancialAdapter//authorizationRegistration", 
-//       {"metadata": metaData, "body": bodyData}, 
-//       {"headers": headers}
-//     );
-    
-//     console.log("AllResult :: ", result);
-//     console.log("Result Data :: ", result.data);
-    
-
-//     if (result && result.data && result.data.body && result.data.body.AuthorizationRegisterResponse) {
-//       const response = result.data.body.AuthorizationRegisterResponse;
-//       const attr = response._attr;
-//       const customer = response.customer;
-//       const xAuthToken = result.headers['x-auth-token'];
-
-//       console.log("X-AUTH-TOKEN:", xAuthToken)
-//       console.log("Attr:", attr);
-//       console.log("Customer:", customer);
-//     } else {
-//       console.log("Response structure is not as expected.");
-//     }
-    
-    
-//   } catch (err) {
-//     // Handle Error Here
-//     console.error(err);
-//   }
-// };
-
-
-// aktivasi();
-
-// Request Token for Transaction Authentication as Merchant
-// const requestTokenAuthMerchant = async () => {
-//   try {
-//     const headers = {
-//       "Content-Type": "application/json"
-//     };
-    
-//     const metaData = {
-//       "datetime": "2023-09-12T10:40:21.450Z",
-//       "deviceId": "bjbdigi",
-//       "devicePlatform": "Linux",
-//       "deviceOSVersion": "bjbdigi-version",
-//       "deviceType": "",
-//       "latitude": "",
-//       "longitude": "",
-//       "appId": 58,
-//       "appVersion": "1.0",
-//     };
-    
-//     const bodyData = {
-//       "msisdn": "980000000058",
-//       "password": "08c1d2a9b38cd12a0539772bbe77b9b9989ade895fdf5fbb5936b418dbd08da3",
-//       // "username": "VMO937192988",
-//       // "pin": 111111,
-//     };
-    
-//     const result = await axios.post(urlGlobal + "/mobile-webconsole/apps/pocket/requestTokenFintech", 
-//       {"metadata": metaData, "body": bodyData}, 
-//       {"headers": headers}
-//     );
-    
-//     console.log("AllResult :: ", result);
-//     console.log("Result Data :: ", result.data);
-    
-
-//     if (result && result.data && result.data.body && result.data.body.CreateTokenFintechResponse) {
-//       const response = result.data.body.CreateTokenFintechResponse;
-//       const attr = response._attr;
-//       const customer = response.customer;
-//       const channel = response.channel;
-//       const key = response.key;
-//       const xAuthToken = result.headers['x-auth-token'];
-
-//       console.log("X-AUTH-TOKEN:", xAuthToken)
-    
-//       console.log("Attr:", attr);
-//       console.log("Customer:", customer);
-//       console.log("Channel:", channel);
-//       console.log("key:", key);
-//     } else {
-//       console.log("Response structure is not as expected.");
-//     }
-    
-    
-//   } catch (err) {
-//     // Handle Error Here
-//     console.error(err);
-//   }
-// };
-
-
-// requestTokenAuthMerchant();
+// main();
+// const interval = 1000;
+// setInterval(main, interval);
 
 // ====================================================================
 // Create Qris Dinamis BJB
@@ -326,14 +139,8 @@ setInterval(main, interval);
 
 
 // Jalankan server pada port tertentu
-const port = 2222;
-// const port = 3000;
+// const port = 2222;
+const port = 3000;
 app.listen(port, () => {
   console.log('Backend Node.js server is running on port ' + port);
 });
-
-
-// const port = process.env.PORT || 2222; // Gunakan PORT yang tersedia atau 2222 jika tidak ada yang tersedia
-// app.listen(port, () => {
-//   console.log(`Server berjalan di port ${port}`);
-// });
