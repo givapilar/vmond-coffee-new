@@ -139,8 +139,8 @@ app.use('/v1/api', userRoutes);
 
 
 // Jalankan server pada port tertentu
-// const port = 2222;
-const port = 3000;
+const port = 2222;
+// const port = 3000;
 app.listen(port, () => {
   console.log('Backend Node.js server is running on port ' + port);
 });
