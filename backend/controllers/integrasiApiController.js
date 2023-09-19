@@ -106,6 +106,8 @@ const getTokenFintech = async (req, res) => {
             token: xAuthToken,
             message: 'Successfully!'
         };
+        
+        console.log("Result Get Token : " , result);
         res.status(200).json(responseData);
     } catch (error) {
         const responseData = {
@@ -160,6 +162,8 @@ const sendOtpByPhoneNumber = async (req, res) => {
             reference: reference,
             message: 'Successfully!'
         };
+
+        console.log("Result Senf OTP :" ,result.data.body);
         res.status(200).json(responseData);
     } catch (error) {
         const responseData = {
@@ -219,6 +223,8 @@ const aktivasi = async (req, res) => {
             method: req.method,
             message: 'Successfully!'
         };
+
+        console.log("Result  Aktivasi :" ,response);
         res.status(200).json(responseData);
     } catch (error) {
         const responseData = {
@@ -306,6 +312,8 @@ const createQR = async (req, res) => {
             // StringQR: response.stringQR,
             message: 'Successfully!'
         };
+
+        console.log("Result QR : " ,response);
         res.status(200).json(responseData);
     } catch (error) {
         const responseData = {
