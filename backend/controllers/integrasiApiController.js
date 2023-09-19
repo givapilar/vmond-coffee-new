@@ -14,7 +14,7 @@ let urlGlobal, msisdn, passwordBJB;
 //     passwordBJB = process.env.PASSWORD_DEV;
 // }else if(appENV == 'Production'){
     urlGlobal = process.env.URL_GLOBAL_PROD;
-    msisdn = process.env.MSISDN_PROD;
+    msisdn = process.env.MSISDN_DEV;
     passwordBJB = process.env.PASSWORD_PROD;
 // }
 // ====================================================
@@ -259,8 +259,8 @@ const createQR = async (req, res) => {
         };
 
         const bodyData1 = {
-            // msisdn: msisdn,
-            msisdn: "081717181988",
+            msisdn: msisdn,
+            // msisdn: "081717181988",
             password: passwordBJB
         };
 
