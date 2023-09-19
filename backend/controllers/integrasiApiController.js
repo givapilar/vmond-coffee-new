@@ -259,8 +259,8 @@ const createQR = async (req, res) => {
         };
 
         const bodyData1 = {
-            // msisdn: msisdn,
-            msisdn: "081717181988",
+            msisdn: msisdn,
+            // msisdn: "081717181988",
             password: passwordBJB
         };
 
@@ -294,7 +294,7 @@ const createQR = async (req, res) => {
         };
 
         const bodyData = {
-            merchantAccountNumber: msisdn,
+            merchantAccountNumber: "081717181988",
             amount: dtamount,
             expInSecond: dtexpired,
         };
