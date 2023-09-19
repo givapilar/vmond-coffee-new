@@ -116,7 +116,7 @@
                             async: false,
                             success: function(res) {
                                 reference = res.data.reference;
-                                console.log("Response :" ,res);
+                                // console.log("Response :" ,res);
                                 alert('Berhasil! Send OTP.');
                             },
                             error: function(data) {
@@ -178,7 +178,7 @@
                             },
                             async: false,
                             success: function(res) {
-                                console.log("Response :" res);
+                                // console.log("Response :" res);
                                 alert('Anda Berhasil Aktivasi!');
                             },
                             error: function(data) {
