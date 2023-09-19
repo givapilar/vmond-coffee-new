@@ -14,7 +14,7 @@ let urlGlobal, msisdn, passwordBJB;
 //     passwordBJB = process.env.PASSWORD_DEV;
 // }else if(appENV == 'Production'){
     urlGlobal = process.env.URL_GLOBAL_PROD;
-    msisdn = process.env.MSISDN_DEV;
+    msisdn = process.env.MSISDN_PROD;
     passwordBJB = process.env.PASSWORD_PROD;
 // }
 // ====================================================
