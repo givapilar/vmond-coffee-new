@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Writer;
-// use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 class OrderController extends Controller
 {
     public function createQris(){
