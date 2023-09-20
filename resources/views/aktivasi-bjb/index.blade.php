@@ -243,7 +243,8 @@
                             async: false,
                             success: function(res) {
                                 console.log(res);
-                                generateQR(res.stringQR);
+                                console.log(res.data.stringQR);
+                                generateQR(res.data.stringQR);
                                 // alert('Anda Berhasil Create QR!');
                             },
                             error: function(data) {
