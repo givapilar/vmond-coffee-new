@@ -309,7 +309,7 @@
 
     $.confirm({
         title: 'Generate QR Code',
-        content: '<img src="' + qrDataUrl + '" width="80%" height="80%">',
+        content: '<img src="' + qrDataUrl + '" width="70%" height="70%" style="display:block; margin-right:auto; margin-left:auto;">',
         columnClass: 'medium',
         type: 'blue',
         typeAnimated: true,
