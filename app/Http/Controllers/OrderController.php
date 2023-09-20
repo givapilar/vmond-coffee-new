@@ -46,14 +46,13 @@ class OrderController extends Controller
             ->margin(10)
             ->generate($data1);
 
-        // dd($qrCode);
-
-        return view('aktivasi-bjb.create-qris', compact('qrCode'));
+        return view('aktivasi-bjb.barcode-jquery', compact('qrCode'));
 
         // $qrCode = QrCode::format('png')->size(200)->generate('Hello, QR Code!');
 
         // return response($qrCode)->header('Content-type', 'image/png');
     }
+    
     public function checkout(Request $request, $token)
     {
         try {

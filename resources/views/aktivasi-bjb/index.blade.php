@@ -14,6 +14,8 @@
         <button onclick="sendOTP()" class="btn btn-sm btn-warning">Send OTP</button>
         <button onclick="aktivasi()" class="btn btn-sm btn-success">Aktivasi</button>
         <button onclick="createQris()" class="btn btn-sm btn-secondary">Create Qris</button>
+        <div id="barcode"></div>
+
     </div>
     {{-- <button onclick="test()">Test</button> --}}
 </body>
@@ -21,6 +23,19 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
+<!-- bwip-js -->
+<script src="https://unpkg.com/bwip-js"></script>
+
+
+
+<script>
+    var $j = jQuery.noConflict();
+
+$j(document).ready(function () {
+    // Barcode data and options...
+});
+</script>
 
 <script>
     let token = '';
