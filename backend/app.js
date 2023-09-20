@@ -12,6 +12,7 @@ const { getTokenFintech } = require('./services/api-bjb/requestTokenFintech');
 // ===================End Function Import=====================
 
 app.use(express.json());
+app.use(bodyParser.json());
 app.use('/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/v1/api', userRoutes);
 
