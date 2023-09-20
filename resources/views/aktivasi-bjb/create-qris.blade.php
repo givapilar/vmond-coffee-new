@@ -1,4 +1,4 @@
-<div class="card-body">
+{{-- <div class="card-body">
     <div class="form-group mb-3">
         <label for="amount">Amount</label>
         <input type="text" value="" class="form-control" name="amount" id="amount" placeholder="Input Amount...">
@@ -7,9 +7,35 @@
         <label for="expired">Expired</label>
         <input type="text" value="" class="form-control" name="expired" id="expired" placeholder="Input Expired...">
     </div>
-</div>
+</div> --}}
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barcode Example</title>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- JsBarcode -->
+    <script src="https://cdn.jsdelivr.net/jsbarcode/3.11.0/JsBarcode.all.min.js"></script>
 
+</head>
+<body>
+    <svg id="barcode"></svg>
+
+    <script>
+        $(document).ready(function () {
+            JsBarcode("#barcode", "123456789", {
+                format: "CODE128",
+                displayValue: true
+            });
+        });
+    </script>
+</body>
+</html>
+
+    
 
  {{-- <div class="card-body">
     <div class="form-group mb-3">

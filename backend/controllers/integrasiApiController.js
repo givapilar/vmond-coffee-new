@@ -311,7 +311,7 @@ const createQR = async (req, res) => {
         const responseData = {
             code: 200,
             method: req.method,
-            stringQR: response.stringQR,
+            stringQR: response.stringQR._text,
             message: 'Successfully!'
         };
 
