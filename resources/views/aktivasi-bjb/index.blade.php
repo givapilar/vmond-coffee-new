@@ -270,12 +270,9 @@
     }
 
     function generateQR(strQR) {
-        // Ambil data QR dari input
-        var qrCodeData = qrCodeDataInput.value;
-
         // Buat objek kode QR
         var qrcode = new QRCode(document.getElementById("qrcode"), {
-            text: qrCodeData,
+            text: strQR,
             width: 128,
             height: 128,
         });
