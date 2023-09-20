@@ -14,8 +14,9 @@
         <button onclick="sendOTP()" class="btn btn-sm btn-warning">Send OTP</button>
         <button onclick="aktivasi()" class="btn btn-sm btn-success">Aktivasi</button>
         <button onclick="createQris()" class="btn btn-sm btn-secondary">Create Qris</button>
-        <canvas id="barcode" style="width: 50%"></canvas>
-
+        <canvas id="barcode" style="width: 300px; height: 400px;"></canvas>
+        <input type="text" id="qrCodeData" placeholder="Masukkan data QR">
+        <button id="generateQR">Generate QR</button>
     </div>
     {{-- <button onclick="test()">Test</button> --}}
 </body>
@@ -29,30 +30,42 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        // Barcode data
-        var barcodeData = "123456789";
+        // Ambil referensi ke elemen HTML yang diperlukan
+        var qrCodeDataInput = document.getElementById("qrCodeData");
+        var generateQRButton = document.getElementById("generateQR");
 
-        // Create a canvas element to render the barcode
-        var canvas = document.getElementById("barcode");
+        // Tambahkan event listener ke tombol "Generate QR"
+        generateQRButton.addEventListener("click", function () {
+            // Ambil data QR dari input
+            var qrCodeData = qrCodeDataInput.value;
 
-        // Barcode options
-        var barcodeOptions = {
-            bcid: "qrcode", // Barcode format (code128 in this example)
-            text: barcodeData, // Data to encode
-            scale: 3, // Scale factor for the barcode
-            height: 50, // Height of the barcode
-            includetext: true, // Include the text below the barcode
-            textxalign: "center", // Text horizontal alignment
-        };
+            // Barcode options
+            var qrCodeOptions = {
+                bcid: "qrcode", // Format kode QR
+                text: qrCodeData, // Data yang akan diubah menjadi kode QR
+                scale: 2, // Faktor skala
+                height: 100, // Tinggi kode QR
+            };
 
-        // Generate the barcode
-        bwipjs.toCanvas(canvas, barcodeOptions, function (err, cvs) {
-            if (err) {
-                console.error(err);
-            } else {
-                // Barcode generated successfully
-                // You can further customize or use the generated barcode as needed
-            }
+            // Generate the QR code
+            bwipjs.toCanvas(document.getElementById("hidden-canvas"), qrCodeOptions, function (err, cvs) {
+                if (err) {
+                    console.error(err);
+                } else {
+                    // Kode QR berhasil dihasilkan
+                    // Tampilkan kode QR dalam pop-up konfirmasi
+                    var imageUrl = document.getElementById("hidden-canvas").toDataURL("image/png");
+                    var confirmation = window.confirm("Apakah Anda ingin melihat Kode QR?\nKlik OK untuk melihatnya.");
+                    
+                    if (confirmation) {
+                        var qrImage = new Image();
+                        qrImage.src = imageUrl;
+                        var popupWindow = window.open("", "_blank");
+                        popupWindow.document.write("<img src='" + imageUrl + "' alt='QR Code'>");
+                        popupWindow.document.close();
+                    }
+                }
+            });
         });
     });
 </script>
