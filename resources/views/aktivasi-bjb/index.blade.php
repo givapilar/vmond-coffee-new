@@ -243,11 +243,11 @@
                             async: false,
                             success: function(res) {
                                 console.log(res);
-                                alert('Anda Berhasil Create QR!');
+                                generateQR(data.stringQR);
+                                // alert('Anda Berhasil Create QR!');
                             },
                             error: function(data) {
                                 console.log(data);
-                                generateQR(data.stringQR);
                                 $.alert(data.responseJSON.message);
                             }
                         });
