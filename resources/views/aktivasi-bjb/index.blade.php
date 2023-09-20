@@ -14,7 +14,7 @@
         <button onclick="sendOTP()" class="btn btn-sm btn-warning">Send OTP</button>
         <button onclick="aktivasi()" class="btn btn-sm btn-success">Aktivasi</button>
         <button onclick="createQris()" class="btn btn-sm btn-secondary">Create Qris</button>
-        <canvas id="barcode"></canvas>
+        <canvas id="barcode" style="width: 50%"></canvas>
 
     </div>
     {{-- <button onclick="test()">Test</button> --}}
@@ -29,32 +29,32 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-            // Barcode data
-            var barcodeData = "123456789";
-    
-            // Create a canvas element to render the barcode
-            var canvas = document.getElementById("barcode");
-    
-            // Barcode options
-            var barcodeOptions = {
-                bcid: "code128", // Barcode format (code128 in this example)
-                text: barcodeData, // Data to encode
-                scale: 3, // Scale factor for the barcode
-                height: 50, // Height of the barcode
-                includetext: true, // Include the text below the barcode
-                textxalign: "center", // Text horizontal alignment
-            };
-    
-            // Generate the barcode
-            bwipjs.toCanvas(canvas, barcodeOptions, function (err, cvs) {
-                if (err) {
-                    console.error(err);
-                } else {
-                    // Barcode generated successfully
-                    // You can further customize or use the generated barcode as needed
-                }
-            });
+        // Barcode data
+        var barcodeData = "123456789";
+
+        // Create a canvas element to render the barcode
+        var canvas = document.getElementById("barcode");
+
+        // Barcode options
+        var barcodeOptions = {
+            bcid: "qrcode", // Barcode format (code128 in this example)
+            text: barcodeData, // Data to encode
+            scale: 3, // Scale factor for the barcode
+            height: 50, // Height of the barcode
+            includetext: true, // Include the text below the barcode
+            textxalign: "center", // Text horizontal alignment
+        };
+
+        // Generate the barcode
+        bwipjs.toCanvas(canvas, barcodeOptions, function (err, cvs) {
+            if (err) {
+                console.error(err);
+            } else {
+                // Barcode generated successfully
+                // You can further customize or use the generated barcode as needed
+            }
         });
+    });
 </script>
 
 <script>
