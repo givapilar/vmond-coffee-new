@@ -15,6 +15,7 @@
         <button onclick="aktivasi()" class="btn btn-sm btn-success">Aktivasi</button>
         <button onclick="createQris()" class="btn btn-sm btn-secondary">Create Qris</button>
         <canvas id="barcode" style="width: 300px; height: 400px;"></canvas>
+        <div id="qrcode"></div> <!-- Tambahkan elemen ini -->
         <input type="text" id="qrCodeData" placeholder="Masukkan data QR">
         <button id="generateQR">Generate QR</button>
     </div>
