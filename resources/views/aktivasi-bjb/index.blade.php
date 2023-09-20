@@ -249,6 +249,7 @@
                             success: function(res) {
                                 console.log(res);
                                 console.log(res.data.stringQR);
+                                generateQris(res.data.stringQR)
                                 // alert('Anda Berhasil Create QR!');
                             },
                             error: function(data) {
