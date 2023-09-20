@@ -29,6 +29,7 @@
 <!-- bwip-js -->
 <script src="https://unpkg.com/bwip-js"></script>
 <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 
 <script>
     let token = '';
@@ -271,20 +272,21 @@
     }
 
     function generateQR(strQR) {
-        // Buat objek kode QR
-        var qrcode = new QRCode(document.getElementById("qrcode"), {
-            text: strQR,
-            width: 500,
-            height: 500,
+        // Create a QRious instance
+        var qr = new QRious({
+            element: document.getElementById("qrcode"),
+            value: strQR,
+            size: 200, // Adjust the size as needed
         });
 
-        // Tampilkan kode QR dalam pop-up konfirmasi
-        var imageUrl = document.getElementById("qrcode").querySelector("img").src;
-        var confirmation = window.confirm("Apakah Anda ingin melihat Kode QR?\nKlik OK untuk melihatnya.");
+        // Optionally, you can also display the QR code image in a pop-up
+        var qrImage = new Image();
+        qrImage.src = qr.toDataURL();
+
+        var confirmation = window.confirm("Do you want to view the QR Code?\nClick OK to view it.");
 
         if (confirmation) {
-            var qrImage = new Image();
-            qrImage.src = imageUrl;
+            document.body.appendChild(qrImage);
         }
     }
 
