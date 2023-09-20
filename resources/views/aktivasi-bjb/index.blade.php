@@ -14,7 +14,7 @@
         <button onclick="sendOTP()" class="btn btn-sm btn-warning">Send OTP</button>
         <button onclick="aktivasi()" class="btn btn-sm btn-success">Aktivasi</button>
         <button onclick="createQris()" class="btn btn-sm btn-secondary">Create Qris</button>
-        <div id="barcode"></div>
+        <svg id="barcode"></svg>    
 
     </div>
     {{-- <button onclick="test()">Test</button> --}}
@@ -27,14 +27,18 @@
 <!-- bwip-js -->
 <script src="https://unpkg.com/bwip-js"></script>
 
-
-
 <script>
-    var $j = jQuery.noConflict();
+    $(document).ready(function () {
+        // Barcode data and options
+        var barcodeData = "123456789";
+        var barcodeOptions = {
+            format: "CODE128",
+            displayValue: true
+        };
 
-$j(document).ready(function () {
-    // Barcode data and options...
-});
+        // Generate the barcode
+        JsBarcode("#barcode", barcodeData, barcodeOptions);
+    });
 </script>
 
 <script>
