@@ -6,6 +6,7 @@ const swaggerSpec = require('./swaggerAPI/swagger'); // Sesuaikan path jika berb
 const axios = require('axios'); 
 require('dotenv').config();
 const schedule = require('node-schedule');
+const bodyParser = require('body-parser');
 
 // =====================Function Import=======================
 const { getTokenFintech } = require('./services/api-bjb/requestTokenFintech');
