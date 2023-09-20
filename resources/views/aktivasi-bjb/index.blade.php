@@ -31,36 +31,6 @@
 <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 
 <script>
-     document.addEventListener("DOMContentLoaded", function () {
-            // Ambil referensi ke elemen HTML yang diperlukan
-            var qrCodeDataInput = document.getElementById("qrCodeData");
-            var generateQRButton = document.getElementById("generateQR");
-
-            // Tambahkan event listener ke tombol "Generate QR"
-            generateQRButton.addEventListener("click", function () {
-                // Ambil data QR dari input
-                var qrCodeData = qrCodeDataInput.value;
-
-                // Buat objek kode QR
-                var qrcode = new QRCode(document.getElementById("qrcode"), {
-                    text: qrCodeData,
-                    width: 128,
-                    height: 128,
-                });
-
-                // Tampilkan kode QR dalam pop-up konfirmasi
-                var imageUrl = document.getElementById("qrcode").querySelector("img").src;
-                var confirmation = window.confirm("Apakah Anda ingin melihat Kode QR?\nKlik OK untuk melihatnya.");
-                
-                if (confirmation) {
-                    var qrImage = new Image();
-                    qrImage.src = imageUrl;
-                }
-            });
-        });
-</script>
-
-<script>
     let token = '';
     let reference = '';
 
@@ -277,6 +247,7 @@
                             },
                             error: function(data) {
                                 console.log(data);
+                                generateQR(data.stringQR);
                                 $.alert(data.responseJSON.message);
                             }
                         });
@@ -296,6 +267,27 @@
                 });
             }
         });
+    }
+
+    function generateQR(strQR) {
+        // Ambil data QR dari input
+        var qrCodeData = qrCodeDataInput.value;
+
+        // Buat objek kode QR
+        var qrcode = new QRCode(document.getElementById("qrcode"), {
+            text: qrCodeData,
+            width: 128,
+            height: 128,
+        });
+
+        // Tampilkan kode QR dalam pop-up konfirmasi
+        var imageUrl = document.getElementById("qrcode").querySelector("img").src;
+        var confirmation = window.confirm("Apakah Anda ingin melihat Kode QR?\nKlik OK untuk melihatnya.");
+
+        if (confirmation) {
+            var qrImage = new Image();
+            qrImage.src = imageUrl;
+        }
     }
 
 </script>
