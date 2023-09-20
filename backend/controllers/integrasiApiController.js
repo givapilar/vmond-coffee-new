@@ -24,49 +24,97 @@ const getURL = (req, res) => {
     res.json(resCallback);
 };
   
-const callbackFromBJB = (req, res) => {
-    try {
-        // ===================================================================
-        // JWT TOKEN
-        // ===================================================================
-        // const decodedToken = jwt.decode(req.body.token, secretKey);
+// const callbackFromBJB = (req, res) => {
+//     try {
+//         // ===================================================================
+//         // JWT TOKEN
+//         // ===================================================================
+//         // const decodedToken = jwt.decode(req.body.token, secretKey);
         
-        // // Lakukan verifikasi data, misalnya cek 'sub' dalam payload
-        // if (!decodedToken || !decodedToken.sub) {
-        //   throw new Error('Invalid your token!');
-        // }
+//         // // Lakukan verifikasi data, misalnya cek 'sub' dalam payload
+//         // if (!decodedToken || !decodedToken.sub) {
+//         //   throw new Error('Invalid your token!');
+//         // }
 
-        // ===================================================================
-        // JWT TOKEN
-        // ===================================================================
+//         // ===================================================================
+//         // JWT TOKEN
+//         // ===================================================================
             
-        // Logika pengolahan data
+//         // Logika pengolahan data
         
-        console.log('Response data : ',res);
-        console.log('====> Responn : ',res.body);
-        // console.log('Merchant Name:', res.body.merchantName);
+//         console.log('Response data : ',res);
+//         console.log('====> Responn : ',res.body);
+//         // console.log('Merchant Name:', res.body.merchantName);
         
-        // console.log('Request : ',req);
+//         // console.log('Request : ',req);
 
-        const responseData = {
-            code: 200,
-            method: req.method,
-            url: req.url,
-            headers: req.headers,
-            message: 'Successfully!'
-        };
-        res.status(200).json(responseData);
-    } catch (error) {
-        const responseData = {
-            code: 500,
-            method: req.method,
-            url: req.url,
-            headers: req.headers,
-            message: 'Failed! Error: ' + error
-        };
+//         const responseData = {
+//             code: 200,
+//             method: req.method,
+//             url: req.url,
+//             headers: req.headers,
+//             message: 'Successfully!'
+//         };
+//         res.status(200).json(responseData);
+//     } catch (error) {
+//         const responseData = {
+//             code: 500,
+//             method: req.method,
+//             url: req.url,
+//             headers: req.headers,
+//             message: 'Failed! Error: ' + error
+//         };
         
-        res.status(500).json(responseData);
-    }
+//         res.status(500).json(responseData);
+//     }
+// };
+const callbackFromBJB = (req, res) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            // ===================================================================
+            // JWT TOKEN
+            // ===================================================================
+            // const decodedToken = jwt.decode(req.body.token, secretKey);
+            
+            // // Lakukan verifikasi data, misalnya cek 'sub' dalam payload
+            // if (!decodedToken || !decodedToken.sub) {
+            //   throw new Error('Invalid your token!');
+            // }
+
+            // ===================================================================
+            // JWT TOKEN
+            // ===================================================================
+                
+            // Logika pengolahan data
+            
+            console.log('Response data : ',res);
+            console.log('====> Responn : ',res.body);
+            // console.log('Merchant Name:', res.body.merchantName);
+            
+            // console.log('Request : ',req);
+
+            const responseData = {
+                code: 200,
+                method: req.method,
+                url: req.url,
+                headers: req.headers,
+                message: 'Successfully!'
+            };
+            res.status(200).json(responseData);
+            resolve(responseData);
+        } catch (error) {
+            const responseData = {
+                code: 500,
+                method: req.method,
+                url: req.url,
+                headers: req.headers,
+                message: 'Failed! Error: ' + error
+            };
+            
+            res.status(500).json(responseData);
+            reject(error);
+        }
+    });
 };
 
 const getTokenFintech = async (req, res) => {
