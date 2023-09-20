@@ -15,13 +15,15 @@
         <button onclick="sendOTP()" class="btn btn-sm btn-warning">Send OTP</button>
         <button onclick="aktivasi()" class="btn btn-sm btn-success">Aktivasi</button>
         <button onclick="createQris()" class="btn btn-sm btn-secondary">Create Qris</button>
+        <button onclick="generateQris()" class="btn btn-sm btn-secondary">Generate Qris</button>
         {{-- <canvas id="barcode" style="width: 300px; height: 400px;"></canvas> --}}
         {{-- <input type="text" id="qrCodeData" placeholder="Masukkan data QR">
         <button id="generateQR">Generate QR</button> --}}
 
-        <div id="deleteModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full sm:inset-0 h-full delay-200">
+        <button id="hapusData">Generate Qr</button>
+
+        {{-- <div id="deleteModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full sm:inset-0 h-full delay-200">
             <div class="relative p-4 w-full max-w-md h-auto">
-                <!-- Modal content -->
                 <div class="relative p-4 text-center bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
                     <button type="button" class="text-gray-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="deleteModal">
                         <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
@@ -34,16 +36,13 @@
                         <button data-modal-toggle="deleteModal" type="button" class="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                             No, cancel
                         </button>
-                        {{-- <form action="{{ route('checkout-waiters') }}" method="POST"> --}}
-                            {{-- @csrf --}}
                             <button type="submit" class="btn btn-danger py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
                                 Yes, I'm sure
                             </button>
-                        {{-- </form>                             --}}
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
     {{-- <button onclick="test()">Test</button> --}}
 </body>
@@ -277,7 +276,8 @@
                                     // Show the modal here
                                     var deleteModal = document.getElementById("deleteModal");
                                     deleteModal.classList.remove("hidden");
-                                    generateQR(res.data.stringQR);
+                                    // generateQR(res.data.stringQR);
+                                    generateQris(res.data.stringQR)
                                 } else {
                                     // Handle other response statuses if needed
                                     console.error("Error:", response.status);
@@ -327,4 +327,57 @@
     }
 
 </script>
+
+<script>
+    function generateQris(strQR) {
+    $.confirm({
+        title: 'Generate Qris',
+        content: function () {
+            // Generate the QR code value (strQR)
+            // var strQR = 'Your QR Code Data'; // Ganti dengan data QR Code yang sesuai
+
+            // Create a QRious instance
+            var qr = new QRious({
+                value: strQR,
+                size: 200, // Sesuaikan ukuran sesuai kebutuhan
+            });
+
+            // Convert the QR code to a data URL
+            var qrDataUrl = qr.toDataURL();
+
+            return '<img id="qrcode" src="' + qrDataUrl + '" width="100%" height="100%">';
+        },
+        columnClass: 'medium',
+        type: 'blue',
+        typeAnimated: true,
+        buttons: {
+            viewQR: {
+                text: 'View QR Code',
+                btnClass: 'btn-blue',
+                action: function () {
+                    // Display the QR code image in a pop-up
+                    var qrImage = document.getElementById('qrcode');
+                    if (qrImage) {
+                        var qrDataUrl = qrImage.getAttribute('src');
+                        var popup = window.open("", "QR Code", "width=300,height=300");
+                        popup.document.body.innerHTML = '<img src="' + qrDataUrl + '" width="100%" height="100%">';
+                    } else {
+                        alert('QR Code image not found.');
+                    }
+                }
+            },
+            close: {
+                text: 'Close',
+                action: function () {
+                    // Close the dialog
+                }
+            }
+        }
+    });
+}
+
+
+
+</script>
+    
 </html>
