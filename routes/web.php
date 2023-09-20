@@ -36,7 +36,7 @@ Route::post('/register', [RegisterController::class, 'store'])->name('register')
 
 Route::get('/home', [HomepageController::class, 'index'])->name('homepage');
 
-Route::get('/create-qris', [OrderController::class, 'createQris'])->name('createQris');
+Route::get('/create-qris-tes', [OrderController::class, 'createQris'])->name('createQris');
 
 // daftar menu
 Route::get('/daftarmenu/restaurant', [DaftarMenuController::class, 'restaurant'])->name('daftar-restaurant');
