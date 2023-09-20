@@ -55,7 +55,7 @@
                 if (confirmation) {
                     var qrImage = new Image();
                     qrImage.src = imageUrl;
-                    var popupWindow = window.open("", "_blank");
+                    var popupWindow;
                     popupWindow.document.write("<img src='" + imageUrl + "' alt='QR Code'>");
                     popupWindow.document.close();
                 }
