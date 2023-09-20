@@ -27,47 +27,39 @@
 
 <!-- bwip-js -->
 <script src="https://unpkg.com/bwip-js"></script>
+<script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Ambil referensi ke elemen HTML yang diperlukan
-        var qrCodeDataInput = document.getElementById("qrCodeData");
-        var generateQRButton = document.getElementById("generateQR");
+     document.addEventListener("DOMContentLoaded", function () {
+            // Ambil referensi ke elemen HTML yang diperlukan
+            var qrCodeDataInput = document.getElementById("qrCodeData");
+            var generateQRButton = document.getElementById("generateQR");
 
-        // Tambahkan event listener ke tombol "Generate QR"
-        generateQRButton.addEventListener("click", function () {
-            // Ambil data QR dari input
-            var qrCodeData = qrCodeDataInput.value;
+            // Tambahkan event listener ke tombol "Generate QR"
+            generateQRButton.addEventListener("click", function () {
+                // Ambil data QR dari input
+                var qrCodeData = qrCodeDataInput.value;
 
-            // Barcode options
-            var qrCodeOptions = {
-                bcid: "qrcode", // Format kode QR
-                text: qrCodeData, // Data yang akan diubah menjadi kode QR
-                scale: 2, // Faktor skala
-                height: 100, // Tinggi kode QR
-            };
+                // Buat objek kode QR
+                var qrcode = new QRCode(document.getElementById("qrcode"), {
+                    text: qrCodeData,
+                    width: 128,
+                    height: 128,
+                });
 
-            // Generate the QR code
-            bwipjs.toCanvas(document.getElementById("hidden-canvas"), qrCodeOptions, function (err, cvs) {
-                if (err) {
-                    console.error(err);
-                } else {
-                    // Kode QR berhasil dihasilkan
-                    // Tampilkan kode QR dalam pop-up konfirmasi
-                    var imageUrl = document.getElementById("hidden-canvas").toDataURL("image/png");
-                    var confirmation = window.confirm("Apakah Anda ingin melihat Kode QR?\nKlik OK untuk melihatnya.");
-                    
-                    if (confirmation) {
-                        var qrImage = new Image();
-                        qrImage.src = imageUrl;
-                        var popupWindow = window.open("", "_blank");
-                        popupWindow.document.write("<img src='" + imageUrl + "' alt='QR Code'>");
-                        popupWindow.document.close();
-                    }
+                // Tampilkan kode QR dalam pop-up konfirmasi
+                var imageUrl = document.getElementById("qrcode").querySelector("img").src;
+                var confirmation = window.confirm("Apakah Anda ingin melihat Kode QR?\nKlik OK untuk melihatnya.");
+                
+                if (confirmation) {
+                    var qrImage = new Image();
+                    qrImage.src = imageUrl;
+                    var popupWindow = window.open("", "_blank");
+                    popupWindow.document.write("<img src='" + imageUrl + "' alt='QR Code'>");
+                    popupWindow.document.close();
                 }
             });
         });
-    });
 </script>
 
 <script>
