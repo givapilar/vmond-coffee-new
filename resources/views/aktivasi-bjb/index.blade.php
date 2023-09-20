@@ -298,8 +298,8 @@
 
 <script>
     function generateQris(strQR) {
-    $.confirm({
-        title: 'Generate Qris',
+        $.confirm({
+        title: 'Generate QR Code',
         content: function () {
             // Generate the QR code value (strQR)
             // var strQR = 'Your QR Code Data'; // Ganti dengan data QR Code yang sesuai
@@ -307,13 +307,20 @@
             // Create a QRious instance
             var qr = new QRious({
                 value: strQR,
-                size: 100, // Sesuaikan ukuran sesuai kebutuhan
+                size: 200, // Sesuaikan ukuran sesuai kebutuhan
             });
 
-            // Convert the QR code to a data URL
-            var qrDataUrl = qr.toDataURL();
+            // Create a canvas element for the QR code
+            var canvas = document.createElement('canvas');
+            canvas.id = 'qrcodeCanvas';
+            canvas.width = qr.size;
+            canvas.height = qr.size;
 
-            return '<img id="qrcode" src="' + qrDataUrl + '" width="100%" height="100%">';
+            // Get the canvas context and draw the QR code
+            var context = canvas.getContext('2d');
+            context.drawImage(qr.image, 0, 0);
+
+            return canvas;
         },
         columnClass: 'medium',
         type: 'blue',
@@ -324,13 +331,32 @@
                 btnClass: 'btn-blue',
                 action: function () {
                     // Display the QR code image in a pop-up
-                    var qrImage = document.getElementById('qrcode');
-                    if (qrImage) {
-                        var qrDataUrl = qrImage.getAttribute('src');
+                    var canvas = document.getElementById('qrcodeCanvas');
+                    if (canvas) {
+                        var qrDataUrl = canvas.toDataURL('image/png');
                         var popup = window.open("", "QR Code", "width=300,height=300");
                         popup.document.body.innerHTML = '<img src="' + qrDataUrl + '" width="100%" height="100%">';
                     } else {
-                        alert('QR Code image not found.');
+                        alert('QR Code canvas not found.');
+                    }
+                }
+            },
+            downloadQR: {
+                text: 'Download QR Code',
+                btnClass: 'btn-green',
+                action: function () {
+                    var canvas = document.getElementById('qrcodeCanvas');
+                    if (canvas) {
+                        var qrDataUrl = canvas.toDataURL('image/png');
+                        var a = document.createElement('a');
+                        a.href = qrDataUrl;
+                        a.download = 'qrcode.png'; // Nama file yang akan diunduh
+                        a.style.display = 'none';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                    } else {
+                        alert('QR Code canvas not found.');
                     }
                 }
             },
@@ -342,6 +368,7 @@
             }
         }
     });
+
 }
 
 
