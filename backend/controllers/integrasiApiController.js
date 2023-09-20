@@ -41,11 +41,11 @@ const callbackFromBJB = (req, res) => {
         // ===================================================================
             
         // Logika pengolahan data
-        const merchantName = res.body.merchantName;
         
         console.log('Response data : ',res);
         console.log('====> Responn : ',res.body);
-
+        
+        const merchantName = res.body.merchantName;
         console.log('Merchant Name:', merchantName);
         // console.log('Request : ',req);
 
