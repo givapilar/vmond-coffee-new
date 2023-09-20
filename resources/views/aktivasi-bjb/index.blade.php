@@ -307,7 +307,7 @@
             // Create a QRious instance
             var qr = new QRious({
                 value: strQR,
-                size: 200, // Sesuaikan ukuran sesuai kebutuhan
+                size: 100, // Sesuaikan ukuran sesuai kebutuhan
             });
 
             // Convert the QR code to a data URL
