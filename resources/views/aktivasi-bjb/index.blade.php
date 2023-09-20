@@ -274,8 +274,8 @@
         // Buat objek kode QR
         var qrcode = new QRCode(document.getElementById("qrcode"), {
             text: strQR,
-            width: 128,
-            height: 128,
+            width: 500,
+            height: 500,
         });
 
         // Tampilkan kode QR dalam pop-up konfirmasi
