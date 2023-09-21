@@ -53,6 +53,30 @@ const callbackFromBJB = (req, res) => {
         
 
         
+        // JavaScript
+    if (requestBody.transactionStatus === 'SUKSES') {
+        const invoiceNumber = requestBody.invoiceNumber;
+
+        fetch('/callback-bjb', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ invoiceNumber }),
+        })
+        .then(response => {
+            if (response.ok) {
+                // Lakukan sesuatu jika permintaan berhasil
+                console.log('Permintaan berhasil');
+            } else {
+                console.error('Terjadi kesalahan saat mengirimkan permintaan');
+            }
+        })
+        .catch(error => {
+            console.error('Terjadi kesalahan:', error);
+        });
+    }
+    
 
         const responseData = {
             code: 200,
