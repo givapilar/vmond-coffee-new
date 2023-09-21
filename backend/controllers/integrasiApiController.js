@@ -48,7 +48,7 @@ const callbackFromBJB = (req, res) => {
         
         // Lakukan sesuatu dengan data dari tubuh permintaan
         console.log('Request Body:', requestBody);
-        console.log('Customer Name:', requestBody.customerName);
+        console.log('Transaction Status :', requestBody.transactionStatus);
         
         // console.log('Request : ',req);
         

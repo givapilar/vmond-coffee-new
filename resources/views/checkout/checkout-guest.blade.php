@@ -297,7 +297,6 @@ function createQris(dtamount) {
             $("#btnQR").prop("disabled", false);
 
             // Mengubah status menjadi selesai
-            isProcessing = false;
         },
         error: function(data) {
             console.log(data);
@@ -306,7 +305,6 @@ function createQris(dtamount) {
             $.alert(data.responseJSON.message);
 
             // Mengubah status menjadi selesai
-            isProcessing = false;
         }
     });
 }
