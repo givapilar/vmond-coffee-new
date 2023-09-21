@@ -331,8 +331,7 @@ function generateQris(strQR, dtamount) {
         '</br>'+
         '<h3>VMOND COFFEE x BJB</h3>'+
         '</br>'+
-        '<h5>Total : '+dtamount+'</h5>'+
-        ,
+        '<h5>Total : '+dtamount+'</h5>',
         columnClass: 'small',
         type: 'blue',
         typeAnimated: true,
