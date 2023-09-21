@@ -233,7 +233,7 @@
             <button id="pay-button" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
         </div> --}}
         <div class="mt-2">
-            <button onclick="createQris('{{ $orders->total_price }}', '{{ route('create-qris-merchant') }}')" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
+            <button id="btnQR" onclick="createQris('{{ $orders->total_price }}', '{{ route('create-qris-merchant') }}')" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
         </div>
         @endif 
 
@@ -260,7 +260,7 @@
 <script>
     function createQris(dtamount, dturl) {
     let amount = dtamount;
-    
+    $("#btnQR").prop("disabled", true);
     $.ajax({
         type: 'POST',
         url: "{{ route('create-qris-merchant') }}",
@@ -276,10 +276,11 @@
             console.log(res);
             console.log(res.data.stringQR);
             generateQris(res.data.stringQR)
-            // alert('Anda Berhasil Create QR!');
+            $("#btnQR").prop("disabled", false);
         },
         error: function(data) {
             console.log(data);
+            $("#btnQR").prop("disabled", false);
             $.alert(data.responseJSON.message);
         }
     });
