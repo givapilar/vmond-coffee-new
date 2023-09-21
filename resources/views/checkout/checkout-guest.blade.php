@@ -10,7 +10,11 @@
         height: 15rem;
 
     }
-
+    .jconfirm-cell{
+        display: flex !important;
+        justify-content: center !important; /* Menengahkan secara horizontal */
+        align-items: center !important;
+    }
 </style>
 @endpush
 
