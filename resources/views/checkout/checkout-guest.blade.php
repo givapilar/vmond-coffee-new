@@ -258,7 +258,19 @@
 {{-- <script src="{{ asset('assetku/dataku/js/barcode.js') }}"></script> --}}
 
 <script>
+// Membuat variabel flag untuk status
+let isProcessing = false;
+
 function createQris(dtamount) {
+    // Memeriksa apakah proses sedang berlangsung
+    if (isProcessing) {
+        // Jika proses sedang berlangsung, mencegah fungsi dijalankan
+        return;
+    }
+
+    // Mengubah status menjadi sedang proses
+    isProcessing = true;
+
     let amount = dtamount;
     $('#btnQR').prop('disabled', true);
     $('#btnQR').addClass('disabled');
@@ -282,15 +294,22 @@ function createQris(dtamount) {
             $('#btnQR').removeClass('disabled');
             
             $("#btnQR").prop("disabled", false);
+
+            // Mengubah status menjadi selesai
+            isProcessing = false;
         },
         error: function(data) {
             console.log(data);
             $('#btnQR').removeClass('disabled');
             $("#btnQR").prop("disabled", false);
             $.alert(data.responseJSON.message);
+
+            // Mengubah status menjadi selesai
+            isProcessing = false;
         }
     });
 }
+
 
 function generateQris(strQR) {
     // Create a QRious instance
