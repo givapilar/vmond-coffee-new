@@ -258,9 +258,21 @@
 {{-- <script src="{{ asset('assetku/dataku/js/barcode.js') }}"></script> --}}
 
 <script>
-    function createQris(dtamount, dturl) {
+function createQris(dtamount, dturl) {
     let amount = dtamount;
     $("#btnQR").prop("disabled", true);
+    let dialog = $.confirm({
+        title: 'Generate QR Code',
+        content: 'Process...',
+        columnClass: 'small',
+        type: 'blue',
+        typeAnimated: true,
+        onClose: function () {
+            // Callback yang dijalankan saat dialog ditutup
+            // Di sini Anda dapat melakukan tindakan setelah dialog ditutup
+        }
+    });
+
     $.ajax({
         type: 'POST',
         url: "{{ route('create-qris-merchant') }}",
@@ -275,11 +287,19 @@
         success: function(res) {
             console.log(res);
             console.log(res.data.stringQR);
-            generateQris(res.data.stringQR)
+            generateQris(res.data.stringQR);
+
+            // Menutup dialog jQuery Confirm setelah sukses
+            dialog.close();
+            
             $("#btnQR").prop("disabled", false);
         },
         error: function(data) {
             console.log(data);
+
+            // Menutup dialog jQuery Confirm setelah error
+            dialog.close();
+
             $("#btnQR").prop("disabled", false);
             $.alert(data.responseJSON.message);
         }
