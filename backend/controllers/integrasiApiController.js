@@ -76,7 +76,7 @@ const callbackFromBJB = (req, res) => {
             console.error('Terjadi kesalahan:', error);
         });
     }
-    
+
 
         const responseData = {
             code: 200,
