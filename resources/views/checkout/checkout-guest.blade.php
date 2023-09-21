@@ -323,7 +323,7 @@ function generateQris(strQR) {
 
     $.confirm({
         title: 'Generate QR Code',
-        content: '<img src="' + qrDataUrl + '" width="70%" height="70%" style="display:block; margin-right:auto; margin-left:auto;">',
+        content: '<img src="' + qrDataUrl + '" width="60%" height="60%" style="display:block; margin-right:auto; margin-left:auto;">',
         columnClass: 'small',
         type: 'blue',
         typeAnimated: true,
