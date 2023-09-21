@@ -24,7 +24,7 @@ const getURL = (req, res) => {
     res.json(resCallback);
 };
   
-const callbackFromBJB = (req, res) => {
+const callbackFromBJB = async(req, res) => {
     try {
         // ===================================================================
         // JWT TOKEN
@@ -54,29 +54,22 @@ const callbackFromBJB = (req, res) => {
 
         
         // JavaScript
-    if (requestBody.transactionStatus === 'SUKSES') {
-        const invoiceNumber = requestBody.invoiceNumber;
-
-        fetch('/callback-bjb', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ invoiceNumber }),
-        })
-        .then(response => {
-            if (response.ok) {
-                // Lakukan sesuatu jika permintaan berhasil
-                console.log('Permintaan berhasil');
-            } else {
-                console.error('Terjadi kesalahan saat mengirimkan permintaan');
+        if (requestBody.transactionStatus === 'SUKSES') {
+            try {
+                const bodyData = {
+                    invoiceID: requestBody.invoiceNumber,
+                    status: requestBody.transactionStatus,
+                };
+                
+                const result = await axios.post(
+                    'https://vmondtes.controlindo.com/data/success-order-bjb',
+                    { metadata: metaData, body: bodyData },
+                    { headers: headers }
+                );
+            } catch (error) {
+                console.log('ERROR!!!');
             }
-        })
-        .catch(error => {
-            console.error('Terjadi kesalahan:', error);
-        });
-    }
-
+        }
 
         const responseData = {
             code: 200,
@@ -339,12 +332,13 @@ const createQR = async (req, res) => {
         );
         const response = result.data.body.CreateInvoiceQRISDinamisExtResponse;
         console.log('RESULT CREATE QR::',response);
-        console.log('MSIDN::',msisdn);
+        // console.log('MSIDN::',msisdn);
 
         const responseData = {
             code: 200,
             method: req.method,
             stringQR: response.stringQR._text,
+            invoiceID: response.invoiceId._text,
             message: 'Successfully!'
         };
 

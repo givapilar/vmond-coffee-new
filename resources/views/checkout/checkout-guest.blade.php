@@ -237,7 +237,7 @@
             <button id="pay-button" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
         </div> --}}
         <div class="mt-2">
-            <button id="btnQR" onclick="createQris('{{ $orders->total_price }}')" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
+            <button id="btnQR" onclick="createQris('{{ $orders->total_price }}', '{{ $oder->id }}')" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
         </div>
         @endif 
 
@@ -265,7 +265,7 @@
 // Membuat variabel flag untuk status
 let isProcessing = false;
 
-function createQris(dtamount) {
+function createQris(dtamount, dtorderid) {
     console.log(isProcessing);
     // Memeriksa apakah proses sedang berlangsung
     if (isProcessing) {
@@ -296,6 +296,7 @@ function createQris(dtamount) {
             console.log(res.data.stringQR);
             // Menutup dialog jQuery Confirm setelah sukses
             generateQris(res.data.stringQR, dtamount);
+            updateInvoice(dtorderid, res.data.invoiceID)
             $('#btnQR').removeClass('disabled');
             
             $("#btnQR").prop("disabled", false);
@@ -329,9 +330,9 @@ function generateQris(strQR, dtamount) {
         title: 'Generate QR Code',
         content: '<img src="' + qrDataUrl + '" width="70%" height="70%" style="display:block; margin-right:auto; margin-left:auto;">'+
         '</br>'+
-        '<h3>VMOND COFFEE x BJB</h3>'+
+        '<h3 style="color:white;">VMOND COFFEE x BJB</h3>'+
         '</br>'+
-        '<h5>Total : '+dtamount+'</h5>',
+        '<h5 style="color:white;">Total : '+dtamount+'</h5>',
         columnClass: 'small',
         type: 'blue',
         typeAnimated: true,
@@ -358,6 +359,32 @@ function generateQris(strQR, dtamount) {
                     isProcessing = false;
                 }
             }
+        }
+    });
+}
+function updateInvoice(orderID, invoiceID) {
+    let order_id, invoice_id;
+
+    order_id = orderID;
+    invoice_id = invoiceID;
+    $.ajax({
+        type: 'POST',
+        url: "{{ route('update-invoice') }}",
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: {
+            "_token": "{{ csrf_token() }}",
+            order_id,
+            invoice_id,
+        },
+        async: false,
+        success: function(res) {
+            console.log('Success!');
+        },
+        error: function(data) {
+            console.log('Failed!');
+            alert('Gagal, Silahkan order ulang...')
         }
     });
 }
