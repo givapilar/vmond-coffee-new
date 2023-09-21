@@ -380,6 +380,7 @@ function updateInvoice(orderID, invoiceID) {
         },
         async: false,
         success: function(res) {
+            console.log(res);
             console.log('Success!');
         },
         error: function(data) {
