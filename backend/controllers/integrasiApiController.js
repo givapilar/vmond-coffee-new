@@ -51,6 +51,7 @@ const callbackFromBJB = (req, res) => {
         console.log('Customer Name:', requestBody.customerName);
         
         // console.log('Request : ',req);
+        
 
         const responseData = {
             code: 200,
@@ -74,6 +75,10 @@ const callbackFromBJB = (req, res) => {
 };
 
 const getTokenFintech = async (req, res) => {
+    if (requestBody.transactionStatus == 'SUKSES') {
+        
+    }
+    
     try {
         const dtmsisdn = req.body.msisdnDev;
         const dtpassword = req.body.passwordDev;

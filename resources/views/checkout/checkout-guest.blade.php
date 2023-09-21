@@ -262,6 +262,7 @@
 let isProcessing = false;
 
 function createQris(dtamount) {
+    console.log(isProcessing);
     // Memeriksa apakah proses sedang berlangsung
     if (isProcessing) {
         // Jika proses sedang berlangsung, mencegah fungsi dijalankan
