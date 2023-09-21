@@ -323,21 +323,11 @@ function generateQris(strQR) {
 
     $.confirm({
         title: 'Generate QR Code',
-        content: '<img src="' + qrDataUrl + '" width="60%" height="60%" style="display:block; margin-right:auto; margin-left:auto;">',
+        content: '<img src="' + qrDataUrl + '" width="70%" height="70%" style="display:block; margin-right:auto; margin-left:auto;">',
         columnClass: 'small',
         type: 'blue',
         typeAnimated: true,
         buttons: {
-            viewQR: {
-                text: 'View QR Code',
-                btnClass: 'btn-blue',
-                action: function () {
-                    // Display the QR code image in a pop-up
-                    var popup = window.open("", "QR Code", "width=300,height=300");
-                    popup.document.body.innerHTML = '<img src="' + qrDataUrl + '" width="100%" height="100%">';
-                    isProcessing = false;
-                }
-            },
             downloadQR: {
                 text: 'Download QR Code',
                 btnClass: 'btn-green',

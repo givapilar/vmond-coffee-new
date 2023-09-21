@@ -49,9 +49,9 @@ const callbackFromBJB = (req, res) => {
         // Lakukan sesuatu dengan data dari tubuh permintaan
         console.log('Request Body:', requestBody);
         console.log('Invoice Number :', requestBody.invoiceNumber);
-        console.log('Transaction Status :', requestBody.transactionStatus);
-        
         // console.log('Request : ',req);
+        
+
         
 
         const responseData = {
@@ -76,9 +76,30 @@ const callbackFromBJB = (req, res) => {
 };
 
 const getTokenFintech = async (req, res) => {
-    if (requestBody.transactionStatus == 'SUKSES') {
-        
+    // JavaScript
+    if (requestBody.transactionStatus === 'SUKSES') {
+        const invoiceNumber = requestBody.invoiceNumber;
+
+        fetch('/your-laravel-endpoint', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ invoiceNumber }),
+        })
+        .then(response => {
+            if (response.ok) {
+                // Lakukan sesuatu jika permintaan berhasil
+                console.log('Permintaan berhasil');
+            } else {
+                console.error('Terjadi kesalahan saat mengirimkan permintaan');
+            }
+        })
+        .catch(error => {
+            console.error('Terjadi kesalahan:', error);
+        });
     }
+
     
     try {
         const dtmsisdn = req.body.msisdnDev;
