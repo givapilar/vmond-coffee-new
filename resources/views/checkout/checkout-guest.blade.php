@@ -305,6 +305,7 @@ function createQris(dtamount) {
             $.alert(data.responseJSON.message);
 
             // Mengubah status menjadi selesai
+            isProcessing = false;
         }
     });
 }
@@ -334,6 +335,7 @@ function generateQris(strQR) {
                     // Display the QR code image in a pop-up
                     var popup = window.open("", "QR Code", "width=300,height=300");
                     popup.document.body.innerHTML = '<img src="' + qrDataUrl + '" width="100%" height="100%">';
+                    isProcessing = false;
                 }
             },
             downloadQR: {
@@ -348,12 +350,14 @@ function generateQris(strQR) {
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
+                    isProcessing = false;
                 }
             },
             close: {
                 text: 'Close',
                 action: function () {
                     // Close the dialog
+                    isProcessing = false;
                 }
             }
         }
