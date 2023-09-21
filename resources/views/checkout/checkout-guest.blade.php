@@ -225,8 +225,11 @@
 
        
         @else
-        <div class="mt-2">
+        {{-- <div class="mt-2">
             <button id="pay-button" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
+        </div> --}}
+        <div class="mt-2">
+            <button onclick="createQris('{{ $orders->total_price }}', '{{ route('create-qris-merchant') }}')" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
         </div>
         @endif 
 
@@ -246,13 +249,9 @@
 @push('script-bot')
 <script type="text/javascript" src="{{ config('midtrans.snap_url') }}" data-client-key="{{ config('midtrans.client_key') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/canvg/1.5/canvg.min.js"></script>
-
-{{-- barcode --}}
-
-
-
-    
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+<script src="{{ asset('assetku/dataku/js/barcode.js') }}"></script>
 
 <script>
         // console.log(username);
