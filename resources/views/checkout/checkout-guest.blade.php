@@ -260,18 +260,8 @@
 <script>
 function createQris(dtamount, dturl) {
     let amount = dtamount;
-    $("#btnQR").prop("disabled", true);
-    let dialog = $.confirm({
-        title: 'Generate QR Code',
-        content: 'Process...',
-        columnClass: 'small',
-        type: 'blue',
-        typeAnimated: true,
-        onClose: function () {
-            // Callback yang dijalankan saat dialog ditutup
-            // Di sini Anda dapat melakukan tindakan setelah dialog ditutup
-        }
-    });
+    $('#btnQR').prop('disabled', true);
+    $('#btnQR').addClass('disabled');
 
     $.ajax({
         type: 'POST',
@@ -287,19 +277,15 @@ function createQris(dtamount, dturl) {
         success: function(res) {
             console.log(res);
             console.log(res.data.stringQR);
-            generateQris(res.data.stringQR);
-
             // Menutup dialog jQuery Confirm setelah sukses
-            dialog.close();
+            generateQris(res.data.stringQR);
+            $('#btnQR').removeClass('disabled');
             
             $("#btnQR").prop("disabled", false);
         },
         error: function(data) {
             console.log(data);
-
-            // Menutup dialog jQuery Confirm setelah error
-            dialog.close();
-
+            $('#btnQR').removeClass('disabled');
             $("#btnQR").prop("disabled", false);
             $.alert(data.responseJSON.message);
         }
