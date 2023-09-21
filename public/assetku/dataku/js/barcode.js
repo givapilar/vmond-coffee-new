@@ -6,7 +6,7 @@ function createQris(dtamount, dturl) {
     
     $.ajax({
         type: 'POST',
-        url: dturl,
+        url: '"'+dturl+'"',
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
