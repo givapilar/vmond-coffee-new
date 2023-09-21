@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Writer;
+use Exception;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 class OrderController extends Controller
 {
@@ -1009,6 +1010,22 @@ class OrderController extends Controller
         }
 
     }   
+
+    public function callbackBJB(Request $request){
+        try {
+            $invoiceNumber = $request->input('invoiceNumber');
+    
+            $order = Order::find($request->order_id);
+            
+            $order->update(['status_pembayaran' => 'Paid','invoice_no' => $invoiceNumber]);
+            // Lakukan sesuatu dengan $invoiceNumber, misalnya menyimpannya di database
+            // ...
+    
+            return response()->json(['message' => 'Data berhasil diproses'], 200);
+        } catch (Exception $e) {
+            return response()->json(['message' => 'Gagal memproses data: ' . $e->getMessage()], 500);
+        }
+    }
 
     public function checkoutBilliard(Request $request, $token){
         // dd($request->all());

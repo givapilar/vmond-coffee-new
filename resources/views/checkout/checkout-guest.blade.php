@@ -15,6 +15,10 @@
         justify-content: center !important; /* Menengahkan secara horizontal */
         align-items: center !important;
     }
+    .jconfirm-box{
+        background-color: #1b1818 !important;
+        border-radius: 20px !important;
+    }
 </style>
 @endpush
 
@@ -291,7 +295,7 @@ function createQris(dtamount) {
             console.log(res);
             console.log(res.data.stringQR);
             // Menutup dialog jQuery Confirm setelah sukses
-            generateQris(res.data.stringQR);
+            generateQris(res.data.stringQR, dtamount);
             $('#btnQR').removeClass('disabled');
             
             $("#btnQR").prop("disabled", false);
@@ -311,7 +315,7 @@ function createQris(dtamount) {
 }
 
 
-function generateQris(strQR) {
+function generateQris(strQR, dtamount) {
     // Create a QRious instance
     var qr = new QRious({
         value: strQR,
@@ -323,7 +327,12 @@ function generateQris(strQR) {
 
     $.confirm({
         title: 'Generate QR Code',
-        content: '<img src="' + qrDataUrl + '" width="70%" height="70%" style="display:block; margin-right:auto; margin-left:auto;">',
+        content: '<img src="' + qrDataUrl + '" width="70%" height="70%" style="display:block; margin-right:auto; margin-left:auto;">'+
+        '</br>'+
+        '<h3>VMOND COFFEE x BJB</h3>'+
+        '</br>'+
+        '<h5>Total : '+dtamount+'</h5>'+
+        ,
         columnClass: 'small',
         type: 'blue',
         typeAnimated: true,
