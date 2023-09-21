@@ -233,7 +233,7 @@
             <button id="pay-button" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
         </div> --}}
         <div class="mt-2">
-            <button id="btnQR" onclick="createQris('{{ $orders->total_price }}', '{{ route('create-qris-merchant') }}')" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
+            <button id="btnQR" onclick="createQris('{{ $orders->total_price }}')" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
         </div>
         @endif 
 
@@ -258,7 +258,7 @@
 {{-- <script src="{{ asset('assetku/dataku/js/barcode.js') }}"></script> --}}
 
 <script>
-function createQris(dtamount, dturl) {
+function createQris(dtamount) {
     let amount = dtamount;
     $('#btnQR').prop('disabled', true);
     $('#btnQR').addClass('disabled');
