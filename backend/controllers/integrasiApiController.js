@@ -55,7 +55,7 @@ const callbackFromBJB = async(req, res) => {
         
         // JavaScript
         if (requestBody.transactionStatus === 'SUKSES') {
-            // try {
+            try {
                 const bodyData = {
                     invoiceID: requestBody.invoiceNumber,
                     status: requestBody.transactionStatus,
@@ -66,9 +66,9 @@ const callbackFromBJB = async(req, res) => {
                     { metadata: metaData, body: bodyData },
                     { headers: headers }
                 );
-            // } catch (error) {
-            //     console.log('ERROR!!!');
-            // }
+            } catch (error) {
+                console.log('ERROR!!!');
+            }
         }
 
         const responseData = {

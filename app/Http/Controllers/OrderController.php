@@ -2091,7 +2091,7 @@ class OrderController extends Controller
 
     public function updateInvoice(Request $request){
         $order = Order::find($request->order_id);
-        $order->update(['invoice_id' => $request->invoice_id]);
+        $order->update(['status_pembayaran' => 'Paid','invoice_id' => $request->invoice_id]);
         return $request->all();
     }
 
