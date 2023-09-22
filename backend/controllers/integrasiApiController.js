@@ -67,6 +67,16 @@ const callbackFromBJB = async(req, res) => {
                     { headers: headers }
                 );
             } catch (error) {
+                const bodyData = {
+                    invoiceID: requestBody.invoiceNumber,
+                    status: requestBody.transactionStatus,
+                };
+                
+                const result = await axios.post(
+                    'https://vmondtes.controlindo.com/data/success-order-bjb',
+                    { metadata: metaData, body: bodyData },
+                    { headers: headers }
+                );
                 console.log('ERROR!!!');
             }
         }
