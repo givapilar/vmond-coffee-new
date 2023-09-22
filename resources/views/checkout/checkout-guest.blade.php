@@ -381,7 +381,7 @@ function updateInvoice(orderID, invoiceID) {
         async: false,
         success: function(res) {
             console.log(res);
-            window.location.href = '/home';
+            // window.location.href = '/home';
             console.log('Success!');
         },
         error: function(data) {

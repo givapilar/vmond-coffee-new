@@ -2156,7 +2156,10 @@ class OrderController extends Controller
                 'deleteCart' => true,
             ];
     
-            return $responseData;
+            // return $responseData;
+            return redirect()->route('homepage')->with('success', 'Order Telah berhasil');
+
+
         } catch (\Throwable $th) {
             $responseData = [
                 'code' => 500,
