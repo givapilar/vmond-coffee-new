@@ -452,8 +452,8 @@ class OrderController extends Controller
                     'biliard_id' => $request->biliard_id,
                     'meeting_room_id' => $request->meeting_room_id,
                     // 'meja_restaurant_id' => $request->meja_restaurant_id,
-                    'total_price' => $total_price, 
-                    // 'total_price' => 1, 
+                    // 'total_price' => $total_price, 
+                    'total_price' => 1, 
                     'token' => $token, 
                     'status_pembayaran' => 'Unpaid',
                     'status_pesanan' => 'process',
@@ -2099,6 +2099,8 @@ class OrderController extends Controller
 
         try {
             $order = Order::where('invoice_id',$request->invoiceID);
+
+            $order->update(['status_pembayaran' => 'Paid','invoice_no' => $request->invoiceID]);
 
             if ($order->meja_restaurant_id != null || $order->category == 'Takeaway') {
                 $userID = $order->user_id;
