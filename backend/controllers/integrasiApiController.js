@@ -62,7 +62,7 @@ const callbackFromBJB = async(req, res) => {
                 };
                 
                 const result = await axios.post(
-                    'https://vmondtes.controlindo.com/data/success-order-bjb',
+                    'https://vmondcoffee.controlindo.com/data/success-order-bjb',
                     { metadata: metaData, body: bodyData },
                     { headers: headers }
                 );
