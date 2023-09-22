@@ -67,7 +67,7 @@ const callbackFromBJB = async(req, res) => {
                     { headers: headers }
                 );
             } catch (error) {
-                console.log('ERROR!!!');
+                console.log('ERROR!!!', error.message);
             }
         }
 

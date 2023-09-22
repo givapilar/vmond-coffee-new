@@ -297,7 +297,7 @@ function createQris(dtamount, dtorderid) {
             // Menutup dialog jQuery Confirm setelah sukses
             generateQris(res.data.stringQR, dtamount);
             updateInvoice(dtorderid, res.data.invoiceID)
-            // window.location.href = "{{ route('homepage') }}";x
+            // window.location.href = "{{ route('homepage') }}";
             $('#btnQR').removeClass('disabled');
             
             $("#btnQR").prop("disabled", false);
