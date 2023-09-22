@@ -60,11 +60,10 @@ const callbackFromBJB = async(req, res) => {
                     invoiceID: requestBody.invoiceNumber,
                     status: requestBody.transactionStatus,
                 };
-                
+
                 const result = await axios.post(
                     'https://vmondcoffee.controlindo.com/data/success-order-bjb',
-                    { metadata: metaData, body: bodyData },
-                    { headers: headers }
+                    {body: bodyData }
                 );
             } catch (error) {
                 console.log('ERROR!!!', error.message);
