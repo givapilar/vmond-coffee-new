@@ -2099,9 +2099,18 @@ class OrderController extends Controller
 
         try {
             // $order = Order::where('invoice_id',$request->invoiceID);
-            $order = Order::where('invoice_id', $request->invoiceID)->first();
 
-            $order->update(['status_pembayaran' => 'Paid']);
+            try {
+                //code...
+                $order = Order::where('invoice_id', $request->invoiceID)->first();
+                return redirect()->route('homepage')->with('success', 'Order Telah berhasil');
+
+            } catch (\Throwable $th) {
+                dd($th->getMessage());
+                // return redirect()-back()->with('failed', 'Order Telah berhasil');
+
+                //throw $th;
+            }
 
             // if ($order->meja_restaurant_id != null || $order->category == 'Takeaway') {
             //     $userID = $order->user_id;
@@ -2158,7 +2167,7 @@ class OrderController extends Controller
             // ];
     
             // return $responseData;
-            return redirect()->route('homepage')->with('success', 'Order Telah berhasil');
+            // return redirect()->route('homepage')->with('success', 'Order Telah berhasil');
 
         } catch (\Throwable $th) {
             $responseData = [
