@@ -2099,7 +2099,7 @@ class OrderController extends Controller
 
         try {
             // $order = Order::where('invoice_id',$request->invoiceID);
-            $order = Order::find($request->order_id);
+            $order = Order::find($request->invoiceID);
 
             $order->update(['status_pembayaran' => 'Paid']);
 
