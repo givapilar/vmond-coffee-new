@@ -25,6 +25,9 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 // Route::auth();
+
+Route::post('/data/success-order-bjb',[OrderController::class,'successOrderBJB'])->name('success-order-bjb');
+
 Route::get('/', function () {
     if (Auth::check()) {
         return redirect()->route('homepage');
@@ -157,7 +160,6 @@ Route::post('/check-schedule',[APIController::class,'checkDateSchedule'])->name(
 Route::post('/check-schedule-meeting',[APIController::class,'checkDateScheduleMeeting'])->name('check-schedule-meeting');
 
 Route::post('/data/success-order',[OrderController::class,'successOrder'])->name('success-order');
-Route::post('/data/success-order-bjb',[OrderController::class,'successOrderBJB'])->name('success-order-bjb');
 Route::post('/data/update-invoice',[OrderController::class,'updateInvoice'])->name('update-invoice');
 
 // Success order Waiters

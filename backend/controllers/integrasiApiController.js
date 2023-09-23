@@ -68,11 +68,12 @@ const callbackFromBJB = async(req, res) => {
 
                 axios.post('https://vmondcoffee.controlindo.com/data/success-order-bjb', { body: bodyData })
                     .then((response) => {
+                        console.log(response);
                         // Check if the response status code indicates success (e.g., 200 OK)
                         if (response.status === 200) {
                             console.log('Axios request was successful');
                             // You can also inspect the response data here
-                            console.log(response.data);
+                            console.log(response);
                         } else {
                             console.error('Axios request failed with status code ' + response.status);
                         }

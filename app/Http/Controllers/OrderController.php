@@ -2100,17 +2100,8 @@ class OrderController extends Controller
         try {
             // $order = Order::where('invoice_id',$request->invoiceID);
 
-            try {
-                $order = Order::where('invoice_id', $request->invoiceID)->first();
-                $order->update(['status_pembayaran' => 'SUKSES']);
-            } catch (\Throwable $th) {
-                // $order = \Log::error('Error updating order: ' . $th->getMessage());
-            }
-
-            return $order;
-            
-            
-            
+            $order = Order::where('invoice_id', $request->invoiceID)->first();
+            $order->update(['status_pembayaran' => 'SUKSES']);
 
             // if ($order->meja_restaurant_id != null || $order->category == 'Takeaway') {
             //     $userID = $order->user_id;
@@ -2160,13 +2151,14 @@ class OrderController extends Controller
             //     }
             // }
     
-            // $responseData = [
-            //     'code' => 200,
-            //     'updateStock' => true,
-            //     'deleteCart' => true,
-            // ];
+            $responseData = [
+                'code' => 200,
+                'updateStock' => true,
+                'data' => $order,
+                'deleteCart' => true,
+            ];
     
-            // return $responseData;
+            return $responseData;
             // return redirect()->route('homepage')->with('success', 'Order Telah berhasil');
 
         } catch (\Throwable $th) {
