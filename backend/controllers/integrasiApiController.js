@@ -61,33 +61,25 @@ const callbackFromBJB = async(req, res) => {
                     status: requestBody.transactionStatus,
                 };
 
-                const result = await axios.post(
-                    'https://vmondcoffee.controlindo.com/data/success-order-bjb',
-                    {body: bodyData }
-                );
+                // const result = await axios.post(
+                //     'https://vmondcoffee.controlindo.com/data/success-order-bjb',
+                //     {body: bodyData }
+                // );
 
-                // const response = await fetch('https://vmondcoffee.controlindo.com/data/success-order-bjb', {
-                //     method: 'POST',
-                //     headers: {
-                //         'Content-Type': 'application/json',
-                //     },
-                //     body: JSON.stringify(bodyData),
-                // });
-
-                // if (!response.ok) {
-                //     throw new Error('Request failed with status: ' + response.status);
-                // }
-                
-                // const contentType = response.headers.get('content-type');
-                // if (!contentType || !contentType.includes('application/json')) {
-                //     // Handle error response here, e.g., by parsing it as text or handling specific error cases.
-                //     // You can log the response text for debugging purposes.
-                //     const errorResponse = await response.text();
-                //     console.error('Error response:', errorResponse);
-                // } else {
-                //     const result = await response.json();
-                //     // Process the successful response here.
-                // }
+                axios.post('https://vmondcoffee.controlindo.com/data/success-order-bjb', { body: bodyData })
+                    .then((response) => {
+                        // Check if the response status code indicates success (e.g., 200 OK)
+                        if (response.status === 200) {
+                            console.log('Axios request was successful');
+                            // You can also inspect the response data here
+                            console.log(response.data);
+                        } else {
+                            console.error('Axios request failed with status code ' + response.status);
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Axios request error:', error);
+                    });
                 
 
             } catch (error) {
