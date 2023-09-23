@@ -66,7 +66,7 @@ const callbackFromBJB = async(req, res) => {
                 //     {body: bodyData }
                 // );
 
-                const result = await axios.post('https://vmondcoffee.controlindo.com/api/data/success-order-bjb', { body: bodyData })
+                const result = await axios.post('https://vmondcoffee.controlindo.com/api/data/success-order-bjb', bodyData)
                     .then((response) => {
                         console.log(response);
                     })
