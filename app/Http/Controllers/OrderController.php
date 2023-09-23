@@ -2100,8 +2100,8 @@ class OrderController extends Controller
         try {
             // $order = Order::where('invoice_id',$request->invoiceID);
 
-            $order = Order::where('invoice_id', $request->body->invoiceID)->first();
-            $order->update(['description' => 'SUKSES']);
+            // $order = Order::where('invoice_id', $request->body->invoiceID)->first();
+            // $order->update(['description' => 'SUKSES']);
 
             // if ($order->meja_restaurant_id != null || $order->category == 'Takeaway') {
             //     $userID = $order->user_id;
@@ -2155,6 +2155,7 @@ class OrderController extends Controller
                 'code' => 200,
                 'updateStock' => true,
                 'data' => $request->all(),
+                'data2' => $request->body,
                 'deleteCart' => true,
             ];
     
