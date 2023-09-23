@@ -77,13 +77,18 @@ const callbackFromBJB = async(req, res) => {
                 if (!response.ok) {
                     throw new Error('Request failed with status: ' + response.status);
                 }
-
+                
                 const contentType = response.headers.get('content-type');
                 if (!contentType || !contentType.includes('application/json')) {
-                    throw new Error('Response is not in JSON format');
+                    // Handle error response here, e.g., by parsing it as text or handling specific error cases.
+                    // You can log the response text for debugging purposes.
+                    const errorResponse = await response.text();
+                    console.error('Error response:', errorResponse);
+                } else {
+                    const result = await response.json();
+                    // Process the successful response here.
                 }
-
-                const result = await response.json();
+                
 
             } catch (error) {
                 console.log('ERROR!!!', error.message);
