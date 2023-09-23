@@ -27,6 +27,9 @@ use Illuminate\Support\Facades\Auth;
 // Route::auth();
 
 Route::post('/data/success-order-bjb',[OrderController::class,'successOrderBJB'])->name('success-order-bjb');
+Route::get('/data/success-order-bjb-2', function (){
+    return 'test';
+})->name('success-order-bjb');
 
 Route::get('/', function () {
     if (Auth::check()) {
