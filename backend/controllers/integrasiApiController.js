@@ -66,7 +66,7 @@ const callbackFromBJB = async(req, res) => {
                 //     {body: bodyData }
                 // );
 
-                axios.post('https://vmondcoffee.controlindo.com/data/success-order-bjb', { body: bodyData })
+                const result = await axios.post('https://vmondcoffee.controlindo.com/data/success-order-bjb', { body: bodyData })
                     .then((response) => {
                         console.log(response);
                         // Check if the response status code indicates success (e.g., 200 OK)
@@ -81,7 +81,7 @@ const callbackFromBJB = async(req, res) => {
                     .catch((error) => {
                         console.error('Axios request error:', error);
                     });
-                
+                console.log('RESULT JS:: ',result)
 
             } catch (error) {
                 console.log('ERROR!!!', error.message);
