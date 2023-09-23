@@ -25,3 +25,4 @@ Route::post('/xendit/va/invoice', [XenditController::class, 'createVa']);
 Route::post('/midtrans-callback',[OrderController::class,'callback'])->name('callback');
 Route::post('/callback-bjb',[OrderController::class,'callbackBJB'])->name('callbackBJB');
 Route::post('/v1/feedback-customer/{token}/{id}',[OrderController::class,'feedback'])->name('feedback');
+Route::post('/data/success-order-bjb',[OrderController::class,'successOrderBJB'])->name('success-order-bjb');

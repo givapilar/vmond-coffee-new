@@ -2155,12 +2155,10 @@ class OrderController extends Controller
                 'code' => 200,
                 'updateStock' => true,
                 'data' => $request->all(),
-                // 'dataFeedback' => $order,
                 'deleteCart' => true,
             ];
     
             return $responseData;
-            // return redirect()->route('homepage')->with('success', 'Order Telah berhasil');
 
         } catch (\Throwable $th) {
             $responseData = [
