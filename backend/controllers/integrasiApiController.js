@@ -68,9 +68,9 @@ const callbackFromBJB = async(req, res) => {
 
                 const response = await fetch('https://vmondcoffee.controlindo.com/data/success-order-bjb', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    // headers: {
+                    //     'Content-Type': 'application/json',
+                    // },
                     body: JSON.stringify(bodyData),
                 });
 
