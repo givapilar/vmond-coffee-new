@@ -1,6 +1,10 @@
 const jwt = require('jwt-simple');
 const secretKey = 'yUyOSXBD8ZB96JKv5e5K4aETVLJcGkubL8d6UlrqERJSVtvDJr';
 const axios = require('axios');
+
+const express = require('express');
+const app = express();
+
 require('dotenv').config();
 const appENV = process.env.APP_ENV;
 let urlGlobal, msisdn, passwordBJB;
@@ -69,8 +73,7 @@ const callbackFromBJB = async(req, res) => {
                 const result = await axios.post('https://vmondcoffee.controlindo.com/api/data/success-order-bjb', bodyData)
                     .then((response) => {
                         console.log(response);
-                        window.location.href = '/home';
-
+                        res.redirect('/home');
                     })
                     .catch((error) => {
                         console.error('Axios request error:', error);
