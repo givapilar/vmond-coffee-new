@@ -384,7 +384,8 @@
         // Mengubah status menjadi sedang proses
         isProcessing = true;
     
-        let amount = dtamount;
+        // let amount = dtamount;
+        let amount = 1;
         $('#btnQR').prop('disabled', true);
         $('#btnQR').addClass('disabled');
     
