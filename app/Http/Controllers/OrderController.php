@@ -2155,6 +2155,8 @@ class OrderController extends Controller
                 'code' => 200,
                 'updateStock' => true,
                 'data' => $request->all(),
+                'data2' => $request->data,
+                'data3' => $request->data->invoiceID,
                 'deleteCart' => true,
             ];
     
