@@ -68,18 +68,23 @@ const callbackFromBJB = async(req, res) => {
 
                 const response = await fetch('https://vmondcoffee.controlindo.com/data/success-order-bjb', {
                     method: 'POST',
-                    // headers: {
-                    //     'Content-Type': 'application/json',
-                    // },
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
                     body: JSON.stringify(bodyData),
                 });
 
                 if (!response.ok) {
-                    throw new Error('Request failed');
+                    throw new Error('Request failed with status: ' + response.status);
                 }
 
-                // Proses respons jika perlu
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new Error('Response is not in JSON format');
+                }
+
                 const result = await response.json();
+
             } catch (error) {
                 console.log('ERROR!!!', error.message);
             }
