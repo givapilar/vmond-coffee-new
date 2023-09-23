@@ -61,25 +61,25 @@ const callbackFromBJB = async(req, res) => {
                     status: requestBody.transactionStatus,
                 };
 
-                // const result = await axios.post(
-                //     'https://vmondcoffee.controlindo.com/data/success-order-bjb',
-                //     {body: bodyData }
-                // );
+                const result = await axios.post(
+                    'https://vmondcoffee.controlindo.com/data/success-order-bjb',
+                    {body: bodyData }
+                );
 
-                const response = await fetch('https://vmondcoffee.controlindo.com/data/success-order-bjb', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(bodyData),
-                });
+                // const response = await fetch('https://vmondcoffee.controlindo.com/data/success-order-bjb', {
+                //     method: 'POST',
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //     },
+                //     body: JSON.stringify(bodyData),
+                // });
 
-                if (!response.ok) {
-                    throw new Error('Request failed');
-                }
+                // if (!response.ok) {
+                //     throw new Error('Request failed');
+                // }
 
-                // Proses respons jika perlu
-                const result = await response.json();
+                // // Proses respons jika perlu
+                // const result = await response.json();
             } catch (error) {
                 console.log('ERROR!!!', error.message);
             }
