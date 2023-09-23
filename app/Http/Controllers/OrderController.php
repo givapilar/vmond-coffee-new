@@ -2100,8 +2100,15 @@ class OrderController extends Controller
         try {
             // $order = Order::where('invoice_id',$request->invoiceID);
 
-                $order = Order::where('invoice_id', $request->invoiceID)->first();
-                $order->update(['status_pembayaran' => 'SUKSES']);
+            $order = Order::where('invoice_id', $request->invoiceID)->first();
+            if ($order) {
+                $order->status_pembayaran = 'SUKSES';
+                $order->save();
+            }else{
+                $order->status_pembayaran = 'Failed';
+                $order->save();
+            }
+            
 
             // if ($order->meja_restaurant_id != null || $order->category == 'Takeaway') {
             //     $userID = $order->user_id;
