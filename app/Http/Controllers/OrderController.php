@@ -2164,14 +2164,16 @@ class OrderController extends Controller
             //         $restoStock->update(['current_stok' => $stockAvailable]);
             //     }
             // }
+
+            return redirect()->route('homepage');
     
-            $responseData = [
-                'code' => 200,
-                'updateStock' => true,
-                'deleteCart' => true,
-            ];
+            // $responseData = [
+            //     'code' => 200,
+            //     'updateStock' => true,
+            //     'deleteCart' => true,
+            // ];
     
-            return $responseData;
+            // return $responseData;
 
         } catch (\Throwable $th) {
             $responseData = [
