@@ -10,12 +10,20 @@ const bodyParser = require('body-parser');
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
+const cors = require('cors');
 const io = new Server(server);
 
 // =====================Function Import=======================
 const { getTokenFintech } = require('./services/api-bjb/requestTokenFintech');
 // ===================End Function Import=====================
 
+const corsOptions = {
+  origin: 'https://vmondcoffee.controlindo.com', // Replace with your client's domain
+  methods: ['GET', 'POST'],
+  credentials: true, // Set this to true if you need to handle cookies or authentication
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(bodyParser.json());
 app.use('/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
