@@ -22,6 +22,12 @@
 
         <button id="hapusData">Generate Qr</button>
 
+        <h1>Pusher Test</h1>
+        <p>
+            Try publishing an event to channel <code>my-channel</code>
+            with event name <code>my-event</code>.
+        </p>
+
     </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
@@ -34,6 +40,22 @@
 <script src="https://unpkg.com/bwip-js"></script>
 <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script>
+
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('5c567c259aa48938b495', {
+      cluster: 'ap1'
+    });
+
+    var channel = pusher.subscribe('notif-channel');
+    channel.bind('notif-bjb', function(data) {
+      alert(JSON.stringify(data));
+    });
+</script>
 
 <script>
     let token = '';

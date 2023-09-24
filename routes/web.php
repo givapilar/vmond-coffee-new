@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\NotifBJB;
 use App\Http\Controllers\APIController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +41,7 @@ Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/register', [RegisterController::class, 'store'])->name('register');
 
 Route::get('/home', [HomepageController::class, 'index'])->name('homepage');
+
 
 Route::get('/create-qris-tes', [OrderController::class, 'createQris'])->name('createQris');
 
@@ -95,6 +97,18 @@ Route::get('/restaurant/menu', function () {
     $data['banners'] = Banner::get();
     return view('homepage.restaurant', $data);
 })->name('homepage-restaurant');
+
+// pusher BJB
+Route::get('/pusher', function () {
+    return view('aktivasi-bjb.pusher');
+})->name('pusher');
+
+Route::post('/pusher', function () {
+    $name = request()->name;
+
+    event(new NotifBJB($name));
+    return view('aktivasi-bjb.pusher');
+})->name('pusher-push');
 
 // User-profile
 // Route::get('/user-profile', [UserController::class, 'userProfile'])->name('user-profile');
