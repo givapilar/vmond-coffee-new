@@ -7,6 +7,10 @@ const axios = require('axios');
 require('dotenv').config();
 const schedule = require('node-schedule');
 const bodyParser = require('body-parser');
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
 
 // =====================Function Import=======================
 const { getTokenFintech } = require('./services/api-bjb/requestTokenFintech');
@@ -16,6 +20,15 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use('/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/v1/api', userRoutes);
+
+io.on('connection', (socket) => {
+  console.log('a client connected');
+
+
+  socket.on('disconnect', () => {
+    console.log('client disconnected');
+  });
+});
 
 // const appENV = process.env.APP_ENV;
 // let urlGlobal, msisdn, passwordBJB, token;
@@ -143,6 +156,6 @@ app.use('/v1/api', userRoutes);
 // Jalankan server pada port tertentu
 const port = 2222;
 // const port = 3000;
-app.listen(port, () => {
+server.listen(port, () => {
   console.log('Backend Node.js server is running on port ' + port);
 });
