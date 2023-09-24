@@ -341,10 +341,10 @@
                 <button class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900" data-modal-toggle="deleteModal">Order Now</button>
             </div>
        
-        @elseif($order_last->tipe_pemesanan == 'BJB')
+        {{-- @elseif($order_last->tipe_pemesanan == 'BJB')
         <div class="mt-2">
             <button id="btnQR" onclick="createQris('{{ $order_last->total_price }}', '{{ $order_last->id }}')" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
-        </div>
+        </div> --}}
         @else
         <div class="mt-2">
             <button id="pay-button" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
@@ -372,15 +372,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/canvg/1.5/canvg.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
-<script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 
 <script>
-    var socket = io('https://socket-vmondcoffee.controlindo.com:443', { forceNew: true });
-
-    socket.on('paymentSuccess', function (msg) {
-        console.log("HEREEEEE", msg);
-    });
-
     // Membuat variabel flag untuk status
     let isProcessing = false;
     
