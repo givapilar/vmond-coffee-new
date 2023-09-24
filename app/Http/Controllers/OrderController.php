@@ -2165,15 +2165,13 @@ class OrderController extends Controller
             //     }
             // }
 
-            return redirect()->route('homepage');
+            $responseData = [
+                'code' => 200,
+                'updateStock' => true,
+                'deleteCart' => true,
+            ];
     
-            // $responseData = [
-            //     'code' => 200,
-            //     'updateStock' => true,
-            //     'deleteCart' => true,
-            // ];
-    
-            // return $responseData;
+            return $responseData;
 
         } catch (\Throwable $th) {
             $responseData = [
