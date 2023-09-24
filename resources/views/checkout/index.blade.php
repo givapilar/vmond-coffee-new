@@ -372,8 +372,17 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/canvg/1.5/canvg.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+<script src="https://cdn.socket.io/socket.io-4.1.7.js"></script>
 
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var socket = io('http://172.31.32.85:2222');
+
+        socket.on('paymentSuccess', function (msg) {
+           console.log("HEREEEEE", msg);
+        });
+    });
+
     // Membuat variabel flag untuk status
     let isProcessing = false;
     
