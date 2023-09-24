@@ -375,12 +375,10 @@
 <script src="https://cdn.socket.io/socket.io-4.1.7.js"></script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var socket = io('http://172.31.32.85:2222');
+    var socket = io('http://vmondcoffee.controlindo.com:2222');
 
-        socket.on('paymentSuccess', function (msg) {
-           console.log("HEREEEEE", msg);
-        });
+    socket.on('paymentSuccess', function (msg) {
+        console.log("HEREEEEE", msg);
     });
 
     // Membuat variabel flag untuk status
