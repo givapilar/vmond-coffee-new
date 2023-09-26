@@ -263,12 +263,12 @@
 {{-- <script src="{{ asset('assetku/dataku/js/barcode.js') }}"></script> --}}
 
 <script>
-    let socket = window.socketio;
-    socket = io.connect('https://socket-vmondcoffee.controlindo.com:443'); // koneksi ke nodejsnya
+    // let socket = window.socketio;
+    // socket = io.connect('https://socket-vmondcoffee.controlindo.com:443'); // koneksi ke nodejsnya
 
-    socket.on('test', function(data) {
-        console.log(data);
-    });
+    // socket.on('test', function(data) {
+    //     console.log(data);
+    // });
 
 // Membuat variabel flag untuk status
 let isProcessing = false;
