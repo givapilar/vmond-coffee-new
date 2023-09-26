@@ -11,14 +11,16 @@ const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const cors = require('cors');
-const io = new Server(server);
+const io = new Server(server, {
+  origins: '*:*'
+});
 
 // =====================Function Import=======================
 const { getTokenFintech } = require('./services/api-bjb/requestTokenFintech');
 // ===================End Function Import=====================
 
 const corsOptions = {
-  origin: 'https://vmondcoffee.controlindo.com', // Replace with your client's domain
+  origin: 'https://socket-vmondcoffee.controlindo.com', // Replace with your client's domain
   methods: ['GET', 'POST'],
   credentials: true, // Set this to true if you need to handle cookies or authentication
 };
@@ -32,6 +34,7 @@ app.use('/v1/api', userRoutes);
 io.on('connection', (socket) => {
   console.log('a client connected');
 
+  socket.emit('test', 'masuk!');
 
   socket.on('disconnect', () => {
     console.log('client disconnected');
