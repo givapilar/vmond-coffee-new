@@ -11,9 +11,7 @@ const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const cors = require('cors');
-const io = new Server(server, {
-  origins: '*:*'
-});
+const io = new Server(server);
 
 // =====================Function Import=======================
 const { getTokenFintech } = require('./services/api-bjb/requestTokenFintech');
