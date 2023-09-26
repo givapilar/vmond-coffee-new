@@ -233,12 +233,12 @@
 
        
         @else
-        <div class="mt-2">
-            <button id="pay-button" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
-        </div>
         {{-- <div class="mt-2">
-            <button id="btnQR" onclick="createQris('{{ $orders->total_price }}', '{{ $orders->id }}')" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
+            <button id="pay-button" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
         </div> --}}
+        <div class="mt-2">
+            <button id="btnQR" onclick="createQris('{{ $orders->total_price }}', '{{ $orders->id }}')" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
+        </div>
         @endif 
 
 
@@ -259,9 +259,17 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/canvg/1.5/canvg.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+<script src="{{ asset('assetku/dataku/js/socket.io.js') }}"></script>
 {{-- <script src="{{ asset('assetku/dataku/js/barcode.js') }}"></script> --}}
 
 <script>
+    let socket = window.socketio;
+    socket = io.connect('https://socket-vmondcoffee.controlindo.com:443'); // koneksi ke nodejsnya
+
+    socket.on('test', function(data) {
+        console.log(data);
+    });
+
 // Membuat variabel flag untuk status
 let isProcessing = false;
 
@@ -331,9 +339,9 @@ function generateQris(strQR, dtamount) {
         title: 'Generate QR Code',
         content: '<img src="' + qrDataUrl + '" width="70%" height="70%" style="display:block; margin-right:auto; margin-left:auto;">'+
         '</br>'+
-        '<h3 style="color:white;">VMOND COFFEE x BJB</h3>'+
+        '<h3 style="color:white;text-align:center;">VMOND COFFEE x BJB</h3>'+
         '</br>'+
-        '<h5 style="color:white;">Total : '+dtamount+'</h5>',
+        '<h5 style="color:white;text-align:center;">Total : '+dtamount+'</h5>',
         columnClass: 'small',
         type: 'blue',
         typeAnimated: true,
