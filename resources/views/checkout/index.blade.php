@@ -391,8 +391,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script src="{{ asset('assetku/dataku/js/socket.io.js') }}"></script>
 
 <script>
+    let socket = window.socketio;
+    socket = io.connect('https://socket-vmondcoffee.controlindo.com:443'); // koneksi ke nodejsnya
+
+    socket.on('test', function(data) {
+        console.log(data);
+    });
+    
     // Membuat variabel flag untuk status
     let isProcessing = false;
     
