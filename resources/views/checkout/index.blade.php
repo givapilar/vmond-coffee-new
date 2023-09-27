@@ -169,7 +169,25 @@
             @endif
 
             {{-- user Normal --}}
+
+            {{-- Bu fitri --}}
+            @elseif(Auth::user()->telephone == '081210469621')
+            <li class="py-3 sm:py-3">
+                <div class="flex items-start space-x-4">
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
+                            Sub Total
+                        </p>
+                    </div>
+                    <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
+                        Rp. {{ number_format(\Cart::getTotal() ?? '0',0 )  }}
+                    </div>
+                </div>
+            </li>
+            
+            {{-- -----------------------------Normal--------------------------------------------- --}}
             @else
+
             <li class="py-3 sm:py-3">
                 <div class="flex items-start space-x-4">
                     <div class="flex-1 min-w-0">

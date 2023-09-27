@@ -162,30 +162,29 @@ class OrderController extends Controller
                         $nama_kasir = $request->kasir_id;
                     
                 }elseif (Auth::user()->telephone == '081210469621') {
-                    $discount = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    // $discount = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    $discount = (\Cart::getTotal());
                     $count = 0.2 * $discount;
                     $total_price = $discount - $count;
-                    $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
-                    $pb01 = ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    // $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
+                    // $pb01 = ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    $service = 0;
+                    $pb01 = 0;
                     $name = auth()->user()->username ?? 'Not Name';
-                    // $name = $request->nama ?? 'Not Name';
                     $phone = $request->phone ?? '-';
                     $nama_kasir = null;
                 }elseif (Auth::user()->username == 'syahrul') {
-                    // $total_price = 1;
-                    $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
-                    // if ($request->category == "Takeaway") {
-                    //     $packing = 5000;
-                    //     $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100 + $packing;
-                    // }else{
-                    //     $total_price = $request->order_total;
-                    // }
-                    $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
-                    $pb01 = ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    // $discount = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    $discount = (\Cart::getTotal());
+                    $count = 0.2 * $discount;
+                    $total_price = $discount - $count;
+                    // $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
+                    // $pb01 = ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    $service = 0;
+                    $pb01 = 0;
                     $name = auth()->user()->username ?? 'Not Name';
                     $phone = $request->phone ?? '-';
-                    $kasir = $request->kasir_id;
-                    $nama_kasir = $request->kasir_id;
+                    $nama_kasir = null;
                 }else{
                     if ($request->category == "Takeaway") {
                         $packing = 5000;
