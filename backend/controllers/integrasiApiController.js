@@ -7,7 +7,7 @@ let urlGlobal, msisdn, passwordBJB;
 // Import socket.io-client
 const io = require("socket.io-client");
 // Menghubungkan ke server Socket.IO
-const socket = io('https://socket-vmondcoffee.controlindo.com:443'); // Sesuaikan URL server Socket.IO
+const socket = io('http:localhost:2222'); // Sesuaikan URL server Socket.IO
 
 // ====================================================
 // Check APP ENV (Development or Production)
