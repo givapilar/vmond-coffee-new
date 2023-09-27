@@ -170,7 +170,7 @@
 
             {{-- user Normal --}}
 
-            {{-- Bu fitri --}}
+            {{-------------------------------------------- Bu fitri ------------------------------------------------------}}
             @elseif(Auth::user()->telephone == '081210469621')
             <li class="py-3 sm:py-3">
                 <div class="flex items-start space-x-4">
