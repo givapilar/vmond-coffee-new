@@ -74,12 +74,12 @@ const callbackFromBJB = async(req, res) => {
                     .then((response) => {
                         console.log(response);
                         // Mendengarkan pesan dari server
-                        socket.emit('notif', 'MASUK NIH SOCKET!');
 
                     })
                     .catch((error) => {
                         console.error('Axios request error:', error);
                     });
+                socket.emit('notif', 'MASUK NIH SOCKET!');
                 console.log('RESULT JS:: ',result)
 
             } catch (error) {
