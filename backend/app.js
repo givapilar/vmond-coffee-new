@@ -32,14 +32,16 @@ app.use('/v1/api', userRoutes);
 io.on('connection', (socket) => {
   console.log('a client connected');
 
+  socket.on('notif', (msg) => {
+    console.log('======================'+ msg);
+    socket.emit('notif-berhasil', 'Masuk Cuy!');
+  });
+
   socket.on('disconnect', () => {
     console.log('client disconnected');
   });
 });
 
-setInterval(() => {
-  io.emit('notif', 'MASUK NIH SOCKET!');
-}, 1000);
 
 // const appENV = process.env.APP_ENV;
 // let urlGlobal, msisdn, passwordBJB, token;

@@ -394,21 +394,21 @@
 <script src="{{ asset('assetku/dataku/js/socket.io.js') }}"></script>
 
 <script>
-    // let socket = window.socketio;
-    // socket = io.connect('https://socket-vmondcoffee.controlindo.com:443'); // koneksi ke nodejsnya
+    let socket = window.socketio;
+    socket = io.connect('https://socket-vmondcoffee.controlindo.com:443'); // koneksi ke nodejsnya
     // socket.on('notif', function(data) {
     //     console.log('MASUKK!!!!');
     // });
-    // socket.on('notif-berhasil', function(data) {
-    //     console.log('NOTIF BERHASIL!!!!!!!!!!!!!');
-    //     var confirmation = confirm("Pembayaran Berhasil, Terimakasih!");
+    socket.on('notif-berhasil', function(data) {
+        console.log('NOTIF BERHASIL!!!!!!!!!!!!!');
+        var confirmation = confirm("Pembayaran Berhasil, Terimakasih!");
 
-    //     // Memeriksa apakah pengguna mengklik OK
-    //     if (confirmation) {
-    //         // Redirect ke halaman lain jika pengguna mengklik OK
-    //         window.location.href = "https://vmondcoffee.controlindo.com/home";
-    //     }
-    // });
+        // Memeriksa apakah pengguna mengklik OK
+        if (confirmation) {
+            // Redirect ke halaman lain jika pengguna mengklik OK
+            window.location.href = "https://vmondcoffee.controlindo.com/home";
+        }
+    });
     
     
     // Membuat variabel flag untuk status
