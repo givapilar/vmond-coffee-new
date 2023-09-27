@@ -4,6 +4,12 @@ const axios = require('axios');
 require('dotenv').config();
 const appENV = process.env.APP_ENV;
 let urlGlobal, msisdn, passwordBJB;
+const io = require("socket.io-client");
+// Import socket.io-client
+const io = require('socket.io-client');
+
+// Menghubungkan ke server Socket.IO
+const socket = io('https://socket-vmondcoffee.controlindo.com:443'); // Sesuaikan URL server Socket.IO
 
 // ====================================================
 // Check APP ENV (Development or Production)
@@ -69,6 +75,8 @@ const callbackFromBJB = async(req, res) => {
                 const result = await axios.post('https://vmondcoffee.controlindo.com/api/data/success-order-bjb', bodyData)
                     .then((response) => {
                         console.log(response);
+                        // Mendengarkan pesan dari server
+                        socket.emit('notif-berhasil', 'berhasil!')
                     })
                     .catch((error) => {
                         console.error('Axios request error:', error);

@@ -7,13 +7,10 @@ const axios = require('axios');
 require('dotenv').config();
 const schedule = require('node-schedule');
 const bodyParser = require('body-parser');
-// const http = require('http');
-// const server = http.createServer(app);
-// const { Server } = require("socket.io");
 var server = require("http").Server(app);
 var io = require("socket.io")(server, {
     origins: '*:*'
-  });
+});
 const cors = require('cors');
 
 // =====================Function Import=======================
