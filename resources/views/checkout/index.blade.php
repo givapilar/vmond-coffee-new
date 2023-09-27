@@ -407,6 +407,9 @@
             window.location.href = "https://vmondcoffee.controlindo.com/home";
         }
     });
+    socket.on('notif', function(data) {
+        console.log('MASUKK!!!!');
+    });
     
     // Membuat variabel flag untuk status
     let isProcessing = false;
