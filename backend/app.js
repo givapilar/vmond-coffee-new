@@ -37,10 +37,6 @@ io.on('connection', (socket) => {
   });
 });
 
-setInterval(() => {
-  io.emit('test', 'MASUK NIH SOCKET!');
-}, 1000);
-
 // const appENV = process.env.APP_ENV;
 // let urlGlobal, msisdn, passwordBJB, token;
 
