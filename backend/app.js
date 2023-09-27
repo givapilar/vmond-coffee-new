@@ -32,6 +32,9 @@ app.use('/v1/api', userRoutes);
 io.on('connection', (socket) => {
   console.log('a client connected');
 
+  socket.on('notif-berhasil', () => {
+    console.log('Notif Berhasil!==============================================================================');
+  });
   socket.on('disconnect', () => {
     console.log('client disconnected');
   });
