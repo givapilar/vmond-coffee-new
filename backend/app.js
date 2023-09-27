@@ -35,12 +35,14 @@ app.use('/v1/api', userRoutes);
 io.on('connection', (socket) => {
   console.log('a client connected');
 
-  socket.emit('test', 'masuk!');
-
   socket.on('disconnect', () => {
     console.log('client disconnected');
   });
 });
+
+setInterval(() => {
+  io.emit('test', 'MASUK NIH SOCKET!');
+}, 1000);
 
 // const appENV = process.env.APP_ENV;
 // let urlGlobal, msisdn, passwordBJB, token;
