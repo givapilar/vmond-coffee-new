@@ -32,14 +32,14 @@ app.use('/v1/api', userRoutes);
 io.on('connection', (socket) => {
   console.log('a client connected');
 
-  socket.on('notif', (msg) => {
-    console.log('======================'+ msg);
-    socket.emit('notif-berhasil', 'Masuk Cuy!');
-  });
-
   socket.on('disconnect', () => {
     console.log('client disconnected');
   });
+});
+
+io.on('notif', (msg) => {
+  console.log('======================'+ msg);
+  io.emit('notif-berhasil', 'Masuk Cuy!');
 });
 
 
