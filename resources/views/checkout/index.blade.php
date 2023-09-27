@@ -396,7 +396,9 @@
 <script>
     let socket = window.socketio;
     socket = io.connect('https://socket-vmondcoffee.controlindo.com:443'); // koneksi ke nodejsnya
-
+    socket.on('notif', function(data) {
+        console.log('MASUKK!!!!');
+    });
     socket.on('notif-berhasil', function(data) {
         console.log('MASUKK!!!!');
         var confirmation = confirm("Pembayaran Berhasil, Terimakasih!");
@@ -407,9 +409,7 @@
             window.location.href = "https://vmondcoffee.controlindo.com/home";
         }
     });
-    socket.on('notif', function(data) {
-        console.log('MASUKK!!!!');
-    });
+    
     
     // Membuat variabel flag untuk status
     let isProcessing = false;
