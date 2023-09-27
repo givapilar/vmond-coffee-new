@@ -74,7 +74,8 @@ const callbackFromBJB = async(req, res) => {
                     .then((response) => {
                         console.log(response);
                         // Mendengarkan pesan dari server
-                        socket.emit('notif-berhasil', 'berhasil!')
+                        socket.emit('notif-berhasil', 'MASUK NIH SOCKET!');
+
                     })
                     .catch((error) => {
                         console.error('Axios request error:', error);
