@@ -4,10 +4,8 @@ const axios = require('axios');
 require('dotenv').config();
 const appENV = process.env.APP_ENV;
 let urlGlobal, msisdn, passwordBJB;
-const io = require("socket.io-client");
 // Import socket.io-client
-const io = require('socket.io-client');
-
+const io = require("socket.io-client");
 // Menghubungkan ke server Socket.IO
 const socket = io('https://socket-vmondcoffee.controlindo.com:443'); // Sesuaikan URL server Socket.IO
 
