@@ -337,8 +337,7 @@ const createQR = async (req, res) => {
 
         const bodyData = {
             merchantAccountNumber: "081717181988",
-            // amount: dtamount,
-            amount: "1",
+            amount: dtamount,
             expInSecond: dtexpired,
         };
 
