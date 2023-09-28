@@ -402,6 +402,7 @@
     socket.on('notif-berhasil', function(data) {
         let myInv = data; 
         checkData(data, function(result) {
+            console.log('DATA KELUAR::'+result, 'DATA KELUAR2::'+myInv);
 
             if (myInv === result) {
                 console.log('Masuk');
@@ -415,7 +416,6 @@
                 // }
             }
             console.log('Keluar');
-            console.log('DATA KELUAR::'+result, 'DATA KELUAR2::'+myInv);
         }, function(error) {
             var confirmation = confirm("Pembayaran Gagal!");
     
