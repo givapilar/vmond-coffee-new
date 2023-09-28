@@ -413,6 +413,7 @@
     
     function checkData(i) {
         console.log(i);
+        let data = i;
         $.ajax({
             type: 'POST',
             url: "{{ route('check-data') }}",
@@ -421,7 +422,7 @@
             },
             data: {
                 "_token": "{{ csrf_token() }}",
-                i,
+                data,
             },
             async: false,
             success: function(res) {
@@ -540,8 +541,8 @@
     }
     
     function updateInvoice(orderID, invoiceID) {
-        let order_id, invoice_id;
-    
+        let order_id, data;
+i
         order_id = orderID;
         invoice_id = invoiceID;
         $.ajax({
