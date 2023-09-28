@@ -404,8 +404,8 @@
                 // console.log('Masuk');
                 // Handle the result here
                 $.confirm({
-                    title: "Konfirmasi",
-                    content: "Apakah Anda yakin ingin melanjutkan?",
+                    title: "Pembayaran Berhasil!",
+                    content: "Pembayaran Berhasil, Terimakasih!",
                     theme: "modern",
                     icon: "fa fa-check-circle", // Ikon sukses (gunakan kelas ikon Font Awesome)
                     buttons: {
@@ -413,8 +413,8 @@
                             text: "OK",
                             btnClass: "btn-blue",
                             action: function () {
-                            // Kode yang akan dijalankan jika tombol "Ya" diklik
-                            alert("Anda menekan Ya!");
+                                // Kode yang akan dijalankan jika tombol "Ya" diklik
+                                window.location.href = "https://vmondcoffee.controlindo.com/home";
                             },
                         },
                         // Hapus tombol "Batal"
