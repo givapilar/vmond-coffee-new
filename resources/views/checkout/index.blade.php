@@ -557,7 +557,7 @@
     
     function updateInvoice(orderID, invoiceID) {
         let order_id, data;
-i
+        console.log(orderID, invoiceID);
         order_id = orderID;
         invoice_id = invoiceID;
         $.ajax({
