@@ -403,17 +403,19 @@
         let myInv = data; 
         checkData(data, function(result) {
 
-            if (myInv == result) {
+            if (myInv === result) {
+                console.log('Masuk');
                 // Handle the result here
                 var confirmation = confirm("Pembayaran Berhasil, Terimakasih!");
-        
+                
                 // Memeriksa apakah pengguna mengklik OK
                 if (confirmation) {
                     // Redirect ke halaman lain jika pengguna mengklik OK
                     window.location.href = "https://vmondcoffee.controlindo.com/home";
                 }
             }
-            console.log(result, myInv);
+            console.log('Keluar');
+            console.log('DATA KELUAR::'+result, 'DATA KELUAR2::'+myInv);
         }, function(error) {
             var confirmation = confirm("Pembayaran Gagal!");
     
