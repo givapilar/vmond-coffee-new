@@ -2113,11 +2113,11 @@ class OrderController extends Controller
         try {
             // $order = Order::where('invoice_id',$request->invoiceID);
 
-            // $order = Order::where('invoice_id', $request->invoiceID)->first();
             // // $order->update(['description' => 'SUKSES']);
             // $order->update(['status_pembayaran' => 'Paid','invoice_no' => $this->generateInvoice()]);
-
-                $latestOrder = Order::where('token',$token)->where('invoice_id',$request->invoiceID)->orderBy('id', 'desc')->first();
+            
+                $latestOrder = Order::where('invoice_id', $request->invoiceID)->first();
+                // $latestOrder = Order::where('token',$token)->where('invoice_id',$request->invoiceID)->orderBy('id', 'desc')->first();
 
                     // Ubah status pembayaran menjadi "Paid"
                 $latestOrder->update(['status_pembayaran' => 'Paid', 'invoice_no' => $this->generateInvoice()]);
