@@ -400,7 +400,6 @@
     //     console.log('MASUKK!!!!');
     // });
     socket.on('notif-berhasil', function(data) {
-        console.log('NOTIF BERHASIL!!!!!!!!!!!!!');
         var confirmation = confirm("Pembayaran Berhasil, Terimakasih!");
 
         // Memeriksa apakah pengguna mengklik OK
@@ -481,9 +480,8 @@
             title: 'Generate QR Code',
             content: '<img src="' + qrDataUrl + '" width="70%" height="70%" style="display:block; margin-right:auto; margin-left:auto;">'+
             '</br>'+
-            '<h3 style="color:white;">VMOND COFFEE x BJB</h3>'+
-            '</br>'+
-            '<h5 style="color:white;">Total : '+dtamount+'</h5>',
+            '<h3 style="color:white;text-align:center;margin-bottom:10px;">VMOND COFFEE x BJB</h3>'+
+            '<h5 style="color:white;text-align:center;">Total : '+dtamount+'</h5>',
             columnClass: 'small',
             type: 'blue',
             typeAnimated: true,
@@ -495,7 +493,7 @@
                         // Trigger download of QR Code image
                         var a = document.createElement('a');
                         a.href = qrDataUrl;
-                        a.download = 'qrcode.png'; // Nama file yang akan diunduh
+                        a.download = 'qrcodes.png'; // Nama file yang akan diunduh
                         a.style.display = 'none';
                         document.body.appendChild(a);
                         a.click();
