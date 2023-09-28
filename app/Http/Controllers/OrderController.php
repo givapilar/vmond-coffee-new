@@ -2108,7 +2108,7 @@ class OrderController extends Controller
         return $request->all();
     }
 
-    public function successOrderBJB(Request $request,$token){
+    public function successOrderBJB(Request $request){
 
         try {
             // $order = Order::where('invoice_id',$request->invoiceID);
