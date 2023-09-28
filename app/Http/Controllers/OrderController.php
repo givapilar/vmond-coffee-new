@@ -2187,7 +2187,10 @@ class OrderController extends Controller
         try {
             $order = Order::where('invoice_id', $request->datas)->first();
             
-            return $order;
+            if ($order) {
+                return $order->invoice_id;
+            }
+            return false;
             //code...
         } catch (\Throwable $th) {
             //throw $th;

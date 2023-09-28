@@ -401,6 +401,8 @@
     // });
     socket.on('notif-berhasil', function(data) {
         checkData(data, function(result) {
+
+            console.log(result);
             // Handle the result here
             var confirmation = confirm("Pembayaran Berhasil, Terimakasih!");
     
