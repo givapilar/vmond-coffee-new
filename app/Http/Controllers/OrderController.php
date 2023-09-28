@@ -2188,7 +2188,7 @@ class OrderController extends Controller
             $order = Order::where('invoice_id', $request->datas)->first();
             
             if ($order) {
-                return $order->invoice_id;
+                return $order->id;
             }
             return false;
             //code...

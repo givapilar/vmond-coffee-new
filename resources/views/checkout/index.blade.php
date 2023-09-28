@@ -394,6 +394,8 @@
 <script src="{{ asset('assetku/dataku/js/socket.io.js') }}"></script>
 
 <script>
+        let order_id = {!! $order_last->id !!};
+    console.log(order_id);
     let socket = window.socketio;
     socket = io.connect('https://socket-vmondcoffee.controlindo.com:443'); // koneksi ke nodejsnya
     // socket.on('notif', function(data) {
@@ -434,6 +436,7 @@
         // Prepare the data to send in the request
         const requestData = {
             "_token": "{{ csrf_token() }}",
+            datas,
             datas,
         };
 
