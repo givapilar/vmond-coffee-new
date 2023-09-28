@@ -27,4 +27,3 @@ Route::post('/callback-bjb',[OrderController::class,'callbackBJB'])->name('callb
 Route::post('/v1/feedback-customer/{token}/{id}',[OrderController::class,'feedback'])->name('feedback');
 Route::post('/data/success-order-bjb',[OrderController::class,'successOrderBJB'])->name('success-order-bjb');
 Route::post('/data/checkData',[OrderController::class,'checkData'])->name('check-data');
-Route::post('/data/update-stock-bjb',[OrderController::class,'updateStockBJB'])->name('update-stock-bjb');
