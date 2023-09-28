@@ -409,16 +409,12 @@
                     theme: "modern",
                     icon: "fa fa-check-circle", // Ikon sukses (gunakan kelas ikon Font Awesome)
                     buttons: {
-                        confirm: {
-                            text: "OK",
-                            btnClass: "btn-blue",
+                        close: {
+                            text: 'Close',
                             action: function () {
-                                // Kode yang akan dijalankan jika tombol "Ya" diklik
                                 window.location.href = "https://vmondcoffee.controlindo.com/home";
-                            },
-                        },
-                        // Hapus tombol "Batal"
-                        cancel: false,
+                            }
+                        }
                     },
                 });
             }
