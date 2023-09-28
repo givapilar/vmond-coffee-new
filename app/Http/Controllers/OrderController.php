@@ -2188,9 +2188,9 @@ class OrderController extends Controller
             $order = Order::where('invoice_id', $request->datas)->first();
     
             if (count($order) != 0) {
-                return true;
+                return $request->all();
             }
-            return count($order);
+            return $request->all();
         } catch (\Throwable $th) {
             return false;
             //throw $th;
