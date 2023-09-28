@@ -2221,9 +2221,9 @@ class OrderController extends Controller
                 'code' => 500,
                 'updateStock' => false,
                 'deleteCart' => false,
-                'message' => $th->getMessage(),
                 'Stok' => $userID,
                 'Cart' => $cart,
+                'message' => $th->getMessage(),
             ];
             return $responseData;
         }
