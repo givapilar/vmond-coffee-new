@@ -79,7 +79,7 @@ const callbackFromBJB = async(req, res) => {
                     .catch((error) => {
                         console.error('Axios request error:', error);
                     });
-                socket.emit('notif', 'MASUK NIH SOCKET!');
+                socket.emit('notif', requestBody.invoiceNumber);
                 console.log('RESULT JS:: ',result)
 
             } catch (error) {

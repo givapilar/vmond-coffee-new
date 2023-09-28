@@ -33,7 +33,7 @@ io.on('connection', (socket) => {
   console.log('a client connected');
   socket.on('notif', (msg) => {
     console.log('======================'+ msg);
-    io.emit('notif-berhasil', 'Masuk Cuy!');
+    io.emit('notif-berhasil', msg);
   });
 
   socket.on('disconnect', () => {
