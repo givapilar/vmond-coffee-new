@@ -2126,7 +2126,7 @@ class OrderController extends Controller
 
                 $userID = $latestOrder->user_id;
                 $cart = \Cart::session($userID)->getContent();
-                $cartIndex = \Cart::session(Auth::user()->id)->getContent();
+                // $cartIndex = \Cart::session(Auth::user()->id)->getContent();
 
                 // Menghapus item dari session cart
                 // foreach ($cart as $item) {
@@ -2211,7 +2211,7 @@ class OrderController extends Controller
                 'updateStock' => true,
                 'deleteCart' => true,
                 'Stok' => $userID,
-                'Cart Index' => $cartIndex,
+                // 'Cart Index' => $cartIndex,
                 'Cart' => $cart,
             ];
     
@@ -2223,7 +2223,7 @@ class OrderController extends Controller
                 'updateStock' => false,
                 'deleteCart' => false,
                 'Stok' => $userID,
-                'Cart Index' => $cartIndex,
+                // 'Cart Index' => $cartIndex,
                 'Cart' => $cart,
                 'message' => $th->getMessage(),
             ];
