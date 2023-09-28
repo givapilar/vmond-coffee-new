@@ -2184,7 +2184,9 @@ class OrderController extends Controller
     }
 
     public function checkData(Request $request){
-       return $request->all();
+        // $order = Order::where('invoice_id', $request->invoiceID)->first();
+       
+        return $request->data;
 
     }
     
