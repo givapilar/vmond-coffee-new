@@ -2121,25 +2121,22 @@ class OrderController extends Controller
                 // $latestOrder = Order::where('token',$token)->where('invoice_id',$request->invoiceID)->orderBy('id', 'desc')->first();
 
                     // Ubah status pembayaran menjadi "Paid"
-                $latestOrder->update(['description' => 'SUKSES']);
+                // $latestOrder->update(['description' => 'SUKSES']);
                 // $latestOrder->update(['status_pembayaran' => 'Paid', 'invoice_no' => $this->generateInvoice()]);
 
+                // $userID = $latestOrder->user_id;
+                // $cart = \Cart::session($userID)->getContent();
+               
+
                 $userID = $latestOrder->user_id;
-                $cart = \Cart::session($userID)->getContent();
-                // $cartIndex = \Cart::session(Auth::user()->id)->getContent();
-
-                // Menghapus item dari session cart
-                // foreach ($cart as $item) {
-                //     \Cart::session($userID)->remove($item->id);
-                // }
-
-                // foreach ($cart as $key => $item) {
-                //     $restoStock = Restaurant::where('id', $item->attributes['restaurant']['id'])->first();
-                //     $stockAvailable = ($restoStock->current_stok - $item['quantity']);
+                
+                if (auth()->guest() == true) {
+                    $userUpdate = auth()->guest() ? 'guest' : auth()->user()->id;
+                    $cart = \Cart::session($userUpdate)->getContent();
+                }else{
+                    $cart = \Cart::session($userID)->getContent();
                     
-                //     // Memperbarui stok restoran
-                //     $restoStock->update(['current_stok' => $stockAvailable]);
-                // }
+                }
         
             // $userID = $order->user_id;
             // $cart = \Cart::session($userID)->getContent();
