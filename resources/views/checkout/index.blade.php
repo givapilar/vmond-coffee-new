@@ -403,7 +403,6 @@
             if (order_id == result) {
                 // console.log('Masuk');
                 // Handle the result here
-                $("#show-confirm").click(function () {
                 $.confirm({
                     title: "Konfirmasi",
                     content: "Apakah Anda yakin ingin melanjutkan?",
