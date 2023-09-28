@@ -534,7 +534,7 @@
     
         $.confirm({
             title: 'Generate QR Code',
-            content: '<img src="' + qrDataUrl + '" width="70%" height="70%" style="display:block; margin-right:auto; margin-left:auto;">'+
+            content: '<img src="' + qrDataUrl + '" width="70%" height="70%" style="display:block; margin-right:auto; margin-left:auto; margin-top:10px; border-radius:15px;">'+
             '</br>'+
             '<h3 style="color:white;text-align:center;margin-bottom:10px;">VMOND COFFEE x BJB</h3>'+
             '<h5 style="color:white;text-align:center;">Total : '+dtamount+'</h5>',
