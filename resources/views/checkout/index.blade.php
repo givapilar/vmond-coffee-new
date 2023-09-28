@@ -396,16 +396,12 @@
 <script>
     let socket = window.socketio;
     socket = io.connect('https://socket-vmondcoffee.controlindo.com:443'); // koneksi ke nodejsnya
-    // socket.on('notif', function(data) {
-    //     console.log('MASUKK!!!!');
-    // });
     socket.on('notif-berhasil', function(data) {
         checkData(data, function(result) {
             let order_id = {!! $order_last->id !!};
-            console.log('DATA KELUAR::'+order_id, 'DATA KELUAR2::'+result);
 
             if (order_id == result) {
-                console.log('Masuk');
+                // console.log('Masuk');
                 // Handle the result here
                 var confirmation = confirm("Pembayaran Berhasil, Terimakasih!");
                 
@@ -415,7 +411,6 @@
                     window.location.href = "https://vmondcoffee.controlindo.com/home";
                 }
             }
-            console.log('Keluar');
         }, function(error) {
             var confirmation = confirm("Pembayaran Gagal!");
     
@@ -445,14 +440,14 @@
             },
             data: requestData,
             success: function(res) {
-                console.log(res);
+                // console.log(res);
                 if (typeof successCallback === 'function') {
                     successCallback(res);
                 }
             },
             error: function(data) {
-                console.log(data);
-                console.log('Failed!');
+                // console.log(data);
+                // console.log('Failed!');
                 if (typeof errorCallback === 'function') {
                     errorCallback(data);
                 }
@@ -491,8 +486,8 @@
             },
             async: false,
             success: function(res) {
-                console.log(res);
-                console.log(res.data.stringQR);
+                // console.log(res);
+                // console.log(res.data.stringQR);
                 // Menutup dialog jQuery Confirm setelah sukses
                 generateQris(res.data.stringQR, dtamount);
                 updateInvoice(dtorderid, res.data.invoiceID)
@@ -504,7 +499,7 @@
                 // Mengubah status menjadi selesai
             },
             error: function(data) {
-                console.log(data);
+                // console.log(data);
                 $('#btnQR').removeClass('disabled');
                 $("#btnQR").prop("disabled", false);
                 $.alert(data.responseJSON.message);
@@ -580,12 +575,12 @@
             },
             async: false,
             success: function(res) {
-                console.log(res);
+                // console.log(res);
                 // window.location.href = '/home';
-                console.log('Success!');
+                // console.log('Success!');
             },
             error: function(data) {
-                console.log('Failed!');
+                // console.log('Failed!');
                 alert('Gagal, Silahkan order ulang...')
             }
         });
@@ -662,7 +657,7 @@
                 },
                 success: function (data) {
                     window.location.href = '/home';
-                    console.log('Callback', data);
+                    // console.log('Callback', data);
                 },
                 error: function (data) {
                     alert("error" + JSON.stringify(error));
