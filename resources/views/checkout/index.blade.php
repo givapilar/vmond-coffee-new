@@ -400,17 +400,20 @@
     //     console.log('MASUKK!!!!');
     // });
     socket.on('notif-berhasil', function(data) {
+        let myInv = data; 
         checkData(data, function(result) {
 
-            console.log(result);
-            // Handle the result here
-            var confirmation = confirm("Pembayaran Berhasil, Terimakasih!");
-    
-            // Memeriksa apakah pengguna mengklik OK
-            if (confirmation) {
-                // Redirect ke halaman lain jika pengguna mengklik OK
-                window.location.href = "https://vmondcoffee.controlindo.com/home";
+            if (myInv == result) {
+                // Handle the result here
+                var confirmation = confirm("Pembayaran Berhasil, Terimakasih!");
+        
+                // Memeriksa apakah pengguna mengklik OK
+                if (confirmation) {
+                    // Redirect ke halaman lain jika pengguna mengklik OK
+                    window.location.href = "https://vmondcoffee.controlindo.com/home";
+                }
             }
+            console.log(result, myInv);
         }, function(error) {
             var confirmation = confirm("Pembayaran Gagal!");
     
