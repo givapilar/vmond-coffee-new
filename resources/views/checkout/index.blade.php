@@ -392,6 +392,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script src="{{ asset('assetku/dataku/js/socket.io.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 
 <script>
     let socket = window.socketio;
@@ -403,13 +405,18 @@
             if (order_id == result) {
                 // console.log('Masuk');
                 // Handle the result here
-                var confirmation = confirm("Pembayaran Berhasil, Terimakasih!");
-                
-                // Memeriksa apakah pengguna mengklik OK
-                if (confirmation) {
-                    // Redirect ke halaman lain jika pengguna mengklik OK
-                    window.location.href = "https://vmondcoffee.controlindo.com/home";
-                }
+                Swal.fire({
+                    title: "Pembayaran Berhasil, Terimakasih!",
+                    icon: "success",
+                    showCancelButton: true,
+                    confirmButtonText: "OK",
+                    cancelButtonText: "Batal",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Redirect ke halaman lain jika pengguna mengklik OK
+                        window.location.href = "https://vmondcoffee.controlindo.com/home";
+                    }
+                });
             }
         }, function(error) {
             var confirmation = confirm("Pembayaran Gagal!");
