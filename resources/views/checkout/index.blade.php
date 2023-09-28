@@ -400,40 +400,55 @@
     //     console.log('MASUKK!!!!');
     // });
     socket.on('notif-berhasil', function(data) {
-        let datas = checkData(data);
-        console.log('test::',datas);
-        var confirmation = confirm("Pembayaran Berhasil, Terimakasih!");
-
-        // Memeriksa apakah pengguna mengklik OK
-        if (confirmation) {
-            // Redirect ke halaman lain jika pengguna mengklik OK
-            window.location.href = "https://vmondcoffee.controlindo.com/home";
-        }
+        checkData(data, function(result) {
+            // Handle the result here
+            var confirmation = confirm("Pembayaran Berhasil, Terimakasih!");
+    
+            // Memeriksa apakah pengguna mengklik OK
+            if (confirmation) {
+                // Redirect ke halaman lain jika pengguna mengklik OK
+                window.location.href = "https://vmondcoffee.controlindo.com/home";
+            }
+        }, function(error) {
+            var confirmation = confirm("Pembayaran Gagal!");
+    
+            // Memeriksa apakah pengguna mengklik OK
+            if (confirmation) {
+                // Redirect ke halaman lain jika pengguna mengklik OK
+                window.location.href = "https://vmondcoffee.controlindo.com/home";
+            }
+            // Handle the error here
+        });
     });
     
-    function checkData(i) {
-        console.log(i);
+    function checkData(i, successCallback, errorCallback) {
         let datas = i;
+
+        // Prepare the data to send in the request
+        const requestData = {
+            "_token": "{{ csrf_token() }}",
+            datas,
+        };
+
         $.ajax({
             type: 'POST',
             url: "{{ route('check-data') }}",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
-            data: {
-                "_token": "{{ csrf_token() }}",
-                datas,
-            },
-            async: false,
+            data: requestData,
             success: function(res) {
                 console.log(res);
-                return res;
+                if (typeof successCallback === 'function') {
+                    successCallback(res);
+                }
             },
             error: function(data) {
                 console.log(data);
                 console.log('Failed!');
-                return data;
-                // alert('Gagal, Silahkan order ulang...')
+                if (typeof errorCallback === 'function') {
+                    errorCallback(data);
+                }
             }
         });
     }
