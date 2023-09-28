@@ -400,6 +400,8 @@
     //     console.log('MASUKK!!!!');
     // });
     socket.on('notif-berhasil', function(data) {
+        console.log('test::',data);
+        // let data = checkData(data);
         var confirmation = confirm("Pembayaran Berhasil, Terimakasih!");
 
         // Memeriksa apakah pengguna mengklik OK
@@ -409,6 +411,30 @@
         }
     });
     
+    function checkData(i) {
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('check-data') }}",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+                "_token": "{{ csrf_token() }}",
+                i,
+            },
+            async: false,
+            success: function(res) {
+                console.log(res);
+                return res;
+            },
+            error: function(data) {
+                console.log(data);
+                console.log('Failed!');
+                return data;
+                // alert('Gagal, Silahkan order ulang...')
+            }
+        });
+    }
     
     // Membuat variabel flag untuk status
     let isProcessing = false;
