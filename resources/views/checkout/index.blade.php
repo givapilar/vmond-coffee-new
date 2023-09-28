@@ -416,6 +416,7 @@
                             text: 'OK',
                             btnClass: 'btn-green',
                             action: function () {
+                                updateStock(order_id);
                                 window.location.href = "https://vmondcoffee.controlindo.com/home";
                             }
                         }
@@ -433,6 +434,32 @@
             // Handle the error here
         });
     });
+
+    function updateStock(datas) {
+         // Prepare the data to send in the request
+        const requestData = {
+            "_token": "{{ csrf_token() }}",
+            datas,
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('update-stock-bjb') }}",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: requestData,
+            success: function(res) {
+                console.log(res);
+               
+            },
+            error: function(data) {
+                // console.log(data);
+                // console.log('Failed!');
+               
+            }
+        });
+    }
     
     function checkData(i, successCallback, errorCallback) {
         let datas = i;

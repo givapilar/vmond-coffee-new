@@ -2243,5 +2243,24 @@ class OrderController extends Controller
         }
 
     }
+
+    public function updateStockBJB(Request $request){
+        try {
+            $latestOrder = Order::where('invoice_id', $request->invoiceID)->first();
+            $userID = $latestOrder->user_id;
+            
+            if (auth()->guest() == true) {
+                $userUpdate = auth()->guest() ? 'guest' : auth()->user()->id;
+                $cart = \Cart::session($userUpdate)->getContent();
+            }else{
+                $cart = \Cart::session($userID)->getContent();
+                
+            }
+            return $cart;
+        } catch (\Throwable $th) {
+            return "ERROR!";
+            //throw $th;
+        }
+    }
     
 }
