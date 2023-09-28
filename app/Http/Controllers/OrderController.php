@@ -2108,30 +2108,62 @@ class OrderController extends Controller
         return $request->all();
     }
 
-    public function successOrderBJB(Request $request){
+    public function successOrderBJB(Request $request,$token){
 
         try {
             // $order = Order::where('invoice_id',$request->invoiceID);
 
-            $order = Order::where('invoice_id', $request->invoiceID)->first();
-            // $order->update(['description' => 'SUKSES']);
-            $order->update(['status_pembayaran' => 'Paid','invoice_no' => $this->generateInvoice()]);
+            // $order = Order::where('invoice_id', $request->invoiceID)->first();
+            // // $order->update(['description' => 'SUKSES']);
+            // $order->update(['status_pembayaran' => 'Paid','invoice_no' => $this->generateInvoice()]);
 
-            $userID = $order->user_id;
-            $cart = \Cart::session($userID)->getContent();
 
-             // Menghapus item dari session cart
-             foreach ($cart as $item) {
-                \Cart::session($userID)->remove($item->id);
-            }
+            $checkToken = Order::where('token',$token)->where('status_pembayaran', 'Paid')->get()->count();
+                if ($checkToken != 0) {
+                    return redirect()->route('homepage')->with(['failed' => 'Tidak dapat mengulang transaksi!']);
+                }
 
-            foreach ($cart as $key => $item) {
-                $restoStock = Restaurant::where('id', $item->attributes['restaurant']['id'])->first();
-                $stockAvailable = ($restoStock->current_stok - $item['quantity']);
+
+                $latestOrder = Order::where('token',$token)->orderBy('id', 'desc')->first();
+
+                // dd($latestOrder);
+                if ($latestOrder) {
+                    // Ubah status pembayaran menjadi "Paid"
+                    $latestOrder->update(['status_pembayaran' => 'Paid', 'invoice_no' => $this->generateInvoice()]);
+
+                    $userID = $latestOrder->user_id;
+                    $cart = \Cart::session($userID)->getContent();
+
+                    // Menghapus item dari session cart
+                    foreach ($cart as $item) {
+                        \Cart::session($userID)->remove($item->id);
+                    }
+
+                    foreach ($cart as $key => $item) {
+                        $restoStock = Restaurant::where('id', $item->attributes['restaurant']['id'])->first();
+                        $stockAvailable = ($restoStock->current_stok - $item['quantity']);
+                        
+                        // Memperbarui stok restoran
+                        $restoStock->update(['current_stok' => $stockAvailable]);
+                    }
+
+                }
+            
+            // $userID = $order->user_id;
+            // $cart = \Cart::session($userID)->getContent();
+
+            //  // Menghapus item dari session cart
+            //  foreach ($cart as $item) {
+            //     \Cart::session($userID)->remove($item->id);
+            // }
+
+            // foreach ($cart as $key => $item) {
+            //     $restoStock = Restaurant::where('id', $item->attributes['restaurant']['id'])->first();
+            //     $stockAvailable = ($restoStock->current_stok - $item['quantity']);
                 
-                // Memperbarui stok restoran
-                $restoStock->update(['current_stok' => $stockAvailable]);
-            }
+            //     // Memperbarui stok restoran
+            //     $restoStock->update(['current_stok' => $stockAvailable]);
+            // }
 
 
             // if ($order->kode_meja != null || $order->category == 'Takeaway') {
