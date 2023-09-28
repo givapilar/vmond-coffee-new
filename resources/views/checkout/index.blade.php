@@ -394,28 +394,26 @@
 <script src="{{ asset('assetku/dataku/js/socket.io.js') }}"></script>
 
 <script>
-        let order_id = {!! $order_last->id !!};
-    console.log(order_id);
     let socket = window.socketio;
     socket = io.connect('https://socket-vmondcoffee.controlindo.com:443'); // koneksi ke nodejsnya
     // socket.on('notif', function(data) {
     //     console.log('MASUKK!!!!');
     // });
     socket.on('notif-berhasil', function(data) {
-        let myInv = data; 
         checkData(data, function(result) {
-            console.log('DATA KELUAR::'+result, 'DATA KELUAR2::'+myInv);
+            console.log('DATA KELUAR::'+order_id, 'DATA KELUAR2::'+result);
+            let order_id = {!! $order_last->id !!};
 
-            if (myInv === result) {
+            if (order_id == result) {
                 console.log('Masuk');
                 // Handle the result here
-                // var confirmation = confirm("Pembayaran Berhasil, Terimakasih!");
+                var confirmation = confirm("Pembayaran Berhasil, Terimakasih!");
                 
-                // // Memeriksa apakah pengguna mengklik OK
-                // if (confirmation) {
-                //     // Redirect ke halaman lain jika pengguna mengklik OK
-                //     window.location.href = "https://vmondcoffee.controlindo.com/home";
-                // }
+                // Memeriksa apakah pengguna mengklik OK
+                if (confirmation) {
+                    // Redirect ke halaman lain jika pengguna mengklik OK
+                    window.location.href = "https://vmondcoffee.controlindo.com/home";
+                }
             }
             console.log('Keluar');
         }, function(error) {
@@ -436,7 +434,6 @@
         // Prepare the data to send in the request
         const requestData = {
             "_token": "{{ csrf_token() }}",
-            datas,
             datas,
         };
 
