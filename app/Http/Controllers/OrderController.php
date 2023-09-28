@@ -2125,7 +2125,8 @@ class OrderController extends Controller
                 // $latestOrder->update(['status_pembayaran' => 'Paid', 'invoice_no' => $this->generateInvoice()]);
 
                 $userID = $latestOrder->user_id;
-                $cart = \Cart::session($userID)->getContent();
+                // $cart = \Cart::session($userID)->getContent();
+                $cart = \Cart::session(Auth::user()->id)->getContent();
 
                 // Menghapus item dari session cart
                 // foreach ($cart as $item) {
