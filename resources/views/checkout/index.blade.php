@@ -404,6 +404,7 @@
             let order_id = {!! $order_last->id !!};
 
             if (order_id == result) {
+                updateStock(order_id);
                 // console.log('Masuk');
                 // Handle the result here
                 $.confirm({
@@ -416,7 +417,6 @@
                             text: 'OK',
                             btnClass: 'btn-green',
                             action: function () {
-                                updateStock(order_id);
                                 window.location.href = "https://vmondcoffee.controlindo.com/home";
                             }
                         }
