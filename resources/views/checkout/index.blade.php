@@ -19,6 +19,9 @@
         background-color: #1b1818 !important;
         border-radius: 20px !important;
     }
+    .jconfirm-title-c{
+        display: none !important;
+    }
 
 </style>
 @endpush
@@ -410,7 +413,8 @@
                     icon: "fa fa-check-circle", // Ikon sukses (gunakan kelas ikon Font Awesome)
                     buttons: {
                         close: {
-                            text: 'Close',
+                            text: 'OK',
+                            btnClass: 'btn-primary',
                             action: function () {
                                 window.location.href = "https://vmondcoffee.controlindo.com/home";
                             }
