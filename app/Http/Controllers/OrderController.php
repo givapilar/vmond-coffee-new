@@ -2121,7 +2121,8 @@ class OrderController extends Controller
                 // $latestOrder = Order::where('token',$token)->where('invoice_id',$request->invoiceID)->orderBy('id', 'desc')->first();
 
                     // Ubah status pembayaran menjadi "Paid"
-                $latestOrder->update(['status_pembayaran' => 'Paid', 'invoice_no' => $this->generateInvoice()]);
+                $latestOrder->update(['description' => 'SUKSES']);
+                // $latestOrder->update(['status_pembayaran' => 'Paid', 'invoice_no' => $this->generateInvoice()]);
 
                 $userID = $latestOrder->user_id;
                 $cart = \Cart::session($userID)->getContent();
