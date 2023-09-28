@@ -2184,7 +2184,7 @@ class OrderController extends Controller
     }
 
     public function checkData(Request $request){
-        $order = Order::where('invoice_id', $request->data)->first();
+        $order = Order::where('invoice_id', $request->datas)->first();
 
         if (count($order) != 0) {
             return true;

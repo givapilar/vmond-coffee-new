@@ -413,7 +413,7 @@
     
     function checkData(i) {
         console.log(i);
-        let data = i;
+        let datas = i;
         $.ajax({
             type: 'POST',
             url: "{{ route('check-data') }}",
@@ -422,7 +422,7 @@
             },
             data: {
                 "_token": "{{ csrf_token() }}",
-                data,
+                datas,
             },
             async: false,
             success: function(res) {
