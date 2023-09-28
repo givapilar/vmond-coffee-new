@@ -2190,6 +2190,7 @@ class OrderController extends Controller
             if (count($order) != 0) {
                 return true;
             }
+            return count($order);
         } catch (\Throwable $th) {
             return false;
             //throw $th;
