@@ -2155,70 +2155,71 @@ class OrderController extends Controller
         try {
             $order = Order::find($request->datas);
 
-                $userID = $order->user_id;
-                $cart = \Cart::session($userID)->getContent();
+                // $userID = $order->user_id;
+                // $cart = \Cart::session($userID)->getContent();
     
-                 // Menghapus item dari session cart
-                 foreach ($cart as $item) {
-                    \Cart::session($userID)->remove($item->id);
+                //  // Menghapus item dari session cart
+                //  foreach ($cart as $item) {
+                //     \Cart::session($userID)->remove($item->id);
+                // }
+    
+                // foreach ($cart as $key => $item) {
+                //     $restoStock = Restaurant::where('id', $item->attributes['restaurant']['id'])->first();
+                //     $stockAvailable = ($restoStock->current_stok - $item['quantity']);
+                    
+                //     // Memperbarui stok restoran
+                //     $restoStock->update(['current_stok' => $stockAvailable]);
+                // }
+    
+
+            if ($order->kode_meja != null || $order->category == 'Takeaway') {
+                
+                if (auth()->guest() == true) {
+                    $userUpdate = auth()->guest() ? 'guest' : auth()->user()->id;
+                    $cart = \Cart::session($userUpdate)->getContent();
+
+                    foreach ($cart as $item) {
+                        \Cart::session($userUpdate)->remove($item->id);
+                    }
+
+                    foreach ($cart as $key => $item) {
+                        $restoStock = Restaurant::where('id', $item->attributes['restaurant']['id'])->first();
+                        $stockAvailable = ($restoStock->current_stok - $item->quantity);
+                        
+                        // Memperbarui stok restoran
+                        $restoStock->update(['current_stok' => $stockAvailable,]);
+
+                    }
+                }else{
+                    $userID = $order->user_id;
+
+                    $cart = \Cart::session($userID)->getContent();
+                    
+                    // Menghapus item dari session cart
+                    foreach ($cart as $item) {
+                        \Cart::session($userID)->remove($item->id);
+                    }
+            
+                   foreach ($cart as $key => $item) {
+                        $restoStock = Restaurant::where('id', $item->attributes['restaurant']['id'])->first();
+                        $stockAvailable = ($restoStock->current_stok - $item['quantity']);
+                        
+                        // Memperbarui stok restoran
+                        $restoStock->update(['current_stok' => $stockAvailable]);
+                    }
+
+
                 }
-    
-                foreach ($cart as $key => $item) {
-                    $restoStock = Restaurant::where('id', $item->attributes['restaurant']['id'])->first();
-                    $stockAvailable = ($restoStock->current_stok - $item['quantity']);
+            }else if($order->billiard_id != null){
+                $orderBilliard = OrderBilliard::where('order_id',$order->id)->get();
+                foreach ($orderBilliard as $key => $item) {
+                    $restoStock = Restaurant::where('id', $orderBilliard->restaurant_id)->first();
+                    $stockAvailable = ($restoStock->current_stok - $item->quantity);
                     
                     // Memperbarui stok restoran
                     $restoStock->update(['current_stok' => $stockAvailable]);
                 }
-    
-
-            // if ($order->kode_meja != null || $order->category == 'Takeaway') {
-            //     $userID = $order->user_id;
-                
-            //     if (auth()->guest() == true) {
-            //         $userUpdate = auth()->guest() ? 'guest' : auth()->user()->id;
-            //         $cart = \Cart::session($userUpdate)->getContent();
-
-            //         foreach ($cart as $item) {
-            //             \Cart::session($userUpdate)->remove($item->id);
-            //         }
-
-            //         foreach ($cart as $key => $item) {
-            //             $restoStock = Restaurant::where('id', $item->attributes['restaurant']['id'])->first();
-            //             $stockAvailable = ($restoStock->current_stok - $item->quantity);
-                        
-            //             // Memperbarui stok restoran
-            //             $restoStock->update(['current_stok' => $stockAvailable,]);
-
-            //     }
-            //     }else{
-            //         $cart = \Cart::session($userID)->getContent();
-                    
-            //         // Menghapus item dari session cart
-            //         foreach ($cart as $item) {
-            //             \Cart::session($userID)->remove($item->id);
-            //         }
-            
-            //         foreach ($cart as $key => $item) {
-            //             $restoStock = Restaurant::where('id', $item->attributes['restaurant']['id'])->first();
-            //             $stockAvailable = ($restoStock->current_stok - $item->quantity);
-                        
-            //             // Memperbarui stok restoran
-            //             $restoStock->update(['current_stok' => $stockAvailable]);
-            //         }
-
-
-            //     }
-            // }else if($order->billiard_id != null){
-            //     $orderBilliard = OrderBilliard::where('order_id',$order->id)->get();
-            //     foreach ($orderBilliard as $key => $item) {
-            //         $restoStock = Restaurant::where('id', $orderBilliard->restaurant_id)->first();
-            //         $stockAvailable = ($restoStock->current_stok - $item->quantity);
-                    
-            //         // Memperbarui stok restoran
-            //         $restoStock->update(['current_stok' => $stockAvailable]);
-            //     }
-            // }
+            }
 
 
         // dd($latestOrder);
