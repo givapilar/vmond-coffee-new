@@ -2128,17 +2128,17 @@ class OrderController extends Controller
                 $cart = \Cart::session($userID)->getContent();
 
                 // Menghapus item dari session cart
-                foreach ($cart as $item) {
-                    \Cart::session($userID)->remove($item->id);
-                }
+                // foreach ($cart as $item) {
+                //     \Cart::session($userID)->remove($item->id);
+                // }
 
-                foreach ($cart as $key => $item) {
-                    $restoStock = Restaurant::where('id', $item->attributes['restaurant']['id'])->first();
-                    $stockAvailable = ($restoStock->current_stok - $item['quantity']);
+                // foreach ($cart as $key => $item) {
+                //     $restoStock = Restaurant::where('id', $item->attributes['restaurant']['id'])->first();
+                //     $stockAvailable = ($restoStock->current_stok - $item['quantity']);
                     
-                    // Memperbarui stok restoran
-                    $restoStock->update(['current_stok' => $stockAvailable]);
-                }
+                //     // Memperbarui stok restoran
+                //     $restoStock->update(['current_stok' => $stockAvailable]);
+                // }
         
             // $userID = $order->user_id;
             // $cart = \Cart::session($userID)->getContent();
