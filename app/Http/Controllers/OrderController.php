@@ -2184,13 +2184,13 @@ class OrderController extends Controller
     }
 
     public function checkData($i){
-        $order = Order::where('invoice_id', $i->invoiceID)->first();
+        // $order = Order::where('invoice_id', $i)->first();
 
-        if (count($order) != 0) {
-            return true;
-        }
+        // if (count($order) != 0) {
+        //     return true;
+        // }
 
-        return false;
+        return $i;
     }
     
 }

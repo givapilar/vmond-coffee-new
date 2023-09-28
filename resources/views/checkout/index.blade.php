@@ -412,6 +412,7 @@
     });
     
     function checkData(i) {
+        console.log(i);
         $.ajax({
             type: 'POST',
             url: "{{ route('check-data') }}",
