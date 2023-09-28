@@ -2246,7 +2246,7 @@ class OrderController extends Controller
 
     public function updateStockBJB(Request $request){
         try {
-            $latestOrder = Order::where('invoice_id', $request->invoiceID)->first();
+            $latestOrder = Order::where('id', $request->datas)->first();
             $userID = $latestOrder->user_id;
             
             if (auth()->guest() == true) {
