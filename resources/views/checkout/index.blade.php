@@ -414,7 +414,7 @@
                     buttons: {
                         close: {
                             text: 'OK',
-                            btnClass: 'btn-primary',
+                            btnClass: 'btn-green',
                             action: function () {
                                 window.location.href = "https://vmondcoffee.controlindo.com/home";
                             }
