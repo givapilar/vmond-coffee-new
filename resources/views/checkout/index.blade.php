@@ -400,8 +400,8 @@
     //     console.log('MASUKK!!!!');
     // });
     socket.on('notif-berhasil', function(data) {
-        console.log('test::',data);
-        // let data = checkData(data);
+        let datas = checkData(data);
+        console.log('test::',datas);
         var confirmation = confirm("Pembayaran Berhasil, Terimakasih!");
 
         // Memeriksa apakah pengguna mengklik OK
