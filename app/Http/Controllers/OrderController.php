@@ -2208,6 +2208,8 @@ class OrderController extends Controller
                 'code' => 200,
                 'updateStock' => true,
                 'deleteCart' => true,
+                'Stok' => $userID,
+                'Cart' => $cart,
             ];
     
             return $responseData;
@@ -2218,6 +2220,8 @@ class OrderController extends Controller
                 'updateStock' => false,
                 'deleteCart' => false,
                 'message' => $th->getMessage(),
+                'Stok' => $userID,
+                'Cart' => $cart,
             ];
             return $responseData;
         }
