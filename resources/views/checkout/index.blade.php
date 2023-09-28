@@ -401,8 +401,8 @@
     // });
     socket.on('notif-berhasil', function(data) {
         checkData(data, function(result) {
-            console.log('DATA KELUAR::'+order_id, 'DATA KELUAR2::'+result);
             let order_id = {!! $order_last->id !!};
+            console.log('DATA KELUAR::'+order_id, 'DATA KELUAR2::'+result);
 
             if (order_id == result) {
                 console.log('Masuk');
