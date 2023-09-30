@@ -125,7 +125,7 @@
                         ?>
                         {{-- {{ $order_settings[0]->layanan }} --}}
                         {{-- Rp. {{  $biaya_layanan }} --}}
-                        Rp. {{ number_format($orders->layanan,0)}}
+                        Rp. {{ number_format($orders->service,0)}}
                     </div>
                 </div>
             </li>
