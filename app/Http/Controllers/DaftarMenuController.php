@@ -90,4 +90,29 @@ class DaftarMenuController extends Controller
 
         return view('daftarmenu.meeting-room', $data, compact(['meeting_room','paket_menus','others','orderFinishSubtotal','global_url_image']));
     }
+
+    public function paketMenu(Request $request)
+    {
+        $global_url_image = 'https://managementvmond.controlindo.com/assets/images/restaurant/';
+
+        $tags = Tag::where('status', 'active')->orderBy('position', 'ASC')->get();
+        $restaurantPivot = RestaurantPivot::get();
+        $restaurants = Restaurant::get();
+        $paket_menus = MenuPackages::get();
+        $data['category'] = $request->input('category');
+        if ($data['category'] == 'food') {
+            $data['category'] = 'Makanan';
+        }elseif($data['category'] == 'drink'){
+            $data['category'] = 'Minuman';
+        }else{
+            $data['category'] = 'Minuman';
+        }
+
+        $data['menu'] = $request->input('menu');
+        // dd($data['menu']);
+
+        $data ['add_ons'] = AddOn::get();
+        // dd($restaurant);
+        return view('daftarmenu.paket-menu',$data, compact(['restaurants','tags','restaurantPivot', 'global_url_image','paket_menus']));
+    }
 }

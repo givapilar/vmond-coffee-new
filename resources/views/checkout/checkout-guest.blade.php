@@ -123,8 +123,9 @@
                         <?php
                             $biaya_layanan = number_format((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100,0 );
                         ?>
-                    {{-- {{ $order_settings[0]->layanan }} --}}
-                    Rp. {{  $biaya_layanan }}
+                        {{-- {{ $order_settings[0]->layanan }} --}}
+                        {{-- Rp. {{  $biaya_layanan }} --}}
+                        Rp. {{ number_format($orders->layanan,0)}}
                     </div>
                 </div>
             </li>
@@ -139,9 +140,8 @@
                         <?php
                             $biaya_pb01 = number_format(((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100,0);
                         ?>
-
-                        {{-- {{dd($order_settings[0]->pb01)}} --}}
-                        Rp. {{ $biaya_pb01 }} 
+                        {{-- Rp. {{ $biaya_pb01 }}  --}}
+                        Rp. {{ number_format($orders->pb01,0)}}
                     </div>
                 </div>
             </li>
@@ -156,13 +156,8 @@
                         </p>
                     </div>
                     <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white">
-                        @if (\Cart::getTotal())
-                        {{-- Rp. {{ number_format(\Cart::getTotal() *$order_settings[0]->pb01/100 + \Cart::getTotal() + $order_settings[0]->layanan ,0 ) }} --}}
-                        {{-- Rp. {{ number_format(\Cart::getTotal()  ?? '0',0 ) }} --}}
-                        Rp. {{ number_format((\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100,0)}}
-                        @else
-                        Rp. 0
-                        @endif
+                        {{-- Rp. {{ number_format((\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100,0)}} --}}
+                        Rp. {{ number_format($orders->total_price,0)}}
                     </div>
                 </div>
             </li>
@@ -176,16 +171,13 @@
                         </p>
                     </div>
                     <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white">
-                        @if (\Cart::getTotal())
                             <?php
-                            $packing = 5000;
-                            $totalWithoutPacking = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100;
-                            $totalWithPacking = $totalWithoutPacking + $packing;
+                            // $packing = 5000;
+                            // $totalWithoutPacking = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100;
+                            // $totalWithPacking = $totalWithoutPacking + $packing;
                             ?>
-                            Rp. {{ number_format($totalWithPacking, 0) }}
-                        @else
-                            Rp. 0
-                        @endif
+                            {{-- Rp. {{ number_format($totalWithPacking, 0) }} --}}
+                            Rp. {{ number_format($orders->total_price,0)}}
                     </div>
                     
                 </div>
