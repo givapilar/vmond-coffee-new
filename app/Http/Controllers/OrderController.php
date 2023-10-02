@@ -325,7 +325,6 @@ class OrderController extends Controller
                     'transaction_details' => array(
                         'order_id' => $order->id,
                         'gross_amount' => str_replace(',','',number_format($order->total_price, 0)),
-                        // 'gross_amount' => 1,
                     ),
                     'customer_details' => array(
                         'first_name' => auth()->user()->username,
@@ -340,8 +339,8 @@ class OrderController extends Controller
             if ($tokenCart) {
                 $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
             }
-            // $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
-            $data['order_last'] = Order::where('token', $token)->latest()->first();
+            // $data['order_last'] = Order::where('token', $token)->latest()->first();
+            $data['order_last'] = Order::where('token', $token)->get()->first();
             $data['order_settings'] = OtherSetting::get();
 
             $successMessage = $other_setting[0]->description_notifikasi;
@@ -351,7 +350,6 @@ class OrderController extends Controller
         } catch (\Throwable $th) {
             DB::rollback();
             return redirect()->back()->with('failed', $th->getMessage());
-            // return redirect()->back()->with('failed', 'Silahkan Tanya Waiters');
         }
         
     }
@@ -440,7 +438,14 @@ class OrderController extends Controller
                         $phone = $request->phone;
                     }
                 }else {
-                    $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    // $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    if ($request->category == "Takeaway") {
+                        $packing = 5000;
+                        $totalWithoutPacking = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                        $total_price = $totalWithoutPacking + $packing;
+                    }else{
+                        $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    }
                     $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
                     $pb01 = ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $user = '2';
@@ -476,6 +481,7 @@ class OrderController extends Controller
                     'created_at' => date('Y-m-d H:i:s'),
                     'service' => $service,
                     'pb01' => $pb01,
+                    'packing' => $request->packing,
                     'jumlah_customer' => $request->jumlah_customer,
                     'kode_meja' => $request->meja_restaurant_id,
                 ]);
@@ -536,6 +542,23 @@ class OrderController extends Controller
                 $checkToken2 = Order::where('token',$token)->get();
                 $data['token'] = $checkToken2->pluck('token');
 
+                $order_id = $order->id;
+                $order_pivots = OrderPivot::where('order_id', $order_id)->get();
+                
+                $gross_amount = 0;
+                $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
+                $pb01 = ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                $packing = $request->packing;
+                
+                foreach ($order_pivots as $order_pivot) {
+                    $gross_amount += $order_pivot->qty * $order_pivot->harga_diskon;
+                }
+                if ($request->category == "Takeaway") {
+                    $gross_amount += $service + $pb01 + $request->packing;
+                }else{
+                    $gross_amount += $service + $pb01;
+                }
+            
             // Set your Merchant Server Key
             \Midtrans\Config::$serverKey = config('midtrans.server_key');
             // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
@@ -549,8 +572,8 @@ class OrderController extends Controller
             $params = array(
                 'transaction_details' => array(
                     'order_id' => $order->id,
-                    'gross_amount' => str_replace(',','',number_format($order->total_price, 0)),
-                    // 'gross_amount' => 1,
+                    // 'gross_amount' => str_replace(',','',number_format($order->total_price, 0)),
+                    'gross_amount' => str_replace(',','',number_format($gross_amount, 0)),
                 ),
                 'customer_details' => array(
                     'first_name' => $request->nama,

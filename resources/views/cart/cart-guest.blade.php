@@ -401,6 +401,7 @@
                             </p>
                         </div>
                         <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white" id="PB01-summary">
+                            <input type="hidden" name="packing" value="5000" >
                             <?php
                                 $biaya_pb01 = number_format(((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100,0);
                             ?>
@@ -410,7 +411,7 @@
                     </div>
                 </li>
 
-                <li class="py-3 sm:py-3 takeaway" id="packingLi" style="display: none;">
+                <li class="py-3 sm:py-3 takeaway" id="packing" style="display: none;">
                     <div class="flex items-start space-x-4">
                         <div class="flex-1 min-w-0">
                             <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
@@ -445,6 +446,7 @@
                     </div>
                 </li>
 
+
                 <li class="py-3 sm:py-3" id="order-total-packing" style="display: none;">
                     <div class="flex items-start space-x-4">
                         <div class="flex-1 min-w-0">
@@ -459,8 +461,8 @@
                                 $totalWithPacking = $totalWithoutPacking + ($totalWithoutPacking + (\Cart::getTotal() ?? 0) * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100 + $packing;
                             ?>
                             @if (\Cart::getTotal())
-                            {{-- Rp. {{ number_format((\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100,0)}} --}}
-                            Rp. {{ number_format($totalWithPacking, 0) }}
+                            Rp. {{ number_format((\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100 + 5000,0)}}
+                            {{-- Rp. {{ number_format($totalWithPacking, 0) }} --}}
 
                             @else
                             Rp. 0
@@ -502,16 +504,19 @@
         const dineInRadio = document.getElementById("dine-in-radio");
         const orderTotal = document.getElementById("order-total");
         const orderTotalPacking = document.getElementById("order-total-packing");
+        const packing = document.getElementById("packing");
 
         if (takeawayRadio && dineInRadio && orderTotal && orderTotalPacking) {
             takeawayRadio.addEventListener("change", function () {
                 orderTotal.style.display = "none";
                 orderTotalPacking.style.display = "block";
+                packing.style.display = "block";
             });
 
             dineInRadio.addEventListener("change", function () {
                 orderTotal.style.display = "block";
                 orderTotalPacking.style.display = "none";
+                packing.style.display = "none";
             });
         }
     });
