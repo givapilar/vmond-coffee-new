@@ -16,6 +16,11 @@ class MenuPackagePivots extends Model
         return $this->belongsTo(Biliard::class, 'billiard_id', 'id');
     }
 
+    public function restaurant()
+    {
+        return $this->belongsTo(Restaurant::class);
+    }
+
     public function roomMeet()
     {
         return $this->belongsTo(MeetingRoom::class, 'room_meeting_id', 'id');

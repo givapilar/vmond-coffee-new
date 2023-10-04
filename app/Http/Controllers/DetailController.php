@@ -38,6 +38,21 @@ class DetailController extends Controller
         return view('daftarmenu.detail-restaurant',$data);
     }
 
+    public function detailPaket($id)
+    {
+        // dd();
+        $data ['image'] = 'https://managementvmond.controlindo.com/assets/images/restaurant/';
+
+        // $data ['restaurants'] = Restaurant::find($id);
+        $data ['paket_menu'] = MenuPackages::find($id);
+        $data ['restaurant_details'] = RestaurantPivot::get();
+        $data ['add_ons'] = AddOn::get();
+        $data['users'] = User::first();
+
+        // dd($restaurant);
+        return view('daftarmenu.detail-paket-menu',$data);
+    }
+
     public function detailBilliard($id)
     {
         // dd();

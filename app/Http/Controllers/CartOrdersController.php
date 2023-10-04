@@ -127,6 +127,7 @@ class CartOrdersController extends Controller
 
     public function addCartRestaurant(Request $request,$id)
     {
+        // dd($request->all());
 
         // try {
             $restaurant = Restaurant::findOrFail($id);

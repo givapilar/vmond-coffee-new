@@ -694,8 +694,8 @@
                     "data": newData
                 },
                 success: function (data) {
-                    window.location.href = '/home';
-                    // console.log('Callback', data);
+                    // window.location.href = '/home';
+                    console.log('Callback', data);
                 },
                 error: function (data) {
                     alert("error" + JSON.stringify(error));

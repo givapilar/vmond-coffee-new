@@ -47,7 +47,11 @@ Route::get('/create-qris-tes', [OrderController::class, 'createQris'])->name('cr
 
 // daftar menu
 Route::get('/daftarmenu/restaurant', [DaftarMenuController::class, 'restaurant'])->name('daftar-restaurant');
+
+// Paket menu
 Route::get('/daftarmenu/paket-menu', [DaftarMenuController::class, 'paketMenu'])->name('daftar-paket-menu');
+Route::get('/paket-menu/restaurant/{id}', [DetailController::class, 'detailPaket'])->name('detail-paket-menu');
+
 // Detial Resto
 // Route::get('/daftarmenu/detail-resto/{$id}', [DetailController::class, 'restaurant'])->name('detail-resto');
 Route::get('/daftarmenu/restaurant/{id}/{category}', [DetailController::class, 'detailRestaurant'])->name('detail-resto');

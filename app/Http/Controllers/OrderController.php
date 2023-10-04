@@ -1863,11 +1863,78 @@ class OrderController extends Controller
 
     public function successOrder(Request $request){
 
+        // try {
+        //     $order = Order::find($request->data['order_id']);
+
+        //     if ($order->meja_restaurant_id != null || $order->category == 'Takeaway') {
+        //         $userID = $order->user_id;
+                
+        //         if (auth()->guest() == true) {
+        //             $userUpdate = auth()->guest() ? 'guest' : auth()->user()->id;
+        //             $cart = \Cart::session($userUpdate)->getContent();
+
+        //             foreach ($cart as $item) {
+        //                 \Cart::session($userUpdate)->remove($item->id);
+        //             }
+
+        //             foreach ($cart as $key => $item) {
+        //                 $restoStock = Restaurant::where('id', $item->attributes['restaurant']['id'])->first();
+        //                 $stockAvailable = ($restoStock->current_stok - $item->quantity);
+                        
+        //                 // Memperbarui stok restoran
+        //                 $restoStock->update(['current_stok' => $stockAvailable,]);
+
+        //         }
+        //         }else{
+        //             $cart = \Cart::session($userID)->getContent();
+                    
+        //             // Menghapus item dari session cart
+        //             foreach ($cart as $item) {
+        //                 \Cart::session($userID)->remove($item->id);
+        //             }
+            
+        //             foreach ($cart as $key => $item) {
+        //                 $restoStock = Restaurant::where('id', $item->attributes['restaurant']['id'])->first();
+        //                 $stockAvailable = ($restoStock->current_stok - $item->quantity);
+                        
+        //                 // Memperbarui stok restoran
+        //                 $restoStock->update(['current_stok' => $stockAvailable]);
+        //             }
+
+
+        //         }
+        //     }else if($order->billiard_id != null){
+        //         $orderBilliard = OrderBilliard::where('order_id',$order->id)->get();
+        //         foreach ($orderBilliard as $key => $item) {
+        //             $restoStock = Restaurant::where('id', $orderBilliard->restaurant_id)->first();
+        //             $stockAvailable = ($restoStock->current_stok - $item->quantity);
+                    
+        //             // Memperbarui stok restoran
+        //             $restoStock->update(['current_stok' => $stockAvailable]);
+        //         }
+        //     }
+    
+        //     $responseData = [
+        //         'code' => 200,
+        //         'updateStock' => true,
+        //         'deleteCart' => true,
+        //     ];
+    
+        //     return $responseData;
+        // } catch (\Throwable $th) {
+        //     $responseData = [
+        //         'code' => 500,
+        //         'updateStock' => false,
+        //         'deleteCart' => false,
+        //         'message' => $th->getMessage(),
+        //     ];
+        //     return $responseData;
+        // }
+
         try {
             $order = Order::find($request->data['order_id']);
 
-            if ($order->meja_restaurant_id != null || $order->category == 'Takeaway') {
-                $userID = $order->user_id;
+            if ($order->kode_meja != null || $order->category == 'Takeaway') {
                 
                 if (auth()->guest() == true) {
                     $userUpdate = auth()->guest() ? 'guest' : auth()->user()->id;
@@ -1884,8 +1951,10 @@ class OrderController extends Controller
                         // Memperbarui stok restoran
                         $restoStock->update(['current_stok' => $stockAvailable,]);
 
-                }
+                    }
                 }else{
+                    $userID = $order->user_id;
+
                     $cart = \Cart::session($userID)->getContent();
                     
                     // Menghapus item dari session cart
@@ -1893,9 +1962,9 @@ class OrderController extends Controller
                         \Cart::session($userID)->remove($item->id);
                     }
             
-                    foreach ($cart as $key => $item) {
+                   foreach ($cart as $key => $item) {
                         $restoStock = Restaurant::where('id', $item->attributes['restaurant']['id'])->first();
-                        $stockAvailable = ($restoStock->current_stok - $item->quantity);
+                        $stockAvailable = ($restoStock->current_stok - $item['quantity']);
                         
                         // Memperbarui stok restoran
                         $restoStock->update(['current_stok' => $stockAvailable]);
@@ -1913,11 +1982,16 @@ class OrderController extends Controller
                     $restoStock->update(['current_stok' => $stockAvailable]);
                 }
             }
+
+
+        // dd($latestOrder);
+        
     
             $responseData = [
                 'code' => 200,
                 'updateStock' => true,
                 'deleteCart' => true,
+                'cart' => $order,
             ];
     
             return $responseData;
@@ -1926,38 +2000,11 @@ class OrderController extends Controller
                 'code' => 500,
                 'updateStock' => false,
                 'deleteCart' => false,
+                'cart' => $cart,
                 'message' => $th->getMessage(),
             ];
             return $responseData;
         }
-        // return $request;
-        // try {
-        //     $getRequest = $request->all();
-        //     if ($getRequest) {
-        //         foreach ($getRequest['data_menu'] as $key => $data) {
-        //             // $order = Order::get();
-        //             $orderPivot = [];
-        //             // foreach ($request->all() as $key => $value) {
-
-        //                 $orderPivot[] = [
-        //                     'order_id' => $getRequest['order_id'],
-        //                     'restaurant_id' => $data['id'],
-        //                     'created_at' => date('Y-m-d H:i:s'),
-        //                 ];
-        //             // }
-        //             OrderPivot::insert($orderPivot);
-        //         }
-        //         $response['success'] = true;
-        //         $response['code'] = 200;
-        //         $response['message'] = 'Success order...';
-        //     }
-        // } catch (\Throwable $th) {
-        //     $response['success'] = false;
-        //     $response['code'] = 500;
-        //     $response['message'] = 'Upss... ' . $th->getMessage();
-        //     //throw $th;
-        // }
-        // return $response;
     }
 
     public function xenditOrder(Request $request )
