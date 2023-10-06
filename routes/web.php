@@ -51,6 +51,7 @@ Route::get('/daftarmenu/restaurant', [DaftarMenuController::class, 'restaurant']
 // Paket menu
 Route::get('/daftarmenu/paket-menu', [DaftarMenuController::class, 'paketMenu'])->name('daftar-paket-menu');
 Route::get('/paket-menu/restaurant/{id}', [DetailController::class, 'detailPaket'])->name('detail-paket-menu');
+Route::post('/checkout-paket-menu/{token}',[OrderController::class,'checkoutPaketMenu'])->name('checkout-paket-menu');
 
 // Detial Resto
 // Route::get('/daftarmenu/detail-resto/{$id}', [DetailController::class, 'restaurant'])->name('detail-resto');
