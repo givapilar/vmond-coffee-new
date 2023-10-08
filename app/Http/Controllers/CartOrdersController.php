@@ -38,7 +38,7 @@ class CartOrdersController extends Controller
     public function index()
     {
         // $data ['meja_restaurants'] = MejaRestaurant::get();
-        $data['meja_restaurants'] = MejaRestaurant::orderby('position', 'asc')->get();
+        $data['meja_restaurants'] = MejaRestaurant::orderby('id', 'asc')->get();
 
         $rest_api_url = 'https://managementvmond.controlindo.com/api/v1/vmond/user/get-role';
 
