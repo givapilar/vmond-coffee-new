@@ -164,20 +164,22 @@ class CartOrdersController extends Controller
                 // Jika waktu saat ini masih sebelum batas pemesanan pagi, maka tampilkan pesan bahwa pemesanan belum dibuka
                 return redirect()->back()->with(['failed' => 'Maaf, Cafe belum dibuka. Silakan coba lagi nanti']);
             }
+            // makanan
         }else{
             if ($currentDay >= 1 && $currentDay <= 4) {
                 // Weekdays (Senin-Kamis)
-                $orderOpenTime = $other_setting->time_start;
-                $orderDeadline = $other_setting->time_close;
+                $orderOpenTimeMakanan = $other_setting->time_start;
+                $orderDeadlineMakanan = $other_setting->time_close;
             } else if ($currentDay >= 5 && $currentDay <= 7) {
                 // Weekend (Sabtu/Minggu)
-                $orderOpenTime = $other_setting->time_start_weekend;
-                $orderDeadline = $other_setting->time_close_weekend;
+                // dd('masuk');
+                $orderOpenTimeMakanan = $other_setting->time_start_weekend;
+                $orderDeadlineMakanan = $other_setting->time_close_weekend;
             }
             // $orderOpenTimeMakanan = $other_setting->time_start_weekend;
             // $orderDeadlineMakanan = $other_setting->time_close_weekend;
-            $orderOpenTimeMakanan = $other_setting->time_start;
-            $orderDeadlineMakanan = $other_setting->time_close;
+            // $orderOpenTimeMakanan = $other_setting->time_start;
+            // $orderDeadlineMakanan = $other_setting->time_close;
             if ($currentTime > $orderDeadlineMakanan) {
                 return redirect()->back()->with(['failed' => 'Maaf, Kita Sudah Close Order']);
             } elseif ($currentTime < $orderOpenTimeMakanan) {

@@ -326,7 +326,7 @@ class OrderController extends Controller
                     'transaction_details' => array(
                         'order_id' => $order->id,
                         'gross_amount' => str_replace(',','',number_format($order->total_price, 0)),
-
+                        // 'gross_amount' => 1,
                     ),
                     'customer_details' => array(
                         'first_name' => auth()->user()->username,
