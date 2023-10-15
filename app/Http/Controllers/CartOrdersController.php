@@ -227,53 +227,74 @@ class CartOrdersController extends Controller
         // dd('sucess');
 
         if (Auth::check()) {
+
+            $userPhoneNumber = Auth::user()->telephone;
+            // dd($userPhoneNumber);
+            // Define an array of allowed phone numbers
+            $allowedPhoneNumbers = [
+                '08123456001',
+                '08123456003',
+                '08123456004',
+                '08123456005',
+                '081818181847',
+            ];
+
+            if (in_array($userPhoneNumber, $allowedPhoneNumbers)) {
+                $cartContent = \Cart::session(Auth::user()->id)->getContent();
+                
+                $addonDetail = array(
+                    'restaurant' => $restaurant,
+                    'category' => $request->category,
+                    'add_on_title' => $request->add_on_title,
+                    'harga_add' => $dataHargaAddon,
+                    'detail_addon_id' => $request->harga_add,
+                    'add_on_nama_title' => $request->add_on_nama_title,
+                    'add_nama' => $request->add_nama,
+                );
+            
+                // Mengkonversi array add-on detail menjadi JSON untuk digunakan sebagai kunci unik
+                $itemIdentifier = md5(json_encode($addonDetail));
+            
+                // Memeriksa apakah item dengan add-on detail yang sama sudah ada di dalam Cart
+                $existingItem = $cartContent->first(function ($item, $key) use ($itemIdentifier) {
+                    return $item->id === $itemIdentifier;
+                });
+            
+                if ($existingItem !== null) {
+                    // Jika item dengan add-on detail yang sama sudah ada di dalam Cart
+                    // Buat array baru dengan membawa detail add-on ID yang berbeda
+                    $itemAttributes = $existingItem->attributes->toArray();
+                    if (!in_array($request->harga_add, $itemAttributes['detail_addon_id'])) {
+                        $itemAttributes['detail_addon_id'] = $request->harga_add;
+                        $existingItem->attributes = $itemAttributes;
+                        $existingItem->quantity += $request->qty;
+                        \Cart::session(Auth::user()->id)->update($existingItem->id, $existingItem->toArray());
+                    }
+                } else {
+                    // Jika item dengan add-on detail tertentu belum ada di dalam Cart, tambahkan data cart baru
+                    \Cart::session(Auth::user()->id)->add(array(
+                        'id' => $itemIdentifier, // Gunakan kunci unik sebagai ID item
+                        'name' => $restaurant->nama,
+                        'price' => ($restaurant->harga_diskon + (is_array($dataHargaAddon) ? array_sum($dataHargaAddon) : 0) ?? $restaurant->harga_diskon),
+                        'quantity' => $request->qty,
+                        'attributes' => $addonDetail,
+                        'conditions' => 'Restaurant',
+                        'associatedModel' => Restaurant::class
+                    ));
+                }
+                
+                $category = $request->category;
+                return redirect()->route('daftar-restaurant', ['category' => $category])->with('success', 'Berhasil masuk cart!');
+            }else{
+                return redirect()->back()->with('failed', 'Silahkan Tanya Waiters');
+
+            }
+
             // Mengambil konten Cart berdasarkan user ID
-            $cartContent = \Cart::session(Auth::user()->id)->getContent();
+            // $cartContent = \Cart::session(Auth::user()->id)->getContent();
         
             // Membuat array dari add-on detail untuk digunakan sebagai kunci unik
-            $addonDetail = array(
-                'restaurant' => $restaurant,
-                'category' => $request->category,
-                'add_on_title' => $request->add_on_title,
-                'harga_add' => $dataHargaAddon,
-                'detail_addon_id' => $request->harga_add,
-                'add_on_nama_title' => $request->add_on_nama_title,
-                'add_nama' => $request->add_nama,
-            );
-        
-            // Mengkonversi array add-on detail menjadi JSON untuk digunakan sebagai kunci unik
-            $itemIdentifier = md5(json_encode($addonDetail));
-        
-            // Memeriksa apakah item dengan add-on detail yang sama sudah ada di dalam Cart
-            $existingItem = $cartContent->first(function ($item, $key) use ($itemIdentifier) {
-                return $item->id === $itemIdentifier;
-            });
-        
-            if ($existingItem !== null) {
-                // Jika item dengan add-on detail yang sama sudah ada di dalam Cart
-                // Buat array baru dengan membawa detail add-on ID yang berbeda
-                $itemAttributes = $existingItem->attributes->toArray();
-                if (!in_array($request->harga_add, $itemAttributes['detail_addon_id'])) {
-                    $itemAttributes['detail_addon_id'] = $request->harga_add;
-                    $existingItem->attributes = $itemAttributes;
-                    $existingItem->quantity += $request->qty;
-                    \Cart::session(Auth::user()->id)->update($existingItem->id, $existingItem->toArray());
-                }
-            } else {
-                // Jika item dengan add-on detail tertentu belum ada di dalam Cart, tambahkan data cart baru
-                \Cart::session(Auth::user()->id)->add(array(
-                    'id' => $itemIdentifier, // Gunakan kunci unik sebagai ID item
-                    'name' => $restaurant->nama,
-                    'price' => ($restaurant->harga_diskon + (is_array($dataHargaAddon) ? array_sum($dataHargaAddon) : 0) ?? $restaurant->harga_diskon),
-                    'quantity' => $request->qty,
-                    'attributes' => $addonDetail,
-                    'conditions' => 'Restaurant',
-                    'associatedModel' => Restaurant::class
-                ));
-            }
-            
-            $category = $request->category;
-            return redirect()->route('daftar-restaurant', ['category' => $category])->with('success', 'Berhasil masuk cart!');
+           
         } else {
             $user = 'guest';
             // \Cart::session($user)->add(array(
@@ -294,6 +315,8 @@ class CartOrdersController extends Controller
             //     'associatedModel' => Restaurant::class
            
             // ));
+
+            return redirect()->back()->with('failed', 'Silahkan Tanya Waiters');
 
             // Mengambil konten Cart berdasarkan user ID
             $cartContent = \Cart::session($user)->getContent();
@@ -360,7 +383,7 @@ class CartOrdersController extends Controller
             }
             
             $category = $request->category;
-            return redirect()->route('daftar-restaurant', ['category' => $category])->with('success', 'Berhasil Masuk Cart !');
+            // return redirect()->route('daftar-restaurant', ['category' => $category])->with('success', 'Berhasil Masuk Cart !');
         }
         // } catch (\Throwable $th) {
         //     return redirect()->back()->with('failed', $th->getMessage());

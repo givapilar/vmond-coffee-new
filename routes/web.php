@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\HomepageController;
+use App\Http\Controllers\PaymentBriController;
 use App\Models\Banner;
 use App\Models\CartOrders;
 use Illuminate\Support\Facades\Auth;
@@ -148,6 +149,15 @@ Route::get('/delete-chart/{id}',[CartOrdersController::class, 'deleteCart'])->na
 
 // Route Midtrans
 Route::get('midtrans',[CartOrdersController::class,'midtransCheck'])->name('midtrans-check');
+
+// Route BRI API
+Route::get('/index-bri',[PaymentBriController::class,'indexBri'])->name('indexBri');
+Route::post('/generate-token-bri',[PaymentBriController::class,'createToken'])->name('create-token-bri');
+Route::post('/create-qr-bri',[PaymentBriController::class,'generateQR'])->name('create-qr-bri');
+
+// Route DSP
+Route::post('/generate-token-dsp',[PaymentBriController::class,'createTokenDsp'])->name('create-token-dsp');
+Route::post('/generate-token-fetchQRCryptogram',[PaymentBriController::class,'fetchQRCryptogram'])->name('create-token-fetch');
 
 // Route Orders
 Route::get('orders',[OrderController::class,'index'])->name('order.index');

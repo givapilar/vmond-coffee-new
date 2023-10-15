@@ -17,6 +17,8 @@
 <section class="p-3">
     @if ($data_carts->count() >= 1)
         <form action="{{ route('checkout-order', md5(strtotime("now"))) }}" method="POST">
+            {{-- <form method="POST" action="{{ route('create-token-bri') }}"> --}}
+            {{-- <form method="POST" action="{{ route('create-qr-bri') }}"> --}}
             @csrf   
             <div class="grid grid-cols-2 sm:grid-cols-1 gap-4 sm:gap-1">
                 <div class="max-w-sm h-96 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
@@ -1077,115 +1079,5 @@
     }
  </script>
 
-{{-- Untuk DIsable Jam pada tanggal tertentu --}}
-<script>
-    function disableHour()
-    {
-        var valueDate = $('#date').val();
-        $.ajax({
-            type: 'POST',
-            url: "{{ route('check-schedule') }}",
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            data: {
-                "_token": "{{ csrf_token() }}",
-                "date": valueDate
-            },
-            success: function (data) {
-                console.log(data);
-                $("#time_from option").attr('disabled', false); 
-                $("#biliard_id option").attr('disabled', false); 
-                data.times.forEach(element => {
-                    let valHourFrom = element.substring(0, 5);
-                    console.log(element);
-                    $("#time_from option[value='"+ valHourFrom + "']").attr('disabled', true); 
-                    // $("#time_to option[value='"+ valHourFrom + "']").attr('disabled', true); 
-                    // $("#biliard_id option[value='" + valHourFrom + "']").attr('disabled', true); 
-                });
-                
-                data.billiardIds.forEach(elementBiliard => {
-                    let biliard = elementBiliard;
-                    console.log(elementBiliard);
-                    $("#biliard_id option[value='"+ elementBiliard + "']").attr('disabled', true); 
-                });
-            },
-            error: function (data) {
-                $.alert('Failed!');
-                console.log(data);
-            }
-        });
-    }
 
-    // function disableHour() {
-    //     var valueDate = $('#date').val();
-    //     $.ajax({
-    //         type: 'POST',
-    //         url: "{{ route('check-schedule') }}",
-    //         headers: {
-    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //         },
-    //         data: {
-    //             "_token": "{{ csrf_token() }}",
-    //             "date": valueDate
-    //         },
-    //         success: function (data) {
-    //             data.times.forEach(function (element) {
-    //                 let valHourFrom = element.substring(0, 5);
-    //                 $("#time_from option[value='" + valHourFrom + "']").prop('disabled', true);
-    //                 $("#time_to option[value='" + valHourFrom + "']").prop('disabled', true);
-    //                 $("#billiard_id option[value='" + valHourFrom + "']").prop('disabled', true);
-    //             });
-                
-    //         },
-    //         error: function (data) {
-    //             $.alert('Failed!');
-    //             console.log(data);
-    //         }
-    //     });
-    // }
-
-</script>
-
-{{-- Disable Hour Jam Meeting --}}
-{{-- <script>
-    function disableHourMeeting()
-    {
-        var valueDate = $('#date').val();
-        $.ajax({
-            type: 'POST',
-            url: "{{ route('check-schedule') }}",
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            data: {
-                "_token": "{{ csrf_token() }}",
-                "date": valueDate
-            },
-            success: function (data) {
-                console.log(data);
-                $("#time_from option").attr('disabled', false); 
-                $("#meeting_id option").attr('disabled', false); 
-                data.times.forEach(element => {
-                    let valHourFrom = element.substring(0, 5);
-                    console.log(element);
-                    $("#time_from_meeting option[value='"+ valHourFrom + "']").attr('disabled', true); 
-                    // $("#time_to option[value='"+ valHourFrom + "']").attr('disabled', true); 
-                    // $("#biliard_id option[value='" + valHourFrom + "']").attr('disabled', true); 
-                });
-                
-                data.billiardIds.forEach(elementBiliard => {
-                    let biliard = elementBiliard;
-                    console.log(elementBiliard);
-                    $("#meeting_id option[value='"+ elementBiliard + "']").attr('disabled', true); 
-                });
-            },
-            error: function (data) {
-                $.alert('Failed!');
-                console.log(data);
-            }
-        });
-    }
-
-</script> --}}
 @endpush
