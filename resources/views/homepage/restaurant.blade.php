@@ -35,6 +35,19 @@
     <hr> --}}
 
     <div class="grid grid-cols-1 gap-3 skeleton">
+        @if (Auth::user()->telephone == '081818181847')
+            
+        <a href="{{ route('daftar-paket-menu', ['kode_meja' => Request::get('kode_meja')]) }}">
+            <div class="text-base sm:text-sm p-1">
+                <div class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg" style="height: 15.5rem;">
+                    <img src="{{ asset('assetku/dataku/img/drink.jpg') }}" alt="." class="object-cover object-center h-full w-full">
+                </div>
+                
+                <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300" style="font-weight: 700;">PAKET MENU</p>
+            </div>
+        </a>
+        @endif
+        
         <a href="{{ route('daftar-restaurant', ['category' => 'food', 'kode_meja' => Request::get('kode_meja')]) }}">
             <div class="text-base sm:text-sm p-1">
                 <div class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg" style="height: 15.5rem;">
@@ -53,19 +66,6 @@
                 <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300" style="font-weight: 700;">DRINKS</p>
             </div>
         </a>
-
-        @if (Auth::user()->telephone == '081818181847')
-            
-        <a href="{{ route('daftar-paket-menu', ['kode_meja' => Request::get('kode_meja')]) }}">
-            <div class="text-base sm:text-sm p-1">
-                <div class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg" style="height: 15.5rem;">
-                    <img src="{{ asset('assetku/dataku/img/drink.jpg') }}" alt="." class="object-cover object-center h-full w-full">
-                </div>
-                
-                <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300" style="font-weight: 700;">PAKET MENU</p>
-            </div>
-        </a>
-        @endif
 
     </div>
 </section>
