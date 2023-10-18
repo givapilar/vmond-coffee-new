@@ -27,7 +27,47 @@ const getURL = (req, res) => {
     const resCallback = "Success Connect! \n";
     res.json(resCallback);
 };
-  
+
+const callbackFromBRI = async(req, res) => {
+    try {
+        // Di sini, Anda dapat melakukan operasi atau pemrosesan yang mungkin dapat memunculkan kesalahan
+        
+        const responseData = {
+            code: 200,
+            message: 'Successfully!',
+        };
+        
+        res.status(200).json(responseData);
+    } catch (error) {
+        const errorResponse = {
+            code: 500,
+            message: 'An error occurred',
+            error: error.message 
+        };
+        
+        res.status(500).json(errorResponse);
+    }
+}
+
+const callbackFromBRIQrMpm = async(req, res) => {
+    try {
+        const responseData = {
+            code: 200,
+            message: 'Successfully!'
+        };
+        
+        res.status(200).json(responseData);
+    } catch (error) {
+        
+        const errorResponse = {
+            code: 500,
+            message: 'An error occurred',
+            error: error.message 
+        };
+        
+        res.status(500).json(errorResponse);
+    }
+}
 const callbackFromBJB = async(req, res) => {
     try {
         // ===================================================================
@@ -109,59 +149,67 @@ const callbackFromBJB = async(req, res) => {
 };
 
 const getTokenFintech = async (req, res) => {
-    try {
-        const dtmsisdn = req.body.msisdnDev;
-        const dtpassword = req.body.passwordDev;
+    // try {
+    //     const dtmsisdn = req.body.msisdnDev;
+    //     const dtpassword = req.body.passwordDev;
         
-        const headers = {
-            'Content-Type': 'application/json',
-        };
+    //     const headers = {
+    //         'Content-Type': 'application/json',
+    //     };
 
-        const metaData = {
-            "datetime": "2023-09-18T00:25:21.450Z",
-            "deviceId": "9f9cb0504caa5059", 
-            "devicePlatform": "Linux",
-            "deviceOSVersion": "9",
-            "deviceType": "",
-            "latitude": "",
-            "longitude": "",
-            "appId": 58,
-            "appVersion": "1.0",
-        };
+    //     const metaData = {
+    //         "datetime": "2023-09-18T00:25:21.450Z",
+    //         "deviceId": "9f9cb0504caa5059", 
+    //         "devicePlatform": "Linux",
+    //         "deviceOSVersion": "9",
+    //         "deviceType": "",
+    //         "latitude": "",
+    //         "longitude": "",
+    //         "appId": 58,
+    //         "appVersion": "1.0",
+    //     };
 
-        const bodyData = {
-            msisdn: dtmsisdn,
-            password: dtpassword
-        };
+    //     const bodyData = {
+    //         msisdn: dtmsisdn,
+    //         password: dtpassword
+    //     };
 
-        const result = await axios.post(
-            urlGlobal + '/mobile-webconsole/apps/pocket/requestTokenFintech/',
-            { metadata: metaData, body: bodyData },
-            { headers: headers }
-        );
+    //     const result = await axios.post(
+    //         urlGlobal + '/mobile-webconsole/apps/pocket/requestTokenFintech/',
+    //         { metadata: metaData, body: bodyData },
+    //         { headers: headers }
+    //     );
 
-        const xAuthToken = result.headers['x-auth-token'];
+    //     const xAuthToken = result.headers['x-auth-token'];
         
-        const responseData = {
-            code: 200,
-            method: req.method,
-            token: xAuthToken,
-            message: 'Successfully!'
-        };
+    //     const responseData = {
+    //         code: 200,
+    //         method: req.method,
+    //         token: xAuthToken,
+    //         message: 'Successfully!'
+    //     };
         
-        console.log("Result Get Token : " , result);
-        res.status(200).json(responseData);
-    } catch (error) {
-        const responseData = {
-            code: 500,
-            method: req.method,
-            url: req.url,
-            headers: req.headers,
-            message: 'Failed! Error: ' + error
-        };
+    //     console.log("Result Get Token : " , result);
+    //     res.status(200).json(responseData);
+    // } catch (error) {
+    //     const responseData = {
+    //         code: 500,
+    //         method: req.method,
+    //         url: req.url,
+    //         headers: req.headers,
+    //         message: 'Failed! Error: ' + error
+    //     };
         
-        res.status(500).json(responseData);
-    }
+    //     res.status(500).json(responseData);
+    // }
+    const responseData = {
+        code: 200,
+        message: 'Successfully!'
+    };
+    
+    // console.log("Result Get Token : " , result);
+    res.status(200).json(responseData);
+
 };
 
 const sendOtpByPhoneNumber = async (req, res) => {
@@ -378,6 +426,8 @@ const createQR = async (req, res) => {
   module.exports = {
     getURL,
     callbackFromBJB,
+    callbackFromBRI,
+    callbackFromBRIQrMpm,
     getTokenFintech,
     sendOtpByPhoneNumber,
     aktivasi,

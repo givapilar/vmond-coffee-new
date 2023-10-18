@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const integrasiApiController = require('../controllers/integrasiApiController');
+const integrasiBriApiController = require('../controllers/integrasiBriApiController');
 
 router.get('/', integrasiApiController.getURL);
 
@@ -32,5 +33,9 @@ router.post('/get-token-fintech', integrasiApiController.getTokenFintech);
 router.post('/send-otp-fintech', integrasiApiController.sendOtpByPhoneNumber);
 router.post('/aktivasi', integrasiApiController.aktivasi);
 router.post('/create-qr', integrasiApiController.createQR);
+
+// BRI
+router.post('/snap/v1.0/qr-dynamic/token', integrasiBriApiController.callbackFromBRI);
+router.post('/snap/v1.0/qr-dynamic/qr-mpm-notify', integrasiBriApiController.qrMpmNotify);
 
 module.exports = router;

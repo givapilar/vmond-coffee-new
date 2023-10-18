@@ -44,7 +44,7 @@ Route::post('/register', [RegisterController::class, 'store'])->name('register')
 Route::get('/home', [HomepageController::class, 'index'])->name('homepage');
 
 
-Route::get('/create-qris-tes', [OrderController::class, 'createQris'])->name('createQris');
+Route::get('/create-qris-tes', [OrderController::class, 'createQrisBri'])->name('createQris-brii');
 
 // daftar menu
 Route::get('/daftarmenu/restaurant', [DaftarMenuController::class, 'restaurant'])->name('daftar-restaurant');
@@ -154,6 +154,9 @@ Route::get('midtrans',[CartOrdersController::class,'midtransCheck'])->name('midt
 Route::get('/index-bri',[PaymentBriController::class,'indexBri'])->name('indexBri');
 Route::post('/generate-token-bri',[PaymentBriController::class,'createToken'])->name('create-token-bri');
 Route::post('/create-qr-bri',[PaymentBriController::class,'generateQR'])->name('create-qr-bri');
+Route::post('/create-qr-bri',[PaymentBriController::class,'generateQR'])->name('create-qr-bri');
+
+
 
 // Route DSP
 Route::post('/generate-token-dsp',[PaymentBriController::class,'createTokenDsp'])->name('create-token-dsp');
@@ -230,6 +233,19 @@ Route::post('/v1/integration/get-token-fintech',[APIController::class,'getTokenF
 Route::post('/v1/integration/send-otp',[APIController::class,'sendOTP'])->name('send-otp-fintech');
 Route::post('/v1/integration/create-qris',[APIController::class,'createQris'])->name('create-qris-merchant');
 Route::post('/v1/integration/aktivasi-merchant',[APIController::class,'aktivasi'])->name('aktivasi-merchant');
+
+// Route::post('/snap/v1.0/qr-dynamic/token', [PaymentBriController::class, 'qrDynamic'])
+//     ->name('qr-dinamic-bri')
+//     ->withoutMiddleware([
+//         'web',
+//         'auth',
+//     ]);
+Route::post('/snap/v1.0/qr-dynamic/qr-mpm-notify', [PaymentBriController::class, 'qrMpm'])
+    ->name('qr-mpm')
+    ->withoutMiddleware([
+        'web',
+        'auth',
+    ]);
 // =============================================================
 // End Integrasi Payment Gateway
 // =============================================================

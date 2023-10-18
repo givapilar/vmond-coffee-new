@@ -14,8 +14,22 @@ use Illuminate\Support\Str;
 class PaymentBriController extends Controller
 {
     
-    public function endpoint(){
-        dd('masuk');
+    public function qrDynamic(Request $request){
+    
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data retrieved successfully',
+            'data' => $request->all(),
+        ]);
+        
+    }
+
+    public function qrMpm(Request $request){
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data retrieved successfully',
+            'data' => $request->all(),
+        ]);
     }
     public function createTokenDsp(){
         $data = [
@@ -141,10 +155,111 @@ class PaymentBriController extends Controller
         
         // Mendapatkan respons dari API
         $responseData = json_decode($response->getBody(), true);
+        $token = $responseData['accessToken'];
+
+
+        // ------------------------------------------------------------------- Generate QR------------------------------------------------------------------------------------------------
+
+        $requestDataQr = [
+            'partnerReferenceNo' => '44443332318',
+            'amount' => [
+                'value' => '123456.00',
+                'currency' => 'IDR',
+            ],
+            'merchantId' => '000001019000014',
+            'terminalId' => '10049694',
+        ];
+
+        // Mengatur zona waktu ke UTC
+        date_default_timezone_set('UTC');
+
+        // Mendapatkan waktu saat ini dalam format ISO8601
+        $iso8601Time = gmdate('Y-m-d\TH:i:s\.\0\00\Z', time());
+
+        // Sekarang, $iso8601Time berisi waktu saat ini dalam format ISO8601
+        // $dateTime = new DateTime();
+        // $timestamps = $dateTime->format('c');
+
+        // $dateTime = new DateTime($timestamps);
+        // $offset = $dateTime->format('P'); // Get the offset in ISO 8601 format (e.g., +07:00)
+        // $milliseconds = substr($dateTime->format('u'), '0',3); // Remove trailing zeros
+        // $timestamp = $dateTime->format('Y-m-d\TH:i:s.') . $milliseconds . $offset;
+
+        $timestamp = new DateTime();
+        $timestamp->setTimezone(new DateTimeZone('Asia/Jakarta'));
+        $timestampQr = $timestamp->format('Y-m-d\TH:i:sP');
+        // dd($timestampQr);
+
+        $method = 'POST'; // Replace with your HTTP method (e.g., GET, POST)
+        $endpointUrl = '/v1.0/qr-dynamic-mpm/qr-mpm-generate-qr'; // Replace with your API endpoint URL
+        // $accessToken = 'Bearer BJO07zDVvjMoAiJInJtTfOi0FBtT'; // Replace with your access token
+        $accessToken = 'Bearer ' . $token; // Replace with your access token
+        // $accessToken = $token; // Replace with your access token
+        $requestBodyQr = json_encode($requestDataQr);
+        $minifiedRequestBody = strtolower(preg_replace('/\s+/', '', hash('sha256', $requestBodyQr)));
+        
+        
+        $stringToSign = $method.':'.$endpointUrl .':'.$token . ':'.$minifiedRequestBody .':'.'2023-10-16T23:29:36+07:00';
+        // $stringToSign = $method . ":" . $endpointUrl . ":" . $accessToken . ":" . hash('sha256', $requestBodyQr) . ":" . $timestampQr;
+
+        // dd($stringToSign);
+
+        // Mendapatkan kunci privat dari file (atau sumber lainnya) dengan password
+        $privateKeyPath = realpath(public_path('assetku/dataku/public-key/private-key.pem'));
+        $clientSecret = file_get_contents($privateKeyPath);
+
+        // $sha256 = hash("sha256", $requestBody);
+
+        // // Create the string to sign
+        // $stringToSign = "$method:$endpointUrl:$accessToken:$sha256:$timestampQr";
+
+        // Generate the HMAC-SHA512 signature using the client secret
+        $hmac = hash_hmac("sha512", $clientSecret, $stringToSign);
+        
+        // dd($token ,$hmac);
+        // $hmacSignature = hash_hmac('sha512', $stringToSign, $clientSecret);
+
+        // Convert the hexadecimal HMAC to base64
+        $signatureBase64 = base64_encode($hmac);
+        // dd($hmac, $signatureBase64);
+
+        // Testing Signature
+        $timestampTes = date("c"); // Get the current timestamp in ISO 8601 format
+        // dd($timestampTes);
+        $hash = hash('sha256', $requestBodyQr);
+
+        $payload = $method . ":" . $endpointUrl . ":" . $token . ":". $hash . ":" . $timestampQr;
+
+        $boddyy = json_encode(json_decode($requestBodyQr, true), JSON_PRETTY_PRINT);
+
+        $clientId = 'FaKm5s4fnTI35jyV';
+        $hmacSignature = hash_hmac('sha512', $payload, $clientId);
+
+        // dd($hmacSignature);
+        // return $hmacSignature;
+
+        $headersQr = [
+            'Authorization' => 'Bearer '.$token,
+            'X-TIMESTAMP' => $timestampQr,
+            'X-SIGNATURE' => $hmacSignature,
+            'Content-Type' => 'application/json',
+            'X-PARTNER-ID' => '456044',
+            'CHANNEL-ID' => '95221',
+            'X-EXTERNAL-ID' => '1223334449', // Replace with your external ID
+        ];
+
+
+        // Make the POST request
+        $responseQr = Http::withHeaders($headersQr)
+            ->post('https://sandbox.partner.api.bri.co.id/v1.0/qr-dynamic-mpm/qr-mpm-generate-qr', $requestDataQr);
+
+        // dd($stringToSign , $requestDataQr , $signatureBase64);
+
+        
+            // dd($token);
+            dd($responseQr->json());
+
         return $responseData;
-        // } catch (\Throwable $th) {
-        //     return $th->getMessage();
-        // }
     }
 
     public function generateQR(Request $request)
@@ -176,7 +291,6 @@ class PaymentBriController extends Controller
         $requestBody = json_encode($requestData);
         $hashedRequestBody = hash('sha256', $requestBody);
         $minifiedRequestBody = strtolower(preg_replace('/\s+/', '', $hashedRequestBody));
-        // dd($minifiedRequestBody);
         
         $stringToSign = "$method:$endpointUrl:$accessToken:$minifiedRequestBody:$timestamp";
 
@@ -189,15 +303,11 @@ class PaymentBriController extends Controller
         // Create the string to sign
         $stringToSign = "$method:$endpointUrl:$accessToken:$sha256:$timestamp";
 
-        // dd($stringToSign);
-        
         // Generate the HMAC-SHA512 signature using the client secret
         $hmac = hash_hmac("sha512", $stringToSign, $clientSecret);
         
         // Convert the hexadecimal HMAC to base64
         $signatureBase64 = base64_encode(hex2bin($hmac));
-
-        // dd($signatureBase64);
             
         $headers = [
             'Authorization' => 'Bearer BJO07zDVvjMoAiJInJtTfOi0FBtT',
@@ -209,8 +319,6 @@ class PaymentBriController extends Controller
             'X-EXTRENAL-ID' => '1234567890', // Replace with your external ID
         ];
 
-        // dd($headers);
-        // dd($headers);
 
         // Make the POST request
         $response = Http::withHeaders($headers)
@@ -231,4 +339,149 @@ class PaymentBriController extends Controller
         return response()->json($responseData);
     }
 
+
+    public function briExample(){
+        $timestamp = new DateTime();
+        $timestamp->setTimezone(new DateTimeZone('Asia/Jakarta'));
+        $formattedTimestamp = $timestamp->format('Y-m-d\TH:i:s.000P');// outputs: 2021-11-02T13:14:15.000+07:00
+        //$formattedTimestamp = $timestamp->format('c');// outputs: 2021-11-02T13:14:15+07:00
+
+        //format timestamp trial 1
+
+
+        $granttype = "client_credentials";
+        //body
+        $dataToken = array(
+        'grantType'=> $granttype
+        );
+        //buat masuk ke body
+        $bodyToken = json_encode($dataToken,true);
+        //json encode buat json body nya
+
+
+        //private key prepare
+        $fp = fopen("privatekey.pem", "r");
+        $privKey = fread($fp, 8192);
+        fclose($fp);
+        $pKeyId = openssl_get_privatekey($privKey, 'optional_passphrase');
+
+        $clientId = "SKj0ct6A5oKXnILeDqU7A2WIntWeQ1Ah";
+        $clientSecret = "nXg2y195guLt35X5";
+        $signatureToken = generateSignatureToken($pKeyId, $clientId, $formattedTimestamp);
+
+        $requestHeadersToken = array(
+                            
+                            "X-TIMESTAMP:" . $formattedTimestamp,
+                            "X-CLIENT-KEY:" . $clientId,
+                            "X-SIGNATURE:" . $signatureToken,
+                            "Content-Type:application/json",
+                        );
+
+        $urlPost ="https://sandbox.partner.api.bri.co.id/snap/v1.0/access-token/b2b";
+        $chPost = curl_init();
+        curl_setopt($chPost, CURLOPT_URL,$urlPost);
+        curl_setopt($chPost, CURLOPT_HTTPHEADER, $requestHeadersToken);
+        curl_setopt($chPost, CURLOPT_POSTFIELDS, $bodyToken);
+        curl_setopt($chPost, CURLINFO_HEADER_OUT, true);
+        curl_setopt($chPost, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($chPost, CURLOPT_CUSTOMREQUEST, "POST");
+        $resultPost = curl_exec($chPost);
+        $httpCodePost = curl_getinfo($chPost, CURLINFO_HTTP_CODE);
+        curl_close($chPost);
+
+
+        $jsonPost = json_decode($resultPost, true);
+        echo "Timestamp: " .$formattedTimestamp;
+        echo "<br/> <br/>";
+        echo "Response Token: ".$resultPost;
+        echo "<br/> <br/>";
+        $accesstoken = $jsonPost['accessToken'];
+        echo "<br/> <br/>";
+
+        /* Intrabank Request account validation  
+                        Start
+        */
+        //body Request intrabank acc validation
+        $dataRequest = array(
+        'beneficiaryAccountNo'=> "888801000157508"
+        );
+
+        $bodyRequest = json_encode($dataRequest,true);
+        //$bodyRequest = json_encode(json_decode($dataRequest));
+
+
+        //Header request acc validation
+        //Generate number random
+        $panjangRandom = 15;
+        $randomNumber = generateRandomNumber($panjangRandom);
+        //Signature request
+        $path = "/intrabank/snap/v1.0/account-inquiry-internal";
+        $method = "POST";
+        $token = $accesstoken;
+        $signatureRequest = generateSignatureRequest($clientSecret, $method, $formattedTimestamp, $accesstoken, $bodyRequest, $path);
+        $requestHeadersRequest = array(
+                            
+        "X-TIMESTAMP:" . $formattedTimestamp,
+        "X-CLIENT-KEY:" . $clientId,
+        "X-SIGNATURE:" . $signatureRequest,
+        "Content-Type:application/json",
+        "X-PARTNER-ID: Markicob",
+        "CHANNEL-ID: BRIAP",
+        "X-EXTERNAL-ID:" . $randomNumber,
+        "Authorization: Bearer ".$accesstoken,
+        );
+
+        //CURL Request Fitur
+        $urlPostrequest ="https://sandbox.partner.api.bri.co.id/intrabank/snap/v1.0/account-inquiry-internal";
+        $chPost1 = curl_init();
+        curl_setopt($chPost1, CURLOPT_URL,$urlPostrequest);
+        curl_setopt($chPost1, CURLOPT_HTTPHEADER, $requestHeadersRequest);
+        curl_setopt($chPost1, CURLOPT_POSTFIELDS, $bodyRequest);
+        curl_setopt($chPost1, CURLINFO_HEADER_OUT, true);
+        curl_setopt($chPost1, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($chPost1, CURLOPT_CUSTOMREQUEST, "POST");
+        $resultPostRequest = curl_exec($chPost1);
+        $httpCodePostreq = curl_getinfo($chPost1, CURLINFO_HTTP_CODE);
+        curl_close($chPost1);
+
+        //echo echoan
+        echo "<br\>body".$bodyRequest;
+        echo "<br\><br>signature: ".$signatureRequest;
+        echo "<br><br> Result: ". $resultPostRequest;
+
+
+        //testing
+
+        //generate signature Token
+            function generateSignatureToken($pKeyId, $clientId, $formattedTimestamp) {
+                $stringToSign = $clientId . "|" . $formattedTimestamp;
+                openssl_sign($stringToSign, $signature, $pKeyId, OPENSSL_ALGO_SHA256);
+                $signature = base64_encode($signature);
+                return $signature;
+            }
+
+        function generateRandomNumber($panjangRandom){
+            $min = pow(10, $panjangRandom - 1);
+            $max = pow(10, $panjangRandom) - 1;
+            return rand($min, $max);
+        }
+
+        $dataRequest = array('beneficiaryAccountNo'=> "888801000157508");
+        $bodyRequest = json_encode($dataRequest,true);
+        $path = "/intrabank/snap/v1.0/account-inquiry-internal";
+        $method = "POST";
+        $clientSecret = "nXg2y195guLt35X5";
+        $accesstoken = $jsonPost['accessToken'];
+        $formattedTimestamp = $timestamp;
+        
+        function generateSignatureRequest($clientSecret, $method, $formattedTimestamp, $accesstoken, $bodyRequest, $path){
+            $sha256 = hash("sha256", $bodyRequest);
+            //string to sign
+            $stringToSign = "$method:$path:$accesstoken:$sha256:$formattedTimestamp";
+            echo "data apa ini: ".$stringToSign . "<br><br>";
+
+            // HMAC-SHA512 of stringToSign using client secret
+            return $hmac = hash_hmac("sha512", $stringToSign, $clientSecret);
+        }
+    }
 }

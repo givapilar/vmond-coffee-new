@@ -117,9 +117,8 @@
                                                 @php
                                                     $min = 0;
                                                 @endphp
-                                                <div id="add-ons-{{ $restaurant->id }}" style="display: none;" class="add-ons-list divide-y divide-gray-200 dark:divide-gray-700">
-                                                    {{-- Pilihan Normal dan custom --}}
-                                                    {{-- @if ($restaurant->addOns->count() > 0)
+                                                {{-- <div id="add-ons-{{ $restaurant->id }}" class="add-ons-list divide-y divide-gray-200 dark:divide-gray-700">
+                                                    @if ($restaurant->addOns->count() > 0)
                                                         <ul>
                                                             <li class="py-3 sm:py-2">
                                                                 <div class="flex items-center space-x-4 px-3">
@@ -135,9 +134,9 @@
                                                             </li>
                                                 
                                                         </ul>
-                                                    @endif --}}
-                                                    {{-- end of Pilihan Normal dan custom --}}
-                                                    {{-- <div class="grid grid-cols-3 detail-add-ons" id="detail-add-ons-{{ $restaurant->id }}" style="margin: 10px 30px; display:none;">
+                                                    @endif
+
+                                                    <div class="grid grid-cols-3 detail-add-ons" id="detail-add-ons-{{ $restaurant->id }}" style="margin: 10px 30px; display:none;">
                                                         @foreach ($add_ons as $add_on)  
                                                             @foreach ($restaurant->addOns as $key => $resto)
                                                                 @if ($resto->add_on_id == $add_on->id)
@@ -165,8 +164,8 @@
                                                                 @endif
                                                             @endforeach
                                                         @endforeach
-                                                    </div> --}}
-                                                </div>
+                                                    </div>
+                                                </div> --}}
                                             </div>
                                             <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
                                         </div>
@@ -187,7 +186,7 @@
                 <input type="hidden" name="image" value="{{ $image.$restaurants->image }}" id=""> --}}
 
                 <input type="hidden" name="quantity" value="1" id="">
-                <button type="button" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900" id="submitButton" onclick="submitDisabled()">Add Cart</button>
+                <button type="button" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900" id="submitButton" onclick="submitDisabled()">Checkout</button>
             </div>
         </form>
     </div>
@@ -312,6 +311,21 @@ addOns.forEach(addOn => {
         $('#submitButton').prop('disabled', true);
         $('#submitButton').addClass('disabled');
         $('#formCart').submit();
+    }
+
+    function getAddOn(id, no) {
+        console.log('masuk');
+        $('.add-ons-list-' + no).css('display', 'none');
+        $('#add-ons-' + id).css('display', 'block');
+    }
+    function getAddOnDetail(id, type)
+    {
+        if (type === 'normal') {
+            $('#detail-add-ons-'+id).css('display', 'block');
+        } 
+        // else {
+        //     $('#detail-add-ons-'+id).css('display', 'none');
+        // }
     }
 </script>
 @endpush

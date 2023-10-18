@@ -17,17 +17,30 @@ const cors = require('cors');
 const { getTokenFintech } = require('./services/api-bjb/requestTokenFintech');
 // ===================End Function Import=====================
 
-const corsOptions = {
-  origin: 'https://socket-vmondcoffee.controlindo.com', // Replace with your client's domain
-  methods: ['GET', 'POST'],
-  credentials: true, // Set this to true if you need to handle cookies or authentication
-};
+// const corsOptions = {
+//   origin: 'https://socket-vmondcoffee.controlindo.com', // Replace with your client's domain
+//   methods: ['GET', 'POST'],
+//   credentials: true, // Set this to true if you need to handle cookies or authentication
+// };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 app.use(express.json());
 app.use(bodyParser.json());
 app.use('/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/v1/api', userRoutes);
+
+// const createQrisFintech = async () => {
+//     try {
+//       console.log('Te');
+      
+      
+//     } catch (err) {
+//       // Handle Error Here
+//       console.error(err);
+//     }
+//   };
+  
+//   createQrisFintech();
 
 io.on('connection', (socket) => {
   console.log('a client connected');
@@ -40,6 +53,7 @@ io.on('connection', (socket) => {
     console.log('client disconnected');
   });
 });
+
 
 
 

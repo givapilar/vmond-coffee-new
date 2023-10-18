@@ -374,6 +374,9 @@
             <button id="btnQR" onclick="createQris('{{ $order_last->total_price }}', '{{ $order_last->id }}')" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
         </div> --}}
         @endif 
+        <div class="mt-2">
+            <button id="btnQR" onclick="generateQrisBri()" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
+        </div>
 
         {{-- <button class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button> --}}
     </div>
@@ -720,5 +723,63 @@
         }
       })
     });
+  </script>
+  
+  <script>
+    function generateQrisBri() {
+        var strQR = "00020101021226650013ID.CO.BRI.WWW011893600002011004969402150000010190000140303UME52041234530336054061234565802ID5910VMOUND DEV6013JAKARTA PUSAT610512345623401183323185398137984640708100496946304E1D5";
+        var dtamount = "100.00"; // Ganti ini sesuai dengan jumlah yang sesuai
+
+        // Create a QRious instance
+        var qr = new QRious({
+            value: strQR,
+            size: 200, // Sesuaikan ukuran sesuai kebutuhan
+        });
+
+        // Convert the QR code to a data URL
+        var qrDataUrl = qr.toDataURL();
+
+        // Buat elemen gambar QR code dan tambahkan ke dokumen
+        var qrImage = document.createElement('img');
+        qrImage.src = qrDataUrl;
+
+        // Buat dialog menggunakan SweetAlert2
+        $.confirm({
+            title: 'Generate QR Code',
+            content: '<img src="' + qrDataUrl + '" width="70%" height="70%" style="display:block; margin-right:auto; margin-left:auto; margin-top:10px; border-radius:15px;">'+
+            '</br>'+
+            '<h3 style="color:white;text-align:center;margin-bottom:10px;">VMOND COFFEE x BRI</h3>'+
+            '<h5 style="color:white;text-align:center;">Total : '+dtamount+'</h5>',
+            columnClass: 'small',
+            type: 'blue',
+            typeAnimated: true,
+            buttons: {
+                downloadQR: {
+                    text: 'Download QR Code',
+                    btnClass: 'btn-green',
+                    action: function () {
+                        // Trigger download of QR Code image
+                        var a = document.createElement('a');
+                        a.href = qrDataUrl;
+                        a.download = 'qrcodes.png'; // Nama file yang akan diunduh
+                        a.style.display = 'none';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        isProcessing = false;
+                    }
+                },
+                close: {
+                    text: 'Close',
+                    action: function () {
+                        // Close the dialog
+                        isProcessing = false;
+                    }
+                }
+            }
+        });
+    }
+
+
   </script>
 @endpush
