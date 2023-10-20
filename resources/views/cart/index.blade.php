@@ -18,7 +18,7 @@
     @if ($data_carts->count() >= 1)
         <form action="{{ route('checkout-order', md5(strtotime("now"))) }}" method="POST">
             {{-- <form method="POST" action="{{ route('create-token-bri') }}"> --}}
-            {{-- <form method="POST" action="{{ route('createQris-brii') }}"> --}}
+            {{-- <form method="POST" action="{{ route('create-token-dsp') }}"> --}}
             @csrf   
             <div class="grid grid-cols-2 sm:grid-cols-1 gap-4 sm:gap-1">
                 <div class="max-w-sm h-96 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">

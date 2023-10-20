@@ -154,9 +154,6 @@ Route::get('midtrans',[CartOrdersController::class,'midtransCheck'])->name('midt
 Route::get('/index-bri',[PaymentBriController::class,'indexBri'])->name('indexBri');
 Route::post('/generate-token-bri',[PaymentBriController::class,'createToken'])->name('create-token-bri');
 Route::post('/create-qr-bri',[PaymentBriController::class,'generateQR'])->name('create-qr-bri');
-Route::post('/create-qr-bri',[PaymentBriController::class,'generateQR'])->name('create-qr-bri');
-
-
 
 // Route DSP
 Route::post('/generate-token-dsp',[PaymentBriController::class,'createTokenDsp'])->name('create-token-dsp');

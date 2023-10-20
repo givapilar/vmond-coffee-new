@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use DateInterval;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
@@ -40,7 +41,7 @@ class PaymentBriController extends Controller
         
         $response = Http::asForm()->post('https://developer-sit.dspratama.co.id:9089/api/oauth/token', $data);
         
-        dd($response->json());
+        // dd($response->json());
         if ($response->successful()) {
             $tokenData = $response->json();
             $accessToken = $tokenData['access_token'];
@@ -54,17 +55,29 @@ class PaymentBriController extends Controller
             $errorMessage = $response->body();
             $statusCode = $response->status();
         }
-    }
 
-    public function fetchQRCryptogram(Request $request)
-    {
-        // Mendapatkan access token dari OAuth2 response
-        $accessToken = $request->input('access_token'); // Pastikan ini sudah diatur dari respons OAuth2 yang sebelumnya.
+        // $accessToken = $request->input('access_token'); // Pastikan ini sudah diatur dari respons OAuth2 yang sebelumnya.
 
         $id = Str::uuid();
         $exchangeId = Str::uuid();
         $timestamp = date('Y-m-d\TH:i:s', time());
-        // dd($id->toString());
+        // dd($rime);
+        // Misalnya, jika Anda ingin membuat format ciphered transaction data
+        $transactionDate = "00" . date("MMdd");
+        $unpredictableNumber = date("ddHHmmss");
+        $merchantId = "998223061218512";
+
+        $cipheredData = $transactionDate . $unpredictableNumber . $merchantId;
+
+        dd($cipheredData);
+        $timezone = new DateTimeZone('Asia/Jakarta');
+
+        // Buat objek DateTime untuk waktu saat ini
+        $currentTime = new DateTime('now', $timezone);
+        $expiryDuration = new DateInterval('PT30M'); // PT30M artinya 30 menit
+        $expiryTime = $currentTime->add($expiryDuration);
+        $expiryTimeFormatted = $expiryTime->format('Y-m-d\TH:i:s');
+
         // Data yang akan dikirim sebagai request body
         $requestData = [
             'requestInfo' => [
@@ -73,13 +86,13 @@ class PaymentBriController extends Controller
                 'sender' => 'VMONDCoffeeandEaterySpace',
                 'ts' => $timestamp,
                 'exchangeId' => $exchangeId,
-                'tokenId' => 'Value given by DSP',
-                'tokenRequestorId' => 'Value given by DSP',
-                'tokenHolderId' => 'Value given by DSP',
-                'amount' => 100.00, // Ganti dengan nilai yang sesuai
-                'terminalId' => 'Terminal ID', // Ganti dengan nilai yang sesuai
-                'expiryTime' => '2023-12-31T23:59:59', // Ganti dengan waktu kadaluarsa yang sesuai
-                'cipheredTransactionData' => 'ENCRYPTED_DATA', // Ganti dengan data yang dienkripsi menggunakan JWE
+                'tokenId' => 'ed025700-6432-11ee-a359-f57cb7269f63',
+                'tokenRequestorId' => '55124444282',
+                'tokenHolderId' => '99793935468',
+                'amount' => 100.00, 
+                'terminalId' => '10049694', 
+                'expiryTime' => $expiryTimeFormatted, // Ganti dengan waktu kadaluarsa yang sesuai
+                'cipheredTransactionData' => $cipheredData, // Ganti dengan data yang dienkripsi menggunakan JWE
             ]
         ];
 
@@ -95,35 +108,38 @@ class PaymentBriController extends Controller
         }
     }
 
+    public function fetchQRCryptogram(Request $request)
+    {
+        // Mendapatkan access token dari OAuth2 response
+        
+    }
+
     public function createToken(Request $request){
-        // try {
-        //     //code...
         
         $client = new Client();
-
-        // URL untuk menghasilkan token akses di lingkungan sandbox
         $url = 'https://sandbox.partner.api.bri.co.id/snap/v1.0/access-token/b2b';
 
-        // Data otentikasi
         $requestData = [
             'grantType' => 'client_credentials',
         ];
         
-        $currentDatetime = new DateTime('now', new DateTimeZone('UTC')); // Create a DateTime object for the current UTC time
-        $microseconds = substr((string) $currentDatetime->format('u'), 0, 3); // Extract the first three digits for milliseconds
-        $timestamp = $currentDatetime->format('Y-m-d\TH:i:s') . '.' . $microseconds . 'Z';
+        // $currentDatetime = new DateTime('now', new DateTimeZone('UTC')); // Create a DateTime object for the current UTC time
+        // $microseconds = substr((string) $currentDatetime->format('u'), 0, 3); // Extract the first three digits for milliseconds
+        // $timestamp = $currentDatetime->format('Y-m-d\TH:i:s') . '.' . $microseconds . 'Z';
+
+        $timestamp = new DateTime();
+        $timestamp->setTimezone(new DateTimeZone('Asia/Jakarta'));
+        $timestamp = $timestamp->format('Y-m-d\TH:i:sP');
 
         $dataToSign = '1DhFVj7GA8bfll4tLJuD3KzHxPO3tzCb|' . $timestamp;
 
+
         // Mendapatkan kunci privat dari file (atau sumber lainnya) dengan password
         $privateKeyPath = realpath(public_path('assetku/dataku/public-key/private-key.pem'));
-   
-        $password = 'Together1!';
-        
+        // $privateKeyPath = realpath(public_path('assetku/dataku/public-key/public-key-bri.pem'));
+
         // Membaca kunci privat dari file dengan passphrase
         $privateKey = openssl_pkey_get_private(file_get_contents($privateKeyPath));
-    
-        // dd($privateKey);
 
         if ($privateKey === false) {
             die("Failed to load private key: " . openssl_error_string());
@@ -137,8 +153,39 @@ class PaymentBriController extends Controller
 
         // Konversi tanda-tangan ke bentuk base64
         $signatureBase64 = base64_encode($signature);
-     
-        // Header
+
+        dd($signatureBase64);
+
+        // --------------------public key -------------------------------------------
+        // $dataToSign = $client_ID . "|" . $timestamp;
+
+        // Ubah ini ke jalur kunci publik Anda
+        $clientID = "e4aad8a2762000bc06fe29ec74fa2692";
+        $timeStamp = "2023-06-13T16:04:17+07:00";
+        $publicKey = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvSDY2+DWghiw8cLpKN7T6pos3KSZFfyJNt0SXoCcNdmwW/n8t0YjNJuW0OEcXgs5mWqT0IVd8IjGQn+a5AnFNannZ8gtWB9InVxDQHclvYQmJ9KS419ej/1TULJLy0l6EhEVVNvuIs30gvpY5MvN7z3hmllxuLM6Tn7sx8XBhIF5MkbG4JVs8OzTDKWT5N1y9AB6KEulEqxQjLh6YAVn5ZAjg5Vh7LKjlfhwPi+67UwqEK5kbqP3Vj5NdnFd+vrGvbAf46CUM1XC4i+CuEnKfrG2hWk0MQHkarBdPJI+LBJOSmJk+NqAYMvuG1/zv/3MW48/oX0/kndRzV+tvW0/pQIDAQAB\n-----END PUBLIC KEY-----";
+        $signature = "FmdvyEAcJLlaBsxh0EIgNn0N0025ySKQUWNc1TjZrorB4aWdZ1VUsmOK2t7SGtJ+r0/LZr592vGx7iISy5EMEFOU7oGJDJ4iq9r9Xpg7e/sQBycAiz5WakDCEfupGWW7KKsSc8HFHy+z5JSiiMRBFB0EWuult21lU/pbBrCJIM4ThlZvl3slX1h7Ju0jnLXlxcu0xuOr/g/mkQqbgZptIG9EmIOkuiWrUm6vIU/prFBqFFGTGli/71uQ+hjD7R/Jlzvz1qdZf9XE+Ju/U4eDqrHebBQFI7lSLITVYqihLo5InQ+QgtrbcPL5UKQXXHVt0w6SVZ0CMPwN4PIL2KdYQQ==";  // BRI Always base64
+        $data = $clientID . "|" . $timeStamp;  // Assuming $clientID and $timeStamp are defined
+
+        // Load the public key
+        $pubKey = openssl_get_publickey($publicKey);
+        
+        // Verify the signature
+        $result = openssl_verify($data, base64_decode($signature), $publicKey, OPENSSL_ALGO_SHA256);
+
+        $signatureBase64 = base64_encode($signature);
+
+        dd($result);
+
+        //validasi
+        if ($result === 1) {
+            echo 'Signature is valid.';
+        } elseif ($result === 0) {
+            echo 'Signature is invalid.';
+        } else {
+            echo 'Error verifying signature: ' . openssl_error_string();
+        }
+
+
         $headers = [
             'X-SIGNATURE' => $signatureBase64, // Tanda-tangan base64
             'X-CLIENT-KEY' => '1DhFVj7GA8bfll4tLJuD3KzHxPO3tzCb', // Ganti dengan client key yang Anda miliki
@@ -154,6 +201,7 @@ class PaymentBriController extends Controller
         ]);
         
         // Mendapatkan respons dari API
+        dd('masuk');
         $responseData = json_decode($response->getBody(), true);
         $token = $responseData['accessToken'];
 
@@ -176,67 +224,40 @@ class PaymentBriController extends Controller
         // Mendapatkan waktu saat ini dalam format ISO8601
         $iso8601Time = gmdate('Y-m-d\TH:i:s\.\0\00\Z', time());
 
-        // Sekarang, $iso8601Time berisi waktu saat ini dalam format ISO8601
-        // $dateTime = new DateTime();
-        // $timestamps = $dateTime->format('c');
-
-        // $dateTime = new DateTime($timestamps);
-        // $offset = $dateTime->format('P'); // Get the offset in ISO 8601 format (e.g., +07:00)
-        // $milliseconds = substr($dateTime->format('u'), '0',3); // Remove trailing zeros
-        // $timestamp = $dateTime->format('Y-m-d\TH:i:s.') . $milliseconds . $offset;
-
         $timestamp = new DateTime();
         $timestamp->setTimezone(new DateTimeZone('Asia/Jakarta'));
         $timestampQr = $timestamp->format('Y-m-d\TH:i:sP');
         // dd($timestampQr);
 
-        $method = 'POST'; // Replace with your HTTP method (e.g., GET, POST)
-        $endpointUrl = '/v1.0/qr-dynamic-mpm/qr-mpm-generate-qr'; // Replace with your API endpoint URL
-        // $accessToken = 'Bearer BJO07zDVvjMoAiJInJtTfOi0FBtT'; // Replace with your access token
-        $accessToken = 'Bearer ' . $token; // Replace with your access token
+        $method = 'POST'; 
+        $endpointUrl = '/v1.0/qr-dynamic-mpm/qr-mpm-generate-qr'; 
+        $accessToken = 'Bearer ' . $token; 
         // $accessToken = $token; // Replace with your access token
         $requestBodyQr = json_encode($requestDataQr);
         $minifiedRequestBody = strtolower(preg_replace('/\s+/', '', hash('sha256', $requestBodyQr)));
         
         
         $stringToSign = $method.':'.$endpointUrl .':'.$token . ':'.$minifiedRequestBody .':'.'2023-10-16T23:29:36+07:00';
-        // $stringToSign = $method . ":" . $endpointUrl . ":" . $accessToken . ":" . hash('sha256', $requestBodyQr) . ":" . $timestampQr;
-
-        // dd($stringToSign);
 
         // Mendapatkan kunci privat dari file (atau sumber lainnya) dengan password
-        $privateKeyPath = realpath(public_path('assetku/dataku/public-key/private-key.pem'));
+        // $privateKeyPath = realpath(public_path('assetku/dataku/public-key/private-key.pem'));
+        $privateKeyPath = realpath(public_path('assetku/dataku/public-key/public-key-bri.pem'));
         $clientSecret = file_get_contents($privateKeyPath);
-
-        // $sha256 = hash("sha256", $requestBody);
-
-        // // Create the string to sign
-        // $stringToSign = "$method:$endpointUrl:$accessToken:$sha256:$timestampQr";
 
         // Generate the HMAC-SHA512 signature using the client secret
         $hmac = hash_hmac("sha512", $clientSecret, $stringToSign);
         
-        // dd($token ,$hmac);
-        // $hmacSignature = hash_hmac('sha512', $stringToSign, $clientSecret);
-
         // Convert the hexadecimal HMAC to base64
         $signatureBase64 = base64_encode($hmac);
-        // dd($hmac, $signatureBase64);
 
         // Testing Signature
-        $timestampTes = date("c"); // Get the current timestamp in ISO 8601 format
-        // dd($timestampTes);
         $hash = hash('sha256', $requestBodyQr);
 
         $payload = $method . ":" . $endpointUrl . ":" . $token . ":". $hash . ":" . $timestampQr;
 
-        $boddyy = json_encode(json_decode($requestBodyQr, true), JSON_PRETTY_PRINT);
-
         $clientId = 'FaKm5s4fnTI35jyV';
         $hmacSignature = hash_hmac('sha512', $payload, $clientId);
 
-        // dd($hmacSignature);
-        // return $hmacSignature;
 
         $headersQr = [
             'Authorization' => 'Bearer '.$token,
@@ -253,10 +274,6 @@ class PaymentBriController extends Controller
         $responseQr = Http::withHeaders($headersQr)
             ->post('https://sandbox.partner.api.bri.co.id/v1.0/qr-dynamic-mpm/qr-mpm-generate-qr', $requestDataQr);
 
-        // dd($stringToSign , $requestDataQr , $signatureBase64);
-
-        
-            // dd($token);
             dd($responseQr->json());
 
         return $responseData;
