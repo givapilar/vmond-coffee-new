@@ -135,44 +135,41 @@ class PaymentBriController extends Controller
 
 
         // Mendapatkan kunci privat dari file (atau sumber lainnya) dengan password
-        $privateKeyPath = realpath(public_path('assetku/dataku/public-key/private-key.pem'));
-        // $privateKeyPath = realpath(public_path('assetku/dataku/public-key/public-key-bri.pem'));
+        // $privateKeyPath = realpath(public_path('assetku/dataku/public-key/private-key.pem'));
+        // // $privateKeyPath = realpath(public_path('assetku/dataku/public-key/public-key-bri.pem'));
 
-        // Membaca kunci privat dari file dengan passphrase
-        $privateKey = openssl_pkey_get_private(file_get_contents($privateKeyPath));
+        // // Membaca kunci privat dari file dengan passphrase
+        // $privateKey = openssl_pkey_get_private(file_get_contents($privateKeyPath));
 
-        if ($privateKey === false) {
-            die("Failed to load private key: " . openssl_error_string());
-        }
+        // if ($privateKey === false) {
+        //     die("Failed to load private key: " . openssl_error_string());
+        // }
         
-        $signature = '';
-        // Melakukan tanda-tangan dengan metode SHA256withRSA
-        openssl_sign($dataToSign, $signature, $privateKey, OPENSSL_ALGO_SHA256);
+        // $signature = '';
+        // // Melakukan tanda-tangan dengan metode SHA256withRSA
+        // openssl_sign($dataToSign, $signature, $privateKey, OPENSSL_ALGO_SHA256);
         
-        openssl_free_key($privateKey);
+        // openssl_free_key($privateKey);
 
-        // Konversi tanda-tangan ke bentuk base64
-        $signatureBase64 = base64_encode($signature);
+        // // Konversi tanda-tangan ke bentuk base64
+        // $signatureBase64 = base64_encode($signature);
 
-        dd($signatureBase64);
+        // dd($signatureBase64);
 
         // --------------------public key -------------------------------------------
         // $dataToSign = $client_ID . "|" . $timestamp;
 
         // Ubah ini ke jalur kunci publik Anda
         $clientID = "e4aad8a2762000bc06fe29ec74fa2692";
-        $timeStamp = "2023-06-13T16:04:17+07:00";
         $publicKey = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvSDY2+DWghiw8cLpKN7T6pos3KSZFfyJNt0SXoCcNdmwW/n8t0YjNJuW0OEcXgs5mWqT0IVd8IjGQn+a5AnFNannZ8gtWB9InVxDQHclvYQmJ9KS419ej/1TULJLy0l6EhEVVNvuIs30gvpY5MvN7z3hmllxuLM6Tn7sx8XBhIF5MkbG4JVs8OzTDKWT5N1y9AB6KEulEqxQjLh6YAVn5ZAjg5Vh7LKjlfhwPi+67UwqEK5kbqP3Vj5NdnFd+vrGvbAf46CUM1XC4i+CuEnKfrG2hWk0MQHkarBdPJI+LBJOSmJk+NqAYMvuG1/zv/3MW48/oX0/kndRzV+tvW0/pQIDAQAB\n-----END PUBLIC KEY-----";
         $signature = "FmdvyEAcJLlaBsxh0EIgNn0N0025ySKQUWNc1TjZrorB4aWdZ1VUsmOK2t7SGtJ+r0/LZr592vGx7iISy5EMEFOU7oGJDJ4iq9r9Xpg7e/sQBycAiz5WakDCEfupGWW7KKsSc8HFHy+z5JSiiMRBFB0EWuult21lU/pbBrCJIM4ThlZvl3slX1h7Ju0jnLXlxcu0xuOr/g/mkQqbgZptIG9EmIOkuiWrUm6vIU/prFBqFFGTGli/71uQ+hjD7R/Jlzvz1qdZf9XE+Ju/U4eDqrHebBQFI7lSLITVYqihLo5InQ+QgtrbcPL5UKQXXHVt0w6SVZ0CMPwN4PIL2KdYQQ==";  // BRI Always base64
-        $data = $clientID . "|" . $timeStamp;  // Assuming $clientID and $timeStamp are defined
+        $data = $clientID . "|" . $timestamp;  // Assuming $clientID and $timeStamp are defined
 
         // Load the public key
         $pubKey = openssl_get_publickey($publicKey);
         
         // Verify the signature
         $result = openssl_verify($data, base64_decode($signature), $publicKey, OPENSSL_ALGO_SHA256);
-
-        $signatureBase64 = base64_encode($signature);
 
         dd($result);
 
