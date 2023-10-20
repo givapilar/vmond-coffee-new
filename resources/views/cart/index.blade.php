@@ -16,8 +16,8 @@
 @section('content')
 <section class="p-3">
     @if ($data_carts->count() >= 1)
-        {{-- <form action="{{ route('checkout-order', md5(strtotime("now"))) }}" method="POST"> --}}
-            <form method="POST" action="{{ route('create-token-bri') }}">
+        <form action="{{ route('checkout-order', md5(strtotime("now"))) }}" method="POST">
+            {{-- <form method="POST" action="{{ route('create-token-bri') }}"> --}}
             {{-- <form method="POST" action="{{ route('create-token-dsp') }}"> --}}
             @csrf   
             <div class="grid grid-cols-2 sm:grid-cols-1 gap-4 sm:gap-1">
