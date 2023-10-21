@@ -123,48 +123,50 @@ class PaymentBriController extends Controller
             'grantType' => 'client_credentials',
         ];
         
-        // $currentDatetime = new DateTime('now', new DateTimeZone('UTC')); // Create a DateTime object for the current UTC time
-        // $microseconds = substr((string) $currentDatetime->format('u'), 0, 3); // Extract the first three digits for milliseconds
-        // $timestamp = $currentDatetime->format('Y-m-d\TH:i:s') . '.' . $microseconds . 'Z';
+        $currentDatetime = new DateTime('now', new DateTimeZone('UTC')); // Create a DateTime object for the current UTC time
+        $microseconds = substr((string) $currentDatetime->format('u'), 0, 3); // Extract the first three digits for milliseconds
+        $timestamp = $currentDatetime->format('Y-m-d\TH:i:s') . '.' . $microseconds . 'Z';
 
-        // $dataToSign = '1DhFVj7GA8bfll4tLJuD3KzHxPO3tzCb|' . $timestamp;
+        $dataToSign = '1DhFVj7GA8bfll4tLJuD3KzHxPO3tzCb|' . $timestamp;
 
 
         // Mendapatkan kunci privat dari file (atau sumber lainnya) dengan password
-        // $privateKeyPath = realpath(public_path('assetku/dataku/public-key/private-key.pem'));
-        // // $privateKeyPath = realpath(public_path('assetku/dataku/public-key/public-key-bri.pem'));
+        $privateKeyPath = realpath(public_path('assetku/dataku/public-key/private-key.pem'));
+        // $privateKeyPath = realpath(public_path('assetku/dataku/public-key/public-key-bri.pem'));
+        // $privateKeyPath = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvSDY2+DWghiw8cLpKN7T6pos3KSZFfyJNt0SXoCcNdmwW/n8t0YjNJuW0OEcXgs5mWqT0IVd8IjGQn+a5AnFNannZ8gtWB9InVxDQHclvYQmJ9KS419ej/1TULJLy0l6EhEVVNvuIs30gvpY5MvN7z3hmllxuLM6Tn7sx8XBhIF5MkbG4JVs8OzTDKWT5N1y9AB6KEulEqxQjLh6YAVn5ZAjg5Vh7LKjlfhwPi+67UwqEK5kbqP3Vj5NdnFd+vrGvbAf46CUM1XC4i+CuEnKfrG2hWk0MQHkarBdPJI+LBJOSmJk+NqAYMvuG1/zv/3MW48/oX0/kndRzV+tvW0/pQIDAQAB\n-----END PUBLIC KEY-----";
 
-        // // Membaca kunci privat dari file dengan passphrase
-        // $privateKey = openssl_pkey_get_private(file_get_contents($privateKeyPath));
+        // Membaca kunci privat dari file dengan passphrase
+        $privateKey = openssl_pkey_get_private(file_get_contents($privateKeyPath));
 
-        // if ($privateKey === false) {
-        //     die("Failed to load private key: " . openssl_error_string());
-        // }
+        if ($privateKey === false) {
+            die("Failed to load private key: " . openssl_error_string());
+        }
         
-        // $signature = '';
-        // // Melakukan tanda-tangan dengan metode SHA256withRSA
-        // openssl_sign($dataToSign, $signature, $privateKey, OPENSSL_ALGO_SHA256);
+        $signature = '';
+        // Melakukan tanda-tangan dengan metode SHA256withRSA
+        openssl_sign($dataToSign, $signature, $privateKey, OPENSSL_ALGO_SHA256);
         
-        // openssl_free_key($privateKey);
+        openssl_free_key($privateKey);
 
-        // // Konversi tanda-tangan ke bentuk base64
-        // $signatureBase64 = base64_encode($signature);
+        // Konversi tanda-tangan ke bentuk base64
+        $signatureBase64 = base64_encode($signature);
 
-        // dd($signatureBase64);
+        dd($signatureBase64);
 
         // --------------------public key -------------------------------------------
         // $dataToSign = $client_ID . "|" . $timestamp;
 
         // Ubah ini ke jalur kunci publik Anda
+        
         $timestamp = new DateTime();
         $timestamp->setTimezone(new DateTimeZone('Asia/Jakarta'));
         $timestamp = $timestamp->format('Y-m-d\TH:i:sP');
 
         $clientID = "1DhFVj7GA8bfll4tLJuD3KzHxPO3tzCb";
-        // $timeStamp = "2023-06-13T16:04:17+07:00";
+        $timeStamp = "2023-06-13T16:04:17+07:00";
         $publicKey = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvSDY2+DWghiw8cLpKN7T6pos3KSZFfyJNt0SXoCcNdmwW/n8t0YjNJuW0OEcXgs5mWqT0IVd8IjGQn+a5AnFNannZ8gtWB9InVxDQHclvYQmJ9KS419ej/1TULJLy0l6EhEVVNvuIs30gvpY5MvN7z3hmllxuLM6Tn7sx8XBhIF5MkbG4JVs8OzTDKWT5N1y9AB6KEulEqxQjLh6YAVn5ZAjg5Vh7LKjlfhwPi+67UwqEK5kbqP3Vj5NdnFd+vrGvbAf46CUM1XC4i+CuEnKfrG2hWk0MQHkarBdPJI+LBJOSmJk+NqAYMvuG1/zv/3MW48/oX0/kndRzV+tvW0/pQIDAQAB\n-----END PUBLIC KEY-----";
-        $signature = "FmdvyEAcJLlaBsxh0EIgNn0N0025ySKQUWNc1TjZrorB4aWdZ1VUsmOK2t7SGtJ+r0/LZr592vGx7iISy5EMEFOU7oGJDJ4iq9r9Xpg7e/sQBycAiz5WakDCEfupGWW7KKsSc8HFHy+z5JSiiMRBFB0EWuult21lU/pbBrCJIM4ThlZvl3slX1h7Ju0jnLXlxcu0xuOr/g/mkQqbgZptIG9EmIOkuiWrUm6vIU/prFBqFFGTGli/71uQ+hjD7R/Jlzvz1qdZf9XE+Ju/U4eDqrHebBQFI7lSLITVYqihLo5InQ+QgtrbcPL5UKQXXHVt0w6SVZ0CMPwN4PIL2KdYQQ==";  // BRI Always base64
-        $data = $clientID . "|" . $timestamp;  // Assuming $clientID and $timeStamp are defined
+        $signature = "G9aG2yPmCjZheZ6oLt/Eqh4PZzDUaZdDWdEblTbJPs8F/cbm1wkfT+acMYaDljmZ7cePjO3uJtvKJ65qB/7RmTX0OFuZEI4ai5E0EH6Dq4BB0UmxOAV8FEjyiqe3HAvg1e4cRiylo2T9JJ7pgZpGuyF3i8cD+mQ9EMAi1y2arlUjDl+apR8i8cS82+AkQfDmN/lCV0cZioZIq+07bIjSwRaFLLghQf/K9nsytXrjnnFYhkBJFnqItRT8hdL86M0ELI5Z41sZHurUcg3XyzfRuRojLrdznCPDfHsN2JiUbL55yokFMksegj5nI494+WOk1jrGkC12LvQsm5ywH4ghPA==";  // BRI Always base64
+        $data = $clientID . "|" . $timeStamp;  // Assuming $clientID and $timeStamp are defined
 
         // Load the public key
         $pubKey = openssl_get_publickey($publicKey);
@@ -172,7 +174,7 @@ class PaymentBriController extends Controller
         // Verify the signature
         $result = openssl_verify($data, base64_decode($signature), $publicKey, OPENSSL_ALGO_SHA256);
         
-        // dd($result);
+        dd('Response : ',$result);
         //validasi
         if ($result === 1) {
             echo 'Signature is valid.';
@@ -183,9 +185,9 @@ class PaymentBriController extends Controller
         }
 
 
-
+        
         $headers = [
-            'X-SIGNATURE' => $signature, // Tanda-tangan base64
+            'X-SIGNATURE' => $signatureBase64, // Tanda-tangan base64
             'X-CLIENT-KEY' => '1DhFVj7GA8bfll4tLJuD3KzHxPO3tzCb', // Ganti dengan client key yang Anda miliki
             'X-TIMESTAMP' => $timestamp, // Format timestamp sesuai dengan deskripsi
             'Content-Type' => 'application/json',
@@ -199,8 +201,9 @@ class PaymentBriController extends Controller
         ]);
         
         // Mendapatkan respons dari API
-        dd('masuk');
         $responseData = json_decode($response->getBody(), true);
+
+        dd($responseData);
         $token = $responseData['accessToken'];
 
 

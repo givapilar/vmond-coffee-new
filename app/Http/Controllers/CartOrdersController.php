@@ -228,18 +228,18 @@ class CartOrdersController extends Controller
 
         if (Auth::check()) {
 
-            $userPhoneNumber = Auth::user()->telephone;
-            // dd($userPhoneNumber);
-            // Define an array of allowed phone numbers
-            $allowedPhoneNumbers = [
-                '08123456001',
-                '08123456003',
-                '08123456004',
-                '08123456005',
-                '081818181847',
-            ];
+            // $userPhoneNumber = Auth::user()->telephone;
+            // // dd($userPhoneNumber);
+            // // Define an array of allowed phone numbers
+            // $allowedPhoneNumbers = [
+            //     '08123456001',
+            //     '08123456003',
+            //     '08123456004',
+            //     '08123456005',
+            //     '081818181847',
+            // ];
 
-            if (in_array($userPhoneNumber, $allowedPhoneNumbers)) {
+            // if (in_array($userPhoneNumber, $allowedPhoneNumbers)) {
                 $cartContent = \Cart::session(Auth::user()->id)->getContent();
                 
                 $addonDetail = array(
@@ -285,10 +285,10 @@ class CartOrdersController extends Controller
                 
                 $category = $request->category;
                 return redirect()->route('daftar-restaurant', ['category' => $category])->with('success', 'Berhasil masuk cart!');
-            }else{
-                return redirect()->back()->with('failed', 'Silahkan Tanya Waiters');
+            // }else{
+            //     return redirect()->back()->with('failed', 'Silahkan Tanya Waiters');
 
-            }
+            // }
 
             // Mengambil konten Cart berdasarkan user ID
             // $cartContent = \Cart::session(Auth::user()->id)->getContent();
@@ -316,7 +316,7 @@ class CartOrdersController extends Controller
            
             // ));
 
-            return redirect()->back()->with('failed', 'Silahkan Tanya Waiters');
+            // return redirect()->back()->with('failed', 'Silahkan Tanya Waiters');
 
             // Mengambil konten Cart berdasarkan user ID
             $cartContent = \Cart::session($user)->getContent();
@@ -383,7 +383,7 @@ class CartOrdersController extends Controller
             }
             
             $category = $request->category;
-            // return redirect()->route('daftar-restaurant', ['category' => $category])->with('success', 'Berhasil Masuk Cart !');
+            return redirect()->route('daftar-restaurant', ['category' => $category])->with('success', 'Berhasil Masuk Cart !');
         }
         // } catch (\Throwable $th) {
         //     return redirect()->back()->with('failed', $th->getMessage());
