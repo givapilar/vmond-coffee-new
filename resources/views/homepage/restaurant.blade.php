@@ -35,8 +35,6 @@
     <hr> --}}
 
     <div class="grid grid-cols-1 gap-3 skeleton">
-        @if (Auth::check())
-            @if (Auth::user()->is_worker == true)
             <a href="{{ route('daftar-paket-menu', ['kode_meja' => Request::get('kode_meja')]) }}">
                 <div class="text-base sm:text-sm p-1">
                     <div class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg" style="height: 15.5rem;">
@@ -46,9 +44,6 @@
                     <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300" style="font-weight: 700;">PAKET MENU</p>
                 </div>
             </a>
-            @endif
-            
-            @endif
             <a href="{{ route('daftar-restaurant', ['category' => 'food', 'kode_meja' => Request::get('kode_meja')]) }}">
                 <div class="text-base sm:text-sm p-1">
                     <div class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg" style="height: 15.5rem;">
