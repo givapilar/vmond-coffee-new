@@ -61,24 +61,31 @@ class PaymentBriController extends Controller
         $id = Str::uuid();
         $exchangeId = Str::uuid();
         $timestamp = date('Y-m-d\TH:i:s', time());
-        // dd($rime);
-        // Misalnya, jika Anda ingin membuat format ciphered transaction data
         $transactionDate = "00" . date("MMdd");
         $unpredictableNumber = date("ddHHmmss");
         $merchantId = "998223061218512";
 
         $cipheredData = $transactionDate . $unpredictableNumber . $merchantId;
 
-        dd($cipheredData);
         $timezone = new DateTimeZone('Asia/Jakarta');
 
         // Buat objek DateTime untuk waktu saat ini
         $currentTime = new DateTime('now', $timezone);
         $expiryDuration = new DateInterval('PT30M'); // PT30M artinya 30 menit
         $expiryTime = $currentTime->add($expiryDuration);
-        $expiryTimeFormatted = $expiryTime->format('Y-m-d\TH:i:s');
+        $expiryTimeFormatted = $expiryTime->format('Y-m-d\TH:i:sP');
+        // Set the access token
+        $accessToken = $accessToken; // Replace with your actual access token
 
-        // Data yang akan dikirim sebagai request body
+        dd($expiryTimeFormatted);
+        // Define the headers
+        $headers = [
+            'Authorization' => 'Bearer ' . $accessToken, // Set the Authorization header with the access token
+            'Content-Type' => 'application/json', // Assuming you're sending JSON data
+            // Add other headers as needed
+        ];
+
+        // Data that will be sent in the request body
         $requestData = [
             'requestInfo' => [
                 'id' => $id->toString(),
@@ -91,12 +98,14 @@ class PaymentBriController extends Controller
                 'tokenHolderId' => '99793935468',
                 'amount' => 100.00, 
                 'terminalId' => '10049694', 
-                'expiryTime' => $expiryTimeFormatted, // Ganti dengan waktu kadaluarsa yang sesuai
-                'cipheredTransactionData' => $cipheredData, // Ganti dengan data yang dienkripsi menggunakan JWE
+                'expiryTime' => $expiryTimeFormatted,
+                'cipheredTransactionData' => $cipheredData,
             ]
         ];
 
-        $response = Http::withToken($accessToken)->post('https://your-api-url.com/api/v1/remoteQR/fetchQRCryptogram', $requestData);
+        $responseQr = Http::withHeaders($headers)->post('https://your-api-url.com/api/v1/remoteQR/fetchQRCryptogram', $requestData);
+
+        dd($responseQr->json());
 
         if ($response->successful()) {
             // Respons berhasil, Anda dapat menangani data respons di sini
@@ -115,7 +124,14 @@ class PaymentBriController extends Controller
     }
 
     public function createToken(Request $request){
-        
+        $integer = 62172.50;
+        $integer = floor($integer); // Menghilangkan desimal
+        $formattedInt = number_format($integer, 2, '.', ''); // Mengonversi ke string dengan 2 desimal
+        dd($formattedInt);
+ // Ganti .50 dengan .00
+        // dd($formattedInt);
+
+
         $client = new Client();
         $url = 'https://sandbox.partner.api.bri.co.id/snap/v1.0/access-token/b2b';
 
@@ -132,8 +148,6 @@ class PaymentBriController extends Controller
 
         // Mendapatkan kunci privat dari file (atau sumber lainnya) dengan password
         $privateKeyPath = realpath(public_path('assetku/dataku/public-key/private-key.pem'));
-        // $privateKeyPath = realpath(public_path('assetku/dataku/public-key/public-key-bri.pem'));
-        // $privateKeyPath = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvSDY2+DWghiw8cLpKN7T6pos3KSZFfyJNt0SXoCcNdmwW/n8t0YjNJuW0OEcXgs5mWqT0IVd8IjGQn+a5AnFNannZ8gtWB9InVxDQHclvYQmJ9KS419ej/1TULJLy0l6EhEVVNvuIs30gvpY5MvN7z3hmllxuLM6Tn7sx8XBhIF5MkbG4JVs8OzTDKWT5N1y9AB6KEulEqxQjLh6YAVn5ZAjg5Vh7LKjlfhwPi+67UwqEK5kbqP3Vj5NdnFd+vrGvbAf46CUM1XC4i+CuEnKfrG2hWk0MQHkarBdPJI+LBJOSmJk+NqAYMvuG1/zv/3MW48/oX0/kndRzV+tvW0/pQIDAQAB\n-----END PUBLIC KEY-----";
 
         // Membaca kunci privat dari file dengan passphrase
         $privateKey = openssl_pkey_get_private(file_get_contents($privateKeyPath));
@@ -150,41 +164,6 @@ class PaymentBriController extends Controller
 
         // Konversi tanda-tangan ke bentuk base64
         $signatureBase64 = base64_encode($signature);
-
-        dd($signatureBase64);
-
-        // --------------------public key -------------------------------------------
-        // $dataToSign = $client_ID . "|" . $timestamp;
-
-        // Ubah ini ke jalur kunci publik Anda
-        
-        $timestamp = new DateTime();
-        $timestamp->setTimezone(new DateTimeZone('Asia/Jakarta'));
-        $timestamp = $timestamp->format('Y-m-d\TH:i:sP');
-
-        $clientID = "1DhFVj7GA8bfll4tLJuD3KzHxPO3tzCb";
-        $timeStamp = "2023-06-13T16:04:17+07:00";
-        $publicKey = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvSDY2+DWghiw8cLpKN7T6pos3KSZFfyJNt0SXoCcNdmwW/n8t0YjNJuW0OEcXgs5mWqT0IVd8IjGQn+a5AnFNannZ8gtWB9InVxDQHclvYQmJ9KS419ej/1TULJLy0l6EhEVVNvuIs30gvpY5MvN7z3hmllxuLM6Tn7sx8XBhIF5MkbG4JVs8OzTDKWT5N1y9AB6KEulEqxQjLh6YAVn5ZAjg5Vh7LKjlfhwPi+67UwqEK5kbqP3Vj5NdnFd+vrGvbAf46CUM1XC4i+CuEnKfrG2hWk0MQHkarBdPJI+LBJOSmJk+NqAYMvuG1/zv/3MW48/oX0/kndRzV+tvW0/pQIDAQAB\n-----END PUBLIC KEY-----";
-        $signature = "G9aG2yPmCjZheZ6oLt/Eqh4PZzDUaZdDWdEblTbJPs8F/cbm1wkfT+acMYaDljmZ7cePjO3uJtvKJ65qB/7RmTX0OFuZEI4ai5E0EH6Dq4BB0UmxOAV8FEjyiqe3HAvg1e4cRiylo2T9JJ7pgZpGuyF3i8cD+mQ9EMAi1y2arlUjDl+apR8i8cS82+AkQfDmN/lCV0cZioZIq+07bIjSwRaFLLghQf/K9nsytXrjnnFYhkBJFnqItRT8hdL86M0ELI5Z41sZHurUcg3XyzfRuRojLrdznCPDfHsN2JiUbL55yokFMksegj5nI494+WOk1jrGkC12LvQsm5ywH4ghPA==";  // BRI Always base64
-        $data = $clientID . "|" . $timeStamp;  // Assuming $clientID and $timeStamp are defined
-
-        // Load the public key
-        $pubKey = openssl_get_publickey($publicKey);
-
-        // Verify the signature
-        $result = openssl_verify($data, base64_decode($signature), $publicKey, OPENSSL_ALGO_SHA256);
-        
-        dd('Response : ',$result);
-        //validasi
-        if ($result === 1) {
-            echo 'Signature is valid.';
-        } elseif ($result === 0) {
-            echo 'Signature is invalid.';
-        } else {
-            echo 'Error verifying signature: ' . openssl_error_string();
-        }
-
-
         
         $headers = [
             'X-SIGNATURE' => $signatureBase64, // Tanda-tangan base64
@@ -203,16 +182,19 @@ class PaymentBriController extends Controller
         // Mendapatkan respons dari API
         $responseData = json_decode($response->getBody(), true);
 
-        dd($responseData);
+        // dd($responseData);
         $token = $responseData['accessToken'];
 
 
         // ------------------------------------------------------------------- Generate QR------------------------------------------------------------------------------------------------
+        $timestamp = time(); // Dapatkan timestamp saat ini
+        $randomSeed = $timestamp % 10000; // Gunakan 4 digit terakhir dari timestamp sebagai "seed" untuk angka acak
+        $randomDigits = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
 
         $requestDataQr = [
-            'partnerReferenceNo' => '44443332318',
+            'partnerReferenceNo' => '444431'.$randomDigits,
             'amount' => [
-                'value' => '123456.00',
+                'value' => '100.00',
                 'currency' => 'IDR',
             ],
             'merchantId' => '000001019000014',
@@ -259,6 +241,9 @@ class PaymentBriController extends Controller
         $clientId = 'FaKm5s4fnTI35jyV';
         $hmacSignature = hash_hmac('sha512', $payload, $clientId);
 
+        $timestamp = time(); // Dapatkan timestamp saat ini
+        $randomSeed = $timestamp % 10000; // Gunakan 4 digit terakhir dari timestamp sebagai "seed" untuk angka acak
+        $externalId = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
 
         $headersQr = [
             'Authorization' => 'Bearer '.$token,
@@ -267,7 +252,7 @@ class PaymentBriController extends Controller
             'Content-Type' => 'application/json',
             'X-PARTNER-ID' => '456044',
             'CHANNEL-ID' => '95221',
-            'X-EXTERNAL-ID' => '1223334449', // Replace with your external ID
+            'X-EXTERNAL-ID' => '1223'.$externalId, // Replace with your external ID
         ];
 
 

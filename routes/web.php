@@ -225,24 +225,15 @@ Route::get('/aktivasi-merchant', function () {
     return view('aktivasi-bjb.aktivasi');
 })->name('aktivasi');
 
-
+// BJB
 Route::post('/v1/integration/get-token-fintech',[APIController::class,'getTokenFintech'])->name('get-token-fintech');
 Route::post('/v1/integration/send-otp',[APIController::class,'sendOTP'])->name('send-otp-fintech');
 Route::post('/v1/integration/create-qris',[APIController::class,'createQris'])->name('create-qris-merchant');
 Route::post('/v1/integration/aktivasi-merchant',[APIController::class,'aktivasi'])->name('aktivasi-merchant');
 
-// Route::post('/snap/v1.0/qr-dynamic/token', [PaymentBriController::class, 'qrDynamic'])
-//     ->name('qr-dinamic-bri')
-//     ->withoutMiddleware([
-//         'web',
-//         'auth',
-//     ]);
-Route::post('/snap/v1.0/qr-dynamic/qr-mpm-notify', [PaymentBriController::class, 'qrMpm'])
-    ->name('qr-mpm')
-    ->withoutMiddleware([
-        'web',
-        'auth',
-    ]);
+// BRI
+Route::post('/v1/integration/create-qris-bri',[APIController::class,'createQrisBri'])->name('create-qris-bri');
+
 // =============================================================
 // End Integrasi Payment Gateway
 // =============================================================

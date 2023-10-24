@@ -376,7 +376,7 @@
         </div> --}}
         @endif 
         {{-- <div class="mt-2">
-            <button id="btnQR" onclick="generateQrisBri()" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
+            <button id="btnQRBri" onclick="createQrisBri('{{ $order_last->total_price }}','{{ $order_last->id }}')" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
         </div> --}}
 
         {{-- <button class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button> --}}
@@ -496,11 +496,10 @@
             }
         });
     }
-    
-    // Membuat variabel flag untuk status
+
     let isProcessing = false;
     
-    function createQris(dtamount, dtorderid) {
+    function createQrisBri(dtamount, dtorderid) {
         console.log(isProcessing);
         // Memeriksa apakah proses sedang berlangsung
         if (isProcessing) {
@@ -511,39 +510,41 @@
         // Mengubah status menjadi sedang proses
         isProcessing = true;
     
+        // let amount = dtamount;
         let amount = dtamount;
-        // let amount = 1;
-        $('#btnQR').prop('disabled', true);
-        $('#btnQR').addClass('disabled');
+        // console.log(amount);
+        
+        $('#btnQRBri').prop('disabled', true);
+        $('#btnQRBri').addClass('disabled');
     
         $.ajax({
             type: 'POST',
-            url: "{{ route('create-qris-merchant') }}",
+            url: "{{ route('create-qris-bri') }}",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             data: {
                 "_token": "{{ csrf_token() }}",
-                amount,
+                "amount": amount,
             },
             async: false,
             success: function(res) {
-                // console.log(res);
+                console.log("Response QR",res);
                 // console.log(res.data.stringQR);
                 // Menutup dialog jQuery Confirm setelah sukses
-                generateQris(res.data.stringQR, dtamount);
-                updateInvoice(dtorderid, res.data.invoiceID)
+                generateQrisBri(res.qrContent, dtamount);
+                // updateInvoice(dtorderid, res.data.invoiceID)
                 // window.location.href = "{{ route('homepage') }}";
-                $('#btnQR').removeClass('disabled');
+                $('#btnQRBri').removeClass('disabled');
                 
-                $("#btnQR").prop("disabled", false);
+                $("#btnQRBri").prop("disabled", false);
     
                 // Mengubah status menjadi selesai
             },
             error: function(data) {
                 // console.log(data);
-                $('#btnQR').removeClass('disabled');
-                $("#btnQR").prop("disabled", false);
+                $('#btnQRBri').removeClass('disabled');
+                $("#btnQRBri").prop("disabled", false);
                 $.alert(data.responseJSON.message);
     
                 // Mengubah status menjadi selesai
@@ -553,8 +554,9 @@
     }
     
     
-    function generateQris(strQR, dtamount) {
+    function generateQrisBri(strQR, dtamount) {
         // Create a QRious instance
+        console.log("String Qr",strQR);
         var qr = new QRious({
             value: strQR,
             size: 200, // Sesuaikan ukuran sesuai kebutuhan
@@ -567,7 +569,7 @@
             title: 'Generate QR Code',
             content: '<img src="' + qrDataUrl + '" width="70%" height="70%" style="display:block; margin-right:auto; margin-left:auto; margin-top:10px; border-radius:15px;">'+
             '</br>'+
-            '<h3 style="color:white;text-align:center;margin-bottom:10px;">VMOND COFFEE x BJB</h3>'+
+            '<h3 style="color:white;text-align:center;margin-bottom:10px;">VMOND COFFEE x BRI</h3>'+
             '<h5 style="color:white;text-align:center;">Total : '+dtamount+'</h5>',
             columnClass: 'small',
             type: 'blue',
@@ -599,34 +601,136 @@
         });
     }
     
-    function updateInvoice(orderID, invoiceID) {
-        let order_id, data;
-        console.log(orderID, invoiceID);
-        order_id = orderID;
-        invoice_id = invoiceID;
-        $.ajax({
-            type: 'POST',
-            url: "{{ route('update-invoice') }}",
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            data: {
-                "_token": "{{ csrf_token() }}",
-                order_id,
-                invoice_id,
-            },
-            async: false,
-            success: function(res) {
-                // console.log(res);
-                // window.location.href = '/home';
-                // console.log('Success!');
-            },
-            error: function(data) {
-                // console.log('Failed!');
-                alert('Gagal, Silahkan order ulang...')
-            }
-        });
-    }
+    // Membuat variabel flag untuk status
+    // let isProcessing = false;
+    
+    // function createQris(dtamount, dtorderid) {
+    //     console.log(isProcessing);
+    //     // Memeriksa apakah proses sedang berlangsung
+    //     if (isProcessing) {
+    //         // Jika proses sedang berlangsung, mencegah fungsi dijalankan
+    //         return;
+    //     }
+    
+    //     // Mengubah status menjadi sedang proses
+    //     isProcessing = true;
+    
+    //     let amount = dtamount;
+    //     // let amount = 1;
+    //     $('#btnQR').prop('disabled', true);
+    //     $('#btnQR').addClass('disabled');
+    
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: "{{ route('create-qris-merchant') }}",
+    //         headers: {
+    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //         },
+    //         data: {
+    //             "_token": "{{ csrf_token() }}",
+    //             amount,
+    //         },
+    //         async: false,
+    //         success: function(res) {
+    //             // console.log(res);
+    //             // console.log(res.data.stringQR);
+    //             // Menutup dialog jQuery Confirm setelah sukses
+    //             generateQris(res.data.stringQR, dtamount);
+    //             updateInvoice(dtorderid, res.data.invoiceID)
+    //             // window.location.href = "{{ route('homepage') }}";
+    //             $('#btnQR').removeClass('disabled');
+                
+    //             $("#btnQR").prop("disabled", false);
+    
+    //             // Mengubah status menjadi selesai
+    //         },
+    //         error: function(data) {
+    //             // console.log(data);
+    //             $('#btnQR').removeClass('disabled');
+    //             $("#btnQR").prop("disabled", false);
+    //             $.alert(data.responseJSON.message);
+    
+    //             // Mengubah status menjadi selesai
+    //             isProcessing = false;
+    //         }
+    //     });
+    // }
+    
+    
+    // function generateQris(strQR, dtamount) {
+    //     // Create a QRious instance
+    //     var qr = new QRious({
+    //         value: strQR,
+    //         size: 200, // Sesuaikan ukuran sesuai kebutuhan
+    //     });
+    
+    //     // Convert the QR code to a data URL
+    //     var qrDataUrl = qr.toDataURL();
+    
+    //     $.confirm({
+    //         title: 'Generate QR Code',
+    //         content: '<img src="' + qrDataUrl + '" width="70%" height="70%" style="display:block; margin-right:auto; margin-left:auto; margin-top:10px; border-radius:15px;">'+
+    //         '</br>'+
+    //         '<h3 style="color:white;text-align:center;margin-bottom:10px;">VMOND COFFEE x BJB</h3>'+
+    //         '<h5 style="color:white;text-align:center;">Total : '+dtamount+'</h5>',
+    //         columnClass: 'small',
+    //         type: 'blue',
+    //         typeAnimated: true,
+    //         buttons: {
+    //             downloadQR: {
+    //                 text: 'Download QR Code',
+    //                 btnClass: 'btn-green',
+    //                 action: function () {
+    //                     // Trigger download of QR Code image
+    //                     var a = document.createElement('a');
+    //                     a.href = qrDataUrl;
+    //                     a.download = 'qrcodes.png'; // Nama file yang akan diunduh
+    //                     a.style.display = 'none';
+    //                     document.body.appendChild(a);
+    //                     a.click();
+    //                     document.body.removeChild(a);
+    //                     isProcessing = false;
+    //                 }
+    //             },
+    //             close: {
+    //                 text: 'Close',
+    //                 action: function () {
+    //                     // Close the dialog
+    //                     isProcessing = false;
+    //                 }
+    //             }
+    //         }
+    //     });
+    // }
+    
+    // function updateInvoice(orderID, invoiceID) {
+    //     let order_id, data;
+    //     console.log(orderID, invoiceID);
+    //     order_id = orderID;
+    //     invoice_id = invoiceID;
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: "{{ route('update-invoice') }}",
+    //         headers: {
+    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //         },
+    //         data: {
+    //             "_token": "{{ csrf_token() }}",
+    //             order_id,
+    //             invoice_id,
+    //         },
+    //         async: false,
+    //         success: function(res) {
+    //             // console.log(res);
+    //             // window.location.href = '/home';
+    //             // console.log('Success!');
+    //         },
+    //         error: function(data) {
+    //             // console.log('Failed!');
+    //             alert('Gagal, Silahkan order ulang...')
+    //         }
+    //     });
+    // }
 </script>
 
 <script>
@@ -726,60 +830,68 @@
     });
   </script>
   
+
+  {{-- ---------------------------------------------------------------------- BRI ----------------------------------------------------------------------- --}}
   <script>
-    function generateQrisBri() {
-        var strQR = "00020101021226650013ID.CO.BRI.WWW011893600002011004969402150000010190000140303UME52041234530336054061234565802ID5910VMOUND DEV6013JAKARTA PUSAT610512345623401183323185398137984640708100496946304E1D5";
-        var dtamount = "100.00"; // Ganti ini sesuai dengan jumlah yang sesuai
 
-        // Create a QRious instance
-        var qr = new QRious({
-            value: strQR,
-            size: 200, // Sesuaikan ukuran sesuai kebutuhan
-        });
+    
 
-        // Convert the QR code to a data URL
-        var qrDataUrl = qr.toDataURL();
+    // function createQrisBRI(response) {
+    //     var qrCodeContent = response.qrContent;
+    //     console.log("QR Code Content:", qrCodeContent); // Use the QR data string as needed
 
-        // Buat elemen gambar QR code dan tambahkan ke dokumen
-        var qrImage = document.createElement('img');
-        qrImage.src = qrDataUrl;
+    //     // var strQR = "00020101021226650013ID.CO.BRI.WWW011893600002011004969402150000010190000140303UME52041234530336054031005802ID5910VMOUND DEV6013JAKARTA PUSAT6105123456234011833277721036256439307081004969463048E8E";
+    //     var dtamount = "100.00"; // Ganti ini sesuai dengan jumlah yang sesuai
 
-        // Buat dialog menggunakan SweetAlert2
-        $.confirm({
-            title: 'Generate QR Code',
-            content: '<img src="' + qrDataUrl + '" width="70%" height="70%" style="display:block; margin-right:auto; margin-left:auto; margin-top:10px; border-radius:15px;">'+
-            '</br>'+
-            '<h3 style="color:white;text-align:center;margin-bottom:10px;">VMOND COFFEE x BRI</h3>'+
-            '<h5 style="color:white;text-align:center;">Total : '+dtamount+'</h5>',
-            columnClass: 'small',
-            type: 'blue',
-            typeAnimated: true,
-            buttons: {
-                downloadQR: {
-                    text: 'Download QR Code',
-                    btnClass: 'btn-green',
-                    action: function () {
-                        // Trigger download of QR Code image
-                        var a = document.createElement('a');
-                        a.href = qrDataUrl;
-                        a.download = 'qrcodes.png'; // Nama file yang akan diunduh
-                        a.style.display = 'none';
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
-                        isProcessing = false;
-                    }
-                },
-                close: {
-                    text: 'Close',
-                    action: function () {
-                        // Close the dialog
-                        isProcessing = false;
-                    }
-                }
-            }
-        });
-    }
+    //     // Create a QRious instance
+    //     var qr = new QRious({
+    //         value: strQR,
+    //         size: 200, // Sesuaikan ukuran sesuai kebutuhan
+    //     });
+
+    //     // Convert the QR code to a data URL
+    //     var qrDataUrl = qr.toDataURL();
+
+    //     // Buat elemen gambar QR code dan tambahkan ke dokumen
+    //     var qrImage = document.createElement('img');
+    //     qrImage.src = qrDataUrl;
+
+    //     // Buat dialog menggunakan SweetAlert2
+    //     $.confirm({
+    //         title: 'Generate QR Code',
+    //         content: '<img src="' + qrDataUrl + '" width="70%" height="70%" style="display:block; margin-right:auto; margin-left:auto; margin-top:10px; border-radius:15px;">'+
+    //         '</br>'+
+    //         '<h3 style="color:white;text-align:center;margin-bottom:10px;">VMOND COFFEE x BRI</h3>'+
+    //         '<h5 style="color:white;text-align:center;">Total : '+dtamount+'</h5>',
+    //         columnClass: 'small',
+    //         type: 'blue',
+    //         typeAnimated: true,
+    //         buttons: {
+    //             downloadQR: {
+    //                 text: 'Download QR Code',
+    //                 btnClass: 'btn-green',
+    //                 action: function () {
+    //                     // Trigger download of QR Code image
+    //                     var a = document.createElement('a');
+    //                     a.href = qrDataUrl;
+    //                     a.download = 'qrcodes.png'; // Nama file yang akan diunduh
+    //                     a.style.display = 'none';
+    //                     document.body.appendChild(a);
+    //                     a.click();
+    //                     document.body.removeChild(a);
+    //                     isProcessing = false;
+    //                 }
+    //             },
+    //             close: {
+    //                 text: 'Close',
+    //                 action: function () {
+    //                     // Close the dialog
+    //                     isProcessing = false;
+    //                 }
+    //             }
+    //         }
+    //     });
+    // }
 
 
   </script>

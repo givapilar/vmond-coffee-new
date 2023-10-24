@@ -981,30 +981,12 @@ class OrderController extends Controller
                 $order = Order::find($request->order_id);
                 $paymentType = $request->payment_type;
                 
-                $order->update(['status_pembayaran' => 'Paid','invoice_no' => $this->generateInvoice(), 'metode_pembayaran' => $paymentType]);
-                // Get User ID
-
-                $orderFinishSubtotal = Order::where('user_id', $order->user_id)->where('status_pembayaran','Paid')->sum('total_price');
-
-                // $user = User::find($order->user_id);
-                // if ($user) {
-                //     if ($orderFinishSubtotal >= 1 && $orderFinishSubtotal < 2) {
-                //         $user->membership_id = 2;
-                //     } elseif ($orderFinishSubtotal >= 2 && $orderFinishSubtotal < 5) {
-                //         $user->membership_id = 3;
-                //     } elseif ($orderFinishSubtotal >= 5 && $orderFinishSubtotal < 10000000) {
-                //         $user->membership_id = 4;
-                //     } elseif ($orderFinishSubtotal >= 10000000) {
-                //         $user->membership_id = 5;
-                //     } else {
-                //         $user->membership_id = 1;
-                //     }
-                //     $user->save();
-                // }
-
-                $user = User::where('id', $order->user_id)->first(); // Gunakan first() untuk mendapatkan objek user
-                $memberships = Membership::orderBy('id','asc')->get();
-                $user_member = User::where('membership_id',5)->get()->first();
+                if ($request->transaction_status == 'settlement') {
+                    $order->update(['status_pembayaran' => 'Paid', 'invoice_no' => $this->generateInvoice(), 'metode_pembayaran' => $paymentType]);
+                    $orderFinishSubtotal = Order::where('user_id', $order->user_id)->where('status_pembayaran','Paid')->sum('total_price');
+                    $user = User::where('id', $order->user_id)->first(); // Gunakan first() untuk mendapatkan objek user
+                    $memberships = Membership::orderBy('id','asc')->get();
+                    $user_member = User::where('membership_id',5)->get()->first();
 
                 // foreach ($user_member as $key => $value) {
                     if (!$user_member) {
@@ -1026,6 +1008,28 @@ class OrderController extends Controller
                             $user->save();
                         }
                     }
+                }
+                // $order->update(['status_pembayaran' => 'Paid','invoice_no' => $this->generateInvoice(), 'metode_pembayaran' => $paymentType]);
+                // Get User ID
+
+
+                // $user = User::find($order->user_id);
+                // if ($user) {
+                //     if ($orderFinishSubtotal >= 1 && $orderFinishSubtotal < 2) {
+                //         $user->membership_id = 2;
+                //     } elseif ($orderFinishSubtotal >= 2 && $orderFinishSubtotal < 5) {
+                //         $user->membership_id = 3;
+                //     } elseif ($orderFinishSubtotal >= 5 && $orderFinishSubtotal < 10000000) {
+                //         $user->membership_id = 4;
+                //     } elseif ($orderFinishSubtotal >= 10000000) {
+                //         $user->membership_id = 5;
+                //     } else {
+                //         $user->membership_id = 1;
+                //     }
+                //     $user->save();
+                // }
+
+                
                     
                 // }
                 
