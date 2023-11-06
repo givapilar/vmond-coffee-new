@@ -2,10 +2,9 @@
 
 @push('style-top')
 <style>
-    :disabled {
-        cursor: not-allowed!important;
-        pointer-events: all !important;
-    }
+    input[type="checkbox"][readonly] {
+    cursor: not-allowed;
+}
 </style>
 @endpush
 
@@ -218,7 +217,7 @@
                                                         <div class="flex items-center h-5 mt-1">
                                                             <input readonly id="{{ str_replace(' ', '',strtolower($item->nama)) }}" value="{{ $item->id }}" name="harga_add[]" type="checkbox" class="{{ str_replace(' ', '-', strtolower($add_on->title)) }} border-gray-200 rounded text-blue-600 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800 normal" aria-describedby="{{ str_replace(' ', '',strtolower($item->nama)) }}-description"
                                                             @if ($loop->index < $add_on->minimum_choice) 
-                                                            checked @endif>
+                                                            checked @endif >
                                                             {{-- <input id="{{ str_replace(' ', '',strtolower($item->nama)) }}-{{ $item->id }}" type="radio" value="{{ $item->id }}" name="harga_add[{{ $groupIdentifier }}]" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 normal"
                                                             aria-describedby="{{ str_replace(' ', '',strtolower($item->nama)) }}-description"
                                                             @if ($loop->index < $add_on->minimum_choice) 
@@ -387,29 +386,31 @@ function remove(slug, $id) {
  {{-- Level Pedas --}}
 <script>
 
-    const addOns = @JSON($add_ons);
-    console.log(addOns);
+const addOns = @JSON($add_ons);
+console.log(addOns);
 
-    addOns.forEach(addOns => {
-        let formCheck = document.querySelectorAll('.' + addOns.title.replace(' ', '-').toLowerCase());
-        let countCheck = 0;
-        let maxCheck = addOns.minimum_choice;
-        // console.log(formCheck);
-        formCheck.forEach(detail => {
-            detail.addEventListener('change', function(){
-                if (this.checked) {
-                    countCheck++;
-                } else {
-                    countCheck--;
-                }
+addOns.forEach(addOn => {
+    let formCheck = document.querySelectorAll('.' + addOn.title.replace(' ', '-').toLowerCase());
+    let countCheck = 1;
+    let maxCheck = addOn.minimum_choice;
+    
+    formCheck.forEach(detail => {
+        detail.addEventListener('change', function() {
+            if (this.checked) {
+                countCheck++;
+            } else {
+                countCheck--;
+            }
 
-                if (countCheck > maxCheck) {
-                    this.checked = false; // Mencegah centangan lebih dari jumlah maksimum
-                    countCheck--;
-                }
-            });
+            if (countCheck > maxCheck) {
+                // Uncheck the checkbox that exceeds the maximum allowed
+                this.checked = false;
+                countCheck--;
+            }
         });
     });
+});
+
 </script>
 {{-- Disable Button After Click --}}
 <script>

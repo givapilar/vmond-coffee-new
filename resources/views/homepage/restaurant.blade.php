@@ -1,7 +1,24 @@
 @extends('layouts.app')
 
 @push('style-top')
+<style>
+    .skeleton {
+    width: 100%;
+    height: 100%;
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
 
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+</style>
 @endpush
 
 @push('style-bot')
@@ -17,30 +34,39 @@
     </div>
     <hr> --}}
 
-    <div class="grid grid-cols-1 gap-3">
-        <a href="{{ route('daftar-restaurant', ['category' => 'food']) }}">
-            <div class="text-base sm:text-sm p-1">
-                <div class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg" style="height: 7.5rem;">
-                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80" alt="" class="object-cover object-center h-full w-full">
+    <div class="grid grid-cols-1 gap-3 skeleton">
+            <a href="{{ route('daftar-paket-menu', ['kode_meja' => Request::get('kode_meja')]) }}">
+                <div class="text-base sm:text-sm p-1">
+                    <div class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg" style="height: 15.5rem;">
+                        <img src="{{ asset('assetku/dataku/img/drink.jpg') }}" alt="." class="object-cover object-center h-full w-full">
+                    </div>
+                    
+                    <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300" style="font-weight: 700;">PAKET MENU</p>
                 </div>
-
-                <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300" style="font-weight: 700;">FOODS</p>
-            </div>
-        </a>
-        <a href="{{ route('daftar-restaurant', ['category' => 'drink']) }}">
-            <div class="text-base sm:text-sm p-1">
-                <div class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg" style="height: 7.5rem;">
-                    <img src="https://images.unsplash.com/photo-1470337458703-46ad1756a187?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=869&q=80" alt="." class="object-cover object-center h-full w-full">
+            </a>
+            <a href="{{ route('daftar-restaurant', ['category' => 'food', 'kode_meja' => Request::get('kode_meja')]) }}">
+                <div class="text-base sm:text-sm p-1">
+                    <div class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg" style="height: 15.5rem;">
+                        <img src="{{ asset('assetku/dataku/img/cover.jpg') }}" alt="" class="object-cover object-center h-full w-full">
+                    </div>
+    
+                    <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300" style="font-weight: 700;">FOODS</p>
                 </div>
-
-                <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300" style="font-weight: 700;">DRINKS</p>
-            </div>
-        </a>
+            </a>
+            <a href="{{ route('daftar-restaurant', ['category' => 'drink', 'kode_meja' => Request::get('kode_meja')]) }}">
+                <div class="text-base sm:text-sm p-1">
+                    <div class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg" style="height: 15.5rem;">
+                        <img src="{{ asset('assetku/dataku/img/drink.jpg') }}" alt="." class="object-cover object-center h-full w-full">
+                    </div>
+    
+                    <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300" style="font-weight: 700;">DRINKS</p>
+                </div>
+            </a>
     </div>
 </section>
 
 <section class="p-3">
-    <div id="default-carousel" class="relative w-full" data-carousel="slide">
+    <div id="default-carousel" class="relative w-full skeleton" data-carousel="slide">
         <!-- Carousel wrapper -->
         <div class="relative h-36 overflow-hidden rounded-2xl shadow-2xl md:h-96" style="background: #fff !important;">
             @foreach ($banners as $item)
@@ -62,6 +88,29 @@
 @endpush
 
 @push('script-bot')
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var lazyloadImages = document.querySelectorAll(".lazyload");
+
+        var observer = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    var img = entry.target;
+                    img.src = img.getAttribute("data-src");
+                    img.classList.remove("lazyload");
+                    observer.unobserve(img);
+                }
+            });
+        });
+
+        lazyloadImages.forEach(function(img) {
+            observer.observe(img);
+        });
+    });
+</script>
+
+
 <script>
     $('.slick1').slick({
         infinite:false,

@@ -12,6 +12,23 @@
             margin-top: -40px; /* Adjust this value based on your preference */
         }
     }
+
+    .skeleton {
+        /* width: 100%;
+        height: 100%;
+        background-size: 200% 100%; */
+        animation: loading 1.5s infinite;
+    }
+
+    @keyframes loading {
+        0% {
+            background-position: 200% 0;
+        }
+        100% {
+            background-position: -200% 0;
+        }
+}
+
 </style>
 @endpush
 
@@ -21,7 +38,7 @@
 
 @section('content')
 <section>
-    <div class=" w-11/12 mt-5 p-4 bg-[#1d2943] border border-gray-200 rounded-lg shadow mx-auto dark:bg-[#1d2943] dark:border-[#16274b]">
+    <div class=" w-11/12 mt-5 p-4 bg-[#1d2943] border border-gray-200 rounded-lg shadow mx-auto dark:bg-[#1d2943] dark:border-[#16274b] ">
         <div class="grid grid-cols-1">
             <div class="flex items-center space-x-4">
                 <div class="flex-shrink-0 bg-white rounded-full p-2">
@@ -31,14 +48,26 @@
                 </div>
                 <div class="flex-1 min-w-0">
                     <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                        Total Transaksi
+                        Total Transaksi 
                     </p>
                     <p class="text-sm text-gray-500 truncate dark:text-gray-400">
                         @if (Auth::check())
+                            @if (Auth::user()->is_worker == true)
+                            
+                            @else
                             Rp. {{ number_format($orderFinishSubtotal, 0) ?? '' }}
+                            @endif
                             ( {{ ucwords(Auth::user()->membership->level ?? '') }} Member )
                         @else
-                            Daftarkan <a href="{{ route('register') }}" class="font-medium text-blue-600 hover:underline dark:text-blue-500">akun anda</a>
+                            Daftarkan <a href="{{ route('register', ['jenis_meja' => Request::get('jenis_meja'), 'kode_meja' => Request::get('kode_meja')]) }}" class="font-medium text-blue-600 hover:underline dark:text-blue-500">akun anda</a>
+                        @endif
+                    </p>
+                </div>
+                <div class="flex-shrink-0 min-w-0">
+                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                        @if($kodeMeja != null)
+                        Meja
+                        {{ $kodeMeja }}
                         @endif
                     </p>
                 </div>
@@ -60,9 +89,9 @@
     </div>
 
     <div class="grid grid-cols-3 gap-3">
-        <a href="{{ route('homepage-restaurant') }}">
+        <a href="{{ route('homepage-restaurant', ['jenis_meja' => Request::get('jenis_meja'), 'kode_meja' => Request::get('kode_meja')]) }}">
             <div class="text-base sm:text-sm p-1">
-                <div class="aspect-h-1 h-36 sm:h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg">
+                <div class="aspect-h-1 h-36 sm:h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg skeleton">
                     <img src="{{ asset('assetku/dataku/img/resto.jpg') }}" alt="" class="object-cover h-full w-full">
                     {{-- <span class="absolute top-0 left-0 inline-flex items-center justify-center w-6 h-6 bg-blue-600 rounded-full">
                         <svg aria-hidden="true" class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm1 3a1 1 0 100 2h3a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
@@ -73,18 +102,18 @@
                 <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300" style="font-weight: 500;">RESTAURANT</p>
             </div>
         </a>
-        <a href="{{ route('daftar-billiard') }}">
+        <a href="{{ route('daftar-billiard', ['jenis_meja' => Request::get('jenis_meja'), 'kode_meja' => Request::get('kode_meja')]) }}">
             <div class="text-base sm:text-sm p-1">
-                <div class="aspect-h-1 h-36 sm:h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg">
+                <div class="aspect-h-1 h-36 sm:h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg skeleton">
                     <img src="{{ asset('assetku/dataku/img/billiard.jpg') }}" alt="" class="object-cover object-center h-full w-full billiard">
                 </div>
 
                 <p aria-hidden="true" class="text-sm text-center mt-1 dark:text-gray-300" style="font-weight: 500;">F w B</p>
             </div>
         </a>
-        <a href="{{ route('daftar-meeting-room') }}">
+        <a href="{{ route('daftar-meeting-room', ['jenis_meja' => Request::get('jenis_meja'), 'kode_meja' => Request::get('kode_meja')]) }}">
             <div class="text-base sm:text-sm p-1">
-                <div class="aspect-h-1 h-36 sm:h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg">
+                <div class="aspect-h-1 h-36 sm:h-24 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 border border-[#16274b] shadow-lg skeleton">
                     <img src="https://images.unsplash.com/photo-1431540015161-0bf868a2d407?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="." class="object-cover object-center h-full w-full">
                 </div>
 

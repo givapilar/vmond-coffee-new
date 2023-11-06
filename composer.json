@@ -6,18 +6,22 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "bacon/bacon-qr-code": "^2.0",
         "barryvdh/laravel-dompdf": "^2.0",
         "bumbummen99/shoppingcart": "^4.2",
+        "cr/hashcli": "dev-master",
         "darryldecode/cart": "^4.2",
         "doctrine/dbal": "^3.6",
         "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.0.1",
+        "guzzlehttp/guzzle": "^7.7",
         "laravel/fortify": "^1.17",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "midtrans/midtrans-php": "^2.5",
         "mike42/escpos-php": "^4.0",
+        "pusher/pusher-php-server": "^7.2",
+        "simplesoftwareio/simple-qrcode": "^4.2",
         "xendit/xendit-php": "^2.19"
     },
     "require-dev": {

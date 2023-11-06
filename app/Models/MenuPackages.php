@@ -16,6 +16,11 @@ class MenuPackages extends Model
         return $this->hasMany(OrderPivot::class);
     }
 
+    public function menuPackagePivot()
+    {
+        return $this->hasMany(MenuPackagePivots::class);
+    }
+
     public function biliard()
     {
         return $this->belongsTo(Biliard::class, 'billiard_id', 'id');

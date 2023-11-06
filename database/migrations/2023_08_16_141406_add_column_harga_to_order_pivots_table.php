@@ -14,7 +14,8 @@ class AddColumnHargaToOrderPivotsTable extends Migration
     public function up()
     {
         Schema::table('order_pivots', function (Blueprint $table) {
-            //
+            $table->float('harga')->nullable();
+            $table->float('harga_diskon')->nullable();
         });
     }
 
@@ -26,7 +27,9 @@ class AddColumnHargaToOrderPivotsTable extends Migration
     public function down()
     {
         Schema::table('order_pivots', function (Blueprint $table) {
-            //
+            $table->dropColumn('harga');
+            $table->dropColumn('harga_diskon');
+            
         });
     }
 }

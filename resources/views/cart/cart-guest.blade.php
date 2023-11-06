@@ -17,7 +17,9 @@
 {{-- @if (session('message'))
     <div>{{ session('message') }}</div>
 @endif --}}
+
 <section class="p-3">
+    @if ($cart_guest->count() >= 1)
     <form action="{{ route('checkout-order-guest', md5(strtotime("now"))) }}" method="POST">
         @csrf
         <div class="grid grid-cols-2 sm:grid-cols-1 gap-4 sm:gap-1">
@@ -49,7 +51,6 @@
                                 <p class="text-xs text-gray-500 truncate dark:text-red-500">
                                     Rp. {{ number_format(array_sum((array) ($item->attributes['harga_add'] ?? [])) + ($item->attributes['restaurant']['harga_diskon'] ?? 0), 0) }}
                                 </p>
-                                
                                 
                                 {{-- @if ($item->conditions == 'Restaurant') --}}
                                 {{-- @else   
@@ -84,9 +85,12 @@
                                     <ion-icon name="trash" class=""></ion-icon>
                                 </button>
 
+                                {{-- <button type="button" class="flex justify-center items-center w-10 h-10 rounded-full p-2 bg-red-500 hover:bg-red-600 focus:ring-red-900 focus:ring-4"  data-modal-toggle="barcode">
+                                    <ion-icon name="bag" class="">Barcode</ion-icon>
+                                </button> --}}
+
                                 <div id="deleteModal-{{ $key }}" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full sm:inset-0 h-full delay-200">
                                     <div class="relative p-4 w-full max-w-md h-auto">
-                                        <!-- Modal content -->
                                         <div class="relative p-4 text-center bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
                                             <button type="button" class="text-gray-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="deleteModal-{{ $key }}">
                                                 <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
@@ -105,6 +109,34 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                {{-- <div id="barcode" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full sm:inset-0 h-full delay-200">
+                                    <div class="relative p-4 w-full max-w-md h-auto">
+                                        <div class="relative p-4 text-center bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+                                            <button type="button" class="text-gray-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="barcode">
+                                                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                                <span class="sr-only">Close modal</span>
+                                            </button>
+                                            <svg class="text-gray-400 dark:text-gray-500 w-11 h-11 mb-3.5 mx-auto" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                                            <div class="card">
+                                                <div class="card-header">Barcode</div>
+                                                <div class="card-body">
+                                                    <a href="{{ route('createQris') }}" type="button" class="btn btn-danger py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
+                                                        generate Barcode
+                                                    </a>
+                                                </div>
+                                                <div class="card-footer">
+                                                </div>
+                                            </div>
+                                            <div class="flex justify-center items-center space-x-4">
+                                                <button data-modal-toggle="barcode" type="button" class="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                                    No, cancel
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> --}}
+
                             </div>
                         </div>
                     </li>
@@ -112,9 +144,41 @@
                 </ul>
                 @endforeach
             </div>
-        
 
-            {{-- {{ dd($users->kode_meja) }} --}}
+            {{-- Total Waktu --}}
+            @foreach ($cart_guest as $item)
+                @php
+                $totalLamaWaktu = 0;
+                
+                foreach ($cart_guest as $item) {
+                    $lamaWaktu = $item->attributes['restaurant']['lama_waktu'];
+                    $totalLamaWaktu += $lamaWaktu;
+                }
+                
+                // Calculate hours and minutes
+                $hours = floor($totalLamaWaktu / 60);
+                $minutes = $totalLamaWaktu % 60;
+                
+                // Format the hours and minutes into a human-readable string
+                $timeFormatted = "";
+                
+                if ($hours > 0) {
+                    $timeFormatted .= $hours . " jam ";
+                }
+                
+                if ($minutes > 0) {
+                    $timeFormatted .= $minutes . " menit";
+                } else {
+                    $timeFormatted .= "0 menit";
+                }
+                @endphp
+
+                {{-- <input type="hidden" name="total_lama_waktu" value="{{$totalLamaWaktu }}"> --}}
+                <input type="hidden" name="total_lama_waktu" value="{{$timeFormatted }}">
+            @endforeach
+
+            @if ($kodeMeja == null)
+                
             <div class="text-left max-w-sm h-96 bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700 mt-2 mb-2">
                 <div class="p-2 space-x-4">
                     <p class="text-lg font-semibold text-center dark:text-white">Pilih Category</p>
@@ -144,7 +208,7 @@
                             <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option disabled selected>Pilih Meja Restaurant</option>
                                 @foreach ($meja_restaurants as $key => $meja_restaurant)
-                                    <option value="{{ $meja_restaurant->id }}">{{ $meja_restaurant->nama }}</option>
+                                    <option value="{{ $meja_restaurant->nama }}">{{ $meja_restaurant->nama }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -170,7 +234,7 @@
                             <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option disabled selected>Pilih Meja Restaurant</option>
                                 @foreach ($meja_restaurants as $key => $meja_restaurant)
-                                    <option value="{{ $meja_restaurant->id }}">{{ $meja_restaurant->nama }}</option>
+                                    <option value="{{ $meja_restaurant->nama }}">{{ $meja_restaurant->nama }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -179,7 +243,76 @@
                 </ul>
             </div>
 
-            <div class="text-left max-w-sm h-64 bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+            @else
+            <div class="text-left max-w-sm h-96 bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700 mb-2">
+                <div class="p-2 space-x-4">
+                    <p class="text-lg font-semibold text-center dark:text-white">Pilih Category</p>
+                </div>
+                <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
+                <ul class="max-w-sm divide-y divide-gray-200 dark:divide-gray-700 px-3">
+                    <li class="py-3 sm:py-2">
+                        <div class="flex items-center space-x-4">
+                        <div class="flex-shrink-0">
+                            <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/takeaway.png') }}" alt="Neil image">
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                            Takeway
+                            </p>
+                        </div>
+                        <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                            <input id="takeaway-radio" required type="radio" value="Takeaway" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        </div>
+                        </div>
+                    </li>
+
+                    <li class="py-3 sm:py-2" style="display: none;" id="meja-takeaway">
+                        <div id="select-input-wrapper">
+                            <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja Untuk Takeaway</label>
+                            <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option disabled selected>Pilih Meja Restaurant</option>
+                                @foreach ($meja_restaurants as $key => $meja_restaurant)
+                                {{-- @if ($kodeMeja == $meja_restaurant->kode_meja) --}}
+                                <option required value="{{ $meja_restaurant->nama }}" {{ $kodeMeja == $meja_restaurant->kode_meja ? 'selected' : '' }}>{{ $meja_restaurant->nama }}</option>
+                                {{-- @endif --}}
+                                @endforeach
+                            </select>
+                        </div>
+                    </li>
+
+                    <li class="py-3 sm:py-2">
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0">
+                                <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/dinein.png') }}" alt="Neil image">
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                    Dine In
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                <input id="dine-in-radio" required type="radio" value="Dine In" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" checked>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="py-3 sm:py-2" style="" id="meja-wrapper">
+                        <div id="select-input-wrapper">
+                            <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja</label>
+                            <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option disabled selected>Pilih Meja Restaurant</option>
+                                @foreach ($meja_restaurants as $key => $meja_restaurant)
+                                {{-- @if ($kodeMeja == $meja_restaurant->kode_meja) --}}
+                                <option required value="{{ $meja_restaurant->nama }}" {{ $kodeMeja == $meja_restaurant->kode_meja ? 'selected' : '' }}>{{ $meja_restaurant->nama }}</option>
+                                {{-- @endif --}}
+                                @endforeach
+                            </select>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            @endif
+
+            <div class="text-left max-w-sm h-80 bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
                 <div class="p-2 space-x-4">
                     <p class="text-lg font-semibold text-center dark:text-white">Isi Data Informasi Order</p>
                 </div>
@@ -207,6 +340,19 @@
                         <input placeholder="Massukan No Tlp" required name="phone" id="" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('password') is-invalid @enderror">
                         <small class="text-xs text-center dark:text-red-500">*Otomatis menjadi member (username dan password menggunakan nomer telephone)</small>
                     </li>
+
+                    <li class="py-3 sm:py-2">
+                        <div class="flex items-center space-x-4">
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                Massukan Jumlah orang /Table 
+                            </p>
+                        </div>
+                        </div>
+                        <input type="number" min="0" placeholder="Massukan Jumlah Orang /Table" required name="jumlah_customer" id="" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('jumlah_customer') is-invalid @enderror">
+                        
+                    </li>
+
                 </ul>
             </div>
         </div>
@@ -255,6 +401,7 @@
                             </p>
                         </div>
                         <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white" id="PB01-summary">
+                            <input type="hidden" name="packing" value="5000" >
                             <?php
                                 $biaya_pb01 = number_format(((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100,0);
                             ?>
@@ -264,7 +411,7 @@
                     </div>
                 </li>
 
-                <li class="py-3 sm:py-3 takeaway" id="packingLi" style="display: none;">
+                <li class="py-3 sm:py-3 takeaway" id="packing" style="display: none;">
                     <div class="flex items-start space-x-4">
                         <div class="flex-1 min-w-0">
                             <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
@@ -299,6 +446,7 @@
                     </div>
                 </li>
 
+
                 <li class="py-3 sm:py-3" id="order-total-packing" style="display: none;">
                     <div class="flex items-start space-x-4">
                         <div class="flex-1 min-w-0">
@@ -313,8 +461,8 @@
                                 $totalWithPacking = $totalWithoutPacking + ($totalWithoutPacking + (\Cart::getTotal() ?? 0) * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100 + $packing;
                             ?>
                             @if (\Cart::getTotal())
-                            {{-- Rp. {{ number_format((\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100,0)}} --}}
-                            Rp. {{ number_format($totalWithPacking, 0) }}
+                            Rp. {{ number_format((\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100 + 5000,0)}}
+                            {{-- Rp. {{ number_format($totalWithPacking, 0) }} --}}
 
                             @else
                             Rp. 0
@@ -328,6 +476,12 @@
             </div>
         </div>
     </form>
+    @else
+    <div class="w-100 h-96 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+        <img src="{{ asset('images/empty-cart.png') }}" width="25%">
+        <h3>Keranjangmu Kosong, Harap masukkan product terlebih dahulu</h3>
+    </div>
+    @endif
 </section>
 
 <div class="pb-[5rem]"></div>
@@ -350,16 +504,19 @@
         const dineInRadio = document.getElementById("dine-in-radio");
         const orderTotal = document.getElementById("order-total");
         const orderTotalPacking = document.getElementById("order-total-packing");
+        const packing = document.getElementById("packing");
 
         if (takeawayRadio && dineInRadio && orderTotal && orderTotalPacking) {
             takeawayRadio.addEventListener("change", function () {
                 orderTotal.style.display = "none";
                 orderTotalPacking.style.display = "block";
+                packing.style.display = "block";
             });
 
             dineInRadio.addEventListener("change", function () {
                 orderTotal.style.display = "block";
                 orderTotalPacking.style.display = "none";
+                packing.style.display = "none";
             });
         }
     });

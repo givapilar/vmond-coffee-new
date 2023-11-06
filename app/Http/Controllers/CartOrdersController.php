@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Models\OtherSetting;
 use App\Models\Role;
 use App\Models\UserManagement;
+use App\Models\Voucher;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +25,7 @@ use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
 use Mike42\Escpos\Printer;
 use Mike42\Escpos\CapabilityProfile;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
+// use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Cart;
 
 class CartOrdersController extends Controller
@@ -52,6 +54,8 @@ class CartOrdersController extends Controller
 
         $data ['userManagement'] = UserManagement::orderby('id', 'asc')->get();
         $data ['order_settings'] = OtherSetting::get();
+        $data['vouchers'] = Voucher::get();
+
         if (Auth::check()) {
             # code...
             $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
@@ -107,6 +111,15 @@ class CartOrdersController extends Controller
                 // $processedCartItems[] = $cartItemData;
                 // $data['processedCartItems'] = $processedCartItems;
             }
+
+            // $data1 = "00020101021226620017ID.CO.BANKBJB.WWW01189360011030001393800208001393800303UMI51470017ID.CO.BANKBJB.WWW0215ID12312312938560303UMI5204581253033605405200005802ID5912Vmond Coffee6007Bandung61051232262510124QRIS2023090715063500717102120817171819880703C026304DD65";
+        
+            // // Generate QR Code
+            // $data['qrCode'] = QrCode::encoding('UTF-8')
+            //     ->size(400)
+            //     ->margin(10)
+            //     ->generate($data1);
+
             return view('cart.cart-guest',$data);
         }
 
@@ -116,10 +129,8 @@ class CartOrdersController extends Controller
     {
         // dd($request->all());
 
-        // Replace the 'foreach' loop with a more efficient 'foreach' loop using collections.
-            
-        
-        $restaurant = Restaurant::findOrFail($id);
+        // try {
+            $restaurant = Restaurant::findOrFail($id);
         
         if ($restaurant->current_stok <= 0) {
             return redirect()->back()->with(['failed' => 'Stok ' . $restaurant->name . ' Kurang!']);
@@ -135,45 +146,47 @@ class CartOrdersController extends Controller
         
         // Jika waktu saat ini melebihi batas pesanan, maka kembalikan pesan error
         $currentDay = date('N'); // Mendapatkan hari dalam format 1 (Senin) hingga 7 (Minggu)
-        if ($restaurant->category == 'Minuman') {
+        // if ($restaurant->category == 'Minuman') {
             
-            if ($currentDay >= 1 && $currentDay <= 4) {
-                // Weekdays (Senin-Kamis)
-                $orderOpenTime = $other_setting->time_start_weekdays_minuman;
-                $orderDeadline = $other_setting->time_close_weekdays_minuman;
-            } else if ($currentDay >= 5 && $currentDay <= 7) {
-                // Weekend (Sabtu/Minggu)
-                $orderOpenTime = $other_setting->time_start_weekend_minuman;
-                $orderDeadline = $other_setting->time_close_weekend_minuman;
-            }
+        //     if ($currentDay >= 1 && $currentDay <= 4) {
+        //         // Weekdays (Senin-Kamis)
+        //         $orderOpenTime = $other_setting->time_start_weekdays_minuman;
+        //         $orderDeadline = $other_setting->time_close_weekdays_minuman;
+        //     } else if ($currentDay >= 5 && $currentDay <= 7) {
+        //         // Weekend (Sabtu/Minggu)
+        //         $orderOpenTime = $other_setting->time_start_weekend_minuman;
+        //         $orderDeadline = $other_setting->time_close_weekend_minuman;
+        //     }
             
-            if ($currentTime > $orderDeadline) {
-                return redirect()->back()->with(['failed' => 'Maaf, Kita Sudah Close Order']);
-            } elseif ($currentTime < $orderOpenTime) {
-                // Jika waktu saat ini masih sebelum batas pemesanan pagi, maka tampilkan pesan bahwa pemesanan belum dibuka
-                return redirect()->back()->with(['failed' => 'Maaf, Cafe belum dibuka. Silakan coba lagi nanti']);
-            }
-        }else{
-            if ($currentDay >= 1 && $currentDay <= 4) {
-                // Weekdays (Senin-Kamis)
-                $orderOpenTime = $other_setting->time_start;
-                $orderDeadline = $other_setting->time_close;
-            } else if ($currentDay >= 5 && $currentDay <= 7) {
-                // Weekend (Sabtu/Minggu)
-                $orderOpenTime = $other_setting->time_start_weekend;
-                $orderDeadline = $other_setting->time_close_weekend;
-            }
-            // $orderOpenTimeMakanan = $other_setting->time_start_weekend;
-            // $orderDeadlineMakanan = $other_setting->time_close_weekend;
-            $orderOpenTimeMakanan = $other_setting->time_start;
-            $orderDeadlineMakanan = $other_setting->time_close;
-            if ($currentTime > $orderDeadlineMakanan) {
-                return redirect()->back()->with(['failed' => 'Maaf, Kita Sudah Close Order']);
-            } elseif ($currentTime < $orderOpenTimeMakanan) {
-                // Jika waktu saat ini masih sebelum batas pemesanan pagi, maka tampilkan pesan bahwa pemesanan belum dibuka
-                return redirect()->back()->with(['failed' => 'Maaf, Cafe belum dibuka. Silakan coba lagi nanti']);
-            }
-        }
+        //     if ($currentTime > $orderDeadline) {
+        //         return redirect()->back()->with(['failed' => 'Maaf, Kita Sudah Close Order']);
+        //     } elseif ($currentTime < $orderOpenTime) {
+        //         // Jika waktu saat ini masih sebelum batas pemesanan pagi, maka tampilkan pesan bahwa pemesanan belum dibuka
+        //         return redirect()->back()->with(['failed' => 'Maaf, Cafe belum dibuka. Silakan coba lagi nanti']);
+        //     }
+        //     // makanan
+        // }else{
+        //     if ($currentDay >= 1 && $currentDay <= 4) {
+        //         // Weekdays (Senin-Kamis)
+        //         $orderOpenTimeMakanan = $other_setting->time_start;
+        //         $orderDeadlineMakanan = $other_setting->time_close;
+        //     } else if ($currentDay >= 5 && $currentDay <= 7) {
+        //         // Weekend (Sabtu/Minggu)
+        //         // dd('masuk');
+        //         $orderOpenTimeMakanan = $other_setting->time_start_weekend;
+        //         $orderDeadlineMakanan = $other_setting->time_close_weekend;
+        //     }
+        //     // $orderOpenTimeMakanan = $other_setting->time_start_weekend;
+        //     // $orderDeadlineMakanan = $other_setting->time_close_weekend;
+        //     // $orderOpenTimeMakanan = $other_setting->time_start;
+        //     // $orderDeadlineMakanan = $other_setting->time_close;
+        //     if ($currentTime > $orderDeadlineMakanan) {
+        //         return redirect()->back()->with(['failed' => 'Maaf, Kita Sudah Close Order']);
+        //     } elseif ($currentTime < $orderOpenTimeMakanan) {
+        //         // Jika waktu saat ini masih sebelum batas pemesanan pagi, maka tampilkan pesan bahwa pemesanan belum dibuka
+        //         return redirect()->back()->with(['failed' => 'Maaf, Cafe belum dibuka. Silakan coba lagi nanti']);
+        //     }
+        // }
         
         
 
@@ -214,53 +227,74 @@ class CartOrdersController extends Controller
         // dd('sucess');
 
         if (Auth::check()) {
+
+            // $userPhoneNumber = Auth::user()->telephone;
+            // // dd($userPhoneNumber);
+            // // Define an array of allowed phone numbers
+            // $allowedPhoneNumbers = [
+            //     '08123456001',
+            //     '08123456003',
+            //     '08123456004',
+            //     '08123456005',
+            //     '081818181847',
+            // ];
+
+            // if (in_array($userPhoneNumber, $allowedPhoneNumbers)) {
+                $cartContent = \Cart::session(Auth::user()->id)->getContent();
+                
+                $addonDetail = array(
+                    'restaurant' => $restaurant,
+                    'category' => $request->category,
+                    'add_on_title' => $request->add_on_title,
+                    'harga_add' => $dataHargaAddon,
+                    'detail_addon_id' => $request->harga_add,
+                    'add_on_nama_title' => $request->add_on_nama_title,
+                    'add_nama' => $request->add_nama,
+                );
+            
+                // Mengkonversi array add-on detail menjadi JSON untuk digunakan sebagai kunci unik
+                $itemIdentifier = md5(json_encode($addonDetail));
+            
+                // Memeriksa apakah item dengan add-on detail yang sama sudah ada di dalam Cart
+                $existingItem = $cartContent->first(function ($item, $key) use ($itemIdentifier) {
+                    return $item->id === $itemIdentifier;
+                });
+            
+                if ($existingItem !== null) {
+                    // Jika item dengan add-on detail yang sama sudah ada di dalam Cart
+                    // Buat array baru dengan membawa detail add-on ID yang berbeda
+                    $itemAttributes = $existingItem->attributes->toArray();
+                    if (!in_array($request->harga_add, $itemAttributes['detail_addon_id'])) {
+                        $itemAttributes['detail_addon_id'] = $request->harga_add;
+                        $existingItem->attributes = $itemAttributes;
+                        $existingItem->quantity += $request->qty;
+                        \Cart::session(Auth::user()->id)->update($existingItem->id, $existingItem->toArray());
+                    }
+                } else {
+                    // Jika item dengan add-on detail tertentu belum ada di dalam Cart, tambahkan data cart baru
+                    \Cart::session(Auth::user()->id)->add(array(
+                        'id' => $itemIdentifier, // Gunakan kunci unik sebagai ID item
+                        'name' => $restaurant->nama,
+                        'price' => ($restaurant->harga_diskon + (is_array($dataHargaAddon) ? array_sum($dataHargaAddon) : 0) ?? $restaurant->harga_diskon),
+                        'quantity' => $request->qty,
+                        'attributes' => $addonDetail,
+                        'conditions' => 'Restaurant',
+                        'associatedModel' => Restaurant::class
+                    ));
+                }
+                
+                $category = $request->category;
+                return redirect()->route('daftar-restaurant', ['category' => $category])->with('success', 'Berhasil masuk cart!');
+            // }else{
+            //     return redirect()->back()->with('failed', 'Silahkan Tanya Waiters');
+
+            // }
+
             // Mengambil konten Cart berdasarkan user ID
-            $cartContent = \Cart::session(Auth::user()->id)->getContent();
+            // $cartContent = \Cart::session(Auth::user()->id)->getContent();
         
             // Membuat array dari add-on detail untuk digunakan sebagai kunci unik
-            $addonDetail = array(
-                'restaurant' => $restaurant,
-                'category' => $request->category,
-                'add_on_title' => $request->add_on_title,
-                'harga_add' => $dataHargaAddon,
-                'detail_addon_id' => $request->harga_add,
-                'add_on_nama_title' => $request->add_on_nama_title,
-                'add_nama' => $request->add_nama,
-            );
-        
-            // Mengkonversi array add-on detail menjadi JSON untuk digunakan sebagai kunci unik
-            $itemIdentifier = md5(json_encode($addonDetail));
-        
-            // Memeriksa apakah item dengan add-on detail yang sama sudah ada di dalam Cart
-            $existingItem = $cartContent->first(function ($item, $key) use ($itemIdentifier) {
-                return $item->id === $itemIdentifier;
-            });
-        
-            if ($existingItem !== null) {
-                // Jika item dengan add-on detail yang sama sudah ada di dalam Cart
-                // Buat array baru dengan membawa detail add-on ID yang berbeda
-                $itemAttributes = $existingItem->attributes->toArray();
-                if (!in_array($request->harga_add, $itemAttributes['detail_addon_id'])) {
-                    $itemAttributes['detail_addon_id'] = $request->harga_add;
-                    $existingItem->attributes = $itemAttributes;
-                    $existingItem->quantity += $request->qty;
-                    \Cart::session(Auth::user()->id)->update($existingItem->id, $existingItem->toArray());
-                }
-            } else {
-                // Jika item dengan add-on detail tertentu belum ada di dalam Cart, tambahkan data cart baru
-                \Cart::session(Auth::user()->id)->add(array(
-                    'id' => $itemIdentifier, // Gunakan kunci unik sebagai ID item
-                    'name' => $restaurant->nama,
-                    'price' => ($restaurant->harga_diskon + (is_array($dataHargaAddon) ? array_sum($dataHargaAddon) : 0) ?? $restaurant->harga_diskon),
-                    'quantity' => $request->qty,
-                    'attributes' => $addonDetail,
-                    'conditions' => 'Restaurant',
-                    'associatedModel' => Restaurant::class
-                ));
-            }
-            
-            $category = $request->category;
-            return redirect()->route('daftar-restaurant', ['category' => $category])->with('success', 'Berhasil masuk cart!');
+           
         } else {
             $user = 'guest';
             // \Cart::session($user)->add(array(
@@ -281,6 +315,8 @@ class CartOrdersController extends Controller
             //     'associatedModel' => Restaurant::class
            
             // ));
+
+            // return redirect()->back()->with('failed', 'Silahkan Tanya Waiters');
 
             // Mengambil konten Cart berdasarkan user ID
             $cartContent = \Cart::session($user)->getContent();
@@ -304,6 +340,7 @@ class CartOrdersController extends Controller
                 return $item->id === $itemIdentifier;
             });
         
+            // kode lama
             if ($existingItem !== null) {
                 // Jika item dengan add-on detail yang sama sudah ada di dalam Cart
                 // Buat array baru dengan membawa detail add-on ID yang berbeda
@@ -314,7 +351,25 @@ class CartOrdersController extends Controller
                     $existingItem->quantity += $request->qty;
                     \Cart::session($user)->update($existingItem->id, $existingItem->toArray());
                 }
-            } else {
+            } 
+            // if ($existingItem !== null) {
+            //     // Jika item dengan add-on detail yang sama sudah ada di dalam Cart
+            //     // Buat array baru dengan membawa detail add-on ID yang berbeda
+            //     $itemAttributes = $existingItem->attributes->toArray();
+                
+            //     // Check if the detail_addon_id is an array
+            //     if (!is_array($itemAttributes['detail_addon_id'])) {
+            //         $itemAttributes['detail_addon_id'] = []; // Initialize as an array
+            //     }
+            
+            //     if (!in_array($request->harga_add, $itemAttributes['detail_addon_id'])) {
+            //         $itemAttributes['detail_addon_id'][] = $request->harga_add;
+            //         $existingItem->attributes = $itemAttributes;
+            //         $existingItem->quantity += $request->qty;
+            //         \Cart::session($user)->update($existingItem->id, $existingItem->toArray());
+            //     }
+            // }
+                else {
                 // Jika item dengan add-on detail tertentu belum ada di dalam Cart, tambahkan data cart baru
                 \Cart::session($user)->add(array(
                     'id' => $itemIdentifier, // Gunakan kunci unik sebagai ID item
@@ -330,6 +385,10 @@ class CartOrdersController extends Controller
             $category = $request->category;
             return redirect()->route('daftar-restaurant', ['category' => $category])->with('success', 'Berhasil Masuk Cart !');
         }
+        // } catch (\Throwable $th) {
+        //     return redirect()->back()->with('failed', $th->getMessage());
+        // }
+        
     }
 
     public function updateCart(Request $request)

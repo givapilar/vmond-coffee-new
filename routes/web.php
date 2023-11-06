@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\NotifBJB;
 use App\Http\Controllers\APIController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
@@ -10,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\HomepageController;
+use App\Http\Controllers\PaymentBriController;
 use App\Models\Banner;
 use App\Models\CartOrders;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +27,11 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 // Route::auth();
+
+Route::get('/data/success-order-bjb-2', function (){
+    return 'test';
+})->name('success-order-bjb');
+
 Route::get('/', function () {
     if (Auth::check()) {
         return redirect()->route('homepage');
@@ -36,8 +43,17 @@ Route::post('/register', [RegisterController::class, 'store'])->name('register')
 
 Route::get('/home', [HomepageController::class, 'index'])->name('homepage');
 
+
+Route::get('/create-qris-tes', [OrderController::class, 'createQrisBri'])->name('createQris-brii');
+
 // daftar menu
 Route::get('/daftarmenu/restaurant', [DaftarMenuController::class, 'restaurant'])->name('daftar-restaurant');
+
+// Paket menu
+Route::get('/daftarmenu/paket-menu', [DaftarMenuController::class, 'paketMenu'])->name('daftar-paket-menu');
+Route::get('/paket-menu/restaurant/{id}', [DetailController::class, 'detailPaket'])->name('detail-paket-menu');
+Route::post('/checkout-paket-menu/{token}',[OrderController::class,'checkoutPaketMenu'])->name('checkout-paket-menu');
+
 // Detial Resto
 // Route::get('/daftarmenu/detail-resto/{$id}', [DetailController::class, 'restaurant'])->name('detail-resto');
 Route::get('/daftarmenu/restaurant/{id}/{category}', [DetailController::class, 'detailRestaurant'])->name('detail-resto');
@@ -89,6 +105,18 @@ Route::get('/restaurant/menu', function () {
     return view('homepage.restaurant', $data);
 })->name('homepage-restaurant');
 
+// pusher BJB
+Route::get('/pusher', function () {
+    return view('aktivasi-bjb.pusher');
+})->name('pusher');
+
+Route::post('/pusher', function () {
+    $name = request()->name;
+
+    event(new NotifBJB($name));
+    return view('aktivasi-bjb.pusher');
+})->name('pusher-push');
+
 // User-profile
 // Route::get('/user-profile', [UserController::class, 'userProfile'])->name('user-profile');
 Route::get('/user-profile/edit/{id}', [UserController::class, 'edit'])->name('edit-account');
@@ -121,6 +149,15 @@ Route::get('/delete-chart/{id}',[CartOrdersController::class, 'deleteCart'])->na
 
 // Route Midtrans
 Route::get('midtrans',[CartOrdersController::class,'midtransCheck'])->name('midtrans-check');
+
+// Route BRI API
+Route::get('/index-bri',[PaymentBriController::class,'indexBri'])->name('indexBri');
+Route::post('/generate-token-bri',[PaymentBriController::class,'createToken'])->name('create-token-bri');
+Route::post('/create-qr-bri',[PaymentBriController::class,'generateQR'])->name('create-qr-bri');
+
+// Route DSP
+Route::post('/generate-token-dsp',[PaymentBriController::class,'createTokenDsp'])->name('create-token-dsp');
+Route::post('/generate-token-fetchQRCryptogram',[PaymentBriController::class,'fetchQRCryptogram'])->name('create-token-fetch');
 
 // Route Orders
 Route::get('orders',[OrderController::class,'index'])->name('order.index');
@@ -155,9 +192,48 @@ Route::post('/check-schedule',[APIController::class,'checkDateSchedule'])->name(
 Route::post('/check-schedule-meeting',[APIController::class,'checkDateScheduleMeeting'])->name('check-schedule-meeting');
 
 Route::post('/data/success-order',[OrderController::class,'successOrder'])->name('success-order');
+Route::post('/data/update-invoice',[OrderController::class,'updateInvoice'])->name('update-invoice');
+Route::post('/data/update-stock-bjb',[OrderController::class,'updateStockBJB'])->name('update-stock-bjb');
 
 // Success order Waiters
 Route::post('/checkout/checkout-waiters/{token}',[OrderController::class,'checkoutWaiters'])->name('checkout-waiters');
 
 // delete meja id
 Route::get('/checkout/destroy',[OrderController::class,'resetMeja'])->name('reset-meja');
+
+
+// =============================================================
+// Integrasi Payment Gateway
+// =============================================================
+Route::get('/aktivasi-bjb', function () {
+    return view('aktivasi-bjb.index');
+});
+
+Route::get('/get-token', function () {
+    return view('aktivasi-bjb.get-token');
+})->name('get-token');
+
+Route::get('/send-otp', function () {
+    return view('aktivasi-bjb.send-otp');
+})->name('send-otp');
+
+Route::get('/create-qris', function () {
+    return view('aktivasi-bjb.create-qris');
+})->name('create-qris');
+
+Route::get('/aktivasi-merchant', function () {
+    return view('aktivasi-bjb.aktivasi');
+})->name('aktivasi');
+
+// BJB
+Route::post('/v1/integration/get-token-fintech',[APIController::class,'getTokenFintech'])->name('get-token-fintech');
+Route::post('/v1/integration/send-otp',[APIController::class,'sendOTP'])->name('send-otp-fintech');
+Route::post('/v1/integration/create-qris',[APIController::class,'createQris'])->name('create-qris-merchant');
+Route::post('/v1/integration/aktivasi-merchant',[APIController::class,'aktivasi'])->name('aktivasi-merchant');
+
+// BRI
+Route::post('/v1/integration/create-qris-bri',[APIController::class,'createQrisBri'])->name('create-qris-bri');
+
+// =============================================================
+// End Integrasi Payment Gateway
+// =============================================================

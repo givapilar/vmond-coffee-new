@@ -5,14 +5,34 @@
 @endpush
 
 @push('style-bot')
+<style>
+    .swiper-button-next svg, .swiper-button-prev svg {
+        width:20% !important;
+    }
 
+    .skeleton {
+    /* width: 100%;
+    height: 100%;
+    background-size: 200% 100%; */
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+</style>
 @endpush
 
 @section('content')
 <section>
     <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
-        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
-        @php
+        <swiper-container class="mySwiper" slides-per-view="3" navigation="true" space-between="30" autoplay-delay="1500" data-tabs-toggle="#myTabContent" role="tablist">
+            @php
             $processedTags = []; // Array untuk menyimpan tag yang telah diproses
             @endphp
 
@@ -29,25 +49,15 @@
                                 $processedTags[] = $item->id; // Menyimpan tag yang telah diproses
                                 $isTagProcessed = true; // Menandai bahwa tag telah diproses
                                 @endphp
-
-                                <li class="mr-2" role="presentation">
-                                    {{-- <a href="{{ route('daftar-restaurant', ['category' => request()->category, 'menu' => $item->tag_name]) }}" id="category-link" class="inline-block px-5 py-4 border-b-2 rounded-t-lg mr-0 ml-3" style="text-align:center !important; font-weight: 700 !important;" data-tabs-target="#{{ strtolower(str_replace(' ','',$item->tag_name)) }}" type="button" role="tab" aria-controls="{{ strtolower(str_replace(' ','',$item->tag_name)) }}" aria-selected="false">{{ strtoupper($item->tag_name) }}</a> --}}
-                                    {{-- <a href="#" class="inline-block px-5 py-4 border-b-2 rounded-t-lg mr-0 ml-3" style="text-align:center !important; font-weight: 700 !important;" id="{{ strtolower(str_replace(' ','',$item->tag_name)) }}-tab" data-tabs-target="#{{ strtolower(str_replace(' ','',$item->tag_name)) }}" type="button" role="tab" aria-controls="{{ strtolower(str_replace(' ','',$item->tag_name)) }}" aria-selected="false">{{ strtoupper($item->tag_name) }}</a> --}}
-                                    <a href="#" class="inline-block px-5 py-4 border-b-2 rounded-t-lg mr-0 ml-3" style="text-align:center !important; font-weight: 700 !important;" id="{{ strtolower(str_replace(' ','',$item->tag_name)) }}-tab" data-tabs-target="#{{ strtolower(str_replace(' ','',$item->tag_name)) }}" type="button" role="tab" >{{ strtoupper($item->tag_name) }}</a>
-                                    {{-- <a href="#" class="get-parameter inline-block px-5 py-4 border-b-2 rounded-t-lg mr-0 ml-3"
-                                        style="text-align: center !important; font-weight: 700 !important;"
-                                        data-tag-name="{{ strtolower(str_replace(' ', '', $item->tag_name)) }}">
-                                        {{ strtoupper($item->tag_name) }}
-                                    </a> --}}
-                                    {{-- {{ dd($menu == request()->menu) }} --}}
-                                </li>
-
+                                    <swiper-slide>
+                                        <a href="#" class="inline-block px-5 py-4 border-b-2 rounded-t-lg mr-0 ml-3" style="text-align:center !important; font-weight: 700 !important;" id="{{ strtolower(str_replace(' ','',$item->tag_name)) }}-tab" data-tabs-target="#{{ strtolower(str_replace(' ','',$item->tag_name)) }}" type="button" role="tab" >{{ strtoupper($item->tag_name) }}</a>
+                                    </swiper-slide>
                             @endif
                         @endif
                     @endforeach
                 @endforeach
             @endforeach
-        </ul>
+        </swiper-container>
     </div>
 </section>
 
@@ -67,7 +77,7 @@
                 @if ($pivot->tag_id == $item->id)
                 @if ($resto->category == $category)
                 <div class="text-base sm:text-sm px-1 py-3">
-                    <div class="aspect-h-1 h-40 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
+                    <div class="aspect-h-1 h-40 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 skeleton">
                         
                         @if ($resto->image != null)
                         <img src="{{ $global_url_image.$resto->image ?? 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80' }}" alt="." class="object-cover object-center h-full w-full">
@@ -99,11 +109,12 @@
                                     @else
                                     <button class="w-full text-gray-500 text-xs rounded-lg mt-2 p-1 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-sky-300 dark:text-white flex items-center justify-center" style="background-color: gray;" disabled>
                                         <ion-icon name="cart" class="mt-[0.2rem] mb-1 dark:text-white" style="font-size: 15px; margin-right: 5px;"></ion-icon>
-                                        <p class="mt-1 mb-1">Tidak Tersedia</p>
+                                        <p class="mt-1 mb-1">Sold Out</p>
                                     </button>
                                     @endif
                                 </div>
                             </form>
+
                         </div>
                     </div>
                 </div>
@@ -128,9 +139,10 @@
 @endpush
 
 @push('script-bot')
+
 <script>
     $(document).ready(function() {
-        
+       
         
         // Menghitung panjang huruf untuk setiap tab
         var tabLengths = [];
@@ -147,7 +159,7 @@
         var slidesToShow = Math.ceil(maxTabLength / 10); // Misalnya, setiap slide menampilkan 10 huruf
 
         // Menginisialisasi Slick slider dengan konfigurasi dinamis
-        $('#myTab').slick({
+        $('.myTab').slick({
             slidesToShow: slidesToShow,
             slidesToScroll: 1,
             autoplay: true, // Set this to true to enable auto sliding

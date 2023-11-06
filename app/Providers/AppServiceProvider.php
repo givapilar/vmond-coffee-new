@@ -6,6 +6,8 @@ use App\Models\Order;
 use App\Models\OrderPivot;
 use App\Models\OtherSetting;
 use App\Models\Restaurant;
+use App\Models\User;
+use App\Models\UserManagement;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
@@ -14,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Cache;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -38,40 +41,69 @@ class AppServiceProvider extends ServiceProvider
         Carbon::setLocale('id');
         date_default_timezone_set('Asia/Jakarta');
 
-        // $this->app['request']->server->set('HTTPS', true);
-        // URL::forceScheme('https');
-        
+        //$this->app['request']->server->set('HTTPS', true);
+        //URL::forceScheme('https');
         view()->composer('*', function (){
             if (Auth::user()) {
-                $today = Carbon::today();
-                $yesterday = Carbon::yesterday();
+                $today = Carbon::tomorrow();
+                // $oneHourAgo = Carbon::now()->subHour();
+                $query = Order::query();
+
                 if (Auth::user()->telephone == '081818181847') {
-                    $orderTable = Order::orderBy('id', 'desc')
-                        ->whereDate('created_at', $today)
-                        ->where('user_id', Auth::user()->id)
-                        ->where('status_pembayaran', 'Paid')
-                        ->get();
+                    // $orderTable = Order::orderBy('id', 'desc')
+                    //     ->whereDate('created_at', $oneHourAgo)
+                    //     ->where('user_id', Auth::user()->id)
+                    //     ->where('status_pembayaran', 'Paid')
+                    //     ->get();
+
+                    $oneHourAgo = Carbon::now()->subHour();
+                    $query->where('created_at', '>=', $oneHourAgo);
+            
+                    $query->where('status_pembayaran', 'Paid')->where('user_id', Auth::user()->id);
+                    $query->orderBy('id','desc');
+                    $query->limit(10);
+            
+                    $orderTable = $query->get();
                 }else{
                     $orderTable = Order::orderBy('id','desc')->where('user_id', Auth::user()->id)->where('status_pembayaran', 'Paid')->get();
                 }
-                
             }else{
                 $orderTable = [];
             }
             if (Auth::check()) {
-                View::share('order_table',$orderTable);
                 $restaurantMenu = Restaurant::get();
-                View::share('restaurantMenu',$restaurantMenu);
                 $otherSetting = OtherSetting::get();
+                $kodeMeja = User::where('id', Auth::user()->id)->get()->pluck('kode_meja')->first();
+                View::share('kodeMeja', $kodeMeja);
+                View::share('restaurantMenu',$restaurantMenu);
+                View::share('order_table',$orderTable);
                 View::share('otherSetting',$otherSetting);
             }else{
-                View::share('order_table',$orderTable);
                 $restaurantMenu = Restaurant::get();
-                View::share('restaurantMenu',$restaurantMenu);
                 $otherSetting = OtherSetting::get();
-                View::share('otherSetting',$otherSetting);
+                $ipAddress = request()->ip();
+
+                if (request()->query('kode_meja')) {
+                    $kodeMeja = request()->query('kode_meja');
+                }else{
+                    $kodeMeja = null;
+                }
+                if ($kodeMeja != null) {
+                     $cacheKey = 'kode_meja_' . $ipAddress; // Membuat kunci cache unik berdasarkan alamat IP
+                    Cache::put($cacheKey, $kodeMeja, now()->addSeconds(3600));
+                }
+                $cacheKey = 'kode_meja_' . $ipAddress; // Kembali membuat kunci yang sesuai untuk mengambil nilai dari cache
+                $getKodeMeja = Cache::get($cacheKey);
+
+                // dd($getKodeMeja);
+                // dd($getKodeMeja);
+                // dd($kodeMeja);
+                View::share('order_table', $orderTable);
+                View::share('restaurantMenu', $restaurantMenu);
+                View::share('otherSetting', $otherSetting);
+                View::share('kodeMeja', $getKodeMeja);
+
             }
-            
         });
 
     }

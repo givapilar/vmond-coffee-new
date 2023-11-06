@@ -17,6 +17,8 @@
 <section class="p-3">
     @if ($data_carts->count() >= 1)
         <form action="{{ route('checkout-order', md5(strtotime("now"))) }}" method="POST">
+            {{-- <form method="POST" action="{{ route('create-token-bri') }}"> --}}
+            {{-- <form method="POST" action="{{ route('create-token-dsp') }}"> --}}
             @csrf   
             <div class="grid grid-cols-2 sm:grid-cols-1 gap-4 sm:gap-1">
                 <div class="max-w-sm h-96 bg-white border border-gray-200 rounded-[30px] shadow px-3 overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
@@ -72,7 +74,7 @@
                                         </p> --}}
                                         
                                         <p class="text-xs italic line-through text-gray-500 truncate dark:text-slate-500">
-                                            Rp. {{ number_format(array_sum((array) ($item->attributes['harga_add'] ?? [])) + ($item->attributes['restaurant']['harga_diskon'] ?? 0), 0) }}
+                                            Rp. {{ number_format(array_sum((array) ($item->attributes['harga_add'] ?? [])) + ($item->attributes['restaurant']['harga'] ?? 0), 0) }}
                                         </p>
 
                                         <p class="text-xs text-gray-500 truncate dark:text-red-500">
@@ -133,6 +135,38 @@
                     @endforeach
                 </div>
 
+                {{-- Total Waktu --}}
+                @foreach ($data_carts as $item)
+                    @php
+                    $totalLamaWaktu = 0;
+                    
+                    foreach ($data_carts as $item) {
+                        $lamaWaktu = $item->attributes['restaurant']['lama_waktu'];
+                        $totalLamaWaktu += $lamaWaktu;
+                    }
+                    
+                    // Calculate hours and minutes
+                    $hours = floor($totalLamaWaktu / 60);
+                    $minutes = $totalLamaWaktu % 60;
+                    
+                    // Format the hours and minutes into a human-readable string
+                    $timeFormatted = "";
+                    
+                    if ($hours > 0) {
+                        $timeFormatted .= $hours . " jam ";
+                    }
+                    
+                    if ($minutes > 0) {
+                        $timeFormatted .= $minutes . " menit";
+                    } else {
+                        $timeFormatted .= "0 menit";
+                    }
+                    @endphp
+
+                    {{-- <input type="hidden" name="total_lama_waktu" value="{{$totalLamaWaktu }}"> --}}
+                    <input type="hidden" name="total_lama_waktu" value="{{$timeFormatted }}">
+                @endforeach
+
                 @if (Auth::user()->kode_meja == null )
                     <div class="text-left max-w-sm h-96 bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700 mb-2 mt-2">
                         <div class="p-2 space-x-4">
@@ -162,7 +196,7 @@
                                     <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <option disabled selected>Pilih Meja Restaurant</option>
                                         @foreach ($meja_restaurants as $key => $meja_restaurant)
-                                            <option value="{{ $meja_restaurant->id }}">{{ $meja_restaurant->nama }}</option>
+                                            <option value="{{ $meja_restaurant->nama }}">{{ $meja_restaurant->nama }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -186,10 +220,10 @@
                         <li class="py-3 sm:py-2" style="display: none;" id="meja-wrapper">
                             <div id="select-input-wrapper">
                                 <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja</label>
-                                <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <select id="meja_resto" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option disabled selected>Pilih Meja Restaurant</option>
                                     @foreach ($meja_restaurants as $key => $meja_restaurant)
-                                        <option value="{{ $meja_restaurant->id }}">{{ $meja_restaurant->nama }}</option>
+                                        <option value="{{ $meja_restaurant->nama }}">{{ $meja_restaurant->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -205,6 +239,21 @@
                                 </select>
                             </div>
                         </li> --}}
+
+                        <li class="py-3 sm:py-2" id="voucher-get" style="display: none;">
+                            <div id="select-input-wrapper">
+                                <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Voucher</label>
+                                <select id="voucher" name="voucher" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option value="">Pilih Voucher</option> <!-- Use an empty value -->
+                                    @foreach ($vouchers as $key => $voucher)
+                                        @if ($voucher->status == true)
+                                        <option required value="{{ $voucher->id }}">{{ $voucher->code }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                        </li>
+
                         </ul>
                     </div>
                 @else
@@ -228,6 +277,7 @@
                                 <input id="takeaway-radio" required type="radio" value="Takeaway" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                             </div>
                             </div>
+
                         </li>
 
                         <li class="py-3 sm:py-2" style="display: none;" id="meja-takeaway">
@@ -236,10 +286,11 @@
                                 <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option disabled selected>Pilih Meja Restaurant</option>
                                     @foreach ($meja_restaurants as $key => $meja_restaurant)
-                                        <option value="{{ $meja_restaurant->id }}">{{ $meja_restaurant->nama }}</option>
+                                        <option value="{{ $meja_restaurant->nama }}">{{ $meja_restaurant->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>
+                    
                         </li>
 
                         <li class="py-3 sm:py-2">
@@ -256,6 +307,7 @@
                                     <input id="dine-in-radio" required type="radio" value="Dine In" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" checked>
                                 </div>
                             </div>
+                            
                         </li>
                         <li class="py-3 sm:py-2" style="" id="meja-wrapper">
                             <div id="select-input-wrapper">
@@ -263,9 +315,9 @@
                                 <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option disabled selected>Pilih Meja Restaurant</option>
                                     @foreach ($meja_restaurants as $key => $meja_restaurant)
-                                    @if (Auth::user()->kode_meja == $meja_restaurant->kode_meja)
-                                    <option required value="{{ $meja_restaurant->id }}" selected>{{ $meja_restaurant->nama }}</option>
-                                    @endif
+                                    {{-- @if (Auth::user()->kode_meja == $meja_restaurant->kode_meja) --}}
+                                    <option required value="{{ $meja_restaurant->nama }}" {{ Auth::user()->kode_meja == $meja_restaurant->kode_meja ? 'selected' : '' }}>{{ $meja_restaurant->nama }}</option>
+                                    {{-- @endif --}}
                                     @endforeach
                                 </select>
                             </div>
@@ -273,6 +325,22 @@
                         <a href="{{ route('reset-meja') }}" >
                             <button type="button" class="w-full h-full p-3 bg-blue-500 dark:text-white mt-auto rounded-[30px] hover:bg-red-700 focus:ring-2 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">Reset Meja</button>
                         </a>
+
+                        {{-- Voucher --}}
+                        <li class="py-3 sm:py-2" id="voucher-get" style="display: none;" >
+                            <div id="select-input-wrapper">
+                                <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Voucher</label>
+                                <select id="voucher" name="voucher" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option value="">Pilih Voucher</option> <!-- Use an empty value -->
+                                    @foreach ($vouchers as $key => $voucher)
+                                        @if ($voucher->status == true)
+                                        <option required value="{{ $voucher->id }}">{{ $voucher->code }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                        </li>
+
                     </ul>
                 </div>
 
@@ -281,7 +349,7 @@
 
                 {{-- Untuk Waiters --}}
                 @if (Auth::user()->is_worker == true )
-                <div class="text-left max-w-sm h-36 bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+                <div class="text-left max-w-sm h-64 bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
                     <div class="p-2 space-x-4">
                         <p class="text-lg font-semibold text-center dark:text-white">Pilih Exclusive Order</p>
                     </div>
@@ -289,31 +357,69 @@
                     <ul class="max-w-sm divide-y divide-gray-200 dark:divide-gray-700 px-3">
                         <li class="py-3 sm:py-2">
                             <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0">
+                                <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/edc.png') }}" alt="Neil image">
+                            </div>
                             <div class="flex-1 min-w-0">
                                 <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                    Payment Gateway Online 
+                                    Payment Gateaway Online
                                 </p>
                             </div>
                             <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                <input id="payment_gateaway" required type="radio" value="Payment Gateaway Online" name="tipe_pemesanan" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <input required type="radio" id="payment_gateaway" value="Payment Gateaway Online" name="tipe_pemesanan" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                             </div>
                             </div>
                         </li>
+
                         <li class="py-3 sm:py-2">
                             <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0">
+                                <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/edc.png') }}" alt="Neil image">
+                            </div>
                             <div class="flex-1 min-w-0">
                                 <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                    EDC
+                                    Bank BJB Testing
                                 </p>
                             </div>
                             <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                <input id="edisi" required type="radio" value="Edisi" name="tipe_pemesanan" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <input required type="radio" id="payment_gateaway" value="QR-BJB" name="tipe_pemesanan" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                             </div>
-                        </div>
-                    </li>
+                            </div>
+                        </li>
+
+
+                        <li class="py-3 sm:py-2">
+                            <div class="flex items-center space-x-4">
+                                <div class="flex-shrink-0">
+                                    <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/pos.png') }}" alt="Neil image">
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                        EDC
+                                    </p>
+                                </div>
+                                <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                    <input required type="radio" id="edisi" name="tipe_pemesanan" value="Edisi" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="py-3 sm:py-2" style="display:none;" id="edisi-pembayaran">
+                            <div id="select-input-wrapper">
+                                <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih EDC</label>
+                                <select id="countries" name="metode_edisi" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option disabled selected>Pilih EDC</option>
+                                    <option value="EDC MANDIRI">EDC MANDIRI</option>
+                                    <option value="EDC BCA">EDC BCA</option>
+                                    <option value="EDC BRI">EDC BRI</option>
+                                    <option value="EDC BNI">EDC BNI</option>
+                                </select>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
 
-                <div class="text-left max-w-sm bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700" style="height: 21rem;">
+                <div class="text-left max-w-sm bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700" style="height: 26rem;">
                     <div class="p-2 space-x-4">
                         <p class="text-lg font-semibold text-center dark:text-white">Isi Data Informasi Order</p>
                     </div>
@@ -339,13 +445,25 @@
                             </div>
                             <input placeholder="Massukan No Tlp" name="phone" value="{{ old('phone') }}" id="" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2 mt-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('password') is-invalid @enderror">
                         </li>
+
+                        <li class="py-3 sm:py-2">
+                            <div class="flex items-center space-x-4">
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                        Masukan Jumlah Customer /Table 
+                                    </p>
+                                </div>
+                            </div>
+                            <input type="number" placeholder="Massukan Jumlah Customer/Table" name="jumlah_customer" value="{{ old('jumlah_customer') }}" id="" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2 mt-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('jumlah_customer') is-invalid @enderror">
+                        </li>
+
                         <li class="py-3 sm:py-2">
                             <div id="select-input-wrapper">
                                 <label for="kasir_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Nama Kasir</label>
                                 <select id="kasir_id" name="kasir_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 mt-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option disabled selected>Pilih Nama Kasir</option>
                                     @foreach ($role as $item)
-                                        <option value="{{ $item->id }}" {{ old('kasir_id') == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
+                                        <option value="{{ $item->name }}" {{ old('kasir_id') == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -355,11 +473,139 @@
                 @endif
             </div>
 
-            <div class="max-w-full mt-2 max-h-[17rem] bg-white border border-gray-200 rounded-[30px] shadow dark:bg-gray-800 dark:border-gray-700 sm:mt-3">
+            <div class="max-w-full mt-2 max-h-[25rem] bg-white border border-gray-200 rounded-[30px] shadow dark:bg-gray-800 dark:border-gray-700 sm:mt-3">
                 <div class="p-3 space-x-4">
                     <p class="text-lg font-semibold text-center dark:text-white">Order Summary</p>
                 </div>
                 <ul class="max-w-full divide-y divide-gray-200 dark:divide-gray-700 px-3">
+                    {{-- super platinum --}}
+
+                    @if (Auth::user()->membership->level == 'Super Platinum')
+                    <li class="py-3 sm:py-3">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
+                                    Subtotal
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white" id="subtotal-summary">
+                                Rp. 1
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="py-3 sm:py-3">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
+                                    Service {{ $order_settings[0]->layanan }}%
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white" id="service-summary">
+                                <?php
+                                    $biaya_layanan = number_format((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100,0 );
+                                ?>
+                                Rp. 1
+
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="py-3 sm:py-3">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
+                                    PB01 10%
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white" id="PB01-summary">
+                                <?php
+                                    $biaya_pb01 = number_format(((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100,0);
+                                ?>
+
+                                Rp. 1 
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="py-3 sm:py-3" style="display: none;" id="packing">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
+                                    Packing
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white" id="PB01-summary">
+                                <input type="hidden" name="packing" >
+                                Rp. 1 
+                            </div>
+                        </div>
+                    </li>
+                    
+                    {{-- <li class="py-3 sm:py-3" id="voucher-summary" style="display: none;">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-xs font-medium text-gray-900 truncate dark:text-white">
+                                    Diskon Voucher
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white" id="voucher-price">
+                            </div>
+                        </div>
+                    </li> --}}
+
+                    <input type="hidden" id="voucher-price-input" name="voucher_diskon">
+
+                    <li class="py-3 sm:py-3" id="order-total" style="display: none;">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-xs font-medium text-gray-900 truncate dark:text-white">
+                                    Order Total
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white" id="total-order-summary">
+                                Rp. 1
+                            </div>
+                        </div>
+                    </li>
+                    <input type="hidden" id="order-total-input" name="order_total">
+
+                    {{-- order total without package --}}
+                    <li class="py-3 sm:py-3" id="order-total-packing" style="display: none;">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-xs font-medium text-gray-900 truncate dark:text-white">
+                                    Order Total
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white">
+                                <?php
+                                    $packing = 5000;
+                                    $totalWithoutPacking = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100) * $order_settings[0]->pb01/100;
+                                    $totalWithPacking = $totalWithoutPacking + $packing;
+                                ?>
+                                Rp. 1
+                            </div>
+                        </div>
+                    </li>
+
+                    @elseif(Auth::user()->telephone == '081210469621')
+                    {{-- --------------------------------Bu Fitri ----------------------------------- --}}
+                    <li class="py-3 sm:py-3">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
+                                    Subtotal
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white" id="subtotal-summary">
+                                Rp. {{ number_format(\Cart::getTotal()  ?? '0',0 ) }}
+                            </div>
+                        </div>
+                    </li>
+
+                    {{-- ------------------------------User Normal-------------------------------------- --}}
+                    @else
                     <li class="py-3 sm:py-3">
                         <div class="flex items-start space-x-4">
                             <div class="flex-1 min-w-0">
@@ -407,7 +653,35 @@
                             </div>
                         </div>
                     </li>
+
+                    <li class="py-3 sm:py-3" style="display: none;" id="packing">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-xs font-normal text-gray-900 truncate dark:text-white">
+                                    Packing
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white" id="PB01-summary">
+                                <input type="hidden" name="packing" >
+                                Rp. 5,000 
+                            </div>
+                        </div>
+                    </li>
                     
+                    {{-- <li class="py-3 sm:py-3" id="voucher-summary" style="display: none;">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-xs font-medium text-gray-900 truncate dark:text-white">
+                                    Diskon Voucher
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white" id="voucher-price">
+                            </div>
+                        </div>
+                    </li> --}}
+
+                    <input type="hidden" id="voucher-price-input" name="voucher_diskon">
+
                     <li class="py-3 sm:py-3" id="order-total" style="display: none;">
                         <div class="flex items-start space-x-4">
                             <div class="flex-1 min-w-0">
@@ -424,7 +698,9 @@
                             </div>
                         </div>
                     </li>
+                    <input type="hidden" id="order-total-input" name="order_total">
 
+                    {{-- order total without package --}}
                     <li class="py-3 sm:py-3" id="order-total-packing" style="display: none;">
                         <div class="flex items-start space-x-4">
                             <div class="flex-1 min-w-0">
@@ -432,7 +708,7 @@
                                     Order Total
                                 </p>
                             </div>
-                            <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white" id="total-order-summary-packing">
+                            <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white">
                                 <?php
                                     $packing = 5000;
                                     $totalWithoutPacking = (\Cart::getTotal() + (\Cart::getTotal() ?? 0) * $order_settings[0]->layanan/100);
@@ -448,6 +724,9 @@
                             </div>
                         </div>
                     </li>
+                    @endif
+                    
+
                 </ul>
                 <div class="mt-2">
                     {{-- <button class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900" onclick="pushData()">Checkout</button> --}}
@@ -472,6 +751,114 @@
 
 @push('script-bot')
 
+{{-- Voucher --}}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Ambil elemen-elemen yang diperlukan
+        var selectMeja = document.getElementById("meja_resto");
+        var mejaRestaurants = <?php echo json_encode($meja_restaurants); ?>; // Anda mungkin perlu mengubah ini sesuai dengan cara meja_restaurants diambil di halaman Anda
+
+        // Fungsi untuk menampilkan alert
+        function showAlert(message) {
+            alert(message);
+        }
+
+        // Event listener untuk perubahan pada select element
+        selectMeja.addEventListener("change", function () {
+            var selectedMeja = selectMeja.value;
+
+            // Temukan meja restoran yang sesuai dengan yang dipilih
+            var matchingMeja = mejaRestaurants.find(function (meja) {
+                return meja.nama === selectedMeja;
+            });
+
+            if (matchingMeja) {
+                var minimalOrder = matchingMeja.minimal_order; // Gantilah 'minimum_order' dengan properti yang sesuai dari meja restoran
+
+                // Cek jika meja sesuai dengan persyaratan minimal
+                if (minimalOrder && minimalOrder <= <?php echo Cart::getTotal(); ?>) {
+                    // showAlert("Meja ini Bisa");
+                } else {
+                    showAlert("Minimal Order Meja Ini Kurang");
+                    selectMeja.value = "Pilih Meja Restaurant";
+                }
+            }
+        });
+    });
+</script>
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const voucherSelect = document.getElementById("voucher");
+        const voucherPriceDisplay = document.getElementById("voucher-price");
+        const orderTotalDisplay = document.getElementById("total-order-summary");
+        
+        const orderTotalPackingDisplay = document.getElementById("total-order-summary-packing");
+
+        const voucherPriceInput = document.getElementById("voucher-price-input");
+        const orderTotalInput = document.getElementById("order-total-input");
+        const orderTotalPackageInput = document.getElementById("order-total-package-input");
+
+        const vouchers = {!! json_encode($vouchers) !!};
+        const orderSettings = {!! json_encode($order_settings) !!};
+        
+        console.log(vouchers);
+        
+        voucherSelect.addEventListener("change", function() {
+            const selectedVoucherId = voucherSelect.value;
+            const selectedVoucher = vouchers.find(voucher => voucher.id == selectedVoucherId);
+            const cartTotal = {!! json_encode(\Cart::getTotal()) !!};
+            const layanan = orderSettings[0].layanan;
+            const pb01 = orderSettings[0].pb01;        
+
+            const cartTotalWithLayananCharge = ((cartTotal) + (cartTotal * layanan / 100) + ((cartTotal) + (cartTotal * layanan/100) ) * pb01/100);
+            const roundedCartTotal = Math.round(cartTotalWithLayananCharge);
+
+            const packaging = 5000;
+            const cartTotalWithPackageCharge = ((cartTotal) + (cartTotal * layanan / 100) + ((cartTotal) + (cartTotal * layanan/100) ) * pb01/100)+packaging;
+            const cartTotalPackage = Math.round(cartTotalWithPackageCharge);
+            console.log('Cart Total Packaging' , cartTotalPackage);
+
+            if (selectedVoucher) {
+                const minimumTransaksi = parseFloat(selectedVoucher.minimum_transaksi); // Parse harga as a number
+                console.log('Minimun Transaksi', minimumTransaksi);
+                if (minimumTransaksi <= roundedCartTotal) {
+                    // normal
+                    const voucherHarga = parseFloat(selectedVoucher.harga); // Parse harga as a number
+                    const discountAmount = voucherHarga;
+                    voucherPriceDisplay.textContent = `Rp. ${discountAmount.toFixed(0)}`;
+                    orderTotalDisplay.textContent = `Rp. ${(roundedCartTotal - discountAmount).toFixed(0)}`;
+                    
+                    orderTotalHidden = (roundedCartTotal - discountAmount);
+                    orderTotalInput.value = orderTotalHidden;
+                    console.log(orderTotalInput.value);
+                    // With package
+                    // orderTotalPackingDisplay.textContent = `Rp. ${(cartTotalPackage - discountAmount).toFixed(0)}`;
+                    // orderTotalPackageInput.value = orderTotalHidden;
+                    
+                    voucherPriceInput.value = discountAmount;
+                    console.log('Order Total hidden',orderTotalInput.value);
+                } else {
+                    voucherPriceDisplay.textContent = "0";
+                    orderTotalDisplay.textContent = `Rp. ${roundedCartTotal.toFixed(0)}`;
+                    orderTotalPackingDisplay.textContent = `Rp. ${cartTotalPackage.toFixed(0)}`;
+                    const alertMessage = `Minimum transaksi ${minimumTransaksi} Anda kurang untuk menggunakan voucher ini.`;
+                    alert(alertMessage);
+                }
+
+
+            } else {
+                voucherPriceDisplay.textContent = "0";
+                orderTotalDisplay.textContent = `Rp. ${roundedCartTotal.toFixed(0)}`;
+                orderTotalPackingDisplay.textContent = `Rp. ${cartTotalPackage.toFixed(0)}`;
+            }
+        });
+    });
+</script>
+
 <script>
     function toggleCheckbox(checkbox, minimal, namaPaket) {
         console.log(minimal);
@@ -484,6 +871,24 @@
 
 <script>
 
+    // Pilihan EDC
+    if ($("#payment_gateaway").length) {
+        const paymentGatewayRadio = document.getElementById('payment_gateaway');
+        const edcRadio = document.getElementById('edisi');
+        const edisiPembayaranWrapper = document.getElementById('edisi-pembayaran');
+        paymentGatewayRadio.addEventListener('change', function() {
+            if (this.checked) {
+                edisiPembayaranWrapper.style.display = 'none';
+            }
+        });
+    
+        edcRadio.addEventListener('change', function() {
+            if (this.checked) {
+                edisiPembayaranWrapper.style.display = 'block';
+            }
+        });
+    }
+
     // Packing
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -491,17 +896,30 @@
         const dineInRadio = document.getElementById("dine-in-radio");
         const orderTotal = document.getElementById("order-total");
         const orderTotalPacking = document.getElementById("order-total-packing");
+        const voucherCoupon = document.getElementById("voucher-summary");
+        const voucherGet = document.getElementById("voucher-get");
 
         if (takeawayRadio && dineInRadio && orderTotal && orderTotalPacking) {
             takeawayRadio.addEventListener("change", function () {
                 orderTotal.style.display = "none";
+                // voucherCoupon.style.display = "none";
+                voucherGet.style.display = "none";
                 orderTotalPacking.style.display = "block";
             });
 
             dineInRadio.addEventListener("change", function () {
                 orderTotal.style.display = "block";
+                // voucherCoupon.style.display = "block";
+                voucherGet.style.display = "block";
                 orderTotalPacking.style.display = "none";
             });
+
+            if (dineInRadio.checked) {
+                orderTotal.style.display = "block";
+                voucherCoupon.style.display = "block";
+                voucherGet.style.display = "block";
+                orderTotalPacking.style.display = "none";
+            }
         }
     });
 
@@ -515,6 +933,8 @@
     // Mengambil elemen wrapper "Pilih Meja"
     const mejaWrapper = document.getElementById('meja-wrapper');
     const mejaTakeaway = document.getElementById('meja-takeaway');
+    const packing = document.getElementById('packing');
+    const packingInput = document.querySelector('input[name="packing"]');
 
     // Menambahkan event listener saat radio button berubah
     takeawayRadio.addEventListener('change', toggleMejaWrapper);
@@ -525,9 +945,13 @@
         if (takeawayRadio.checked) {
             mejaWrapper.style.display = 'none';
             mejaTakeaway.style.display = 'block';
+            packing.style.display = 'block';
+            packingInput.value = '5000';
         } else if (dineInRadio.checked) {
             mejaWrapper.style.display = 'block';
             mejaTakeaway.style.display = 'none';
+            packing.style.display = 'none';
+            packingInput.value = '0';
         }
     }
 
@@ -655,115 +1079,5 @@
     }
  </script>
 
-{{-- Untuk DIsable Jam pada tanggal tertentu --}}
-<script>
-    function disableHour()
-    {
-        var valueDate = $('#date').val();
-        $.ajax({
-            type: 'POST',
-            url: "{{ route('check-schedule') }}",
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            data: {
-                "_token": "{{ csrf_token() }}",
-                "date": valueDate
-            },
-            success: function (data) {
-                console.log(data);
-                $("#time_from option").attr('disabled', false); 
-                $("#biliard_id option").attr('disabled', false); 
-                data.times.forEach(element => {
-                    let valHourFrom = element.substring(0, 5);
-                    console.log(element);
-                    $("#time_from option[value='"+ valHourFrom + "']").attr('disabled', true); 
-                    // $("#time_to option[value='"+ valHourFrom + "']").attr('disabled', true); 
-                    // $("#biliard_id option[value='" + valHourFrom + "']").attr('disabled', true); 
-                });
-                
-                data.billiardIds.forEach(elementBiliard => {
-                    let biliard = elementBiliard;
-                    console.log(elementBiliard);
-                    $("#biliard_id option[value='"+ elementBiliard + "']").attr('disabled', true); 
-                });
-            },
-            error: function (data) {
-                $.alert('Failed!');
-                console.log(data);
-            }
-        });
-    }
 
-    // function disableHour() {
-    //     var valueDate = $('#date').val();
-    //     $.ajax({
-    //         type: 'POST',
-    //         url: "{{ route('check-schedule') }}",
-    //         headers: {
-    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //         },
-    //         data: {
-    //             "_token": "{{ csrf_token() }}",
-    //             "date": valueDate
-    //         },
-    //         success: function (data) {
-    //             data.times.forEach(function (element) {
-    //                 let valHourFrom = element.substring(0, 5);
-    //                 $("#time_from option[value='" + valHourFrom + "']").prop('disabled', true);
-    //                 $("#time_to option[value='" + valHourFrom + "']").prop('disabled', true);
-    //                 $("#billiard_id option[value='" + valHourFrom + "']").prop('disabled', true);
-    //             });
-                
-    //         },
-    //         error: function (data) {
-    //             $.alert('Failed!');
-    //             console.log(data);
-    //         }
-    //     });
-    // }
-
-</script>
-
-{{-- Disable Hour Jam Meeting --}}
-{{-- <script>
-    function disableHourMeeting()
-    {
-        var valueDate = $('#date').val();
-        $.ajax({
-            type: 'POST',
-            url: "{{ route('check-schedule') }}",
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            data: {
-                "_token": "{{ csrf_token() }}",
-                "date": valueDate
-            },
-            success: function (data) {
-                console.log(data);
-                $("#time_from option").attr('disabled', false); 
-                $("#meeting_id option").attr('disabled', false); 
-                data.times.forEach(element => {
-                    let valHourFrom = element.substring(0, 5);
-                    console.log(element);
-                    $("#time_from_meeting option[value='"+ valHourFrom + "']").attr('disabled', true); 
-                    // $("#time_to option[value='"+ valHourFrom + "']").attr('disabled', true); 
-                    // $("#biliard_id option[value='" + valHourFrom + "']").attr('disabled', true); 
-                });
-                
-                data.billiardIds.forEach(elementBiliard => {
-                    let biliard = elementBiliard;
-                    console.log(elementBiliard);
-                    $("#meeting_id option[value='"+ elementBiliard + "']").attr('disabled', true); 
-                });
-            },
-            error: function (data) {
-                $.alert('Failed!');
-                console.log(data);
-            }
-        });
-    }
-
-</script> --}}
 @endpush
