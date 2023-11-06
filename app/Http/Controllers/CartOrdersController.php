@@ -141,7 +141,7 @@ class CartOrdersController extends Controller
                 // Weekdays (Senin-Kamis)
                 $orderOpenTime = $other_setting->time_start_weekdays_minuman;
                 $orderDeadline = $other_setting->time_close_weekdays_minuman;
-            } else if ($currentDay >= 6 && $currentDay <= 7) {
+            } else if ($currentDay >= 5 && $currentDay <= 7) {
                 // Weekend (Sabtu/Minggu)
                 $orderOpenTime = $other_setting->time_start_weekend_minuman;
                 $orderDeadline = $other_setting->time_close_weekend_minuman;
@@ -158,7 +158,7 @@ class CartOrdersController extends Controller
                 // Weekdays (Senin-Kamis)
                 $orderOpenTime = $other_setting->time_start;
                 $orderDeadline = $other_setting->time_close;
-            } else if ($currentDay >= 6 && $currentDay <= 7) {
+            } else if ($currentDay >= 5 && $currentDay <= 7) {
                 // Weekend (Sabtu/Minggu)
                 $orderOpenTime = $other_setting->time_start_weekend;
                 $orderDeadline = $other_setting->time_close_weekend;

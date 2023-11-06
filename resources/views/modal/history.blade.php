@@ -22,7 +22,7 @@
             @foreach ($order_table as $item)
                 @if ($item->status_feedback == true)
                 {{-- <form action="{{ route('history-penjualan',$item->id) }}"> --}}
-                    <button type="submit" class="w-full h-auto" data-modal-target="history-detail-modal{{ $item->code }}" data-modal-toggle="history-detail-modal{{ $item->code }}">
+                    <button type="submit" class="w-full h-auto" data-modal-target="history-detail-modal{{ $item->invoice_no }}" data-modal-toggle="history-detail-modal{{ $item->invoice_no }}">
                         <div class="flex items-center bg-gray-600 rounded-lg p-2 border border-gray-500 hover:brightness-75 mt-3">
                             <div class="relative inline-block shrink-0">
                                 <img class="w-14 h-14 rounded-full" src="{{ asset('assetku/dataku/img/history-notification.jpg') }}" alt="History Notif"/>

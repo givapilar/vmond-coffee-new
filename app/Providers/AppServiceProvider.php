@@ -45,14 +45,13 @@ class AppServiceProvider extends ServiceProvider
             if (Auth::user()) {
                 $today = Carbon::today();
                 $yesterday = Carbon::yesterday();
-if (Auth::user()->telephone == '081818181847') {
-    $orderTable = Order::orderBy('id', 'desc')
-        ->whereDate('created_at', $yesterday)
-        ->where('user_id', Auth::user()->id)
-        ->where('status_pembayaran', 'Paid')
-        ->get();
-}
-else{
+                if (Auth::user()->telephone == '081818181847') {
+                    $orderTable = Order::orderBy('id', 'desc')
+                        ->whereDate('created_at', $today)
+                        ->where('user_id', Auth::user()->id)
+                        ->where('status_pembayaran', 'Paid')
+                        ->get();
+                }else{
                     $orderTable = Order::orderBy('id','desc')->where('user_id', Auth::user()->id)->where('status_pembayaran', 'Paid')->get();
                 }
                 
