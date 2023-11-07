@@ -396,8 +396,8 @@ const createQR = async (req, res) => {
             { headers: headers }
         );
         const response = result.data.body.CreateInvoiceQRISDinamisExtResponse;
-        console.log('RESULT CREATE QR::',response);
-        console.log('RESULT CREATE QR::',result);
+        // console.log('RESULT CREATE QR::',response);
+        // console.log('RESULT CREATE QR::',result);
         // console.log('MSIDN::',msisdn);
 
         const responseData = {
@@ -425,7 +425,7 @@ const createQR = async (req, res) => {
 
 const checkStatusPay = async (req, res) => {
     try {
-        
+        // Generate Token
         const headers1 = {
             'Content-Type': 'application/json',
         };
@@ -444,7 +444,6 @@ const checkStatusPay = async (req, res) => {
 
         const bodyData1 = {
             msisdn: msisdn,
-            // msisdn: "081717181988",
             password: passwordBJB
         };
 
@@ -455,49 +454,27 @@ const checkStatusPay = async (req, res) => {
         );
 
         const xAuthToken = result1.headers['x-auth-token'];
-        const dtamount = req.body.amount;
-        const dtexpired = req.body.expired;
+        const qrid = req.body.qrid;
+        console.log('=============QRID=============== ',qrid);
+        const phone_no = '081717181988';
 
-        console.log("Token :",xAuthToken);
-        // Create QR
+        // ===
+        // Check Status Payment BY QRID
         const headers = {
             'Content-Type': 'application/json',
             'X-AUTH-TOKEN': xAuthToken
         };
 
-        const metaData = {
-            "datetime": "2023-09-04T09:40:21.450Z",
-            "deviceId": "bjbdigi",
-            "devicePlatform": "Linux",
-            "deviceOSVersion": "bjbdigi-version",
-            "deviceType": "",
-            "latitude": "",
-            "longitude": "",
-            "appId": 58,
-            "appVersion": "1.0",
-        };
-
-        const bodyData = {
-            merchantAccountNumber: "081717181988",
-            // amount: dtamount,
-            amount: '1',
-            expInSecond: dtexpired,
-        };
-
         const result = await axios.get(
-            urlGlobal + '/bjb/api/getQRISstatus',
-            { body: bodyData },
+            urlGlobal + `/bjb/api/getQRISstatus?qris_id=${qrid}&phone_no=${phone_no}`,
             { headers: headers }
         );
         const response = result;
         console.log('RESULT CREATE QR::',response);
-        // console.log('MSIDN::',msisdn);
 
         const responseData = {
             code: 200,
             method: req.method,
-            stringQR: response.stringQR._text,
-            invoiceID: response.invoiceId._text,
             message: 'Successfully!'
         };
 
@@ -515,10 +492,8 @@ const checkStatusPay = async (req, res) => {
         res.status(500).json(responseData);
     }
 };
-
-
   
-  module.exports = {
+module.exports = {
     getURL,
     callbackFromBJB,
     callbackFromBRI,
@@ -527,4 +502,5 @@ const checkStatusPay = async (req, res) => {
     sendOtpByPhoneNumber,
     aktivasi,
     createQR,
-  };
+    checkStatusPay,
+};

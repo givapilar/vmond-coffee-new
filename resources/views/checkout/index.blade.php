@@ -690,6 +690,65 @@
                         a.click();
                         document.body.removeChild(a);
                         isProcessing = false;
+
+                        checkPayment();
+                    }
+                },
+                checkPayment: {
+                    text: 'Check Payment',
+                    btnClass: 'btn-primary',
+                    action: function () {
+                        checkPayment();
+                       
+                        isProcessing = false;
+                    }
+                },
+                close: {
+                    text: 'Close',
+                    action: function () {
+                        // Close the dialog
+                        isProcessing = false;
+                    }
+                }
+            }
+        });
+    }
+
+    function checkPayment(){
+        let order_id = {!! $order_last->id !!};
+        $.confirm({
+            title: 'Check status payment',
+            content: '<h3 style="color:white;text-align:center;margin-bottom:10px;">Check Your Payment...</h3>',
+            columnClass: 'small',
+            type: 'blue',
+            typeAnimated: true,
+            buttons: {
+                Yes: {
+                    text: 'Yes',
+                    btnClass: 'btn-primary',
+                    action: function () {
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{ route('check-payment-bjb') }}",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data: {
+                                "_token": "{{ csrf_token() }}",
+                                order_id,
+                            },
+                            async: false,
+                            success: function(res) {
+                                console.log(res);
+                                $.alert('success!');
+                            },
+                            error: function(data) {
+                                $.alert(data.responseJSON.message);
+                    
+                                // Mengubah status menjadi selesai
+                                isProcessing = false;
+                            }
+                        });
                     }
                 },
                 close: {

@@ -253,6 +253,37 @@ class APIController extends Controller
         }
     }
 
+    public function checkPayBJB(Request $request){
+        $client = new Client();
+
+        try {
+
+            $getOrderByID = Order::where('id', $request->order_id)->first();
+
+            $dataToSend = [
+                'qrid' => $getOrderByID->invoice_id,
+            ];
+    
+            // Lakukan permintaan HTTP POST ke URL tertentu dengan data dalam body
+            $response = $client->post('http://172.31.32.85:2222/v1/api/check-status-pay', [
+                'json' => $dataToSend, // Data yang akan dikirim dalam format JSON
+            ]);
+    
+            // Ambil isi respons sebagai string
+            $data = $response->getBody()->getContents();
+    
+            // Sekarang Anda dapat melakukan sesuatu dengan data yang diterima
+            // Konversi respons JSON menjadi array asosiatif
+            $responseData = json_decode($data, true);
+    
+            // Kembalikan respons JSON
+            return response()->json(['data' => $responseData]);
+        } catch (\Exception $e) {
+            // Tangani kesalahan jika ada
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
     // ============================== Integrasi BRI ========================================================
 
     public function createQrisBri(Request $request){

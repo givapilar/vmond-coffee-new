@@ -28,13 +28,15 @@ router.get('/', integrasiApiController.getURL);
  *               message: Failed!.
  */
 
+// BJB Route
 router.post('/callback', integrasiApiController.callbackFromBJB);
 router.post('/get-token-fintech', integrasiApiController.getTokenFintech);
 router.post('/send-otp-fintech', integrasiApiController.sendOtpByPhoneNumber);
 router.post('/aktivasi', integrasiApiController.aktivasi);
 router.post('/create-qr', integrasiApiController.createQR);
+router.post('/check-status-pay', integrasiApiController.checkStatusPay);
 
-// BRI
+// BRI Route
 router.post('/snap/v1.0/qr-dynamic/token', integrasiBriApiController.callbackFromBRI);
 router.post('/snap/v1.0/qr-dynamic/qr-mpm-notify', integrasiBriApiController.qrMpmNotify);
 
