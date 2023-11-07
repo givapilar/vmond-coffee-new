@@ -465,13 +465,17 @@ const checkStatusPay = async (req, res) => {
             'Content-Type': 'application/json',
             'Authorization': 'ewondXNlcm5hbWUgJzogJ2JqYkF1dGhEZXYnLAoncGFzc3dvcmQnOiAnUEBTU1cwUkQhJwp9'
         };
-
-        const result = await axios.get(
-            urlGlobal + `/bjb/api/getQRISstatus?qris_id=${qrid}&phone_no=${phone_no}`,
-            { headers: headers }
-        );
-        const response = result;
-        console.log('RESULT CHECK PAYMENT::',response);
+        axios.get(urlGlobal + `/bjb/api/getQRISstatus?qris_id=${qrid}&phone_no=${phone_no}`, { headers: headers })
+        .then((response) => {
+            // Permintaan berhasil
+            const responseData = response.data;
+            console.log('Berhasil:', responseData);
+        })
+        .catch((error) => {
+            // Permintaan gagal, tangani kesalahan di sini
+            console.error('Gagal:', error);
+        });
+        // console.log('RESULT CHECK PAYMENT::',response);
 
         const responseData = {
             code: 200,
