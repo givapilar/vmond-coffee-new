@@ -462,7 +462,7 @@ const checkStatusPay = async (req, res) => {
         // Check Status Payment BY QRID
         const headers = {
             'Content-Type': 'application/json',
-            'X-AUTH-TOKEN': xAuthToken
+            'Authorization': xAuthToken
         };
 
         const result = await axios.get(
