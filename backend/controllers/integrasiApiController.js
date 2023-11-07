@@ -457,7 +457,8 @@ const checkStatusPay = async (req, res) => {
         const qrid = req.body.qrid;
         console.log('=============QRID=============== ',qrid);
         const phone_no = '081717181988';
-
+        
+        console.log('=============URL=============== ', urlGlobal + `/bjb/api/getQRISstatus?qris_id=${qrid}&phone_no=${phone_no}`);
         // ===
         // Check Status Payment BY QRID
         const headers = {
