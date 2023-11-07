@@ -696,7 +696,7 @@
                 },
                 checkPayment: {
                     text: 'Check Payment',
-                    btnClass: 'btn-primary',
+                    btnClass: 'btn-blue',
                     action: function () {
                         checkPayment();
                        
@@ -725,7 +725,7 @@
             buttons: {
                 Yes: {
                     text: 'Yes',
-                    btnClass: 'btn-primary',
+                    btnClass: 'btn-blue',
                     action: function () {
                         $.ajax({
                             type: 'POST',
