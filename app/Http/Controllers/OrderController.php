@@ -2406,7 +2406,7 @@ class OrderController extends Controller
             $updateStatus = Order::where('invoice_id', $request->invoiceID)->first();
 
             // Ubah status pembayaran menjadi "Paid"
-            $updateStatus->update(['status_pembayaran' => 'Paid', 'invoice_no' => $this->generateInvoice(),'metode_pembayaran' => 'QR BJB']);
+            $updateStatus->update(['status_pembayaran' => 'Unpaid', 'description' => 'Paid', 'invoice_no' => $this->generateInvoice(),'metode_pembayaran' => 'QR BJB']);
             // $updateStatus->update(['description' => 'Paid']);
 
             $responseData = [
