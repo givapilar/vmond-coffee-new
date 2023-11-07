@@ -425,47 +425,22 @@ const createQR = async (req, res) => {
 
 const checkStatusPay = async (req, res) => {
     try {
-        // Generate Token
-        const headers1 = {
-            'Content-Type': 'application/json',
-        };
-
-        const metaData1 = {
-            "datetime": "2023-09-18T00:25:21.450Z",
-            "deviceId": "9f9cb0504caa5059", 
-            "devicePlatform": "Linux",
-            "deviceOSVersion": "9",
-            "deviceType": "",
-            "latitude": "",
-            "longitude": "",
-            "appId": 58,
-            "appVersion": "1.0",
-        };
-
-        const bodyData1 = {
-            msisdn: msisdn,
-            password: passwordBJB
-        };
-
-        const result1 = await axios.post(
-            urlGlobal + '/mobile-webconsole/apps/pocket/requestTokenFintech/',
-            { metadata: metaData1, body: bodyData1 },
-            { headers: headers1 }
-        );
-
-        const xAuthToken = result1.headers['x-auth-token'];
         const qrid = req.body.qrid;
-        console.log('=============QRID=============== ',qrid);
         const phone_no = '081717181988';
+        console.log('=============QRID=============== ',qrid);
+        console.log('=============URL=============== ', urlGlobal + `/bjb/api/getQRISstatus`);
         
-        console.log('=============URL=============== ', urlGlobal + `/bjb/api/getQRISstatus?qris_id=${qrid}&phone_no=${phone_no}`);
         // ===
         // Check Status Payment BY QRID
         const headers = {
             'Content-Type': 'application/json',
             'Authorization': 'ewondXNlcm5hbWUgJzogJ2JqYkF1dGhEZXYnLAoncGFzc3dvcmQnOiAnUEBTU1cwUkQhJwp9'
         };
-        axios.get(urlGlobal + `/bjb/api/getQRISstatus?qris_id=${qrid}&phone_no=${phone_no}`, { headers: headers })
+        const bodyData = {
+            'qris_id': qrid,
+            'phone_no': phone_no
+        };
+        axios.get(urlGlobal + `/bjb/api/getQRISstatus`, { headers: headers },{body: bodyData})
         .then((response) => {
             // Permintaan berhasil
             const responseData = response.data;
