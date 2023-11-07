@@ -397,6 +397,100 @@ const createQR = async (req, res) => {
         );
         const response = result.data.body.CreateInvoiceQRISDinamisExtResponse;
         console.log('RESULT CREATE QR::',response);
+        console.log('RESULT CREATE QR::',result);
+        // console.log('MSIDN::',msisdn);
+
+        const responseData = {
+            code: 200,
+            method: req.method,
+            stringQR: response.stringQR._text,
+            invoiceID: response.invoiceId._text,
+            message: 'Successfully!'
+        };
+
+        console.log("Result QR : " ,response);
+        res.status(200).json(responseData);
+    } catch (error) {
+        const responseData = {
+            code: 500,
+            method: req.method,
+            url: req.url,
+            headers: req.headers,
+            message: 'Failed! Error: ' + error
+        };
+        
+        res.status(500).json(responseData);
+    }
+};
+
+const checkStatusPay = async (req, res) => {
+    try {
+        
+        const headers1 = {
+            'Content-Type': 'application/json',
+        };
+
+        const metaData1 = {
+            "datetime": "2023-09-18T00:25:21.450Z",
+            "deviceId": "9f9cb0504caa5059", 
+            "devicePlatform": "Linux",
+            "deviceOSVersion": "9",
+            "deviceType": "",
+            "latitude": "",
+            "longitude": "",
+            "appId": 58,
+            "appVersion": "1.0",
+        };
+
+        const bodyData1 = {
+            msisdn: msisdn,
+            // msisdn: "081717181988",
+            password: passwordBJB
+        };
+
+        const result1 = await axios.post(
+            urlGlobal + '/mobile-webconsole/apps/pocket/requestTokenFintech/',
+            { metadata: metaData1, body: bodyData1 },
+            { headers: headers1 }
+        );
+
+        const xAuthToken = result1.headers['x-auth-token'];
+        const dtamount = req.body.amount;
+        const dtexpired = req.body.expired;
+
+        console.log("Token :",xAuthToken);
+        // Create QR
+        const headers = {
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': xAuthToken
+        };
+
+        const metaData = {
+            "datetime": "2023-09-04T09:40:21.450Z",
+            "deviceId": "bjbdigi",
+            "devicePlatform": "Linux",
+            "deviceOSVersion": "bjbdigi-version",
+            "deviceType": "",
+            "latitude": "",
+            "longitude": "",
+            "appId": 58,
+            "appVersion": "1.0",
+        };
+
+        const bodyData = {
+            merchantAccountNumber: "081717181988",
+            // amount: dtamount,
+            amount: '1',
+            expInSecond: dtexpired,
+        };
+
+        const result = await axios.get(
+            urlGlobal + '/bjb/api/getQRISstatus',
+            { body: bodyData },
+            { headers: headers }
+        );
+        const response = result;
+        console.log('RESULT CREATE QR::',response);
         // console.log('MSIDN::',msisdn);
 
         const responseData = {

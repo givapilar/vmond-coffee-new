@@ -48,4 +48,8 @@ class HomepageController extends Controller
         }
 
     }
+
+    public function dineIn(){
+        return view('homepage.dine-in');
+    }
 }
