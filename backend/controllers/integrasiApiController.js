@@ -470,7 +470,7 @@ const checkStatusPay = async (req, res) => {
             { headers: headers }
         );
         const response = result;
-        console.log('RESULT CREATE QR::',response);
+        console.log('RESULT CHECK PAYMENT::',response);
 
         const responseData = {
             code: 200,
