@@ -463,7 +463,7 @@ const checkStatusPay = async (req, res) => {
         // Check Status Payment BY QRID
         const headers = {
             'Content-Type': 'application/json',
-            'Authorization': 'SG/VUF1+CN9DpSYxqIGebSbLqghxrXBF/aoW8znURtZde1VJ+48OyzffbFI4wiExMCHoye0xI/TfbGHiwOSn4TKPLKWEiBmsHGBuDi+QDyExMSG6KO2/vAIq7G8OtYc4KiNk8+4d'
+            'Authorization': 'ewondXNlcm5hbWUgJzogJ2JqYkF1dGhEZXYnLAoncGFzc3dvcmQnOiAnUEBTU1cwUkQhJwp9'
         };
 
         const result = await axios.get(
