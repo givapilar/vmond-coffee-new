@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 class AppServiceProvider extends ServiceProvider
@@ -41,21 +42,14 @@ class AppServiceProvider extends ServiceProvider
         Carbon::setLocale('id');
         date_default_timezone_set('Asia/Jakarta');
 
-        //$this->app['request']->server->set('HTTPS', true);
-        //URL::forceScheme('https');
+        $this->app['request']->server->set('HTTPS', true);
+        URL::forceScheme('https');
         view()->composer('*', function (){
             if (Auth::user()) {
                 $today = Carbon::tomorrow();
-                // $oneHourAgo = Carbon::now()->subHour();
                 $query = Order::query();
 
                 if (Auth::user()->telephone == '081818181847') {
-                    // $orderTable = Order::orderBy('id', 'desc')
-                    //     ->whereDate('created_at', $oneHourAgo)
-                    //     ->where('user_id', Auth::user()->id)
-                    //     ->where('status_pembayaran', 'Paid')
-                    //     ->get();
-
                     $oneHourAgo = Carbon::now()->subHour();
                     $query->where('created_at', '>=', $oneHourAgo);
             
@@ -74,6 +68,7 @@ class AppServiceProvider extends ServiceProvider
                 $restaurantMenu = Restaurant::get();
                 $otherSetting = OtherSetting::get();
                 $kodeMeja = User::where('id', Auth::user()->id)->get()->pluck('kode_meja')->first();
+                
                 View::share('kodeMeja', $kodeMeja);
                 View::share('restaurantMenu',$restaurantMenu);
                 View::share('order_table',$orderTable);
@@ -95,6 +90,18 @@ class AppServiceProvider extends ServiceProvider
                 $cacheKey = 'kode_meja_' . $ipAddress; // Kembali membuat kunci yang sesuai untuk mengambil nilai dari cache
                 $getKodeMeja = Cache::get($cacheKey);
 
+                if (request()->query('meja')) {
+                    $Meja = request()->query('meja');
+                }else{
+                    $Meja = null;
+                }
+                if ($Meja != null) {
+                     $cacheKey = 'meja_' . $ipAddress; // Membuat kunci cache unik berdasarkan alamat IP
+                    Cache::put($cacheKey, $Meja, now()->addSeconds(3600));
+                }
+                $cacheKey = 'meja_' . $ipAddress; // Kembali membuat kunci yang sesuai untuk mengambil nilai dari cache
+                $getMeja = Cache::get($cacheKey);
+
                 // dd($getKodeMeja);
                 // dd($getKodeMeja);
                 // dd($kodeMeja);
@@ -102,6 +109,7 @@ class AppServiceProvider extends ServiceProvider
                 View::share('restaurantMenu', $restaurantMenu);
                 View::share('otherSetting', $otherSetting);
                 View::share('kodeMeja', $getKodeMeja);
+                View::share('meja', $getMeja);
 
             }
         });

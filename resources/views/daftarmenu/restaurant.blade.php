@@ -99,7 +99,10 @@
                                 <ion-icon name="eye" class="mt-[0.2rem] mb-1 dark:text-white" style="margin-right: 5px;"></ion-icon>
                                 <p class="mt-1 mb-1">Detail</p>
                             </button>
-                            <form action="{{ route('detail-resto',['id' => $resto->id,'category' => request()->category]) }}" method="get" class=" w-8/12">
+                            <form action="{{ route('detail-resto',['meja' => Request::get('meja'),'kode_meja' => Request::get('kode_meja'),'id' => $resto->id,'category' => request()->category]) }}" method="get" class=" w-8/12">
+                                <input type="hidden" name="meja" value="{{ request('meja') }}">
+                                <input type="hidden" name="kode_meja" value="{{ request('kode_meja') }}">
+
                                 <div class="flex gap-1 w-full">
                                     @if ($resto->status == 'Tersedia')
                                     <button class="w-full bg-sky-500 text-xs rounded-lg mt-2 p-1 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-300 dark:text-white flex items-center justify-center">

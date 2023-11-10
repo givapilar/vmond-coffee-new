@@ -43,6 +43,7 @@ Route::post('/register', [RegisterController::class, 'store'])->name('register')
 
 Route::get('/home', [HomepageController::class, 'index'])->name('homepage');
 Route::get('/dine-in', [HomepageController::class, 'dineIn'])->name('dine-in');
+Route::get('/login-menu', [HomepageController::class, 'login'])->name('login-menu');
 
 
 Route::get('/create-qris-tes', [OrderController::class, 'createQrisBri'])->name('createQris-brii');

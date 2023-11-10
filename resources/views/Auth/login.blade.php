@@ -15,7 +15,7 @@
         <div class="w-full bg-transparent md:mt-0 max-w-md xl:p-0">
             <div class="px-6 py-2 space-y-4 md:space-y-6 ">
 
-                <form class="space-y-4 md:space-y-6" action="{{ route('login', ['jenis_meja' => Request::get('jenis_meja'), 'kode_meja' => Request::get('kode_meja')]) }}" method="POST">
+                <form class="space-y-4 md:space-y-6" action="{{ route('login', ['meja' => Request::get('meja'),'jenis_meja' => Request::get('jenis_meja'), 'kode_meja' => Request::get('kode_meja')]) }}" method="POST">
                     @csrf
                     <div>
                         <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username / Phone Number</label>
@@ -73,7 +73,7 @@
                     <br>
                     <br>
                     <span class="text-sm font-light text-gray-500 dark:text-gray-400">
-                        log in as a non member? <a href="{{ route('homepage', ['jenis_meja' => Request::get('jenis_meja'), 'kode_meja' => Request::get('kode_meja')]) }}" class="font-medium text-blue-600 hover:underline dark:text-blue-500">Click here</a>
+                        log in as a non member? <a href="{{ route('homepage', ['meja' => Request::get('meja'),'jenis_meja' => Request::get('jenis_meja'), 'kode_meja' => Request::get('kode_meja')]) }}" class="font-medium text-blue-600 hover:underline dark:text-blue-500">Click here</a>
                     </span>
                 </form>
             </div>
