@@ -862,6 +862,7 @@
                 },
                 success: function (data) {
                     window.location.href = '/home';
+                    alert('Anda Mendapatkan Kupon');
                     console.log('Callback', data);
                 },
                 error: function (data) {

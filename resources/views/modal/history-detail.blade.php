@@ -372,6 +372,22 @@
                     </div>
                 @endif
                 <!-- Print Template -->
+
+                <br><br>
+                <div class="flex -mx-1 border-b py-2 items-center justify-center mt-4">
+                    <div class="px-1 w-3/12 text-center">
+                        <p class="text-gray-800 dark:text-gray-400 uppercase tracking-wide text-sm font-bold">Code Kupon</p>
+                    </div>
+
+                </div>
+                    @foreach ($item->kupon as $kupon)
+                        <div class="flex -mx-1 border-b py-2 items-center justify-center">
+                            <div class="px-1 w-3/12 text-center">
+                                <p class="text-gray-800 dark:text-gray-400 uppercase tracking-wide text-sm font-bold">{{ $kupon->code ?? '' }}</p>
+                            </div>
+                        </div>
+                    @endforeach
+                    
             </div>
         </div>
     </div>

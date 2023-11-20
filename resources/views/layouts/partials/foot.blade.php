@@ -368,7 +368,7 @@
 			background: "#D5F3E9",
 			color: "#1f7556"
 		},
-		duration: 10000
+		duration: 8000
 	}).showToast();
 </script>
 @endif
