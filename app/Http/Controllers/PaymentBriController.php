@@ -184,7 +184,7 @@ class PaymentBriController extends Controller
         $responseData = json_decode($response->getBody(), true);
 
         $token = $responseData['accessToken'];
-        dd($token);
+        dd($responseData);
 
 
         // ------------------------------------------------------------------- Generate QR------------------------------------------------------------------------------------------------
