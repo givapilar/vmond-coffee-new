@@ -133,8 +133,8 @@ class PaymentBriController extends Controller
 
 
         $client = new Client();
-        $url = 'https://sandbox.partner.api.bri.co.id/snap/v1.0/access-token/b2b';
-        // $url = 'https://partner.api.bri.co.id/snap/v1.0/access-token/b2b';
+        // $url = 'https://sandbox.partner.api.bri.co.id/snap/v1.0/access-token/b2b';
+        $url = 'https://partner.api.bri.co.id/snap/v1.0/access-token/b2b';
 
         $requestData = [
             'grantType' => 'client_credentials',
@@ -259,8 +259,8 @@ class PaymentBriController extends Controller
 
         // Make the POST request
         $responseQr = Http::withHeaders($headersQr)
-            ->post('https://sandbox.partner.api.bri.co.id/v1.0/qr-dynamic-mpm/qr-mpm-generate-qr', $requestDataQr);
-            // ->post('https://partner.api.bri.co.id/v1.0/qr-dynamic-mpm/qr-mpm-generate-qr', $requestDataQr);
+            // ->post('https://sandbox.partner.api.bri.co.id/v1.0/qr-dynamic-mpm/qr-mpm-generate-qr', $requestDataQr);
+            ->post('https://partner.api.bri.co.id/v1.0/qr-dynamic-mpm/qr-mpm-generate-qr', $requestDataQr);
 
             dd($responseQr->json());
 
