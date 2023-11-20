@@ -316,7 +316,7 @@
                     background: "#D5F3E9",
                     color: "#1f7556"
                 },
-                duration: 1000
+                duration: 3000
             }).showToast();
     </script>
 @endif

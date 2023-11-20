@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AddOn;
 use App\Models\AddOnDetail;
+use App\Models\Kupon;
 use App\Models\Membership;
 use App\Models\Order;
 use App\Models\OrderAddOn;
@@ -246,6 +247,40 @@ class OrderController extends Controller
                     'jumlah_customer' => $request->jumlah_customer ?? 1,
                 ]);
 
+                    // ================================ Kupon ==========================
+                    
+                    // if ($order->total_price >= 50000) {
+                    // $tpc = 50000; // Ubah nilai $tpc sesuai kebutuhan
+
+                    // if ($order->total_price >= 25000) {
+                    //     $timestamp = time(); 
+                    //     $randomSeed = $timestamp % 10000; 
+                    //     $code = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
+                        
+                    //     $kupon = [
+                    //         'order_id' => $order->id,
+                    //         'code' => 'VMND'.$code,
+                    //     ];
+                        
+                    //     $totalKupon = ($order->total_price / 25000) - 1; // Hitung jumlah kupon tambahan
+                        
+                    //     // Loop untuk membuat kupon tambahan berdasarkan kelipatan 25,000
+                    //     $kupons = [$kupon];
+                    //     for ($i = 1; $i <= $totalKupon; $i++) {
+                    //         $timestamp = time(); 
+                    //         $randomSeed = $timestamp % 10000;
+                    //         $kuponCode = 'VMND2' . str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
+                    //         $kupons[] = [
+                    //             'order_id' => $order->id,
+                    //             'code' => $kuponCode
+                    //         ];
+                    //     }
+
+                    //     // dd($kupons);
+                    //     Kupon::insert($kupons);
+                    // }
+                    // ================================ End Kupon ====================
+                
                     foreach ($session_cart as $key => $item) {
                         // dd($item);
                         $orderPivot = [];
@@ -331,8 +366,8 @@ class OrderController extends Controller
                 $params = array(
                     'transaction_details' => array(
                         'order_id' => $order->id,
-                        'gross_amount' => str_replace(',','',number_format($order->total_price, 0)),
-                        // 'gross_amount' => 1,
+                        // 'gross_amount' => str_replace(',','',number_format($order->total_price, 0)),
+                        'gross_amount' => 4,
                     ),
                     'customer_details' => array(
                         'first_name' => auth()->user()->username,
@@ -356,6 +391,7 @@ class OrderController extends Controller
 
             return view('checkout.index',$data,compact('snapToken','order'));
         } catch (\Throwable $th) {
+            dd($th->getMessage());
             DB::rollback();
             return redirect()->back()->with('failed', $th->getMessage());
         }
@@ -685,6 +721,36 @@ class OrderController extends Controller
             }
 
         }
+
+        // ====================== Kupon ==============================
+        // if ($latestOrder->total_price >= 25000) {
+        //     $timestamp = time(); 
+        //     $randomSeed = $timestamp % 10000; 
+        //     $code = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
+            
+        //     $kupon = [
+        //         'order_id' => $latestOrder->id,
+        //         'code' => 'VMND'.$code,
+        //     ];
+            
+        //     $totalKupon = ($latestOrder->total_price / 25000) - 1; // Hitung jumlah kupon tambahan
+            
+        //     // Loop untuk membuat kupon tambahan berdasarkan kelipatan 25,000
+        //     $kupons = [$kupon];
+        //     for ($i = 1; $i <= $totalKupon; $i++) {
+        //         $timestamp = time(); 
+        //         $randomSeed = $timestamp % 10000;
+        //         $kuponCode = 'VMND2' . str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
+        //         $kupons[] = [
+        //             'order_id' => $latestOrder->id,
+        //             'code' => $kuponCode
+        //         ];
+        //     }
+
+        //     // dd($kupons);
+        //     Kupon::insert($kupons);
+        //     return redirect()->route('homepage')->with('success', 'Order Telah berhasil Anda Mendapatkan Kupon');
+        // }
 
         return redirect()->route('homepage')->with('success', 'Order Telah berhasil');
 
@@ -2174,6 +2240,36 @@ class OrderController extends Controller
                         $restoStock->update(['current_stok' => $stockAvailable,]);
 
                     }
+
+                    // =========================== Kupom ================================
+                    if ($order->total_price >= 2) {
+                        $timestamp = time(); 
+                        $randomSeed = $timestamp % 10000; 
+                        $code = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
+                        
+                        $kupon = [
+                            'order_id' => $order->id,
+                            'code' => 'VMND'.$code,
+                        ];
+                        
+                        $totalKupon = ($order->total_price / 2) - 1; // Hitung jumlah kupon tambahan
+                        
+                        // Loop untuk membuat kupon tambahan berdasarkan kelipatan 25,000
+                        $kupons = [$kupon];
+                        for ($i = 1; $i <= $totalKupon; $i++) {
+                            $timestamp = time(); 
+                            $randomSeed = $timestamp % 10000;
+                            $kuponCode = 'VMND2' . str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
+                            $kupons[] = [
+                                'order_id' => $order->id,
+                                'code' => $kuponCode
+                            ];
+                        }
+
+                        // dd($kupons);
+                        Kupon::insert($kupons);
+                    }
+
                 }else{
                     $userID = $order->user_id;
 
@@ -2192,6 +2288,34 @@ class OrderController extends Controller
                         $restoStock->update(['current_stok' => $stockAvailable]);
                     }
 
+                    // ================================== Kupon ===================================
+                    if ($order->total_price >= 25000) {
+                        $timestamp = time(); 
+                        $randomSeed = $timestamp % 10000; 
+                        $code = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
+                        
+                        $kupon = [
+                            'order_id' => $order->id,
+                            'code' => 'VMND'.$code,
+                        ];
+                        
+                        $totalKupon = ($order->total_price / 25000) - 1; // Hitung jumlah kupon tambahan
+                        
+                        // Loop untuk membuat kupon tambahan berdasarkan kelipatan 25,000
+                        $kupons = [$kupon];
+                        for ($i = 1; $i <= $totalKupon; $i++) {
+                            $timestamp = time(); 
+                            $randomSeed = $timestamp % 10000;
+                            $kuponCode = 'VMND2' . str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
+                            $kupons[] = [
+                                'order_id' => $order->id,
+                                'code' => $kuponCode
+                            ];
+                        }
+
+                        // dd($kupons);
+                        Kupon::insert($kupons);
+                    }
 
                 }
             }else if($order->billiard_id != null){
