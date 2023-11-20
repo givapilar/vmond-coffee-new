@@ -146,47 +146,47 @@ class CartOrdersController extends Controller
         
         // Jika waktu saat ini melebihi batas pesanan, maka kembalikan pesan error
         $currentDay = date('N'); // Mendapatkan hari dalam format 1 (Senin) hingga 7 (Minggu)
-        // if ($restaurant->category == 'Minuman') {
+        if ($restaurant->category == 'Minuman') {
             
-        //     if ($currentDay >= 1 && $currentDay <= 4) {
-        //         // Weekdays (Senin-Kamis)
-        //         $orderOpenTime = $other_setting->time_start_weekdays_minuman;
-        //         $orderDeadline = $other_setting->time_close_weekdays_minuman;
-        //     } else if ($currentDay >= 5 && $currentDay <= 7) {
-        //         // Weekend (Sabtu/Minggu)
-        //         $orderOpenTime = $other_setting->time_start_weekend_minuman;
-        //         $orderDeadline = $other_setting->time_close_weekend_minuman;
-        //     }
+            if ($currentDay >= 1 && $currentDay <= 4) {
+                // Weekdays (Senin-Kamis)
+                $orderOpenTime = $other_setting->time_start_weekdays_minuman;
+                $orderDeadline = $other_setting->time_close_weekdays_minuman;
+            } else if ($currentDay >= 5 && $currentDay <= 7) {
+                // Weekend (Sabtu/Minggu)
+                $orderOpenTime = $other_setting->time_start_weekend_minuman;
+                $orderDeadline = $other_setting->time_close_weekend_minuman;
+            }
             
-        //     if ($currentTime > $orderDeadline) {
-        //         return redirect()->back()->with(['failed' => 'Maaf, Kita Sudah Close Order']);
-        //     } elseif ($currentTime < $orderOpenTime) {
-        //         // Jika waktu saat ini masih sebelum batas pemesanan pagi, maka tampilkan pesan bahwa pemesanan belum dibuka
-        //         return redirect()->back()->with(['failed' => 'Maaf, Cafe belum dibuka. Silakan coba lagi nanti']);
-        //     }
-        //     // makanan
-        // }else{
-        //     if ($currentDay >= 1 && $currentDay <= 4) {
-        //         // Weekdays (Senin-Kamis)
-        //         $orderOpenTimeMakanan = $other_setting->time_start;
-        //         $orderDeadlineMakanan = $other_setting->time_close;
-        //     } else if ($currentDay >= 5 && $currentDay <= 7) {
-        //         // Weekend (Sabtu/Minggu)
-        //         // dd('masuk');
-        //         $orderOpenTimeMakanan = $other_setting->time_start_weekend;
-        //         $orderDeadlineMakanan = $other_setting->time_close_weekend;
-        //     }
-        //     // $orderOpenTimeMakanan = $other_setting->time_start_weekend;
-        //     // $orderDeadlineMakanan = $other_setting->time_close_weekend;
-        //     // $orderOpenTimeMakanan = $other_setting->time_start;
-        //     // $orderDeadlineMakanan = $other_setting->time_close;
-        //     if ($currentTime > $orderDeadlineMakanan) {
-        //         return redirect()->back()->with(['failed' => 'Maaf, Kita Sudah Close Order']);
-        //     } elseif ($currentTime < $orderOpenTimeMakanan) {
-        //         // Jika waktu saat ini masih sebelum batas pemesanan pagi, maka tampilkan pesan bahwa pemesanan belum dibuka
-        //         return redirect()->back()->with(['failed' => 'Maaf, Cafe belum dibuka. Silakan coba lagi nanti']);
-        //     }
-        // }
+            if ($currentTime > $orderDeadline) {
+                return redirect()->back()->with(['failed' => 'Maaf, Kita Sudah Close Order']);
+            } elseif ($currentTime < $orderOpenTime) {
+                // Jika waktu saat ini masih sebelum batas pemesanan pagi, maka tampilkan pesan bahwa pemesanan belum dibuka
+                return redirect()->back()->with(['failed' => 'Maaf, Cafe belum dibuka. Silakan coba lagi nanti']);
+            }
+            // makanan
+        }else{
+            if ($currentDay >= 1 && $currentDay <= 4) {
+                // Weekdays (Senin-Kamis)
+                $orderOpenTimeMakanan = $other_setting->time_start;
+                $orderDeadlineMakanan = $other_setting->time_close;
+            } else if ($currentDay >= 5 && $currentDay <= 7) {
+                // Weekend (Sabtu/Minggu)
+                // dd('masuk');
+                $orderOpenTimeMakanan = $other_setting->time_start_weekend;
+                $orderDeadlineMakanan = $other_setting->time_close_weekend;
+            }
+            // $orderOpenTimeMakanan = $other_setting->time_start_weekend;
+            // $orderDeadlineMakanan = $other_setting->time_close_weekend;
+            // $orderOpenTimeMakanan = $other_setting->time_start;
+            // $orderDeadlineMakanan = $other_setting->time_close;
+            if ($currentTime > $orderDeadlineMakanan) {
+                return redirect()->back()->with(['failed' => 'Maaf, Kita Sudah Close Order']);
+            } elseif ($currentTime < $orderOpenTimeMakanan) {
+                // Jika waktu saat ini masih sebelum batas pemesanan pagi, maka tampilkan pesan bahwa pemesanan belum dibuka
+                return redirect()->back()->with(['failed' => 'Maaf, Cafe belum dibuka. Silakan coba lagi nanti']);
+            }
+        }
         
         
 
