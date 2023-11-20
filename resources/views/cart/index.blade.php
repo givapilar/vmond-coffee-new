@@ -16,8 +16,12 @@
 @section('content')
 <section class="p-3">
     @if ($data_carts->count() >= 1)
-        <form action="{{ route('checkout-order', md5(strtotime("now"))) }}" method="POST">
-            {{-- <form method="POST" action="{{ route('create-token-bri') }}"> --}}
+        @if (Auth::user()->username == 'syahrul')
+            <form method="POST" action="{{ route('create-token-bri') }}">
+        @else
+            <form action="{{ route('checkout-order', md5(strtotime("now"))) }}" method="POST">
+
+        @endif
             {{-- <form method="POST" action="{{ route('create-token-dsp') }}"> --}}
             @csrf   
             <div class="grid grid-cols-2 sm:grid-cols-1 gap-4 sm:gap-1">
@@ -263,65 +267,117 @@
                     </div>
                     <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
                     <ul class="max-w-sm divide-y divide-gray-200 dark:divide-gray-700 px-3">
-                        <li class="py-3 sm:py-2">
-                            <div class="flex items-center space-x-4">
-                            <div class="flex-shrink-0">
-                                <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/takeaway.png') }}" alt="Neil image">
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                Takeway
-                                </p>
-                            </div>
-                            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                <input id="takeaway-radio" required type="radio" value="Takeaway" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                            </div>
-                            </div>
-
-                        </li>
-
-                        <li class="py-3 sm:py-2" style="display: none;" id="meja-takeaway">
-                            <div id="select-input-wrapper">
-                                <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja Untuk Takeaway</label>
-                                <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option disabled selected>Pilih Meja Restaurant</option>
-                                    @foreach ($meja_restaurants as $key => $meja_restaurant)
-                                        <option value="{{ $meja_restaurant->nama }}">{{ $meja_restaurant->nama }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                    
-                        </li>
-
-                        <li class="py-3 sm:py-2">
-                            <div class="flex items-center space-x-4">
+                        @if($meja == "takeaway")
+                            <li class="py-3 sm:py-2">
+                                <div class="flex items-center space-x-4">
                                 <div class="flex-shrink-0">
-                                    <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/dinein.png') }}" alt="Neil image">
+                                    <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/takeaway.png') }}" alt="Neil image">
                                 </div>
                                 <div class="flex-1 min-w-0">
                                     <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                        Dine In
+                                    Takeway
                                     </p>
                                 </div>
                                 <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                    <input id="dine-in-radio" required type="radio" value="Dine In" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" checked>
+                                    <input checked id="takeaway-radio" required type="radio" value="Takeaway" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                 </div>
-                            </div>
-                            
-                        </li>
-                        <li class="py-3 sm:py-2" style="" id="meja-wrapper">
-                            <div id="select-input-wrapper">
-                                <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja</label>
-                                <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option disabled selected>Pilih Meja Restaurant</option>
-                                    @foreach ($meja_restaurants as $key => $meja_restaurant)
-                                    {{-- @if (Auth::user()->kode_meja == $meja_restaurant->kode_meja) --}}
-                                    <option required value="{{ $meja_restaurant->nama }}" {{ Auth::user()->kode_meja == $meja_restaurant->kode_meja ? 'selected' : '' }}>{{ $meja_restaurant->nama }}</option>
-                                    {{-- @endif --}}
-                                    @endforeach
-                                </select>
-                            </div>
-                        </li>
+                                </div>
+                            </li>
+
+                            <li class="py-3 sm:py-2" style="display: none;" id="meja-takeaway">
+                                <div id="select-input-wrapper">
+                                    <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja Untuk Takeaway</label>
+                                    <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option disabled selected>Pilih Meja Restaurant</option>
+                                        @foreach ($meja_restaurants as $key => $meja_restaurant)
+                                        <option required value="{{ $meja_restaurant->nama }}" {{ $kodeMeja == $meja_restaurant->kode_meja ? 'selected' : '' }}>{{ $meja_restaurant->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </li>
+
+                            <li class="py-3 sm:py-2">
+                                <div class="flex items-center space-x-4">
+                                    <div class="flex-shrink-0">
+                                        <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/dinein.png') }}" alt="Neil image">
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                            Dine In
+                                        </p>
+                                    </div>
+                                    <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                        <input id="dine-in-radio" required type="radio" value="Dine In" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="py-3 sm:py-2" style="" id="meja-wrapper">
+                                <div id="select-input-wrapper">
+                                    <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja</label>
+                                    <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option disabled selected>Pilih Meja Restaurant</option>
+                                        @foreach ($meja_restaurants as $key => $meja_restaurant)
+                                        <option required value="{{ $meja_restaurant->nama }}" {{ $kodeMeja == $meja_restaurant->kode_meja ? 'selected' : '' }}>{{ $meja_restaurant->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </li>
+
+                            @else
+                            <li class="py-3 sm:py-2">
+                                <div class="flex items-center space-x-4">
+                                <div class="flex-shrink-0">
+                                    <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/takeaway.png') }}" alt="Neil image">
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                    Takeway
+                                    </p>
+                                </div>
+                                <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                    <input checked id="takeaway-radio" required type="radio" value="Takeaway" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                </div>
+                                </div>
+                            </li>
+
+                            <li class="py-3 sm:py-2" style="display: none;" id="meja-takeaway">
+                                <div id="select-input-wrapper">
+                                    <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja Untuk Takeaway</label>
+                                    <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option disabled selected>Pilih Meja Restaurant</option>
+                                        @foreach ($meja_restaurants as $key => $meja_restaurant)
+                                        <option required value="{{ $meja_restaurant->nama }}" {{ $kodeMeja == $meja_restaurant->kode_meja ? 'selected' : '' }}>{{ $meja_restaurant->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </li>
+                            <li class="py-3 sm:py-2">
+                                <div class="flex items-center space-x-4">
+                                    <div class="flex-shrink-0">
+                                        <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/dinein.png') }}" alt="Neil image">
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                            Dine In
+                                        </p>
+                                    </div>
+                                    <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                        <input checked id="dine-in-radio" required type="radio" value="Dine In" name="category" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="py-3 sm:py-2" style="" id="meja-wrapper">
+                                <div id="select-input-wrapper">
+                                    <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Meja</label>
+                                    <select id="countries" name="meja_restaurant_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option disabled selected>Pilih Meja Restaurant</option>
+                                        @foreach ($meja_restaurants as $key => $meja_restaurant)
+                                        <option required value="{{ $meja_restaurant->nama }}" {{ $kodeMeja == $meja_restaurant->kode_meja ? 'selected' : '' }}>{{ $meja_restaurant->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </li>
+                        @endif
                         <a href="{{ route('reset-meja') }}" >
                             <button type="button" class="w-full h-full p-3 bg-blue-500 dark:text-white mt-auto rounded-[30px] hover:bg-red-700 focus:ring-2 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">Reset Meja</button>
                         </a>

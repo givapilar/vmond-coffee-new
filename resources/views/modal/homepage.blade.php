@@ -33,6 +33,7 @@
                             {{ $meja }}
                             @endif
     
+                            {{-- {{ dd($kodeMeja) }} --}}
                             @if($kodeMeja != null)
                             Meja
                             {{ $kodeMeja }}

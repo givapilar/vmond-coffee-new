@@ -355,66 +355,66 @@ class APIController extends Controller
         $formattedInt = number_format($integer, 2, '.', ''); // Mengonversi ke string dengan 2 desimal
         // dd($formattedInt);
 
-        return $formattedInt;
+        // return $formattedInt;
         
-        // $requestDataQr = [
-        //     'partnerReferenceNo' => '444431'.$randomDigits,
-        //     'amount' => [
-        //         'value' => 1,
-        //         'currency' => 'IDR',
-        //     ],
-        //     'merchantId' => '000001019000014',
-        //     'terminalId' => '10049694',
-        // ];
+        $requestDataQr = [
+            'partnerReferenceNo' => '444431'.$randomDigits,
+            'amount' => [
+                'value' => $formattedInt,
+                'currency' => 'IDR',
+            ],
+            'merchantId' => '000001019000014',
+            'terminalId' => '10049694',
+        ];
 
-        // date_default_timezone_set('UTC');
+        date_default_timezone_set('UTC');
 
-        // $timestamp = new DateTime();
-        // $timestamp->setTimezone(new DateTimeZone('Asia/Jakarta'));
-        // $timestampQr = $timestamp-> format('Y-m-d\TH:i:sP');
+        $timestamp = new DateTime();
+        $timestamp->setTimezone(new DateTimeZone('Asia/Jakarta'));
+        $timestampQr = $timestamp-> format('Y-m-d\TH:i:sP');
 
-        // $method = 'POST'; 
-        // $endpointUrl = '/v1.0/qr-dynamic-mpm/qr-mpm-generate-qr'; 
-        // $requestBodyQr = json_encode($requestDataQr);
-        // $minifiedRequestBody = strtolower(preg_replace('/\s+/', '', hash('sha256', $requestBodyQr)));
+        $method = 'POST'; 
+        $endpointUrl = '/v1.0/qr-dynamic-mpm/qr-mpm-generate-qr'; 
+        $requestBodyQr = json_encode($requestDataQr);
+        $minifiedRequestBody = strtolower(preg_replace('/\s+/', '', hash('sha256', $requestBodyQr)));
         
         
-        // $stringToSign = $method.':'.$endpointUrl .':'.$token . ':'.$minifiedRequestBody .':'.'2023-10-16T23:29:36+07:00';
+        $stringToSign = $method.':'.$endpointUrl .':'.$token . ':'.$minifiedRequestBody .':'.'2023-10-16T23:29:36+07:00';
 
-        // $privateKeyPath = realpath(public_path('assetku/dataku/public-key/public-key-bri.pem'));
-        // $clientSecret = file_get_contents($privateKeyPath);
+        $privateKeyPath = realpath(public_path('assetku/dataku/public-key/public-key-bri.pem'));
+        $clientSecret = file_get_contents($privateKeyPath);
 
-        // $hmac = hash_hmac("sha512", $clientSecret, $stringToSign);
+        $hmac = hash_hmac("sha512", $clientSecret, $stringToSign);
 
-        // $signatureBase64 = base64_encode($hmac);
+        $signatureBase64 = base64_encode($hmac);
 
-        // $hash = hash('sha256', $requestBodyQr);
+        $hash = hash('sha256', $requestBodyQr);
 
-        // $payload = $method . ":" . $endpointUrl . ":" . $token . ":". $hash . ":" . $timestampQr;
+        $payload = $method . ":" . $endpointUrl . ":" . $token . ":". $hash . ":" . $timestampQr;
 
-        // $clientId = 'FaKm5s4fnTI35jyV';
-        // $hmacSignature = hash_hmac('sha512', $payload, $clientId);
+        $clientId = 'FaKm5s4fnTI35jyV';
+        $hmacSignature = hash_hmac('sha512', $payload, $clientId);
 
-        // $timestamp = time(); 
-        // $randomSeed = $timestamp % 10000; 
-        // $externalId = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
+        $timestamp = time(); 
+        $randomSeed = $timestamp % 10000; 
+        $externalId = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
 
-        //     $headersQr = [
-        //         'Authorization' => 'Bearer '.$token,
-        //         'X-TIMESTAMP' => $timestampQr,
-        //         'X-SIGNATURE' => $hmacSignature,
-        //         'Content-Type' => 'application/json',
-        //         'X-PARTNER-ID' => '456044',
-        //         'CHANNEL-ID' => '95221',
-        //         'X-EXTERNAL-ID' => '1223'.$externalId, // Replace with your external ID
-        //     ];
+            $headersQr = [
+                'Authorization' => 'Bearer '.$token,
+                'X-TIMESTAMP' => $timestampQr,
+                'X-SIGNATURE' => $hmacSignature,
+                'Content-Type' => 'application/json',
+                'X-PARTNER-ID' => '456044',
+                'CHANNEL-ID' => '95221',
+                'X-EXTERNAL-ID' => '1223'.$externalId, // Replace with your external ID
+            ];
 
 
-        //     // Make the POST request
-        //     $responseQr = Http::withHeaders($headersQr)->post('https://sandbox.partner.api.bri.co.id/v1.0/qr-dynamic-mpm/qr-mpm-generate-qr', $requestDataQr);
+            // Make the POST request
+            $responseQr = Http::withHeaders($headersQr)->post('https://sandbox.partner.api.bri.co.id/v1.0/qr-dynamic-mpm/qr-mpm-generate-qr', $requestDataQr);
 
-        //     // Kembalikan respons JSON
-        //     return $responseQr->json();
+            // Kembalikan respons JSON
+            return $responseQr->json();
 
             // return response()->json(['data' => $responseQr]);
         } catch (\Exception $e) {

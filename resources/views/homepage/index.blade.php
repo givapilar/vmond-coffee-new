@@ -35,7 +35,7 @@
 
 @section('content')
 
-    {{-- <section class="bg-gray-50 dark:bg-gray-900">
+    <section class="bg-gray-50 dark:bg-gray-900">
         <div class="flex flex-col items-center justify-center h-screen px-6 py-8 mx-auto md:h-screen lg:h-screen lg:py-0">
             <div class=" text-center">
                 <img class="mx-auto" src="{{ asset('assetku/dataku/img/logo/logo-vmond.png') }}" alt="logo">
@@ -59,8 +59,8 @@
                 </div>
             </div>
         </div>
-    </section> --}}
-<section>
+    </section>
+{{-- <section>
     <div class=" w-11/12 mt-5 p-4 bg-[#1d2943] border border-gray-200 rounded-lg shadow mx-auto dark:bg-[#1d2943] dark:border-[#16274b] ">
         <div class="grid grid-cols-1">
             <div class="flex items-center space-x-4">
@@ -88,9 +88,9 @@
                 </div>
                 <div class="flex-shrink-0 min-w-0">
                     <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                        {{-- @if($meja != null)
+                        @if($meja != null)
                         {{ $meja }}
-                        @endif --}}
+                        @endif
 
                         @if($kodeMeja != null)
                         Meja
@@ -154,7 +154,7 @@
         </div>
     </div>
 </section>
-@endif
+@endif --}}
 
 <div class="pb-[5rem]"></div>
 @endsection

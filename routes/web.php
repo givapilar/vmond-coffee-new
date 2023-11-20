@@ -36,12 +36,14 @@ Route::get('/', function () {
     if (Auth::check()) {
         return redirect()->route('homepage');
     }
-    return view('Auth.login');
+    // return view('Auth.login');
+    return view('homepage.index');
 });
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/register', [RegisterController::class, 'store'])->name('register');
 
-Route::get('/home', [HomepageController::class, 'index'])->name('homepage');
+Route::get('/home', [HomepageController::class, 'index'])->name('home');
+Route::get('/home-menu', [HomepageController::class, 'homeMenu'])->name('homepage');
 Route::get('/dine-in', [HomepageController::class, 'dineIn'])->name('dine-in');
 Route::get('/login-menu', [HomepageController::class, 'login'])->name('login-menu');
 

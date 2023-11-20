@@ -127,13 +127,14 @@ class PaymentBriController extends Controller
         $integer = 62172.50;
         $integer = floor($integer); // Menghilangkan desimal
         $formattedInt = number_format($integer, 2, '.', ''); // Mengonversi ke string dengan 2 desimal
-        dd($formattedInt);
+        // dd($formattedInt);
  // Ganti .50 dengan .00
         // dd($formattedInt);
 
 
         $client = new Client();
         $url = 'https://sandbox.partner.api.bri.co.id/snap/v1.0/access-token/b2b';
+        // $url = 'https://partner.api.bri.co.id/snap/v1.0/access-token/b2b';
 
         $requestData = [
             'grantType' => 'client_credentials',
@@ -182,8 +183,8 @@ class PaymentBriController extends Controller
         // Mendapatkan respons dari API
         $responseData = json_decode($response->getBody(), true);
 
-        // dd($responseData);
         $token = $responseData['accessToken'];
+        // dd($token);
 
 
         // ------------------------------------------------------------------- Generate QR------------------------------------------------------------------------------------------------
@@ -259,6 +260,7 @@ class PaymentBriController extends Controller
         // Make the POST request
         $responseQr = Http::withHeaders($headersQr)
             ->post('https://sandbox.partner.api.bri.co.id/v1.0/qr-dynamic-mpm/qr-mpm-generate-qr', $requestDataQr);
+            // ->post('https://partner.api.bri.co.id/v1.0/qr-dynamic-mpm/qr-mpm-generate-qr', $requestDataQr);
 
             dd($responseQr->json());
 

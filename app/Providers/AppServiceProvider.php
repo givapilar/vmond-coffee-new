@@ -68,8 +68,22 @@ class AppServiceProvider extends ServiceProvider
                 $restaurantMenu = Restaurant::get();
                 $otherSetting = OtherSetting::get();
                 $kodeMeja = User::where('id', Auth::user()->id)->get()->pluck('kode_meja')->first();
+                $ipAddress = request()->ip();
                 
+                if (request()->query('meja')) {
+                    $Meja = request()->query('meja');
+                }else{
+                    $Meja = null;
+                }
+                if ($Meja != null) {
+                     $cacheKey = 'meja_' . $ipAddress; // Membuat kunci cache unik berdasarkan alamat IP
+                    Cache::put($cacheKey, $Meja, now()->addSeconds(3600));
+                }
+                $cacheKey = 'meja_' . $ipAddress; // Kembali membuat kunci yang sesuai untuk mengambil nilai dari cache
+                $getMeja = Cache::get($cacheKey);
+
                 View::share('kodeMeja', $kodeMeja);
+                View::share('meja', $getMeja);
                 View::share('restaurantMenu',$restaurantMenu);
                 View::share('order_table',$orderTable);
                 View::share('otherSetting',$otherSetting);
@@ -90,17 +104,17 @@ class AppServiceProvider extends ServiceProvider
                 $cacheKey = 'kode_meja_' . $ipAddress; // Kembali membuat kunci yang sesuai untuk mengambil nilai dari cache
                 $getKodeMeja = Cache::get($cacheKey);
 
-                // if (request()->query('meja')) {
-                //     $Meja = request()->query('meja');
-                // }else{
-                //     $Meja = null;
-                // }
-                // if ($Meja != null) {
-                //      $cacheKey = 'meja_' . $ipAddress; // Membuat kunci cache unik berdasarkan alamat IP
-                //     Cache::put($cacheKey, $Meja, now()->addSeconds(3600));
-                // }
-                // $cacheKey = 'meja_' . $ipAddress; // Kembali membuat kunci yang sesuai untuk mengambil nilai dari cache
-                // $getMeja = Cache::get($cacheKey);
+                if (request()->query('meja')) {
+                    $Meja = request()->query('meja');
+                }else{
+                    $Meja = null;
+                }
+                if ($Meja != null) {
+                     $cacheKey = 'meja_' . $ipAddress; // Membuat kunci cache unik berdasarkan alamat IP
+                    Cache::put($cacheKey, $Meja, now()->addSeconds(3600));
+                }
+                $cacheKey = 'meja_' . $ipAddress; // Kembali membuat kunci yang sesuai untuk mengambil nilai dari cache
+                $getMeja = Cache::get($cacheKey);
 
                 // dd($getKodeMeja);
                 // dd($getKodeMeja);
@@ -109,7 +123,7 @@ class AppServiceProvider extends ServiceProvider
                 View::share('restaurantMenu', $restaurantMenu);
                 View::share('otherSetting', $otherSetting);
                 View::share('kodeMeja', $getKodeMeja);
-                // View::share('meja', $getMeja);
+                View::share('meja', $getMeja);
 
             }
         });
