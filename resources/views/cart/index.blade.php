@@ -20,7 +20,6 @@
             <form method="POST" action="{{ route('create-token-bri') }}">
         @else
             <form action="{{ route('checkout-order', md5(strtotime("now"))) }}" method="POST">
-
         @endif
             {{-- <form method="POST" action="{{ route('create-token-dsp') }}"> --}}
             @csrf   

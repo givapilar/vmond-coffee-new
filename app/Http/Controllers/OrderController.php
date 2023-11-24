@@ -67,7 +67,6 @@ class OrderController extends Controller
             $session_cart = \Cart::session(Auth::user()->id)->getContent();
             $other_setting = OtherSetting::get();
 
-            // dd($request->all());
             $packing = 5000;
             
             $checkToken = Order::where('token',$token)->where('status_pembayaran', 'Paid')->get();
@@ -358,36 +357,38 @@ class OrderController extends Controller
                     // if ($order->total_price >= 50000) {
                     // $tpc = 50000; // Ubah nilai $tpc sesuai kebutuhan
 
-                if ($order->total_price >= 200000) {
+            if (\Cart::getTotal() >= 100000) {
+                $timestamp = time(); 
+                $randomSeed = $timestamp % 10000; 
+                $code = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
+                
+                $kupon = [
+                    'order_id' => $order->id,
+                    'code' => 'VMND'.$code,
+                ];
+                
+                $totalKupon = (\Cart::getTotal() / 100000) - 1; // Hitung jumlah kupon tambahan
+                
+                // Loop untuk membuat kupon tambahan berdasarkan kelipatan 25,000
+                $kupons = [$kupon];
+                for ($i = 1; $i <= $totalKupon; $i++) {
                     $timestamp = time(); 
-                    $randomSeed = $timestamp % 10000; 
-                    $code = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
-                    
-                    $kupon = [
+                    $randomSeed = $timestamp % 10000;
+                    $kuponCode = 'VMND2' . str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
+                    $kupons[] = [
                         'order_id' => $order->id,
-                        'code' => 'VMND'.$code,
+                        'code' => $kuponCode
                     ];
-                    
-                    $totalKupon = ($order->total_price / 200000) - 1; // Hitung jumlah kupon tambahan
-                    
-                    // Loop untuk membuat kupon tambahan berdasarkan kelipatan 25,000
-                    $kupons = [$kupon];
-                    for ($i = 1; $i <= $totalKupon; $i++) {
-                        $timestamp = time(); 
-                        $randomSeed = $timestamp % 10000;
-                        $kuponCode = 'VMND2' . str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
-                        $kupons[] = [
-                            'order_id' => $order->id,
-                            'code' => $kuponCode
-                        ];
-                    }
-                    $successMessage = 'Anda Mendapatkan Kupon';
-                    session()->flash('notifikasi', $successMessage);
-                }else{
-                    $successMessage = $other_setting[0]->description_notifikasi;
-                    session()->flash('notifikasi', $successMessage);
                 }
-                // ================================ End Kupon ====================
+                $successMessage = 'Anda Mendapatkan Kupon';
+                session()->flash('notifikasi', $successMessage);
+            }else{
+                $successMessage = $other_setting[0]->description_notifikasi;
+                session()->flash('notifikasi', $successMessage);
+            }
+
+           
+            // ================================ End Kupon ====================
 
 
             return view('checkout.index',$data,compact('snapToken','order'));
@@ -2242,8 +2243,8 @@ class OrderController extends Controller
 
                     }
 
-                    // =========================== Kupom ================================
-                    if ($order->total_price >= 200000) {
+                    // =========================== Kupon ================================
+                    if (\Cart::getTotal() >= 100000) {
                         $timestamp = time(); 
                         $randomSeed = $timestamp % 10000; 
                         $code = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
@@ -2253,7 +2254,7 @@ class OrderController extends Controller
                             'code' => 'VMND'.$code,
                         ];
                         
-                        $totalKupon = ($order->total_price / 200000) - 1; // Hitung jumlah kupon tambahan
+                        $totalKupon = (\Cart::getTotal() / 100000) - 1; // Hitung jumlah kupon tambahan
                         
                         // Loop untuk membuat kupon tambahan berdasarkan kelipatan 25,000
                         $kupons = [$kupon];
@@ -2290,7 +2291,7 @@ class OrderController extends Controller
                     }
 
                     // ================================== Kupon ===================================
-                    if ($order->total_price >= 200000) {
+                    if (\Cart::getTotal() >= 100000) {
                         $timestamp = time(); 
                         $randomSeed = $timestamp % 10000; 
                         $code = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
@@ -2300,7 +2301,7 @@ class OrderController extends Controller
                             'code' => 'VMND'.$code,
                         ];
                         
-                        $totalKupon = ($order->total_price / 200000) - 1; // Hitung jumlah kupon tambahan
+                        $totalKupon = (\Cart::getTotal() / 100000) - 1; // Hitung jumlah kupon tambahan
                         
                         // Loop untuk membuat kupon tambahan berdasarkan kelipatan 25,000
                         $kupons = [$kupon];
