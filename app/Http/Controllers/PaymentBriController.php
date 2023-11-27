@@ -186,7 +186,7 @@ class PaymentBriController extends Controller
         $responseData = json_decode($response->getBody(), true);
 
         $token = $responseData['accessToken'];
-        // dd($responseData);
+        // dd($resp onseData);
 
 
         // ------------------------------------------------------------------- Generate QR------------------------------------------------------------------------------------------------
@@ -200,8 +200,10 @@ class PaymentBriController extends Controller
                 'value' => '100.00',
                 'currency' => 'IDR',
             ],
-            'merchantId' => '000001019000014',
-            'terminalId' => '10049694',
+            // 'merchantId' => '000001019000014',
+            // 'terminalId' => '10049694',
+            'merchantId' => '001999251231',
+            'terminalId' => '10435361',
         ];
 
         // Mengatur zona waktu ke UTC
@@ -254,7 +256,8 @@ class PaymentBriController extends Controller
             'X-TIMESTAMP' => $timestampQr,
             'X-SIGNATURE' => $hmacSignature,
             'Content-Type' => 'application/json',
-            'X-PARTNER-ID' => '456044',
+            // 'X-PARTNER-ID' => '456044',
+            'X-PARTNER-ID' => '456030',
             'CHANNEL-ID' => '95221',
             'X-EXTERNAL-ID' => '1223'.$externalId, // Replace with your external ID
         ];
