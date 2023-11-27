@@ -30,7 +30,6 @@
         /* Mobile devices */
         .img-banner {
             height: 22rem;
-            margin-top: 10rem;
         }
     }
 
@@ -50,7 +49,7 @@
 @section('content')
 
     {{-- <section class="bg-gray-50 dark:bg-gray-900"> --}}
-        <div class="flex flex-col items-center justify-center h-screen px-6 mx-auto md:h-screen lg:h-screen lg:py-0">
+        <div class="flex flex-col items-center justify-center mt-8 px-6 mx-auto lg:py-0">
             @if (count($response_data_banner) != null || count($response_data_banner) != 0)
                 <div id="default-carousel" class="relative w-full"  data-carousel="slide">
                     <div class="relative h-96 sm:h-36 overflow-hidden rounded-2xl shadow-2xl border border-[#16274b] shadow-lg img-banner" style="background: #fff !important; ">
@@ -68,7 +67,7 @@
                 {{-- <div class="px-6 py-2 space-y-4 md:space-y-6 "> --}}
                     <form class="space-y-4 md:space-y-6" action="{{ route('homepage', ['jenis_meja' => Request::get('jenis_meja'), 'kode_meja' => Request::get('kode_meja')]) }}" method="GET">
                         @csrf
-                        <button name="meja" value="dine-in" type="submit" style="margin-top: 10rem;" class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Dine in</button>
+                        <button name="meja" value="dine-in" type="submit" class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Dine in</button>
                         <input type="hidden" name="jenis_meja" value="{{ request('jenis_meja') }}">
                         <input type="hidden" name="kode_meja" value="{{ request('kode_meja') }}">
                         <hr>
