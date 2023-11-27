@@ -34,10 +34,23 @@ Route::get('/data/success-order-bjb-2', function (){
 
 Route::get('/', function () {
     if (Auth::check()) {
-        return redirect()->route('homepage');
+        $global_url = 'https://managementvmond.controlindo.com/api/v1/vmond/tokoonline/';
+        $rest_api_url = $global_url .'banner-dine-in';
+        // Reads the JSON file.
+        try {
+            $json_data = file_get_contents($rest_api_url);
+            $data['response_data_banner'] = json_decode($json_data);
+        } catch (\Throwable $th) {
+        }
+    }else{
+        $global_url = 'https://managementvmond.controlindo.com/api/v1/vmond/tokoonline/';
+        $rest_api_url = $global_url .'banner-dine-in';
+
+        $json_data = file_get_contents($rest_api_url);
+        $data['response_data_banner'] = json_decode($json_data);
     }
+    return view('homepage.index',$data);
     // return view('Auth.login');
-    return view('homepage.index');
 });
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/register', [RegisterController::class, 'store'])->name('register');

@@ -82,6 +82,11 @@ class AppServiceProvider extends ServiceProvider
                 $cacheKey = 'meja_' . $ipAddress; // Kembali membuat kunci yang sesuai untuk mengambil nilai dari cache
                 $getMeja = Cache::get($cacheKey);
 
+
+
+                // Image Banner 
+               
+                
                 View::share('kodeMeja', $kodeMeja);
                 View::share('meja', $getMeja);
                 View::share('restaurantMenu',$restaurantMenu);
