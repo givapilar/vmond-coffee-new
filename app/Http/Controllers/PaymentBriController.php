@@ -144,7 +144,8 @@ class PaymentBriController extends Controller
         $microseconds = substr((string) $currentDatetime->format('u'), 0, 3); // Extract the first three digits for milliseconds
         $timestamp = $currentDatetime->format('Y-m-d\TH:i:s') . '.' . $microseconds . 'Z';
 
-        $dataToSign = '1DhFVj7GA8bfll4tLJuD3KzHxPO3tzCb|' . $timestamp;
+        // $dataToSign = '1DhFVj7GA8bfll4tLJuD3KzHxPO3tzCb|' . $timestamp;
+        $dataToSign = 'J1JrstpgKhhuC9Em16QOzZlLQBLjaG1F|' . $timestamp;
 
 
         // Mendapatkan kunci privat dari file (atau sumber lainnya) dengan password
