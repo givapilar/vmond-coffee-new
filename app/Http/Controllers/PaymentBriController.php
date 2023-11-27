@@ -168,7 +168,8 @@ class PaymentBriController extends Controller
         
         $headers = [
             'X-SIGNATURE' => $signatureBase64, // Tanda-tangan base64
-            'X-CLIENT-KEY' => '1DhFVj7GA8bfll4tLJuD3KzHxPO3tzCb', // Ganti dengan client key yang Anda miliki
+            // 'X-CLIENT-KEY' => '1DhFVj7GA8bfll4tLJuD3KzHxPO3tzCb', // Ganti dengan client key yang Anda miliki
+            'X-CLIENT-KEY' => 'J1JrstpgKhhuC9Em16QOzZlLQBLjaG1F', // Ganti dengan client key yang Anda miliki
             'X-TIMESTAMP' => $timestamp, // Format timestamp sesuai dengan deskripsi
             'Content-Type' => 'application/json',
         ];
@@ -184,7 +185,7 @@ class PaymentBriController extends Controller
         $responseData = json_decode($response->getBody(), true);
 
         $token = $responseData['accessToken'];
-        dd($responseData);
+        // dd($responseData);
 
 
         // ------------------------------------------------------------------- Generate QR------------------------------------------------------------------------------------------------
@@ -239,7 +240,8 @@ class PaymentBriController extends Controller
 
         $payload = $method . ":" . $endpointUrl . ":" . $token . ":". $hash . ":" . $timestampQr;
 
-        $clientId = 'FaKm5s4fnTI35jyV';
+        // $clientId = 'FaKm5s4fnTI35jyV';
+        $clientId = 'DXGJZplRCFAYvPFK';
         $hmacSignature = hash_hmac('sha512', $payload, $clientId);
 
         $timestamp = time(); // Dapatkan timestamp saat ini
