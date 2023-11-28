@@ -50,10 +50,10 @@
 
     {{-- <section class="bg-gray-50 dark:bg-gray-900"> --}}
         <div class="flex flex-col items-center justify-center mt-8 px-6 mx-auto lg:py-0">
-            @if (count($response_data_banner) != null || count($response_data_banner) != 0)
+            @if (count($response_data_banner_dine_in) != null || count($response_data_banner_dine_in) != 0)
                 <div id="default-carousel" class="relative w-full"  data-carousel="slide">
                     <div class="relative h-96 sm:h-36 overflow-hidden rounded-2xl shadow-2xl border border-[#16274b] shadow-lg img-banner" style="background: #fff !important; ">
-                        @foreach ($response_data_banner as $item)
+                        @foreach ($response_data_banner_dine_in as $item)
                         <div class="hidden duration-700 ease-in-out" data-carousel-item>
                             <img src="{{ $item->image ?? ''}} " alt=""class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
                         </div>

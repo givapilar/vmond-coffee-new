@@ -39,7 +39,7 @@ Route::get('/', function () {
         // Reads the JSON file.
         try {
             $json_data = file_get_contents($rest_api_url);
-            $data['response_data_banner'] = json_decode($json_data);
+            $data['response_data_banner_dine_in'] = json_decode($json_data);
         } catch (\Throwable $th) {
         }
     }else{
@@ -47,7 +47,7 @@ Route::get('/', function () {
         $rest_api_url = $global_url .'banner-dine-in';
 
         $json_data = file_get_contents($rest_api_url);
-        $data['response_data_banner'] = json_decode($json_data);
+        $data['response_data_banner_dine_in'] = json_decode($json_data);
     }
     return view('homepage.index',$data);
     // return view('Auth.login');
