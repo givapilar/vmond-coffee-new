@@ -292,7 +292,9 @@ class APIController extends Controller
 
         try {
             $client = new Client();
-        $url = 'https://sandbox.partner.api.bri.co.id/snap/v1.0/access-token/b2b';
+            // $url = 'https://sandbox.partner.api.bri.co.id/snap/v1.0/access-token/b2b';
+            $url = 'https://partner.api.bri.co.id/snap/v1.0/access-token/b2b';
+
 
         $requestData = [
             'grantType' => 'client_credentials',
@@ -302,8 +304,8 @@ class APIController extends Controller
         $microseconds = substr((string) $currentDatetime->format('u'), 0, 3); 
         $timestamp = $currentDatetime->format('Y-m-d\TH:i:s') . '.' . $microseconds . 'Z';
 
-        $dataToSign = '1DhFVj7GA8bfll4tLJuD3KzHxPO3tzCb|' . $timestamp;
-
+        // $dataToSign = '1DhFVj7GA8bfll4tLJuD3KzHxPO3tzCb|' . $timestamp;
+        $dataToSign = 'J1JrstpgKhhuC9Em16QOzZlLQBLjaG1F|' . $timestamp;
 
         // Mendapatkan kunci privat dari file (atau sumber lainnya) dengan password
         $privateKeyPath = realpath(public_path('assetku/dataku/public-key/private-key.pem'));
@@ -326,7 +328,8 @@ class APIController extends Controller
         
         $headers = [
             'X-SIGNATURE' => $signatureBase64,
-            'X-CLIENT-KEY' => '1DhFVj7GA8bfll4tLJuD3KzHxPO3tzCb',
+            // 'X-CLIENT-KEY' => '1DhFVj7GA8bfll4tLJuD3KzHxPO3tzCb',
+            'X-CLIENT-KEY' => 'J1JrstpgKhhuC9Em16QOzZlLQBLjaG1F', // Ganti dengan client key yang Anda miliki
             'X-TIMESTAMP' => $timestamp,
             'Content-Type' => 'application/json',
         ];
@@ -364,7 +367,8 @@ class APIController extends Controller
                 'currency' => 'IDR',
             ],
             'merchantId' => '000001019000014',
-            'terminalId' => '10049694',
+            'terminalId' => '10435361',
+            // 'terminalId' => '10049694',
         ];
 
         date_default_timezone_set('UTC');
@@ -392,7 +396,9 @@ class APIController extends Controller
 
         $payload = $method . ":" . $endpointUrl . ":" . $token . ":". $hash . ":" . $timestampQr;
 
-        $clientId = 'FaKm5s4fnTI35jyV';
+        // $clientId = 'FaKm5s4fnTI35jyV';
+        $clientId = 'DXGJZplRCFAYvPFK';
+
         $hmacSignature = hash_hmac('sha512', $payload, $clientId);
 
         $timestamp = time(); 
@@ -404,14 +410,17 @@ class APIController extends Controller
                 'X-TIMESTAMP' => $timestampQr,
                 'X-SIGNATURE' => $hmacSignature,
                 'Content-Type' => 'application/json',
-                'X-PARTNER-ID' => '456044',
+                // 'X-PARTNER-ID' => '456044',
+                'X-PARTNER-ID' => '456030',
                 'CHANNEL-ID' => '95221',
                 'X-EXTERNAL-ID' => '1223'.$externalId, // Replace with your external ID
             ];
 
 
             // Make the POST request
-            $responseQr = Http::withHeaders($headersQr)->post('https://sandbox.partner.api.bri.co.id/v1.0/qr-dynamic-mpm/qr-mpm-generate-qr', $requestDataQr);
+            $responseQr = Http::withHeaders($headersQr)
+            // ->post('https://sandbox.partner.api.bri.co.id/v1.0/qr-dynamic-mpm/qr-mpm-generate-qr', $requestDataQr);
+            ->post('https://partner.api.bri.co.id/v1.0/qr-dynamic-mpm/qr-mpm-generate-qr', $requestDataQr);
 
             // Kembalikan respons JSON
             return $responseQr->json();

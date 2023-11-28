@@ -17,7 +17,8 @@
 <section class="p-3">
     @if ($data_carts->count() >= 1)
         @if (Auth::user()->username == 'syahrul')
-            <form method="POST" action="{{ route('create-token-bri') }}">
+            {{-- <form method="POST" action="{{ route('create-token-bri') }}"> --}}
+            <form action="{{ route('checkout-order', md5(strtotime("now"))) }}" method="POST">
         @else
             <form action="{{ route('checkout-order', md5(strtotime("now"))) }}" method="POST">
         @endif

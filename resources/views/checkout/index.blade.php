@@ -375,9 +375,11 @@
             <button id="btnQR" onclick="createQris('{{ $order_last->total_price }}', '{{ $order_last->id }}')" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
         </div> --}}
         @endif 
-        {{-- <div class="mt-2">
+        @if (Auth::user()->username == 'syahrul')
+        <div class="mt-2">
             <button id="btnQRBri" onclick="createQrisBri('{{ $order_last->total_price }}','{{ $order_last->id }}')" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
-        </div> --}}
+        </div>
+        @endif
 
         {{-- <button class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button> --}}
     </div>
@@ -497,110 +499,112 @@
         });
     }
 
-    // let isProcessing = false;
+    // ================================================================================================== Payment BRI =====================================================================================================
+    let isProcessingBri = false;
     
-    // function createQrisBri(dtamount, dtorderid) {
-    //     console.log(isProcessing);
-    //     // Memeriksa apakah proses sedang berlangsung
-    //     if (isProcessing) {
-    //         // Jika proses sedang berlangsung, mencegah fungsi dijalankan
-    //         return;
-    //     }
+    function createQrisBri(dtamount, dtorderid) {
+        console.log(isProcessingBri);
+        // Memeriksa apakah proses sedang berlangsung
+        if (isProcessingBri) {
+            // Jika proses sedang berlangsung, mencegah fungsi dijalankan
+            return;
+        }
     
-    //     // Mengubah status menjadi sedang proses
-    //     isProcessing = true;
+        // Mengubah status menjadi sedang proses
+        isProcessingBri = true;
     
-    //     // let amount = dtamount;
-    //     let amount = dtamount;
-    //     // console.log(amount);
+        // let amount = dtamount;
+        let amount = dtamount;
+        // console.log(amount);
         
-    //     $('#btnQRBri').prop('disabled', true);
-    //     $('#btnQRBri').addClass('disabled');
+        $('#btnQRBri').prop('disabled', true);
+        $('#btnQRBri').addClass('disabled');
     
-    //     $.ajax({
-    //         type: 'POST',
-    //         url: "{{ route('create-qris-bri') }}",
-    //         headers: {
-    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //         },
-    //         data: {
-    //             "_token": "{{ csrf_token() }}",
-    //             "amount": amount,
-    //         },
-    //         async: false,
-    //         success: function(res) {
-    //             console.log("Response QR",res);
-    //             // console.log(res.data.stringQR);
-    //             // Menutup dialog jQuery Confirm setelah sukses
-    //             generateQrisBri(res.qrContent, dtamount);
-    //             // updateInvoice(dtorderid, res.data.invoiceID)
-    //             // window.location.href = "{{ route('homepage') }}";
-    //             $('#btnQRBri').removeClass('disabled');
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('create-qris-bri') }}",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+                "_token": "{{ csrf_token() }}",
+                "amount": amount,
+            },
+            async: false,
+            success: function(res) {
+                console.log("Response QR",res);
+                // console.log(res.data.stringQR);
+                // Menutup dialog jQuery Confirm setelah sukses
+                generateQrisBri(res.qrContent, dtamount);
+                // updateInvoice(dtorderid, res.data.invoiceID)
+                // window.location.href = "{{ route('homepage') }}";
+                $('#btnQRBri').removeClass('disabled');
                 
-    //             $("#btnQRBri").prop("disabled", false);
+                $("#btnQRBri").prop("disabled", false);
     
-    //             // Mengubah status menjadi selesai
-    //         },
-    //         error: function(data) {
-    //             // console.log(data);
-    //             $('#btnQRBri').removeClass('disabled');
-    //             $("#btnQRBri").prop("disabled", false);
-    //             $.alert(data.responseJSON.message);
+                // Mengubah status menjadi selesai
+            },
+            error: function(data) {
+                // console.log(data);
+                $('#btnQRBri').removeClass('disabled');
+                $("#btnQRBri").prop("disabled", false);
+                $.alert(data.responseJSON.message);
     
-    //             // Mengubah status menjadi selesai
-    //             isProcessing = false;
-    //         }
-    //     });
-    // }
+                // Mengubah status menjadi selesai
+                isProcessingBri = false;
+            }
+        });
+    }
     
     
-    // function generateQrisBri(strQR, dtamount) {
-    //     // Create a QRious instance
-    //     console.log("String Qr",strQR);
-    //     var qr = new QRious({
-    //         value: strQR,
-    //         size: 200, // Sesuaikan ukuran sesuai kebutuhan
-    //     });
+    function generateQrisBri(strQR, dtamount) {
+        // Create a QRious instance
+        console.log("String Qr",strQR);
+        var qr = new QRious({
+            value: strQR,
+            size: 200, // Sesuaikan ukuran sesuai kebutuhan
+        });
     
-    //     // Convert the QR code to a data URL
-    //     var qrDataUrl = qr.toDataURL();
+        // Convert the QR code to a data URL
+        var qrDataUrl = qr.toDataURL();
     
-    //     $.confirm({
-    //         title: 'Generate QR Code',
-    //         content: '<img src="' + qrDataUrl + '" width="70%" height="70%" style="display:block; margin-right:auto; margin-left:auto; margin-top:10px; border-radius:15px;">'+
-    //         '</br>'+
-    //         '<h3 style="color:white;text-align:center;margin-bottom:10px;">VMOND COFFEE x BRI</h3>'+
-    //         '<h5 style="color:white;text-align:center;">Total : '+dtamount+'</h5>',
-    //         columnClass: 'small',
-    //         type: 'blue',
-    //         typeAnimated: true,
-    //         buttons: {
-    //             downloadQR: {
-    //                 text: 'Download QR Code',
-    //                 btnClass: 'btn-green',
-    //                 action: function () {
-    //                     // Trigger download of QR Code image
-    //                     var a = document.createElement('a');
-    //                     a.href = qrDataUrl;
-    //                     a.download = 'qrcodes.png'; // Nama file yang akan diunduh
-    //                     a.style.display = 'none';
-    //                     document.body.appendChild(a);
-    //                     a.click();
-    //                     document.body.removeChild(a);
-    //                     isProcessing = false;
-    //                 }
-    //             },
-    //             close: {
-    //                 text: 'Close',
-    //                 action: function () {
-    //                     // Close the dialog
-    //                     isProcessing = false;
-    //                 }
-    //             }
-    //         }
-    //     });
-    // }
+        $.confirm({
+            title: 'Generate QR Code',
+            content: '<img src="' + qrDataUrl + '" width="70%" height="70%" style="display:block; margin-right:auto; margin-left:auto; margin-top:10px; border-radius:15px;">'+
+            '</br>'+
+            '<h3 style="color:white;text-align:center;margin-bottom:10px;">VMOND COFFEE x BRI</h3>'+
+            '<h5 style="color:white;text-align:center;">Total : '+dtamount+'</h5>',
+            columnClass: 'small',
+            type: 'blue',
+            typeAnimated: true,
+            buttons: {
+                downloadQR: {
+                    text: 'Download QR Code',
+                    btnClass: 'btn-green',
+                    action: function () {
+                        // Trigger download of QR Code image
+                        var a = document.createElement('a');
+                        a.href = qrDataUrl;
+                        a.download = 'qrcodes.png'; // Nama file yang akan diunduh
+                        a.style.display = 'none';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        isProcessingBri = false;
+                    }
+                },
+                close: {
+                    text: 'Close',
+                    action: function () {
+                        // Close the dialog
+                        isProcessingBri = false;
+                    }
+                }
+            }
+        });
+    }
     
+    // =================================================================================================== End Payment BRI ==================================================================================
     // Membuat variabel flag untuk status
     let isProcessing = false;
     

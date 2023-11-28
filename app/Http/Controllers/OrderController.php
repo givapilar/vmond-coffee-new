@@ -1056,6 +1056,34 @@ class OrderController extends Controller
                     $memberships = Membership::orderBy('id','asc')->get();
                     $user_member = User::where('membership_id',5)->get()->first();
 
+                    if (\Cart::getTotal() >= 100000) {
+                        $timestamp = time(); 
+                        $randomSeed = $timestamp % 10000; 
+                        $code = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
+                        
+                        $kupon = [
+                            'order_id' => $order->id,
+                            'code' => 'VMND'.$code,
+                        ];
+                        
+                        $totalKupon = (\Cart::getTotal() / 100000) - 1; // Hitung jumlah kupon tambahan
+                        
+                        // Loop untuk membuat kupon tambahan berdasarkan kelipatan 25,000
+                        $kupons = [$kupon];
+                        for ($i = 1; $i <= $totalKupon; $i++) {
+                            $timestamp = time(); 
+                            $randomSeed = $timestamp % 10000;
+                            $kuponCode = 'VMND2' . str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
+                            $kupons[] = [
+                                'order_id' => $order->id,
+                                'code' => $kuponCode
+                            ];
+                        }
+        
+                        // dd($kupons);
+                        Kupon::insert($kupons);
+                    }
+                    
                 // foreach ($user_member as $key => $value) {
                     if (!$user_member) {
                         // $user->membership_id = 5;
@@ -2224,6 +2252,34 @@ class OrderController extends Controller
         try {
             $order = Order::find($request->data['order_id']);
 
+            if (\Cart::getTotal() >= 100000) {
+                $timestamp = time(); 
+                $randomSeed = $timestamp % 10000; 
+                $code = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
+                
+                $kupon = [
+                    'order_id' => $order->id,
+                    'code' => 'VMND'.$code,
+                ];
+                
+                $totalKupon = (\Cart::getTotal() / 100000) - 1; // Hitung jumlah kupon tambahan
+                
+                // Loop untuk membuat kupon tambahan berdasarkan kelipatan 25,000
+                $kupons = [$kupon];
+                for ($i = 1; $i <= $totalKupon; $i++) {
+                    $timestamp = time(); 
+                    $randomSeed = $timestamp % 10000;
+                    $kuponCode = 'VMND2' . str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
+                    $kupons[] = [
+                        'order_id' => $order->id,
+                        'code' => $kuponCode
+                    ];
+                }
+
+                // dd($kupons);
+                Kupon::insert($kupons);
+            }
+            
             if ($order->kode_meja != null || $order->category == 'Takeaway') {
                 
                 if (auth()->guest() == true) {
@@ -2244,34 +2300,6 @@ class OrderController extends Controller
                     }
 
                     // =========================== Kupon ================================
-                    if (\Cart::getTotal() >= 100000) {
-                        $timestamp = time(); 
-                        $randomSeed = $timestamp % 10000; 
-                        $code = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
-                        
-                        $kupon = [
-                            'order_id' => $order->id,
-                            'code' => 'VMND'.$code,
-                        ];
-                        
-                        $totalKupon = (\Cart::getTotal() / 100000) - 1; // Hitung jumlah kupon tambahan
-                        
-                        // Loop untuk membuat kupon tambahan berdasarkan kelipatan 25,000
-                        $kupons = [$kupon];
-                        for ($i = 1; $i <= $totalKupon; $i++) {
-                            $timestamp = time(); 
-                            $randomSeed = $timestamp % 10000;
-                            $kuponCode = 'VMND2' . str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
-                            $kupons[] = [
-                                'order_id' => $order->id,
-                                'code' => $kuponCode
-                            ];
-                        }
-
-                        // dd($kupons);
-                        Kupon::insert($kupons);
-                    }
-
                 }else{
                     $userID = $order->user_id;
 
@@ -2291,34 +2319,6 @@ class OrderController extends Controller
                     }
 
                     // ================================== Kupon ===================================
-                    if (\Cart::getTotal() >= 100000) {
-                        $timestamp = time(); 
-                        $randomSeed = $timestamp % 10000; 
-                        $code = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
-                        
-                        $kupon = [
-                            'order_id' => $order->id,
-                            'code' => 'VMND'.$code,
-                        ];
-                        
-                        $totalKupon = (\Cart::getTotal() / 100000) - 1; // Hitung jumlah kupon tambahan
-                        
-                        // Loop untuk membuat kupon tambahan berdasarkan kelipatan 25,000
-                        $kupons = [$kupon];
-                        for ($i = 1; $i <= $totalKupon; $i++) {
-                            $timestamp = time(); 
-                            $randomSeed = $timestamp % 10000;
-                            $kuponCode = 'VMND2' . str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
-                            $kupons[] = [
-                                'order_id' => $order->id,
-                                'code' => $kuponCode
-                            ];
-                        }
-
-                        // dd($kupons);
-                        Kupon::insert($kupons);
-                    }
-
                 }
             }else if($order->billiard_id != null){
                 $orderBilliard = OrderBilliard::where('order_id',$order->id)->get();
