@@ -366,8 +366,8 @@ class APIController extends Controller
                 'value' => $formattedInt,
                 'currency' => 'IDR',
             ],
-            'merchantId' => '000001019000014',
-            'terminalId' => '10435361',
+            'merchantId' => '1999316155',
+            'terminalId' => '10534929',
             // 'terminalId' => '10049694',
         ];
 
@@ -411,7 +411,7 @@ class APIController extends Controller
                 'X-SIGNATURE' => $hmacSignature,
                 'Content-Type' => 'application/json',
                 // 'X-PARTNER-ID' => '456044',
-                'X-PARTNER-ID' => '456030',
+                'X-PARTNER-ID' => '456044',
                 'CHANNEL-ID' => '95221',
                 'X-EXTERNAL-ID' => '1223'.$externalId, // Replace with your external ID
             ];
