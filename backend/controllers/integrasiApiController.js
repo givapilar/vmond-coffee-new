@@ -13,13 +13,13 @@ const socket = io('http://localhost:2222'); // Sesuaikan URL server Socket.IO
 // Check APP ENV (Development or Production)
 // ====================================================
 // if (appENV == 'Development') {
-//     urlGlobal = process.env.URL_GLOBAL_DEV;
-//     msisdn = process.env.MSISDN_DEV;
-//     passwordBJB = process.env.PASSWORD_DEV;
+    urlGlobal = process.env.URL_GLOBAL_DEV;
+    msisdn = process.env.MSISDN_DEV;
+    passwordBJB = process.env.PASSWORD_DEV;
 // }else if(appENV == 'Production'){
-    urlGlobal = process.env.URL_GLOBAL_PROD;
-    msisdn = process.env.MSISDN_PROD;
-    passwordBJB = process.env.PASSWORD_PROD;
+    // urlGlobal = process.env.URL_GLOBAL_PROD;
+    // msisdn = process.env.MSISDN_PROD;
+    // passwordBJB = process.env.PASSWORD_PROD;
 // }
 // ====================================================
 
