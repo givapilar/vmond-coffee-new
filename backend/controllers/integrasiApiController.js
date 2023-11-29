@@ -359,15 +359,10 @@ const createQR = async (req, res) => {
             "appVersion": "1.0",
         };
 
-        // const bodyData1 = {
-        //     msisdn: msisdn,
-        //     // msisdn: "081717181988",
-        //     password: passwordBJB
-        // };
         const bodyData1 = {
-            // msisdn: '080000000001',
-            msisdn: "081717181988",
-            password: '111111'
+            msisdn: msisdn,
+            // msisdn: "081717181988",
+            password: passwordBJB
         };
 
         const result1 = await axios.post(
@@ -382,6 +377,8 @@ const createQR = async (req, res) => {
 
         console.log("Token :",xAuthToken);
         console.log("URL :",urlGlobal);
+        console.log("MSIDN :",msisdn);
+        console.log("PW :",passwordBJB);
         // console.log("Token :",xAuthToken);
         // Create QR
         const headers = {
