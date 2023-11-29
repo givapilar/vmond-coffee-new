@@ -381,6 +381,8 @@ const createQR = async (req, res) => {
         const dtexpired = req.body.expired;
 
         console.log("Token :",xAuthToken);
+        console.log("URL :",urlGlobal);
+        // console.log("Token :",xAuthToken);
         // Create QR
         const headers = {
             'Content-Type': 'application/json',
