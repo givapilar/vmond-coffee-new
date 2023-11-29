@@ -394,9 +394,20 @@ const createQR = async (req, res) => {
             "deviceType": "",
             "latitude": "",
             "longitude": "",
-            "appId": 58,
+            "appId": 4,
             "appVersion": "1.0",
         };
+        // const metaData = {
+        //     "datetime": "2023-09-04T09:40:21.450Z",
+        //     "deviceId": "bjbdigi",
+        //     "devicePlatform": "Linux",
+        //     "deviceOSVersion": "bjbdigi-version",
+        //     "deviceType": "",
+        //     "latitude": "",
+        //     "longitude": "",
+        //     "appId": 58,
+        //     "appVersion": "1.0",
+        // };
 
         const bodyData = {
             merchantAccountNumber: "081717181988",
@@ -412,7 +423,7 @@ const createQR = async (req, res) => {
         );
         const response = result.data.body.CreateInvoiceQRISDinamisExtResponse;
         console.log('RESULT CREATE QR::',result.data.body);
-        // console.log('RESULT CREATE QR::',result);
+        console.log('RESULT CREATE QR::',response);
         // console.log('MSIDN::',msisdn);
 
         const responseData = {
