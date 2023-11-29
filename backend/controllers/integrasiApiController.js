@@ -336,22 +336,38 @@ const createQR = async (req, res) => {
             'Content-Type': 'application/json',
         };
 
+        // const metaData1 = {
+        //     "datetime": "2023-09-18T00:25:21.450Z",
+        //     "deviceId": "9f9cb0504caa5059", 
+        //     "devicePlatform": "Linux",
+        //     "deviceOSVersion": "9",
+        //     "deviceType": "",
+        //     "latitude": "",
+        //     "longitude": "",
+        //     "appId": 58,
+        //     "appVersion": "1.0",
+        // };
         const metaData1 = {
             "datetime": "2023-09-18T00:25:21.450Z",
-            "deviceId": "9f9cb0504caa5059", 
+            "deviceId": "bjbdigi", 
             "devicePlatform": "Linux",
             "deviceOSVersion": "9",
             "deviceType": "",
             "latitude": "",
             "longitude": "",
-            "appId": 58,
+            "appId": 4,
             "appVersion": "1.0",
         };
 
+        // const bodyData1 = {
+        //     msisdn: msisdn,
+        //     // msisdn: "081717181988",
+        //     password: passwordBJB
+        // };
         const bodyData1 = {
-            msisdn: msisdn,
+            msisdn: '080000000001',
             // msisdn: "081717181988",
-            password: passwordBJB
+            password: '111111'
         };
 
         const result1 = await axios.post(
