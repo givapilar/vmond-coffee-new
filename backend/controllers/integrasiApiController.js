@@ -396,7 +396,7 @@ const createQR = async (req, res) => {
             { headers: headers }
         );
         const response = result.data.body.CreateInvoiceQRISDinamisExtResponse;
-        // console.log('RESULT CREATE QR::',response);
+        console.log('RESULT CREATE QR::',result.data.body);
         // console.log('RESULT CREATE QR::',result);
         // console.log('MSIDN::',msisdn);
 
