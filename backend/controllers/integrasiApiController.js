@@ -365,8 +365,8 @@ const createQR = async (req, res) => {
         //     password: passwordBJB
         // };
         const bodyData1 = {
-            msisdn: '080000000001',
-            // msisdn: "081717181988",
+            // msisdn: '080000000001',
+            msisdn: "081717181988",
             password: '111111'
         };
 
