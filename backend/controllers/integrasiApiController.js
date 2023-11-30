@@ -472,6 +472,7 @@ const checkStatusPay = async (req, res) => {
         .then((response) => {
             // Permintaan berhasil
             const responseData = response.data;
+            
             console.log('Berhasil:', responseData);
         })
         .catch((error) => {
