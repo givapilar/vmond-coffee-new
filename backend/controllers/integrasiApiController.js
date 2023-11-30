@@ -434,7 +434,6 @@ const createQR = async (req, res) => {
             message: 'Successfully!'
         };
 
-        console.log("Result QR : " ,response);
         res.status(200).json(responseData);
     } catch (error) {
         const responseData = {
@@ -462,23 +461,24 @@ const checkStatusPay = async (req, res) => {
             'Content-Type': 'application/json',
             'Authorization': 'ewondXNlcm5hbWUgJzogJ2JqYkF1dGhEZXYnLAoncGFzc3dvcmQnOiAnUEBTU1cwUkQhJwp9'
         };
+
         const bodyData = {
             'qris_id': qrid,
             'phone_no': phone_no
         };
-        
+
         // axios.get(urlGlobal + `/bjb/api/getQRISstatus`, { headers: headers },{body: bodyData})
-        axios.get(`http://10.44.124.164/bjb/api/getQRISstatus`, { headers: headers },{body: bodyData})
+        const result = await axios.get(`http://10.44.124.164/bjb/api/getQRISstatus`, { headers: headers },{body: bodyData})
         .then((response) => {
             // Permintaan berhasil
-            const responseData = response.data;
             console.log('Berhasil:', responseData);
+            const responseData = response.data;
         })
         .catch((error) => {
             // Permintaan gagal, tangani kesalahan di sini
             console.error('Gagal:', error);
         });
-        // console.log('RESULT CHECK PAYMENT::',response);
+        console.log('RESULT CHECK PAYMENT::',result);
 
         const responseData = {
             code: 200,
@@ -486,7 +486,6 @@ const checkStatusPay = async (req, res) => {
             message: 'Successfully!'
         };
 
-        console.log("Result QR : " ,response);
         res.status(200).json(responseData);
     } catch (error) {
         const responseData = {
