@@ -471,8 +471,8 @@ const checkStatusPay = async (req, res) => {
         const result = await axios.get(`http://10.44.124.164/bjb/api/getQRISstatus`, { headers: headers },{body: bodyData})
         .then((response) => {
             // Permintaan berhasil
-            console.log('Berhasil:', responseData);
             const responseData = response.data;
+            console.log('Berhasil:', responseData);
         })
         .catch((error) => {
             // Permintaan gagal, tangani kesalahan di sini
