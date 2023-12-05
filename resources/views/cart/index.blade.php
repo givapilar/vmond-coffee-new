@@ -104,6 +104,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    
                                     <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                                         <button class="flex justify-center items-center w-10 h-10 rounded-full p-2 bg-red-500 hover:bg-red-600 focus:ring-red-900 focus:ring-4"  data-modal-toggle="deleteModal-{{ $key }}">
                                             <ion-icon name="trash" class=""></ion-icon>
