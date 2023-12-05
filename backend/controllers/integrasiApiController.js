@@ -459,7 +459,7 @@ const checkStatusPay = async (req, res) => {
         // Check Status Payment BY QRID
         const headers = {
             'Content-Type': 'application/json',
-            'Authorization': 'ewondXNlcm5hbWUgJzogJ2JqYkF1dGhEZXYnLAoncGFzc3dvcmQnOiAnUEBTU1cwUkQhJwp9'
+            'Authorization': 'Basic YmpiQXV0aERldjpQQFNTVzBSRCE='
         };
 
         const bodyData = {
