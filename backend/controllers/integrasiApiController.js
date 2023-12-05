@@ -453,7 +453,6 @@ const checkStatusPay = async (req, res) => {
         const qrid = req.body.qrid;
         const phone_no = '081717181988';
         console.log('=============QRID=============== ',qrid);
-        console.log('=============URL=============== ', urlGlobal + `/bjb/api/getQRISstatus`);
         
         // ===
         // Check Status Payment BY QRID
@@ -468,7 +467,7 @@ const checkStatusPay = async (req, res) => {
         };
 
         // axios.get(urlGlobal + `/bjb/api/getQRISstatus`, { headers: headers },{body: bodyData})
-        const result = await axios.get(`http://10.44.124.164:80/bjb/api/getQRISstatus`, { headers: headers },{body: bodyData})
+        const result = await axios.get(`http://10.44.124.164:80/bjb/api/getQRISstatus?qris_id=`+qrid, { headers: headers })
         .then((response) => {
             // Permintaan berhasil
             const responseData = response.data;
