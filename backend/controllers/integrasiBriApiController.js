@@ -141,7 +141,7 @@ const qrMpmNotify = async (req, res) => {
             if (req.body.transactionStatusDesc === 'success') {
                 try {
                     const bodyData = {
-                        invoiceID: req.body.originalReferenceNo,
+                        invoiceID: req.body.originalPartnerReferenceNo,
                         status: req.body.transactionStatusDesc,
                     };
                     const result = await axios.post('https://vmondcoffee.controlindo.com/api/data/success-order-bri', bodyData)
