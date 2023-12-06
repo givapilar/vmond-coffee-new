@@ -2553,6 +2553,33 @@ class OrderController extends Controller
         }
     }
 
+    public function successOrderBRI(Request $request){
+
+        try {
+            $updateStatus = Order::where('invoice_id', $request->invoiceID)->first();
+
+            // Ubah status pembayaran menjadi "Paid"
+            $updateStatus->update(['status_pembayaran' => 'Unpaid', 'description' => 'Paid', 'invoice_no' => $this->generateInvoice(),'metode_pembayaran' => 'QR BJB']);
+            // $updateStatus->update(['description' => 'Paid']);
+
+            $responseData = [
+                'code' => 200,
+                'updateStock' => true,
+                'deleteCart' => true,
+            ];
+    
+            return $responseData;
+
+        } catch (\Throwable $th) {
+            $responseData = [
+                'code' => 500,
+                'updateStock' => false,
+                'deleteCart' => false,
+            ];
+            return $responseData;
+        }
+    }
+
     public function checkData(Request $request){
         try {
             $order = Order::where('invoice_id', $request->datas)->first();

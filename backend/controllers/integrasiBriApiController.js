@@ -136,30 +136,30 @@ const qrMpmNotify = async (req, res) => {
                 message: 'Successfully!',
             };
             console.log("Request", req);
-            console.log("Transaction Success", req.body.transactionStatusDesc);
+            // console.log("Transaction Success", req.body.transactionStatusDesc);
 
-            // if (req.body.transactionStatusDesc === 'success') {
-            //     try {
-            //         const bodyData = {
-            //             invoiceID: requestBody.invoiceNumber,
-            //             status: requestBody.transactionStatus,
-            //         };
-            //         const result = await axios.post('https://vmondcoffee.controlindo.com/api/data/success-order-bjb', bodyData)
-            //             .then((response) => {
-            //                 console.log(response);
-            //                 // Mendengarkan pesan dari server
+            if (req.body.transactionStatusDesc === 'success') {
+                try {
+                    const bodyData = {
+                        invoiceID: req.body.originalReferenceNo,
+                        status: req.body.transactionStatusDesc,
+                    };
+                    const result = await axios.post('https://vmondcoffee.controlindo.com/api/data/success-order-bri', bodyData)
+                        .then((response) => {
+                            console.log(response);
+                            // Mendengarkan pesan dari server
     
-            //             })
-            //             .catch((error) => {
-            //                 console.error('Axios request error:', error);
-            //             });
-            //         socket.emit('notif', requestBody.invoiceNumber);
-            //         console.log('RESULT JS:: ',result)
+                        })
+                        .catch((error) => {
+                            console.error('Axios request error:', error);
+                        });
+                    socket.emit('notif-berhasil-bri', req.body.originalReferenceNo);
+                    console.log('RESULT JS:: ',result)
     
-            //     } catch (error) {
-            //         console.log('ERROR!!!', error.message);
-            //     }
-            // }
+                } catch (error) {
+                    console.log('ERROR!!!', error.message);
+                }
+            }
 
             res.status(200).json(responseData);
             
