@@ -452,8 +452,8 @@ const checkStatusPay = async (req, res) => {
     try {
         // const qrid = req.body.qrid;
         // const qrid = 'QRIS20230905165542007067'; //Paid True
-        const qrid = 'QRIS20230907095615007140'; //Paid False
-        // const qrid = 'QRIS20230904151749007047'; //bill id yg baru di created dan blm terbayarkan
+        // const qrid = 'QRIS20230907095615007140'; //Paid False
+        const qrid = 'QRIS20230904151749007047'; //bill id yg baru di created dan blm terbayarkan
         const phone_no = '081717181988';
         console.log('=============QRID=============== ',qrid);
         
