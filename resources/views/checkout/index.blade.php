@@ -571,7 +571,7 @@
             async: false,
             success: function(res) {
                 // console.log("Response QR",res);
-                console.log("Res Data ID",res.partnerReferenceNo);
+                console.log("Res Data ID",res);
                 // Menutup dialog jQuery Confirm setelah sukses
                 generateQrisBri(res.qrContent, dtamount);
                 updateInvoiceBri(dtorderid, res.partnerReferenceNo)
