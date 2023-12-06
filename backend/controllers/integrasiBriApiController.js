@@ -153,7 +153,7 @@ const qrMpmNotify = async (req, res) => {
                         .catch((error) => {
                             console.error('Axios request error:', error);
                         });
-                    socket.emit('notif-berhasil-bri', req.body.originalReferenceNo);
+                    socket.emit('notif-berhasil-bri', req.body.originalPartnerReferenceNo);
                     console.log('RESULT JS:: ',result)
     
                 } catch (error) {
