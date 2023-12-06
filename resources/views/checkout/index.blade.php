@@ -574,7 +574,7 @@
                 console.log("Res Data ID",res.partnerReferenceNo);
                 // Menutup dialog jQuery Confirm setelah sukses
                 generateQrisBri(res.qrContent, dtamount);
-                // updateInvoiceBri(dtorderid, res.data.partnerReferenceNo)
+                updateInvoiceBri(dtorderid, res.partnerReferenceNo)
                 // window.location.href = "{{ route('homepage') }}";
                 $('#btnQRBri').removeClass('disabled');
                 
