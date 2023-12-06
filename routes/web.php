@@ -210,6 +210,7 @@ Route::post('/check-schedule-meeting',[APIController::class,'checkDateScheduleMe
 
 Route::post('/data/success-order',[OrderController::class,'successOrder'])->name('success-order');
 Route::post('/data/update-invoice',[OrderController::class,'updateInvoice'])->name('update-invoice');
+Route::post('/data/update-invoice-bri',[OrderController::class,'updateInvoiceBri'])->name('update-invoice-bri');
 Route::post('/data/update-stock-bjb',[OrderController::class,'updateStockBJB'])->name('update-stock-bjb');
 
 // Success order Waiters

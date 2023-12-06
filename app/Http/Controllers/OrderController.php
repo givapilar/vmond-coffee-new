@@ -2525,6 +2525,11 @@ class OrderController extends Controller
         $order->update(['invoice_id' => $request->invoice_id]);
         return $request->all();
     }
+    public function updateInvoiceBri(Request $request){
+        $order = Order::find($request->order_id);
+        $order->update(['invoice_id' => $request->invoice_id]);
+        return $request->all();
+    }
 
     public function successOrderBJB(Request $request){
 

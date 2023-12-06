@@ -574,7 +574,7 @@
                 // console.log(res.data.stringQR);
                 // Menutup dialog jQuery Confirm setelah sukses
                 generateQrisBri(res.qrContent, dtamount);
-                // updateInvoice(dtorderid, res.data.invoiceID)
+                updateInvoice(dtorderid, res.data.invoiceID)
                 // window.location.href = "{{ route('homepage') }}";
                 $('#btnQRBri').removeClass('disabled');
                 
@@ -807,6 +807,35 @@
     function updateInvoice(orderID, invoiceID) {
         let order_id, data;
         console.log(orderID, invoiceID);
+        order_id = orderID;
+        invoice_id = invoiceID;
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('update-invoice') }}",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+                "_token": "{{ csrf_token() }}",
+                order_id,
+                invoice_id,
+            },
+            async: false,
+            success: function(res) {
+                // console.log(res);
+                // window.location.href = '/home';
+                // console.log('Success!');
+            },
+            error: function(data) {
+                // console.log('Failed!');
+                alert('Gagal, Silahkan order ulang...')
+            }
+        });
+    }
+
+    function updateInvoiceBri(orderID, invoiceID) {
+        let order_id, data;
+        console.log('invoice Id', orderID, invoiceID);
         order_id = orderID;
         invoice_id = invoiceID;
         $.ajax({
