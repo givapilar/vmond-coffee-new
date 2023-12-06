@@ -574,7 +574,7 @@
                 // console.log(res.data.stringQR);
                 // Menutup dialog jQuery Confirm setelah sukses
                 generateQrisBri(res.qrContent, dtamount);
-                updateInvoice(dtorderid, res.data.invoiceID)
+                updateInvoiceBri(dtorderid, res.data.invoiceID)
                 // window.location.href = "{{ route('homepage') }}";
                 $('#btnQRBri').removeClass('disabled');
                 
@@ -840,7 +840,7 @@
         invoice_id = invoiceID;
         $.ajax({
             type: 'POST',
-            url: "{{ route('update-invoice') }}",
+            url: "{{ route('update-invoice-bri') }}",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
