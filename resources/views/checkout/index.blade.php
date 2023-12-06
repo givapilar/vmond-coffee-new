@@ -552,8 +552,8 @@
         // Mengubah status menjadi sedang proses
         isProcessingBri = true;
     
-        let amount = 1;
-        // let amount = dtamount;
+        // let amount = 1;
+        let amount = dtamount;
         // console.log(amount);
         
         $('#btnQRBri').prop('disabled', true);
