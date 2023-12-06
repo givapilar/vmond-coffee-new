@@ -570,11 +570,11 @@
             },
             async: false,
             success: function(res) {
-                console.log("Response QR",res);
-                console.log(res.data.partnerReferenceNo);
+                // console.log("Response QR",res);
+                console.log("Res Data ID",res.data);
                 // Menutup dialog jQuery Confirm setelah sukses
                 generateQrisBri(res.qrContent, dtamount);
-                updateInvoiceBri(dtorderid, res.data.partnerReferenceNo)
+                // updateInvoiceBri(dtorderid, res.data.partnerReferenceNo)
                 // window.location.href = "{{ route('homepage') }}";
                 $('#btnQRBri').removeClass('disabled');
                 
