@@ -30,6 +30,11 @@ io.on('connection', (socket) => {
     io.emit('notif-berhasil', msg);
   });
 
+  socket.on('notif-bri', (msg) => {
+    console.log('======================'+ msg);
+    io.emit('notif-berhasil-bri', msg);
+  });
+
   socket.on('disconnect', () => {
     console.log('client disconnected');
   });
