@@ -571,10 +571,10 @@
             async: false,
             success: function(res) {
                 console.log("Response QR",res);
-                // console.log(res.data.stringQR);
+                console.log(res.data.partnerReferenceNo);
                 // Menutup dialog jQuery Confirm setelah sukses
                 generateQrisBri(res.qrContent, dtamount);
-                // updateInvoiceBri(dtorderid, res.data.invoiceID)
+                updateInvoiceBri(dtorderid, res.data.partnerReferenceNo)
                 // window.location.href = "{{ route('homepage') }}";
                 $('#btnQRBri').removeClass('disabled');
                 
