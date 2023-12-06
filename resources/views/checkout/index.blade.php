@@ -441,6 +441,44 @@
         });
     });
 
+
+    // ======================================== Socket BRI ============================================
+    socket.on('notif-berhasil-bri', function(data) {
+        checkData(data, function(result) {
+            let order_id = {!! $order_last->id !!};
+
+            if (order_id == result) {
+                updateStock(order_id);
+                // console.log('Masuk');
+                // Handle the result here
+                $.confirm({
+                    title: "Pembayaran Berhasil!",
+                    content: "Pembayaran Berhasil, Terimakasih!",
+                    theme: "modern",
+                    icon: "fa fa-check-circle", // Ikon sukses (gunakan kelas ikon Font Awesome)
+                    buttons: {
+                        close: {
+                            text: 'OK',
+                            btnClass: 'btn-green',
+                            action: function () {
+                                window.location.href = "https://vmondcoffee.controlindo.com/home";
+                            }
+                        }
+                    },
+                });
+            }
+        }, function(error) {
+            var confirmation = confirm("Pembayaran Gagal!");
+    
+            // Memeriksa apakah pengguna mengklik OK
+            if (confirmation) {
+                // Redirect ke halaman lain jika pengguna mengklik OK
+                window.location.href = "https://vmondcoffee.controlindo.com/home";
+            }
+            // Handle the error here
+        });
+    });
+
     function updateStock(datas) {
          // Prepare the data to send in the request
         const requestData = {
