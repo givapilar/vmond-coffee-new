@@ -450,7 +450,10 @@ const createQR = async (req, res) => {
 
 const checkStatusPay = async (req, res) => {
     try {
-        const qrid = req.body.qrid;
+        // const qrid = req.body.qrid;
+        const qrid = 'QRIS20230905165542007067'; //Paid True
+        // const qrid = 'QRIS20230907095615007140'; //Paid False
+        // const qrid = 'QRIS20230904151749007047'; //bill id yg baru di created dan blm terbayarkan
         const phone_no = '081717181988';
         console.log('=============QRID=============== ',qrid);
         
@@ -459,11 +462,6 @@ const checkStatusPay = async (req, res) => {
         const headers = {
             'Content-Type': 'application/json',
             'Authorization': 'Basic YmpiQXV0aERldjpQQFNTVzBSRCE='
-        };
-
-        const bodyData = {
-            'qris_id': qrid,
-            'phone_no': phone_no
         };
 
         // axios.get(urlGlobal + `/bjb/api/getQRISstatus`, { headers: headers },{body: bodyData})
@@ -478,7 +476,6 @@ const checkStatusPay = async (req, res) => {
             // Permintaan gagal, tangani kesalahan di sini
             console.error('Gagal:', error);
         });
-        console.log('RESULT CHECK PAYMENT::',result);
 
         const responseData = {
             code: 200,
