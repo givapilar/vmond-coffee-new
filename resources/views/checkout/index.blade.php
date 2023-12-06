@@ -444,6 +444,7 @@
 
     // ======================================== Socket BRI ============================================
     socket.on('notif-berhasil-bri', function(data) {
+        console.log(data);
         checkData(data, function(result) {
             let order_id = {!! $order_last->id !!};
 
