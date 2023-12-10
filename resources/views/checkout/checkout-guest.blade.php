@@ -221,14 +221,14 @@
 
             <div class="mt-2">
                 {{-- <button class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900" data-modal-toggle="deleteModal">Order Now</button> --}}
-                {{-- <button id="btnQRBri" onclick="createQrisBri('{{ $order->total_price }}','{{ $order->id }}')" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button> --}}
+                {{-- <button id="btnQRBri" onclick="createQrisBri('{{ $orders->total_price }}','{{ $orders->id }}')" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button> --}}
             </div>
 
        
         @else
         <div class="mt-2">
             {{-- <button id="pay-button" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button> --}}
-            <button id="btnQRBri" onclick="createQrisBri('{{ $order->total_price }}','{{ $order->id }}')" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
+            <button id="btnQRBri" onclick="createQrisBri('{{ $orders->total_price }}','{{ $orders->id }}')" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
         </div>
         {{-- <div class="mt-2">
             <button id="btnQR" onclick="createQris('{{ $orders->total_price }}', '{{ $orders->id }}')" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
@@ -262,7 +262,7 @@
     socket = io.connect('https://socket-vmondcoffee.controlindo.com:443'); // koneksi ke nodejsnya
     socket.on('notif-berhasil', function(data) {
         checkData(data, function(result) {
-            let order_id = {!! $order->id !!};
+            let order_id = {!! $orders->id !!};
 
             if (order_id == result) {
                 updateStock(order_id);
@@ -301,7 +301,7 @@
     socket.on('notif-berhasil-bri', function(data) {
         console.log("notif-berhasil",data);
         checkData(data, function(result) {
-            let order_id = {!! $order->id !!};
+            let order_id = {!! $orders->id !!};
 
             if (order_id == result) {
                 updateStock(order_id);
@@ -565,7 +565,7 @@ function updateInvoice(orderID, invoiceID) {
     socket = io.connect('https://socket-vmondcoffee.controlindo.com:443'); // koneksi ke nodejsnya
     socket.on('notif-berhasil', function(data) {
         checkData(data, function(result) {
-            let order_id = {!! $order->id !!};
+            let order_id = {!! $orders->id !!};
 
             if (order_id == result) {
                 updateStock(order_id);
@@ -604,7 +604,7 @@ function updateInvoice(orderID, invoiceID) {
     socket.on('notif-berhasil-bri', function(data) {
         console.log("notif-berhasil",data);
         checkData(data, function(result) {
-            let order_id = {!! $order->id !!};
+            let order_id = {!! $orders->id !!};
 
             if (order_id == result) {
                 updateStock(order_id);
@@ -916,7 +916,7 @@ function updateInvoice(orderID, invoiceID) {
     }
 
     function checkPayment(){
-        let order_id = {!! $order->id !!};
+        let order_id = {!! $orders->id !!};
         $.confirm({
             title: 'Check status payment',
             content: '<h3 style="color:white;text-align:center;margin-bottom:10px;">Check Your Payment...</h3>',
