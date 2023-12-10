@@ -186,7 +186,7 @@
 
         </ul>
 
-        {{-- @foreach ($order as $item) --}}
+        {{-- @foreach ($orders as $item) --}}
             
         @if ($orders->tipe_pemesanan == 'Edisi' && $users->is_worker == true)
             {{-- <button class="fw-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900"  data-modal-toggle="deleteModal">
@@ -220,8 +220,7 @@
             </div>
 
             <div class="mt-2">
-                {{-- <button class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900" data-modal-toggle="deleteModal">Order Now</button> --}}
-                {{-- <button id="btnQRBri" onclick="createQrisBri('{{ $orders->total_price }}','{{ $orders->id }}')" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button> --}}
+                <button class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900" data-modal-toggle="deleteModal">Order Now</button>
             </div>
 
        
@@ -255,216 +254,145 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script src="{{ asset('assetku/dataku/js/socket.io.js') }}"></script>
-{{-- <script src="{{ asset('assetku/dataku/js/barcode.js') }}"></script> --}}
 
 <script>
-    let socket = window.socketio;
-    socket = io.connect('https://socket-vmondcoffee.controlindo.com:443'); // koneksi ke nodejsnya
-    socket.on('notif-berhasil', function(data) {
-        checkData(data, function(result) {
-            let order_id = {!! $orders->id !!};
+    // let socket = window.socketio;
+    // socket = io.connect('https://socket-vmondcoffee.controlindo.com:443'); // koneksi ke nodejsnya
 
-            if (order_id == result) {
-                updateStock(order_id);
-                // console.log('Masuk');
-                // Handle the result here
-                $.confirm({
-                    title: "Pembayaran Berhasil!",
-                    content: "Pembayaran Berhasil, Terimakasih!",
-                    theme: "modern",
-                    icon: "fa fa-check-circle", // Ikon sukses (gunakan kelas ikon Font Awesome)
-                    buttons: {
-                        close: {
-                            text: 'OK',
-                            btnClass: 'btn-green',
-                            action: function () {
-                                window.location.href = "https://vmondcoffee.controlindo.com/home";
-                            }
-                        }
-                    },
-                });
-            }
-        }, function(error) {
-            var confirmation = confirm("Pembayaran Gagal!");
-    
-            // Memeriksa apakah pengguna mengklik OK
-            if (confirmation) {
-                // Redirect ke halaman lain jika pengguna mengklik OK
-                window.location.href = "https://vmondcoffee.controlindo.com/home";
-            }
-            // Handle the error here
-        });
-    });
-
-
-    // ======================================== Socket BRI ============================================
-    socket.on('notif-berhasil-bri', function(data) {
-        console.log("notif-berhasil",data);
-        checkData(data, function(result) {
-            let order_id = {!! $orders->id !!};
-
-            if (order_id == result) {
-                updateStock(order_id);
-                // console.log('Masuk');
-                // Handle the result here
-                $.confirm({
-                    title: "Pembayaran Berhasil!",
-                    content: "Pembayaran Berhasil, Terimakasih!",
-                    theme: "modern",
-                    icon: "fa fa-check-circle", // Ikon sukses (gunakan kelas ikon Font Awesome)
-                    buttons: {
-                        close: {
-                            text: 'OK',
-                            btnClass: 'btn-green',
-                            action: function () {
-                                window.location.href = "https://vmondcoffee.controlindo.com/home";
-                            }
-                        }
-                    },
-                });
-            }
-        }, function(error) {
-            var confirmation = confirm("Pembayaran Gagal!");
-    
-            // Memeriksa apakah pengguna mengklik OK
-            if (confirmation) {
-                // Redirect ke halaman lain jika pengguna mengklik OK
-                window.location.href = "https://vmondcoffee.controlindo.com/home";
-            }
-            // Handle the error here
-        });
-    });
+    // socket.on('test', function(data) {
+    //     console.log(data);
+    // });
 
 // Membuat variabel flag untuk status
 // let isProcessing = false;
 
-function createQris(dtamount, dtorderid) {
-    console.log(isProcessing);
-    // Memeriksa apakah proses sedang berlangsung
-    if (isProcessing) {
-        // Jika proses sedang berlangsung, mencegah fungsi dijalankan
-        return;
-    }
+// function createQris(dtamount, dtorderid) {
+//     console.log(isProcessing);
+//     // Memeriksa apakah proses sedang berlangsung
+//     if (isProcessing) {
+//         // Jika proses sedang berlangsung, mencegah fungsi dijalankan
+//         return;
+//     }
 
-    // Mengubah status menjadi sedang proses
-    isProcessing = true;
+//     // Mengubah status menjadi sedang proses
+//     isProcessing = true;
 
-    let amount = dtamount;
-    $('#btnQR').prop('disabled', true);
-    $('#btnQR').addClass('disabled');
+//     let amount = dtamount;
+//     $('#btnQR').prop('disabled', true);
+//     $('#btnQR').addClass('disabled');
 
-    $.ajax({
-        type: 'POST',
-        url: "{{ route('create-qris-merchant') }}",
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        data: {
-            "_token": "{{ csrf_token() }}",
-            amount,
-        },
-        async: false,
-        success: function(res) {
-            console.log(res);
-            console.log(res.data.stringQR);
-            // Menutup dialog jQuery Confirm setelah sukses
-            generateQris(res.data.stringQR, dtamount);
-            updateInvoice(dtorderid, res.data.invoiceID)
-            // window.location.href = "{{ route('homepage') }}";
-            $('#btnQR').removeClass('disabled');
+//     $.ajax({
+//         type: 'POST',
+//         url: "{{ route('create-qris-merchant') }}",
+//         headers: {
+//             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//         },
+//         data: {
+//             "_token": "{{ csrf_token() }}",
+//             amount,
+//         },
+//         async: false,
+//         success: function(res) {
+//             console.log(res);
+//             console.log(res.data.stringQR);
+//             // Menutup dialog jQuery Confirm setelah sukses
+//             generateQris(res.data.stringQR, dtamount);
+//             updateInvoice(dtorderid, res.data.invoiceID)
+//             // window.location.href = "{{ route('homepage') }}";
+//             $('#btnQR').removeClass('disabled');
             
-            $("#btnQR").prop("disabled", false);
+//             $("#btnQR").prop("disabled", false);
 
-            // Mengubah status menjadi selesai
-        },
-        error: function(data) {
-            console.log(data);
-            $('#btnQR').removeClass('disabled');
-            $("#btnQR").prop("disabled", false);
-            $.alert(data.responseJSON.message);
+//             // Mengubah status menjadi selesai
+//         },
+//         error: function(data) {
+//             console.log(data);
+//             $('#btnQR').removeClass('disabled');
+//             $("#btnQR").prop("disabled", false);
+//             $.alert(data.responseJSON.message);
 
-            // Mengubah status menjadi selesai
-            isProcessing = false;
-        }
-    });
-}
+//             // Mengubah status menjadi selesai
+//             isProcessing = false;
+//         }
+//     });
+// }
 
 
-function generateQris(strQR, dtamount) {
-    // Create a QRious instance
-    var qr = new QRious({
-        value: strQR,
-        size: 200, // Sesuaikan ukuran sesuai kebutuhan
-    });
+// function generateQris(strQR, dtamount) {
+//     // Create a QRious instance
+//     var qr = new QRious({
+//         value: strQR,
+//         size: 200, // Sesuaikan ukuran sesuai kebutuhan
+//     });
 
-    // Convert the QR code to a data URL
-    var qrDataUrl = qr.toDataURL();
+//     // Convert the QR code to a data URL
+//     var qrDataUrl = qr.toDataURL();
 
-    $.confirm({
-        title: 'Generate QR Code',
-        content: '<img src="' + qrDataUrl + '" width="70%" height="70%" style="display:block; margin-right:auto; margin-left:auto;">'+
-        '</br>'+
-        '<h3 style="color:white;text-align:center;">VMOND COFFEE x BJB</h3>'+
-        '</br>'+
-        '<h5 style="color:white;text-align:center;">Total : '+dtamount+'</h5>',
-        columnClass: 'small',
-        type: 'blue',
-        typeAnimated: true,
-        buttons: {
-            downloadQR: {
-                text: 'Download QR Code',
-                btnClass: 'btn-green',
-                action: function () {
-                    // Trigger download of QR Code image
-                    var a = document.createElement('a');
-                    a.href = qrDataUrl;
-                    a.download = 'qrcode.png'; // Nama file yang akan diunduh
-                    a.style.display = 'none';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    isProcessing = false;
-                }
-            },
-            close: {
-                text: 'Close',
-                action: function () {
-                    // Close the dialog
-                    isProcessing = false;
-                }
-            }
-        }
-    });
-}
+//     $.confirm({
+//         title: 'Generate QR Code',
+//         content: '<img src="' + qrDataUrl + '" width="70%" height="70%" style="display:block; margin-right:auto; margin-left:auto;">'+
+//         '</br>'+
+//         '<h3 style="color:white;text-align:center;">VMOND COFFEE x BJB</h3>'+
+//         '</br>'+
+//         '<h5 style="color:white;text-align:center;">Total : '+dtamount+'</h5>',
+//         columnClass: 'small',
+//         type: 'blue',
+//         typeAnimated: true,
+//         buttons: {
+//             downloadQR: {
+//                 text: 'Download QR Code',
+//                 btnClass: 'btn-green',
+//                 action: function () {
+//                     // Trigger download of QR Code image
+//                     var a = document.createElement('a');
+//                     a.href = qrDataUrl;
+//                     a.download = 'qrcode.png'; // Nama file yang akan diunduh
+//                     a.style.display = 'none';
+//                     document.body.appendChild(a);
+//                     a.click();
+//                     document.body.removeChild(a);
+//                     isProcessing = false;
+//                 }
+//             },
+//             close: {
+//                 text: 'Close',
+//                 action: function () {
+//                     // Close the dialog
+//                     isProcessing = false;
+//                 }
+//             }
+//         }
+//     });
+// }
 
-function updateInvoice(orderID, invoiceID) {
-    let order_id, invoice_id;
+// function updateInvoice(orderID, invoiceID) {
+//     let order_id, invoice_id;
 
-    order_id = orderID;
-    invoice_id = invoiceID;
-    $.ajax({
-        type: 'POST',
-        url: "{{ route('update-invoice') }}",
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        data: {
-            "_token": "{{ csrf_token() }}",
-            order_id,
-            invoice_id,
-        },
-        async: false,
-        success: function(res) {
-            console.log(res);
-            // window.location.href = '/home';
-            console.log('Success!');
-        },
-        error: function(data) {
-            console.log('Failed!');
-            alert('Gagal, Silahkan order ulang...')
-        }
-    });
-}
+//     order_id = orderID;
+//     invoice_id = invoiceID;
+//     $.ajax({
+//         type: 'POST',
+//         url: "{{ route('update-invoice') }}",
+//         headers: {
+//             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//         },
+//         data: {
+//             "_token": "{{ csrf_token() }}",
+//             order_id,
+//             invoice_id,
+//         },
+//         async: false,
+//         success: function(res) {
+//             console.log(res);
+//             // window.location.href = '/home';
+//             console.log('Success!');
+//         },
+//         error: function(data) {
+//             console.log('Failed!');
+//             alert('Gagal, Silahkan order ulang...')
+//         }
+//     });
+// }
         // console.log(username);
     $('.slick1').slick({
         infinite:false,
@@ -559,7 +487,8 @@ function updateInvoice(orderID, invoiceID) {
     });
   </script>
 
-{{-- ======================================== Payment BRI ===================================================== --}}
+
+{{-- =============================================Paymant BRI =================================== --}}
 <script>
     let socket = window.socketio;
     socket = io.connect('https://socket-vmondcoffee.controlindo.com:443'); // koneksi ke nodejsnya
@@ -710,8 +639,8 @@ function updateInvoice(orderID, invoiceID) {
         // Mengubah status menjadi sedang proses
         isProcessingBri = true;
     
-        let amount = 1;
-        // let amount = dtamount;
+        // let amount = 1;
+        let amount = dtamount;
         // console.log(amount);
         
         $('#btnQRBri').prop('disabled', true);
