@@ -412,7 +412,7 @@
                     </div>
                     <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
                     <ul class="max-w-sm divide-y divide-gray-200 dark:divide-gray-700 px-3">
-                        <li class="py-3 sm:py-2">
+                        {{-- <li class="py-3 sm:py-2">
                             <div class="flex items-center space-x-4">
                             <div class="flex-shrink-0">
                                 <img class="w-8 h-8 rounded-full" src="{{ asset('assetku/dataku/img/edc.png') }}" alt="Neil image">
@@ -426,7 +426,7 @@
                                 <input required type="radio" id="payment_gateaway" value="Payment Gateaway Online" name="tipe_pemesanan" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                             </div>
                             </div>
-                        </li>
+                        </li> --}}
 
                         {{-- <li class="py-3 sm:py-2">
                             <div class="flex items-center space-x-4">
