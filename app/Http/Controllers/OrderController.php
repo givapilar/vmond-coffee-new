@@ -183,7 +183,7 @@ class OrderController extends Controller
                     // $discount = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $discount = (\Cart::getTotal());
                     $count = 0.2 * $discount;
-                    $total_price = $discount - $count;
+                    $total_price = 1;
                     // $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
                     // $pb01 = ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $service = 0;
