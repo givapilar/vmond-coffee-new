@@ -11,6 +11,18 @@
 
     }
 
+    .jconfirm-cell{
+        display: flex !important;
+        justify-content: center !important; /* Menengahkan secara horizontal */
+        align-items: center !important;
+    }
+    .jconfirm-box{
+        background-color: #1b1818 !important;
+        border-radius: 20px !important;
+    }
+    .jconfirm-title-c{
+        display: none !important;
+    }
 </style>
 @endpush
 

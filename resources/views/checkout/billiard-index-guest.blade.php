@@ -11,6 +11,19 @@
 
     }
 
+    .jconfirm-cell{
+        display: flex !important;
+        justify-content: center !important; /* Menengahkan secara horizontal */
+        align-items: center !important;
+    }
+    .jconfirm-box{
+        background-color: #1b1818 !important;
+        border-radius: 20px !important;
+    }
+    .jconfirm-title-c{
+        display: none !important;
+    }
+
 </style>
 @endpush
 
@@ -168,7 +181,11 @@
 
 @push('script-bot')
 <script type="text/javascript" src="{{ config('midtrans.snap_url') }}" data-client-key="{{ config('midtrans.client_key') }}"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/canvg/1.5/canvg.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script src="{{ asset('assetku/dataku/js/socket.io.js') }}"></script>
 <script>
     $('.slick1').slick({
         infinite:false,
