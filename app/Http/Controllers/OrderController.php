@@ -1495,7 +1495,7 @@ class OrderController extends Controller
                     // $kasir = $request->kasir_id;
                     // $nama_kasir = $request->kasir_id;
                 }elseif (Auth::user()->username == 'syahrul') {
-                    $total_price = 1;
+                    $total_harga = 1;
                     $service = 0;
                     $pb01 = 0;
                     $name = auth()->user()->username ?? 'Not Name';
