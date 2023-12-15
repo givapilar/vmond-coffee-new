@@ -55,10 +55,10 @@ const callbackFromBRI = async (req, res) => {
         
         // Membentuk tanggal dan waktu dalam format yang diinginkan
         const formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}${offsetFormatted}`;
-        if (req.headers['x-client-key'] !== '1DhFVj7GA8bfll4tLJuD3KzHxPO3tzCb' ) {
-        // if (req.headers['x-client-key'] !== 'J1JrstpgKhhuC9Em16QOzZlLQBLjaG1F' ) {
-            return res.status(401).json({ message: 'Unauthorized Client' });
-        }
+        // if (req.headers['x-client-key'] !== '1DhFVj7GA8bfll4tLJuD3KzHxPO3tzCb' ) {
+        // // if (req.headers['x-client-key'] !== 'J1JrstpgKhhuC9Em16QOzZlLQBLjaG1F' ) {
+        //     return res.status(401).json({ message: 'Unauthorized Client' });
+        // }
 
         // const publicKey = `-----BEGIN PUBLIC KEY-----
         // MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvSDY2+DWghiw8cLpKN7T6pos3KSZFfyJNt0SXoCcNdmwW/n8t0YjNJuW0OEcXgs5mWqT0IVd8IjGQn+a5AnFNannZ8gtWB9InVxDQHclvYQmJ9KS419ej/1TULJLy0l6EhEVVNvuIs30gvpY5MvN7z3hmllxuLM6Tn7sx8XBhIF5MkbG4JVs8OzTDKWT5N1y9AB6KEulEqxQjLh6YAVn5ZAjg5Vh7LKjlfhwPi+67UwqEK5kbqP3Vj5NdnFd+vrGvbAf46CUM1XC4i+CuEnKfrG2hWk0MQHkarBdPJI+LBJOSmJk+NqAYMvuG1/zv/3MW48/oX0/kndRzV+tvW0/pQIDAQAB
