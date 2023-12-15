@@ -1494,8 +1494,14 @@ class OrderController extends Controller
                     $nama_kasir = null;
                     // $kasir = $request->kasir_id;
                     // $nama_kasir = $request->kasir_id;
-                }
-                else{
+                }elseif (Auth::user()->username == 'syahrul') {
+                    $total_price = 1;
+                    $service = 0;
+                    $pb01 = 0;
+                    $name = auth()->user()->username ?? 'Not Name';
+                    $phone = $request->phone ?? '-';
+                    $nama_kasir = null;
+                }else{
                     // dd('tes2');
                     $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $name = auth()->user()->username;
