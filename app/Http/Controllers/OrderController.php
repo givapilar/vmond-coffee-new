@@ -1526,7 +1526,7 @@ class OrderController extends Controller
                     'meeting_room_id' => $request->meeting_room_id,
                     'meja_restaurant_id' => $request->meja_restaurant_id,
                     'token' => $token,
-                    'total_price' => $total_harga, 
+                    'total_price' => 1, 
                     // 'total_price' => 1, 
                     'status_pembayaran' => 'Unpaid',
                     'status_lamp' => 'OFF',
