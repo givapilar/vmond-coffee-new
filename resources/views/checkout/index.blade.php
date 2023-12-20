@@ -681,7 +681,7 @@
             async: false,
             success: function(res) {
                 // console.log(res);
-                // console.log(res.data.stringQR);
+                console.log(res.data.stringQR);
                 // Menutup dialog jQuery Confirm setelah sukses
                 generateQris(res.data.stringQR, dtamount);
                 updateInvoice(dtorderid, res.data.invoiceID)

@@ -51,22 +51,25 @@
                                                 @foreach($item->attributes['detail_addon_id'] as $addonId)
                                                     @if(isset($addonId))
                                                         @php
-                                                            // $addonId adalah ID dari detail add-on
-                                                            // Gantikan 'App\Models\DetailAddOn' dengan model yang sesuai untuk detail add-on
                                                             $detailAddOn = App\Models\AddOnDetail::find($addonId);
                                                         @endphp
                                                         
-                                                        @if($detailAddOn)
-                                                            <span class="block text-[10px] dark:text-white">{{ $detailAddOn->nama  ?? '-'}}</span>
+                                                        @if($detailAddOn && isset($detailAddOn->nama))
+                                                            <span class="block text-[10px] dark:text-white">
+                                                                {{ $detailAddOn->nama }}
+                                                            </span>
                                                         @else
-                                                            <span class="block text-[10px] dark:text-yellow-300">Add-on not found</span>
+                                                            <span class="block text-[10px] dark:text-yellow-300">Nama tidak ditemukan</span>
                                                         @endif
+                                        
                                                     @endif
                                                 @endforeach
                                             @else
                                                 <span class="block text-[10px] dark:text-yellow-300">Tidak Ada Note</span>
                                             @endif
                                         </p>
+                                        
+                                        
 
                                         {{-- <p>
                                             <span class="block text-[10px] dark:text-yellow-300">Note :</span>
@@ -527,7 +530,7 @@
                                     </p>
                                 </div>
                             </div>
-                            <input type="number" placeholder="Massukan Jumlah Customer/Table" name="jumlah_customer" value="{{ old('jumlah_customer') }}" id="" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2 mt-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('jumlah_customer') is-invalid @enderror">
+                            <input type="number" min="0" placeholder="Massukan Jumlah Customer/Table" name="jumlah_customer" value="{{ old('jumlah_customer') }}" id="" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2 mt-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('jumlah_customer') is-invalid @enderror">
                         </li>
 
                         <li class="py-3 sm:py-2">

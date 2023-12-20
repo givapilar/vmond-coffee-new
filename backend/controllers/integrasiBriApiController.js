@@ -143,6 +143,7 @@ const qrMpmNotify = async (req, res) => {
                     const bodyData = {
                         invoiceID: req.body.originalPartnerReferenceNo,
                         status: req.body.transactionStatusDesc,
+                        customerNumber: req.body.customerNumber,
                     };
                     const result = await axios.post('https://vmondcoffee.controlindo.com/api/data/success-order-bri', bodyData)
                         .then((response) => {

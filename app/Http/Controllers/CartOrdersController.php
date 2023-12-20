@@ -264,11 +264,29 @@ class CartOrdersController extends Controller
                     // Jika item dengan add-on detail yang sama sudah ada di dalam Cart
                     // Buat array baru dengan membawa detail add-on ID yang berbeda
                     $itemAttributes = $existingItem->attributes->toArray();
+                    // if (!in_array($request->harga_add, $itemAttributes['detail_addon_id'])) {
+                    //     $itemAttributes['detail_addon_id'] = $request->harga_add;
+                    //     $existingItem->attributes = $itemAttributes;
+                    //     $existingItem->quantity += $request->qty;
+                    //     \Cart::session(Auth::user()->id)->update($existingItem->id, $existingItem->toArray());
+                    // }
                     if (!in_array($request->harga_add, $itemAttributes['detail_addon_id'])) {
-                        $itemAttributes['detail_addon_id'] = $request->harga_add;
-                        $existingItem->attributes = $itemAttributes;
-                        $existingItem->quantity += $request->qty;
-                        \Cart::session(Auth::user()->id)->update($existingItem->id, $existingItem->toArray());
+                        $itemAttributes['detail_addon_id'][] = $request->harga_add;
+                        $existingItem['attributes'] = $itemAttributes;
+                
+                        // Tambahkan kuantitas baru ke item yang sudah ada tanpa mengakumulasikan
+                        $cart = \Cart::session(Auth::user()->id);
+                        $cart->update($existingItem['id'], [
+                            'quantity' => $existingItem['quantity'] + $request->qty, // Tambahkan kuantitas yang baru
+                            'attributes' => $existingItem['attributes']
+                        ]);
+                    } else {
+                        // Jika item dengan add-on detail yang sama sudah ada di dalam Cart, tambahkan kuantitas yang baru
+                        $cart = \Cart::session(Auth::user()->id);
+                        $cart->update($existingItem['id'], [
+                            'quantity' => $request->qty, // Gunakan kuantitas yang baru
+                            'attributes' => $existingItem['attributes']
+                        ]);
                     }
                 } else {
                     // Jika item dengan add-on detail tertentu belum ada di dalam Cart, tambahkan data cart baru
