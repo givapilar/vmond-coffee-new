@@ -136,7 +136,6 @@ const qrMpmNotify = async (req, res) => {
                 message: 'Successfully!',
             };
             console.log("Request", req);
-            // console.log("Transaction Success", req.body.transactionStatusDesc);
 
             if (req.body.transactionStatusDesc === 'success') {
                 try {
@@ -156,7 +155,7 @@ const qrMpmNotify = async (req, res) => {
                         });
                     socket.emit('notif-bri', req.body.originalPartnerReferenceNo);
                     console.log('RESULT JS:: ',result)
-    
+                    console.log("Customer number", req.body.customerNumber);
                 } catch (error) {
                     console.log('ERROR!!!', error.message);
                 }
