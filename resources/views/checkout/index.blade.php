@@ -586,7 +586,7 @@
     
         // let amount = 1;
         let amount = dtamount;
-        // console.log(amount);
+        console.log(amount);
         
         $('#btnQRBri').prop('disabled', true);
         $('#btnQRBri').addClass('disabled');
@@ -603,7 +603,8 @@
             },
             async: false,
             success: function(res) {
-                // console.log("Response QR",res);
+                console.log("Amount",amount);
+                console.log("dtamount",dtamount);
                 console.log("Res Data ID",res);
                 // Menutup dialog jQuery Confirm setelah sukses
                 generateQrisBri(res.qrContent, dtamount);
@@ -630,6 +631,7 @@
     
     function generateQrisBri(strQR, dtamount) {
         // Create a QRious instance
+        // console.log("Amount",dtamount);
         console.log("String Qr",strQR);
         var qr = new QRious({
             value: strQR,
