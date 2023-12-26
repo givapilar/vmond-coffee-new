@@ -156,6 +156,7 @@ const qrMpmNotify = async (req, res) => {
                     socket.emit('notif-bri', req.body.originalPartnerReferenceNo);
                     console.log('RESULT JS:: ',result)
                     console.log("Customer number", req.body.customerNumber);
+                    console.log("Bodyy", req.body);
                 } catch (error) {
                     console.log('ERROR!!!', error.message);
                 }
