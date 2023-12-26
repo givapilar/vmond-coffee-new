@@ -454,8 +454,8 @@
             let order_id = {!! $order_last->id !!};
 
             if (order_id == result) {
-                updateStock(order_id);
-                // console.log('Masuk');
+                updateStockBri(order_id);
+                console.log('Masuk');
                 // Handle the result here
                 $.confirm({
                     title: "Pembayaran Berhasil!",
@@ -475,6 +475,7 @@
             }
         }, function(error) {
             var confirmation = confirm("Pembayaran Gagal!");
+            console.log('gagal');
     
             // Memeriksa apakah pengguna mengklik OK
             if (confirmation) {
@@ -495,6 +496,32 @@
         $.ajax({
             type: 'POST',
             url: "{{ route('update-stock-bjb') }}",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: requestData,
+            success: function(res) {
+                console.log(res);
+               
+            },
+            error: function(data) {
+                // console.log(data);
+                // console.log('Failed!');
+               
+            }
+        });
+    }
+
+    function updateStockBri(datas) {
+         // Prepare the data to send in the request
+        const requestData = {
+            "_token": "{{ csrf_token() }}",
+            datas,
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('update-stock-bri') }}",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },

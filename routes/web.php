@@ -212,6 +212,7 @@ Route::post('/data/success-order',[OrderController::class,'successOrder'])->name
 Route::post('/data/update-invoice',[OrderController::class,'updateInvoice'])->name('update-invoice');
 Route::post('/data/update-invoice-bri',[OrderController::class,'updateInvoiceBri'])->name('update-invoice-bri');
 Route::post('/data/update-stock-bjb',[OrderController::class,'updateStockBJB'])->name('update-stock-bjb');
+Route::post('/data/update-stock-bri',[OrderController::class,'updateStockBRI'])->name('update-stock-bri');
 
 // Success order Waiters
 Route::post('/checkout/checkout-waiters/{token}',[OrderController::class,'checkoutWaiters'])->name('checkout-waiters');
