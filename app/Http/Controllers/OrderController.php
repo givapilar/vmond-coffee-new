@@ -2569,7 +2569,7 @@ class OrderController extends Controller
         try {
             $updateStatus = Order::where('invoice_id', $request->invoiceID)->first();
 
-            if (\Cart::getTotal() >= 100000) {
+            if ($updateStatus->total_price >= 1) {
                 $timestamp = time(); 
                 $randomSeed = $timestamp % 10000; 
                 $code = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
@@ -2579,7 +2579,7 @@ class OrderController extends Controller
                     'code' => 'VMND'.$code,
                 ];
                 
-                $totalKupon = (\Cart::getTotal() / 100000) - 1; // Hitung jumlah kupon tambahan
+                $totalKupon = ($updateStatus->total_price / 1) - 1; // Hitung jumlah kupon tambahan
                 
                 // Loop untuk membuat kupon tambahan berdasarkan kelipatan 25,000
                 $kupons = [$kupon];
