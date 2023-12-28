@@ -344,16 +344,17 @@ class OrderController extends Controller
 
 
             $snapToken = \Midtrans\Snap::getSnapToken($params);
-            $tokenCart = Order::where('token', $token)->first(); // Menggunakan first() karena Anda mencari satu record
-            if ($tokenCart) {
+            $data['order_last'] = Order::where('token', $token)->get()->first();
+            if ($data['order_last']) {
                 $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
             }
-            // $data['order_last'] = Order::where('token', $token)->latest()->first();
-            $data['order_last'] = Order::where('token', $token)->get()->first();
             $data['order_settings'] = OtherSetting::get();
 
 
             // ================================ Kupon ==========================
+            // foreach ($data['order_last']->orderPivot as $key => $value) {
+            //     $item = 
+            // }
             // if (\Cart::getTotal() >= 25000) {
             //     $timestamp = time(); 
             //     $randomSeed = $timestamp % 10000; 
@@ -2595,7 +2596,7 @@ class OrderController extends Controller
             $updateStatus = Order::where('invoice_id', $request->invoiceID)->first();
 
             $total = 1;
-            if ($total >= 1) {
+            if (\Cart::getTotal() >= 1) {
                 $timestamp = time(); 
                 $randomSeed = $timestamp % 10000; 
                 $code = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
@@ -2605,7 +2606,7 @@ class OrderController extends Controller
                     'code' => 'VMND'.$code,
                 ];
                 
-                $totalKupon = ($total / 1) - 1; // Hitung jumlah kupon tambahan
+                $totalKupon = (\Cart::getTotal() / 1) - 1; // Hitung jumlah kupon tambahan
                 
                 // Loop untuk membuat kupon tambahan berdasarkan kelipatan 25,000
                 $kupons = [$kupon];
