@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use DateTime;
@@ -352,7 +351,7 @@ class APIController extends Controller
         // ------------------------------------------------------------------- Generate QR------------------------------------------------------------------------------------------------
         $timestamp = time(); // Dapatkan timestamp saat ini
         $randomSeed = $timestamp % 10000; // Gunakan 4 digit terakhir dari timestamp sebagai "seed" untuk angka acak
-        $randomDigits = str_pad(mt_rand($randomSeed, 9999), 12, '0', STR_PAD_LEFT);
+        $randomDigits = str_pad(mt_rand($randomSeed, 999999), 12, '0', STR_PAD_LEFT);
 
         $amount = $request->input('amount');
         $integer = floor($amount); // Menghilangkan desimal
@@ -361,11 +360,9 @@ class APIController extends Controller
 
         // return $formattedInt;
         // 444431007182
-        $partnerRefNo = mt_rand(100000000000, 999999999999);
-
+        
         $requestDataQr = [
-            // 'partnerReferenceNo' => '444431'.$randomDigits,
-            'partnerReferenceNo' => $partnerRefNo,
+            'partnerReferenceNo' => '4444'.$randomDigits,
             'amount' => [
                 'value' => $formattedInt,
                 'currency' => 'IDR',
