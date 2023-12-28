@@ -354,33 +354,33 @@ class OrderController extends Controller
 
 
             // ================================ Kupon ==========================
-            if (\Cart::getTotal() >= 25000) {
-                $timestamp = time(); 
-                $randomSeed = $timestamp % 10000; 
-                $code = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
+            // if (\Cart::getTotal() >= 25000) {
+            //     $timestamp = time(); 
+            //     $randomSeed = $timestamp % 10000; 
+            //     $code = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
                 
-                $kupon = [
-                    'order_id' => $order->id,
-                    'code' => 'VMND'.$code,
-                ];
+            //     $kupon = [
+            //         'order_id' => $order->id,
+            //         'code' => 'VMND'.$code,
+            //     ];
                 
-                $totalKupon = (\Cart::getTotal() / 25000) - 1; // Hitung jumlah kupon tambahan
+            //     $totalKupon = (\Cart::getTotal() / 25000) - 1; // Hitung jumlah kupon tambahan
                 
-                // Loop untuk membuat kupon tambahan berdasarkan kelipatan 25,000
-                $kupons = [$kupon];
-                for ($i = 1; $i <= $totalKupon; $i++) {
-                    $timestamp = time(); 
-                    $randomSeed = $timestamp % 10000;
-                    $kuponCode = 'VMND2' . str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
-                    $kupons[] = [
-                        'order_id' => $order->id,
-                        'code' => $kuponCode
-                    ];
-                }
+            //     // Loop untuk membuat kupon tambahan berdasarkan kelipatan 25,000
+            //     $kupons = [$kupon];
+            //     for ($i = 1; $i <= $totalKupon; $i++) {
+            //         $timestamp = time(); 
+            //         $randomSeed = $timestamp % 10000;
+            //         $kuponCode = 'VMND2' . str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
+            //         $kupons[] = [
+            //             'order_id' => $order->id,
+            //             'code' => $kuponCode
+            //         ];
+            //     }
     
-                // dd($kupons);
-                Kupon::insert($kupons);
-            }
+            //     // dd($kupons);
+            //     Kupon::insert($kupons);
+            // }
 
             if (\Cart::getTotal() >= 100000) {
                 $timestamp = time(); 
@@ -2594,7 +2594,8 @@ class OrderController extends Controller
         try {
             $updateStatus = Order::where('invoice_id', $request->invoiceID)->first();
 
-            if ($updateStatus->total_price >= 1) {
+            $total = 1;
+            if ($total >= 1) {
                 $timestamp = time(); 
                 $randomSeed = $timestamp % 10000; 
                 $code = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
@@ -2604,7 +2605,7 @@ class OrderController extends Controller
                     'code' => 'VMND'.$code,
                 ];
                 
-                $totalKupon = ($updateStatus->total_price / 1) - 1; // Hitung jumlah kupon tambahan
+                $totalKupon = ($total / 1) - 1; // Hitung jumlah kupon tambahan
                 
                 // Loop untuk membuat kupon tambahan berdasarkan kelipatan 25,000
                 $kupons = [$kupon];
