@@ -404,7 +404,8 @@ class APIController extends Controller
 
         $timestamp = time(); 
         $randomSeed = $timestamp % 10000; 
-        $externalId = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
+        // $externalId = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
+        $externalId = str_pad(mt_rand($randomSeed, 99999999), 6, '0', STR_PAD_LEFT);
 
             $headersQr = [
                 'Authorization' => 'Bearer '.$token,
@@ -414,7 +415,8 @@ class APIController extends Controller
                 // 'X-PARTNER-ID' => '456044',
                 'X-PARTNER-ID' => '456044',
                 'CHANNEL-ID' => '95221',
-                'X-EXTERNAL-ID' => '1223'.$externalId, // Replace with your external ID
+                // 'X-EXTERNAL-ID' => '1223'.$externalId, // Replace with your external ID
+                'X-EXTERNAL-ID' => $externalId, // Replace with your external ID
             ];
 
 
