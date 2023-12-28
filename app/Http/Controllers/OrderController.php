@@ -2570,7 +2570,7 @@ class OrderController extends Controller
             foreach ($updateStatus->orderPivot as $key => $value) {
                 $kuponCode += $value->harga_diskon * $value->qty;
             }
-            if ($kuponCode >= 10000) {
+            if ($kuponCode >= 100000) {
                 $timestamp = time(); 
                 $randomSeed = $timestamp % 10000; 
                 $code = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
@@ -2580,7 +2580,7 @@ class OrderController extends Controller
                     'code' => 'VMND'.$code,
                 ];
                 
-                $totalKupon = ($kuponCode / 10000) - 1; // Hitung jumlah kupon tambahan
+                $totalKupon = ($kuponCode / 100000) - 1; // Hitung jumlah kupon tambahan
                 
                 // Loop untuk membuat kupon tambahan berdasarkan kelipatan 25,000
                 $kupons = [$kupon];
