@@ -353,7 +353,7 @@ class OrderController extends Controller
 
             // ================================ Kupon ==========================
             foreach ($data['order_last']->orderPivot as $key => $value) {
-                $kuponCode = $value->harga_diskon * $value->qty;
+                $kuponCode += $value->harga_diskon * $value->qty;
             }
             dd($kuponCode);
             if (\Cart::getTotal() >= 25000) {
