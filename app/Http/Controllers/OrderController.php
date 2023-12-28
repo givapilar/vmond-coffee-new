@@ -352,6 +352,7 @@ class OrderController extends Controller
 
 
             // ================================ Kupon ==========================
+            $kuponCode = 0;
             foreach ($data['order_last']->orderPivot as $key => $value) {
                 $kuponCode += $value->harga_diskon * $value->qty;
             }
