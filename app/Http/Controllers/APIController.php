@@ -361,18 +361,11 @@ class APIController extends Controller
 
         // return $formattedInt;
         // 444431007182
-
-        $today = Carbon::today();
-        $formattedDate = $today->format('ymd');
-
-        $nextOrderNumber = 1;
-
-        $paddedOrderNumber = str_pad($nextOrderNumber, 3, '0', STR_PAD_LEFT);
-        $invoiceNumber = $formattedDate . '-' . $paddedOrderNumber;
+        $partnerRefNo = mt_rand(100000000000, 999999999999);
 
         $requestDataQr = [
             // 'partnerReferenceNo' => '444431'.$randomDigits,
-            'partnerReferenceNo' => $invoiceNumber,
+            'partnerReferenceNo' => $partnerRefNo,
             'amount' => [
                 'value' => $formattedInt,
                 'currency' => 'IDR',
