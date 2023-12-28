@@ -64,6 +64,7 @@ class OrderController extends Controller
     public function checkout(Request $request, $token)
     {
         try {
+            
             $session_cart = \Cart::session(Auth::user()->id)->getContent();
             $other_setting = OtherSetting::get();
 
@@ -353,9 +354,33 @@ class OrderController extends Controller
 
 
             // ================================ Kupon ==========================
-                    
-                    // if ($order->total_price >= 50000) {
-                    // $tpc = 50000; // Ubah nilai $tpc sesuai kebutuhan
+            if (\Cart::getTotal() >= 25000) {
+                $timestamp = time(); 
+                $randomSeed = $timestamp % 10000; 
+                $code = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
+                
+                $kupon = [
+                    'order_id' => $order->id,
+                    'code' => 'VMND'.$code,
+                ];
+                
+                $totalKupon = (\Cart::getTotal() / 25000) - 1; // Hitung jumlah kupon tambahan
+                
+                // Loop untuk membuat kupon tambahan berdasarkan kelipatan 25,000
+                $kupons = [$kupon];
+                for ($i = 1; $i <= $totalKupon; $i++) {
+                    $timestamp = time(); 
+                    $randomSeed = $timestamp % 10000;
+                    $kuponCode = 'VMND2' . str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
+                    $kupons[] = [
+                        'order_id' => $order->id,
+                        'code' => $kuponCode
+                    ];
+                }
+    
+                // dd($kupons);
+                Kupon::insert($kupons);
+            }
 
             if (\Cart::getTotal() >= 100000) {
                 $timestamp = time(); 
