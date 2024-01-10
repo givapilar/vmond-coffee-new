@@ -93,7 +93,7 @@ class DaftarMenuController extends Controller
 
     public function paketMenu(Request $request)
     {
-        $global_url_image = 'https://managementvmond.controlindo.com/assets/images/restaurant/';
+        $global_url_image = 'https://managementvmond.controlindo.com/assets/images/paket-menu/';
 
         $tags = Tag::where('status', 'active')->orderBy('position', 'ASC')->get();
         $restaurantPivot = RestaurantPivot::get();
