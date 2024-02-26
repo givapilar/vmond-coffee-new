@@ -168,7 +168,11 @@
 
 @push('script-bot')
 <script type="text/javascript" src="{{ config('midtrans.snap_url') }}" data-client-key="{{ config('midtrans.client_key') }}"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/canvg/1.5/canvg.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script src="{{ asset('assetku/dataku/js/socket.io.js') }}"></script>
 <script>
     //  var username = {{ \Cart::session(Auth::user()->id)->getContent() }};
         // console.log(username);
@@ -401,18 +405,18 @@
     }
 
     // ================================================================================================== Payment BRI =====================================================================================================
-    // let isProcessingBri = false;
+    let isProcessingBri = false;
     
     function createQrisBri(dtamount, dtorderid) {
-        // console.log(isProcessingBri);
-        // // Memeriksa apakah proses sedang berlangsung
-        // if (isProcessingBri) {
-        //     // Jika proses sedang berlangsung, mencegah fungsi dijalankan
-        //     return;
-        // }
+        console.log(isProcessingBri);
+        // Memeriksa apakah proses sedang berlangsung
+        if (isProcessingBri) {
+            // Jika proses sedang berlangsung, mencegah fungsi dijalankan
+            return;
+        }
     
-        // // Mengubah status menjadi sedang proses
-        // isProcessingBri = true;
+        // Mengubah status menjadi sedang proses
+        isProcessingBri = true;
     
         // let amount = 1;
         let amount = dtamount;
