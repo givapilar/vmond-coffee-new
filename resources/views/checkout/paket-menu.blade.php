@@ -401,22 +401,22 @@
     }
 
     // ================================================================================================== Payment BRI =====================================================================================================
-    let isProcessingBri = false;
+    // let isProcessingBri = false;
     
     function createQrisBri(dtamount, dtorderid) {
-        console.log(isProcessingBri);
-        // Memeriksa apakah proses sedang berlangsung
-        if (isProcessingBri) {
-            // Jika proses sedang berlangsung, mencegah fungsi dijalankan
-            return;
-        }
+        // console.log(isProcessingBri);
+        // // Memeriksa apakah proses sedang berlangsung
+        // if (isProcessingBri) {
+        //     // Jika proses sedang berlangsung, mencegah fungsi dijalankan
+        //     return;
+        // }
     
-        // Mengubah status menjadi sedang proses
-        isProcessingBri = true;
+        // // Mengubah status menjadi sedang proses
+        // isProcessingBri = true;
     
-        // let amount = 1;
-        let amount = dtamount;
-        // console.log(amount);
+        // // let amount = 1;
+        // let amount = dtamount;
+        // // console.log(amount);
         
         $('#btnQRBri').prop('disabled', true);
         $('#btnQRBri').addClass('disabled');
