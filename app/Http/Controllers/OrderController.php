@@ -1170,11 +1170,13 @@ class OrderController extends Controller
 
     public function checkoutPaketMenu(Request $request, $token){
 
+        // dd($request->all());
         try {
             $checkToken = Order::where('token',$token)->where('status_pembayaran', 'Paid')->get();
             if (count($checkToken) != 0) {
                 return redirect()->route('homepage')->with(['failed' => 'Tidak dapat mengulang transaksi!']);
             }
+
 
             $selectedPackages = $request->input('paket_restaurant_id');
 
@@ -1228,27 +1230,31 @@ class OrderController extends Controller
             // Passing Harga
             $data['harga'] = $harga;
             $data['layanan'] = $layanan;
-            $data['pb01'] = $pb01;
             $data['total_harga'] = $total_harga;
 
             
                 if (Auth::check()) {
                     $total_price = 1;
+                    $total_paket = $request->total_paket;
+                    $layanan = $total_paket * $other_setting[0]->layanan/100;
+                    $pb01 = $total_paket * $other_setting[0]->pb01/100;
+                    $order_total = $total_paket + $layanan + $pb01;
+                    // dd($order_total);
                     # code...
                     if (Auth::user()->membership->level == 'Super Platinum') {
                         // $total_price = 1;
-                        $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                        $total_price = 1;
                         $name = auth()->user()->username;
                         $phone = auth()->user()->telephone;
                         $kasir = null;
                         $nama_kasir = $request->kasir_id;
                     }else if(Auth::user()->telephone == '081818181847') {
-                        $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                        $total_price = $order_total;
                         $name = $request->nama_customer ?? 'Not Name';
                         $phone = $request->phone ?? '-';
                         $nama_kasir = $request->kasir_id;
                     }elseif (Auth::user()->telephone == '081210469621') {
-                        $discount = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                        $discount = $order_total;
                         $count = 0.2 * $discount;
                         $total_price = $discount - $count;
                         // dd($total_price);
@@ -1256,7 +1262,8 @@ class OrderController extends Controller
                         $phone = $request->phone ?? '-';
                         $nama_kasir = null;
                     }else{
-                        $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                        // $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                        $total_price = $order_total;
                         $name = auth()->user()->username;
                         $phone = auth()->user()->telephone;
                         $kasir = null;
@@ -1318,6 +1325,8 @@ class OrderController extends Controller
                         OrderPivot::insert($orderPaketMenu);
                         // dd($orderPaketMenu);
                     }
+                    // dd('masuk');
+
                 $checkToken2 = Order::where('token',$token)->get();
                 $data['token'] = $checkToken2->pluck('token');
 
@@ -1362,16 +1371,12 @@ class OrderController extends Controller
                 # code...
             }
 
-
             $snapToken = \Midtrans\Snap::getSnapToken($params);
-            // dd($snapToken);
-            $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
-            // $data['orders'] = Order::get();
-            $data['orders'] = Order::latest()->first();
             $data['order_last'] = Order::latest()->first();
-            // dd('masuk');
+
             return view('checkout.paket-menu',$data,compact('snapToken','order'));
         } catch (\Throwable $th) {
+            dd($th->getMessage());
             return  redirect()->back();
             //throw $th;
         }

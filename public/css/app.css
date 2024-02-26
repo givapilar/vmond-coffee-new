@@ -1068,6 +1068,10 @@ input:checked + .toggle-bg {
   margin-left: auto;
   margin-right: auto;
 }
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
 .my-4 {
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -1075,9 +1079,6 @@ input:checked + .toggle-bg {
 .my-auto {
   margin-top: auto;
   margin-bottom: auto;
-}
-.-mb-px {
-  margin-bottom: -1px;
 }
 .-mt-9 {
   margin-top: -2.25rem;
@@ -1277,6 +1278,9 @@ input:checked + .toggle-bg {
 .h-8 {
   height: 2rem;
 }
+.h-80 {
+  height: 20rem;
+}
 .h-9 {
   height: 2.25rem;
 }
@@ -1306,6 +1310,9 @@ input:checked + .toggle-bg {
 }
 .max-h-\[17rem\] {
   max-height: 17rem;
+}
+.max-h-\[25rem\] {
+  max-height: 25rem;
 }
 .max-h-\[77\%\] {
   max-height: 77%;
@@ -1625,10 +1632,6 @@ input:checked + .toggle-bg {
   --tw-divide-opacity: 1;
   border-color: rgb(229 231 235 / var(--tw-divide-opacity));
 }
-.divide-gray-700 > :not([hidden]) ~ :not([hidden]) {
-  --tw-divide-opacity: 1;
-  border-color: rgb(55 65 81 / var(--tw-divide-opacity));
-}
 .self-center {
   align-self: center;
 }
@@ -1684,10 +1687,6 @@ input:checked + .toggle-bg {
 }
 .rounded-xl {
   border-radius: 0.75rem;
-}
-.rounded-b-\[\.5rem\] {
-  border-bottom-right-radius: .5rem;
-  border-bottom-left-radius: .5rem;
 }
 .rounded-b-\[30px\] {
   border-bottom-right-radius: 30px;
@@ -1893,10 +1892,6 @@ input:checked + .toggle-bg {
   --tw-bg-opacity: 1;
   background-color: rgb(224 36 36 / var(--tw-bg-opacity));
 }
-.bg-red-800 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(155 28 28 / var(--tw-bg-opacity));
-}
 .bg-sky-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(14 165 233 / var(--tw-bg-opacity));
@@ -2100,9 +2095,6 @@ input:checked + .toggle-bg {
 }
 .text-\[40px\] {
   font-size: 40px;
-}
-.text-\[8px\] {
-  font-size: 8px;
 }
 .text-base {
   font-size: 1rem;
@@ -2742,6 +2734,10 @@ input:checked + .toggle-bg {
 :is(.dark .dark\:text-red-600) {
   --tw-text-opacity: 1;
   color: rgb(224 36 36 / var(--tw-text-opacity));
+}
+:is(.dark .dark\:text-slate-500) {
+  --tw-text-opacity: 1;
+  color: rgb(100 116 139 / var(--tw-text-opacity));
 }
 :is(.dark .dark\:text-white) {
   --tw-text-opacity: 1;

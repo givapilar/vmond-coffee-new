@@ -53,7 +53,7 @@
                     </div>
                     <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
                         {{-- {{ dd(number_format($biliards->sum('harga'),2)) }} --}}
-                        Rp. {{ number_format($harga ?? 0,2 )  }}
+                        Rp. {{ number_format($harga ?? 0,0 )  }}
                     </div>
                 </div>
             </li>
@@ -65,7 +65,7 @@
                         </p>
                     </div>
                     <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
-                       Rp. {{ number_format($layanan ?? 0,2) }}
+                       Rp. {{ number_format($order_last->service ?? 0,0) }}
                     </div>
                 </div>
             </li>
@@ -78,7 +78,7 @@
                     </div>
                     <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
                          {{-- Harga Total * (11/100) --}}
-                        Rp. {{ number_format($pb01 ?? 0, 0)  }}
+                        Rp. {{ number_format($order_last->pb01 ?? 0, 0)  }}
                     </div>
                 </div>
             </li>
@@ -91,7 +91,7 @@
                     </div>
                     <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white">
                         
-                        Rp. {{ number_format($total_harga ?? 0 ,0 ) }}
+                        Rp. {{ number_format($order_last->total_price ?? 0 ,0 ) }}
                     </div>
                 </div>
             </li>
@@ -108,7 +108,7 @@
                     </div>
                     <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
                         {{-- {{ dd(number_format($biliards->sum('harga'),2)) }} --}}
-                        Rp. {{ number_format($harga ?? 0,2 )  }}
+                        Rp. {{ number_format($harga ?? 0,0 )  }}
                     </div>
                 </div>
             </li>
@@ -120,7 +120,7 @@
                         </p>
                     </div>
                     <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
-                       Rp. {{ number_format($layanan ?? 0,2) }}
+                       Rp. {{ number_format($order_last->service ?? 0,0) }}
                     </div>
                 </div>
             </li>
@@ -133,7 +133,7 @@
                     </div>
                     <div class="inline-flex items-center text-xs font-normal text-gray-900 dark:text-white">
                          {{-- Harga Total * (11/100) --}}
-                        Rp. {{ number_format($pb01 ?? 0, 0)  }}
+                        Rp. {{ number_format($order_last->pb01 ?? 0, 0)  }}
                     </div>
                 </div>
             </li>
@@ -146,12 +146,13 @@
                     </div>
                     <div class="inline-flex items-center text-xs font-medium text-gray-900 dark:text-white">
                         
-                        Rp. {{ number_format($total_harga ?? 0 ,0 ) }}
+                        Rp. {{ number_format($order_last->total_price ?? 0 ,0 ) }}
                     </div>
                 </div>
             </li>
             <div class="mt-2">
-                <button id="pay-button" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
+                {{-- <button id="pay-button" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button> --}}
+                <button id="btnQRBri" onclick="createQrisBri('{{ $order_last->total_price }}','{{ $order_last->id }}')" class="w-full h-full p-3 bg-blue-500 dark:text-white rounded-b-[30px] hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-900">Order Now</button>
             </div>
             @endif
         </ul>
@@ -261,5 +262,209 @@
         }
       })
     });
+  </script>
+
+{{-- =============================================== SOCKET bri ========================================== --}}
+  <script>
+    // ======================================== Socket BRI ============================================
+    socket.on('notif-berhasil-bri', function(data) {
+        console.log("notif-berhasil",data);
+        checkData(data, function(result) {
+            let order_id = {!! $order_last->id !!};
+
+            if (order_id == result) {
+                updateStockBri(order_id);
+                console.log('Masuk');
+                // Handle the result here
+                $.confirm({
+                    title: "Pembayaran Berhasil!",
+                    content: "Pembayaran Berhasil, Terimakasih!",
+                    theme: "modern",
+                    icon: "fa fa-check-circle", // Ikon sukses (gunakan kelas ikon Font Awesome)
+                    buttons: {
+                        close: {
+                            text: 'OK',
+                            btnClass: 'btn-green',
+                            action: function () {
+                                window.location.href = "https://vmondcoffee.controlindo.com/home";
+                            }
+                        }
+                    },
+                });
+            }
+        }, function(error) {
+            var confirmation = confirm("Pembayaran Gagal!");
+            console.log('gagal');
+    
+            // Memeriksa apakah pengguna mengklik OK
+            if (confirmation) {
+                // Redirect ke halaman lain jika pengguna mengklik OK
+                window.location.href = "https://vmondcoffee.controlindo.com/home";
+            }
+            // Handle the error here
+        });
+    });
+
+    function updateStockBri(datas) {
+         // Prepare the data to send in the request
+        const requestData = {
+            "_token": "{{ csrf_token() }}",
+            datas,
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('update-stock-bri') }}",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: requestData,
+            success: function(res) {
+                console.log(res);
+               
+            },
+            error: function(data) {
+                // console.log(data);
+                // console.log('Failed!');
+               
+            }
+        });
+    }
+
+     // ================================================================================================== Payment BRI =====================================================================================================
+    let isProcessingBri = false;
+    
+    function createQrisBri(dtamount, dtorderid) {
+        console.log(isProcessingBri);
+        // Memeriksa apakah proses sedang berlangsung
+        if (isProcessingBri) {
+            // Jika proses sedang berlangsung, mencegah fungsi dijalankan
+            return;
+        }
+    
+        // Mengubah status menjadi sedang proses
+        isProcessingBri = true;
+    
+        // let amount = 1;
+        let amount = dtamount;
+        console.log(amount);
+        
+        $('#btnQRBri').prop('disabled', true);
+        $('#btnQRBri').addClass('disabled');
+    
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('create-qris-bri') }}",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+                "_token": "{{ csrf_token() }}",
+                "amount": amount,
+            },
+            async: false,
+            success: function(res) {
+                console.log("Amount",amount);
+                console.log("dtamount",dtamount);
+                console.log("Res Data ID",res);
+                // Menutup dialog jQuery Confirm setelah sukses
+                generateQrisBri(res.qrContent, dtamount);
+                updateInvoiceBri(dtorderid, res.partnerReferenceNo)
+                // window.location.href = "{{ route('homepage') }}";
+                $('#btnQRBri').removeClass('disabled');
+                
+                $("#btnQRBri").prop("disabled", false);
+    
+                // Mengubah status menjadi selesai
+            },
+            error: function(data) {
+                // console.log(data);
+                $('#btnQRBri').removeClass('disabled');
+                $("#btnQRBri").prop("disabled", false);
+                $.alert(data.responseJSON.message);
+    
+                // Mengubah status menjadi selesai
+                isProcessingBri = false;
+            }
+        });
+    }
+    
+    
+    function generateQrisBri(strQR, dtamount) {
+        // Create a QRious instance
+        // console.log("Amount",dtamount);
+        console.log("String Qr",strQR);
+        var qr = new QRious({
+            value: strQR,
+            size: 200, // Sesuaikan ukuran sesuai kebutuhan
+        });
+    
+        // Convert the QR code to a data URL
+        var qrDataUrl = qr.toDataURL();
+    
+        $.confirm({
+            title: 'Generate QR Code',
+            content: '<img src="' + qrDataUrl + '" width="70%" height="70%" style="display:block; margin-right:auto; margin-left:auto; margin-top:10px; border-radius:15px;">'+
+            '</br>'+
+            '<h3 style="color:white;text-align:center;margin-bottom:10px;">VMOND COFFEE x BRI</h3>'+
+            '<h5 style="color:white;text-align:center;">Total : '+dtamount+'</h5>',
+            columnClass: 'small',
+            type: 'blue',
+            typeAnimated: true,
+            buttons: {
+                downloadQR: {
+                    text: 'Download QR Code',
+                    btnClass: 'btn-green',
+                    action: function () {
+                        // Trigger download of QR Code image
+                        var a = document.createElement('a');
+                        a.href = qrDataUrl;
+                        a.download = 'qrcodes.png'; // Nama file yang akan diunduh
+                        a.style.display = 'none';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        isProcessingBri = false;
+                    }
+                },
+                close: {
+                    text: 'Close',
+                    action: function () {
+                        // Close the dialog
+                        isProcessingBri = false;
+                    }
+                }
+            }
+        });
+    }
+
+    function updateInvoiceBri(orderID, invoiceID) {
+        let order_id, data;
+        console.log('invoice Id', orderID, invoiceID);
+        order_id = orderID;
+        invoice_id = invoiceID;
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('update-invoice-bri') }}",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+                "_token": "{{ csrf_token() }}",
+                order_id,
+                invoice_id,
+            },
+            async: false,
+            success: function(res) {
+                // console.log(res);
+                // window.location.href = '/home';
+                // console.log('Success!');
+            },
+            error: function(data) {
+                // console.log('Failed!');
+                alert('Gagal, Silahkan order ulang...')
+            }
+        });
+    }
   </script>
 @endpush
