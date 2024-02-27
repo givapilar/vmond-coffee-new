@@ -215,7 +215,7 @@
                             $biaya_layanan = number_format((\Cart::getTotal() ?? '0') * $order_settings[0]->layanan/100,0 );
                         ?>
                     {{-- Rp. {{  $biaya_layanan }} --}}
-                    Rp. {{  $order_last->service }}
+                    Rp. {{  number_format($order_last->service,0) }}
                     </div>
                 </div>
             </li>
@@ -232,7 +232,7 @@
                         ?>
 
                         {{-- Rp. {{ $biaya_pb01 }}  --}}
-                        Rp. {{ $order_last->pb01 ?? '-' }} 
+                        Rp. {{ number_format($order_last->pb01,0) ?? '-' }} 
                     </div>
                 </div>
             </li>
@@ -251,7 +251,7 @@
                             $packing = 5000;
                         ?>
 
-                        Rp. {{ $packing }} 
+                        Rp. {{ number_format($packing,0) }} 
                     </div>
                 </div>
             </li>

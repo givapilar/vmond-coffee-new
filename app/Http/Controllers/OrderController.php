@@ -125,28 +125,29 @@ class OrderController extends Controller
         
             $time_to = date('Y-m-d', strtotime($request->date)) . ' ' . date('H:i', strtotime($request->time_from . ' + ' . $request->jam . ' hours - 2 minutes'));
             $time_from = date('Y-m-d', strtotime($request->date)) . ' ' . date('H:i', strtotime($request->time_from));
+
             if (Auth::check()) {
                 $total_price = 1;
 
                 if (Auth::user()->membership->level == 'Super Platinum') {
                     $total_price = 1;
-                    // $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
-                    $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
-                    $pb01 = ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    // $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    $service = (\Cart::getTotal() ) * $other_setting[0]->layanan/100;
+                    $pb01 = ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $name = auth()->user()->username;
                     $phone = auth()->user()->telephone;
                     $nama_kasir = null;
                 }else if(Auth::user()->telephone == '081818181847') {
                     if ($request->category == "Takeaway") {
                         $packing = 5000;
-                        $totalWithoutPacking = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                        $totalWithoutPacking = (\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                         $total_price = $totalWithoutPacking + $packing;
                     }else{
-                        $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                        $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     }
-                    // $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
-                    $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
-                    $pb01 = ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    // $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    $service = (\Cart::getTotal() ) * $other_setting[0]->layanan/100;
+                    $pb01 = ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $name = $request->nama ?? 'Not Name';
                     $phone = $request->phone ?? '-';
                     // $kasir = $request->kasir_id;
@@ -155,38 +156,38 @@ class OrderController extends Controller
                 }else if(Auth::user()->is_worker == true) {
                         if ($request->category == "Takeaway") {
                             $packing = 5000;
-                            $totalWithoutPacking = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                            $totalWithoutPacking = (\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                             $total_price = $totalWithoutPacking + $packing;
                         }else{
-                            $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                            $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                         }
-                        // $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
-                        $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
-                        $pb01 = ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                        // $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                        $service = (\Cart::getTotal() ) * $other_setting[0]->layanan/100;
+                        $pb01 = ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                         $name = $request->nama ?? 'Not Name';
                         $phone = $request->phone ?? '-';
                         // $kasir = $request->kasir_id;
                         $nama_kasir = $request->kasir_id;
                     
                 }elseif (Auth::user()->telephone == '081210469621') {
-                    // $discount = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    // $discount = (\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $discount = (\Cart::getTotal());
                     $count = 0.2 * $discount;
                     $total_price = $discount - $count;
-                    // $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
-                    // $pb01 = ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    // $service = (\Cart::getTotal() ) * $other_setting[0]->layanan/100;
+                    // $pb01 = ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $service = 0;
                     $pb01 = 0;
                     $name = auth()->user()->username ?? 'Not Name';
                     $phone = $request->phone ?? '-';
                     $nama_kasir = null;
                 }elseif (Auth::user()->username == 'syahrul') {
-                    // $discount = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    // $discount = (\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $discount = (\Cart::getTotal());
                     $count = 0.2 * $discount;
                     $total_price = 1;
-                    // $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
-                    // $pb01 = ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    // $service = (\Cart::getTotal() ) * $other_setting[0]->layanan/100;
+                    // $pb01 = ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $service = 0;
                     $pb01 = 0;
                     $name = auth()->user()->username ?? 'Not Name';
@@ -195,19 +196,20 @@ class OrderController extends Controller
                 }else{
                     if ($request->category == "Takeaway") {
                         $packing = 5000;
-                        $totalWithoutPacking = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                        $totalWithoutPacking = (\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                         $total_price = $totalWithoutPacking + $packing;
                     }else{
-                        $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                        $total_price = (\Cart::getTotal() + (\Cart::getTotal() * $other_setting[0]->layanan/100)) + (\Cart::getTotal() + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     }
                     // if ($request->category == "Takeaway") {
                     //     $packing = 5000;
-                    //     $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100 + $packing;
+                    //     $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100 + $packing;
                     // }else{
                     //     $total_price = $request->order_total;
                     // }
-                    $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
-                    $pb01 = ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    $service = (\Cart::getTotal() ) * $other_setting[0]->layanan/100;
+                    $pb01 = (\Cart::getTotal() + (\Cart::getTotal() * $other_setting[0]->layanan/100)) * $other_setting[0]->pb01/100;
+                    // dd($pb01);
                     $name = auth()->user()->username;
                     $phone = auth()->user()->telephone;
                     $kasir = null;
@@ -480,16 +482,16 @@ class OrderController extends Controller
                         $phone = $request->phone;
                     }
                 }else {
-                    // $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    // $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     if ($request->category == "Takeaway") {
                         $packing = 5000;
-                        $totalWithoutPacking = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                        $totalWithoutPacking = (\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                         $total_price = $totalWithoutPacking + $packing;
                     }else{
-                        $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                        $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     }
-                    $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
-                    $pb01 = ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    $service = (\Cart::getTotal() ) * $other_setting[0]->layanan/100;
+                    $pb01 = ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $user = '2';
                     if (Auth::check()) {
                         $name = auth()->user()->username;
@@ -588,8 +590,8 @@ class OrderController extends Controller
                 $order_pivots = OrderPivot::where('order_id', $order_id)->get();
                 
                 $gross_amount = 0;
-                $service = (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100;
-                $pb01 = ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                $service = (\Cart::getTotal() ) * $other_setting[0]->layanan/100;
+                $pb01 = ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                 $packing = $request->packing;
                 
                 foreach ($order_pivots as $order_pivot) {
@@ -836,7 +838,7 @@ class OrderController extends Controller
     //                 'biliard_id' => $request->biliard_id,
     //                 'meeting_room_id' => $request->meeting_room_id,
     //                 'meja_restaurant_id' => $request->meja_restaurant_id,
-    //                 'total_price' =>(\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100, 
+    //                 'total_price' =>(\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100, 
     //                 'status_pembayaran' => 'Unpaid',
     //                 'status_pesanan' => 'process',
     //                 'tipe_pemesanan' => $request->tipe_pemesanan,
@@ -1262,7 +1264,7 @@ class OrderController extends Controller
                         $phone = $request->phone ?? '-';
                         $nama_kasir = null;
                     }else{
-                        // $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                        // $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                         $total_price = $order_total;
                         $name = auth()->user()->username;
                         $phone = auth()->user()->telephone;
@@ -1474,20 +1476,20 @@ class OrderController extends Controller
                 if (Auth::user()->membership->level == 'Super Platinum') {
                     // dd('tes');
                     $total_harga = 1;
-                    // $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    // $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $name = auth()->user()->username;
                     $phone = auth()->user()->telephone;
                     $kasir = null;
                     $nama_kasir = $request->kasir_id;
                     
                 }else if(Auth::user()->telephone == '081818181847') {
-                    $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $name = $request->nama_customer ?? 'Not Name';
                     $phone = $request->phone ?? '-';
                     $nama_kasir = $request->kasir_id;
                 
                 }elseif (Auth::user()->telephone == '081210469621') {
-                    $discount = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    $discount = (\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $count = 0.2 * $discount;
                     $total_price = $discount - $count;
                     // dd($total_price);
@@ -1505,7 +1507,7 @@ class OrderController extends Controller
                     $nama_kasir = null;
                 }else{
                     // dd('tes2');
-                    $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
+                    $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $name = auth()->user()->username;
                     $phone = auth()->user()->telephone;
                     $kasir = null;
@@ -2058,7 +2060,7 @@ class OrderController extends Controller
                     // 'total_price' => \Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan, 
                     // 'total_price' =>  \Cart::getTotal(), 
                     // 'total_price' => $request->total_paket + ($request->total_paket *10/100) + $biaya_layanan, 
-                    'total_price' =>(\Cart::getTotal() + ((\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ?? '0') + (\Cart::getTotal() ?? '0') * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100, 
+                    'total_price' =>(\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100, 
                     'status_pembayaran' => 'Unpaid',
                     'status_pesanan' => 'process',
                     'tipe_pemesanan' => $request->tipe_pemesanan,
