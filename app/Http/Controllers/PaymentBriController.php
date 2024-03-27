@@ -202,8 +202,8 @@ class PaymentBriController extends Controller
             ],
             // 'merchantId' => '000001019000014',
             // 'terminalId' => '10049694',
-            'merchantId' => '001999251231',
-            'terminalId' => '10435361',
+            'merchantId' => '1999316155',
+            'terminalId' => '10534929',
         ];
 
         // Mengatur zona waktu ke UTC
