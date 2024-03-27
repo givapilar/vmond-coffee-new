@@ -169,6 +169,7 @@ Route::get('midtrans',[CartOrdersController::class,'midtransCheck'])->name('midt
 
 // Route BRI API
 Route::get('/index-bri',[PaymentBriController::class,'indexBri'])->name('indexBri');
+Route::get('/test-bri',[PaymentBriController::class,'tesBri'])->name('tesBri');
 Route::post('/generate-token-bri',[PaymentBriController::class,'createToken'])->name('create-token-bri');
 Route::post('/create-qr-bri',[PaymentBriController::class,'generateQR'])->name('create-qr-bri');
 

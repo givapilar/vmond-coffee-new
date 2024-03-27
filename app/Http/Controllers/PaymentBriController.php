@@ -123,6 +123,10 @@ class PaymentBriController extends Controller
         
     }
 
+    public function tesBri(){
+        return view('bri-api.index');
+    }
+
     public function createToken(Request $request){
         $integer = 62172.50;
         $integer = floor($integer); // Menghilangkan desimal

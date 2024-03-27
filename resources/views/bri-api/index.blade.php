@@ -9,6 +9,7 @@
 </head>
 <body>
     <form action="{{ route('create-token-bri') }}" method="POST">
+        @csrf
         <button class="btn btn-primary">
             Sumbit
         </button>
