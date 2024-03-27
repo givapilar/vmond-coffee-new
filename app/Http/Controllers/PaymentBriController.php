@@ -131,10 +131,6 @@ class PaymentBriController extends Controller
         $integer = 62172.50;
         $integer = floor($integer); // Menghilangkan desimal
         $formattedInt = number_format($integer, 2, '.', ''); // Mengonversi ke string dengan 2 desimal
-        // dd($formattedInt);
- // Ganti .50 dengan .00
-        // dd($formattedInt);
-
 
         $client = new Client();
         // $url = 'https://sandbox.partner.api.bri.co.id/snap/v1.0/access-token/b2b';
@@ -190,7 +186,7 @@ class PaymentBriController extends Controller
         $responseData = json_decode($response->getBody(), true);
 
         $token = $responseData['accessToken'];
-        // dd($resp onseData);
+        dd($token);
 
 
         // ------------------------------------------------------------------- Generate QR------------------------------------------------------------------------------------------------
