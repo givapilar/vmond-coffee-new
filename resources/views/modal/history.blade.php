@@ -69,14 +69,3 @@
         </div>
     </div>
 </div>
-
-@push('script-bot')
-    <script>
-        function closeModal(itemCode) {
-            var modal = document.getElementById('feedback-modal' + itemCode);
-            modal.classList.add('hidden');
-            modal.setAttribute('aria-hidden', 'true');
-            modal.setAttribute('tabindex', '-1');
-        }
-    </script>
-@endpush
