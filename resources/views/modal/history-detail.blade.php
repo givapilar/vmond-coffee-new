@@ -93,7 +93,7 @@
                                     <h5 class="card-title text-center pt-1 fw-bolder"> 
                                     Meja 
                                     @if($item->kode_meja || $item->category == 'Takeaway' )
-                                        {{ $item->tableRestaurant->nama ?? ''}}
+                                        {{ $item->kode_meja ?? ''}}
                                         
                                         @if ($item->category == 'Takeaway')
                                         {{ $item->category }}
