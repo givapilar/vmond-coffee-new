@@ -1673,6 +1673,10 @@ class OrderController extends Controller
         // $data['orders'] = Order::get();
         $data['orders'] = Order::latest()->first();
         $data['order_last'] = Order::latest()->first();
+
+        $updateStatus = $data['order_last'];
+        $mail = $request->email ?? '';
+        Mail::to($mail)->send(new ReportPenjualanEmail($updateStatus));
         return view('checkout.billiard-index',$data,compact('snapToken','order'));
     }
 
