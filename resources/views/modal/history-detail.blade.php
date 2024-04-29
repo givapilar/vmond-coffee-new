@@ -92,16 +92,18 @@
                                     --}}
                                     <h5 class="card-title text-center pt-1 fw-bolder"> 
                                     Meja 
-                                    @if($item->meja_restaurant_id || $item->category == 'Takeaway' )
+                                    @if($item->kode_meja || $item->category == 'Takeaway' )
                                         {{ $item->tableRestaurant->nama ?? ''}}
+                                        
                                         @if ($item->category == 'Takeaway')
                                         {{ $item->category }}
                                         @endif
-                                        @elseif($item->biliard_id)
-                                            {{ $item->tableBilliard->nama }}    
-                                        @elseif($item->meeting_room_id)
-                                            {{ $item->tableMeetingRoom->nama }} 
-                                        @endif
+
+                                    @elseif($item->biliard_id)
+                                        {{ $item->tableBilliard->nama }}    
+                                    @elseif($item->meeting_room_id)
+                                        {{ $item->tableMeetingRoom->nama }} 
+                                    @endif
                                     </h5>
                                         
                             </label>
