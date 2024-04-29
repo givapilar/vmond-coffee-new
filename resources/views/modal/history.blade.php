@@ -62,6 +62,7 @@
                 </button>
 
                 @include('modal.feedback-customer')
+                @include('modal.history-detail')
 
                 @endif
             @endforeach
