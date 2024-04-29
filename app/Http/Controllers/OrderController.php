@@ -64,12 +64,12 @@ class OrderController extends Controller
     public function checkout(Request $request, $token)
     {
         try {
-            
+
             $session_cart = \Cart::session(Auth::user()->id)->getContent();
             $other_setting = OtherSetting::get();
 
             $packing = 5000;
-            
+
             $checkToken = Order::where('token',$token)->where('status_pembayaran', 'Paid')->get();
             if (count($checkToken) != 0) {
                 return redirect()->route('homepage')->with(['failed' => 'Tidak dapat mengulang transaksi!']);
@@ -80,7 +80,7 @@ class OrderController extends Controller
             }elseif($request->category == 'Takeaway' && $request->meja_restaurant_id == null) {
                 return redirect()->back()->with(['failed' => 'Harap Isi Meja !']);
             }
-            
+
             if ($request->tipe_pemesanan == 'Edisi' && $request->metode_edisi == null) {
                 return redirect()->back()->with(['failed' => 'Harap Pilih EDC !']);
             }
@@ -104,9 +104,9 @@ class OrderController extends Controller
                     ),
                 ]);
             }
-            
+
             $price = 1;
-            
+
 
             foreach ($session_cart as $key => $value) {
                 $price +=$value->price;
@@ -117,12 +117,12 @@ class OrderController extends Controller
                 // $restaurant = $restaurants->where('id', $key)->first();
                 $restaurant = $restaurants->where('id', $item->attributes['restaurant']['id'])->first();
                 // dd($restaurant->current_stok);
-                
+
                 if ($restaurant && $restaurant->current_stok < $item->quantity) {
                     return redirect()->route('cart')->with(['failed' => 'Stok ' . $item->name . ' Kurang!']);
                 }
             }
-        
+
             $time_to = date('Y-m-d', strtotime($request->date)) . ' ' . date('H:i', strtotime($request->time_from . ' + ' . $request->jam . ' hours - 2 minutes'));
             $time_from = date('Y-m-d', strtotime($request->date)) . ' ' . date('H:i', strtotime($request->time_from));
 
@@ -152,7 +152,7 @@ class OrderController extends Controller
                     $phone = $request->phone ?? '-';
                     // $kasir = $request->kasir_id;
                     $nama_kasir = $request->kasir_id;
-                
+
                 }else if(Auth::user()->is_worker == true) {
                         if ($request->category == "Takeaway") {
                             $packing = 5000;
@@ -168,7 +168,7 @@ class OrderController extends Controller
                         $phone = $request->phone ?? '-';
                         // $kasir = $request->kasir_id;
                         $nama_kasir = $request->kasir_id;
-                    
+
                 }elseif (Auth::user()->telephone == '081210469621') {
                     // $discount = (\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $discount = (\Cart::getTotal());
@@ -216,7 +216,7 @@ class OrderController extends Controller
                     $nama_kasir = null;
                 }
             }
-                
+
                 $order = Order::create([
                     'user_id' => auth()->user()->id,
                     'name' => $name,
@@ -231,8 +231,8 @@ class OrderController extends Controller
                     'meeting_room_id' => $request->meeting_room_id,
                     // 'meja_restaurant_id' => $request->meja_restaurant_id,
                     'token' => $token,
-                    'total_price' => $total_price, 
-                    // 'total_price' => 1, 
+                    'total_price' => $total_price,
+                    // 'total_price' => 1,
                     'status_pembayaran' => 'Unpaid',
                     'status_pesanan' => 'process',
                     'tipe_pemesanan' => $request->tipe_pemesanan,
@@ -271,10 +271,10 @@ class OrderController extends Controller
                             $order_pivot->harga_diskon = $harga_diskon;
 
                             $order_pivot->save();
-                            
+
 
                             // $orderPivotId = DB::getPdo()->lastInsertId();
-                            
+
                             if (is_iterable($item->attributes['harga_add']) && is_iterable($item->attributes['add_on_title'])) {
                                 $orderAddOn = []; // Initialize the $orderAddOn array
                                 foreach ($item->attributes['detail_addon_id'] as $innerKey => $detailAddonID) {
@@ -302,7 +302,7 @@ class OrderController extends Controller
                     }
 
                 // if($order->category == 'Dine In'){
-                    
+
                 //     if ($request->meja_restaurant_id == null) {
                 //         return redirect()->back()->with(['failed' => 'Harap Isi Meja !']);
                 //     }
@@ -356,21 +356,21 @@ class OrderController extends Controller
             // ================================ Kupon ==========================
 
             if (\Cart::getTotal() >= 100000) {
-                $timestamp = time(); 
-                $randomSeed = $timestamp % 10000; 
+                $timestamp = time();
+                $randomSeed = $timestamp % 10000;
                 $code = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
-                
+
                 $kupon = [
                     'order_id' => $order->id,
                     'code' => 'VMND'.$code,
                 ];
-                
+
                 $totalKupon = (\Cart::getTotal() / 100000) - 1; // Hitung jumlah kupon tambahan
-                
+
                 // Loop untuk membuat kupon tambahan berdasarkan kelipatan 25,000
                 $kupons = [$kupon];
                 for ($i = 1; $i <= $totalKupon; $i++) {
-                    $timestamp = time(); 
+                    $timestamp = time();
                     $randomSeed = $timestamp % 10000;
                     $kuponCode = 'VMND2' . str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
                     $kupons[] = [
@@ -385,23 +385,23 @@ class OrderController extends Controller
                 session()->flash('notifikasi', $successMessage);
             }
 
-           
+
             // ================================ End Kupon ====================
 
 
             return view('checkout.index',$data,compact('snapToken','order'));
         } catch (\Throwable $th) {
-            dd($th->getMessage());
+            // dd($th->getMessage());
             DB::rollback();
             return redirect()->back()->with('failed', $th->getMessage());
         }
-        
+
     }
 
     public function checkoutGuest(Request $request, $token)
     {
         // dd($request->all());
-       
+
 
         try {
             $checkToken = Order::where('token',$token)->where('status_pembayaran', 'Paid')->get()->count();
@@ -465,8 +465,8 @@ class OrderController extends Controller
             }
 
             $other_setting = OtherSetting::get();
-            // $other_setting = OtherSetting::first(); 
-            
+            // $other_setting = OtherSetting::first();
+
                 $time_to = date('Y-m-d', strtotime($request->date)) . ' ' . date('H:i', strtotime($request->time_from . ' + ' . $request->jam . ' hours - 2 minutes'));
                 $time_from = date('Y-m-d', strtotime($request->date)) . ' ' . date('H:i', strtotime($request->time_from));
 
@@ -514,9 +514,9 @@ class OrderController extends Controller
                     'biliard_id' => $request->biliard_id,
                     'meeting_room_id' => $request->meeting_room_id,
                     // 'meja_restaurant_id' => $request->meja_restaurant_id,
-                    'total_price' => $total_price, 
-                    // 'total_price' => 1, 
-                    'token' => $token, 
+                    'total_price' => $total_price,
+                    // 'total_price' => 1,
+                    'token' => $token,
                     'status_pembayaran' => 'Unpaid',
                     'status_pesanan' => 'process',
                     'kasir_id' => null,
@@ -554,7 +554,7 @@ class OrderController extends Controller
                         $order_pivot->save();
 
                         // $orderPivotId = DB::getPdo()->lastInsertId();
-                        
+
                         if (is_iterable($item->attributes['harga_add']) && is_iterable($item->attributes['add_on_title'])) {
                             $orderAddOn = []; // Initialize the $orderAddOn array
                             foreach ($item->attributes['detail_addon_id'] as $innerKey => $detailAddonID) {
@@ -578,22 +578,22 @@ class OrderController extends Controller
                             // OrderAddOn::insert($orderAddOn);
                         }
                     }
-                    
+
                 }
 
-                
-                
+
+
                 $checkToken2 = Order::where('token',$token)->get();
                 $data['token'] = $checkToken2->pluck('token');
 
                 $order_id = $order->id;
                 $order_pivots = OrderPivot::where('order_id', $order_id)->get();
-                
+
                 $gross_amount = 0;
                 $service = (\Cart::getTotal() ) * $other_setting[0]->layanan/100;
                 $pb01 = ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                 $packing = $request->packing;
-                
+
                 foreach ($order_pivots as $order_pivot) {
                     $gross_amount += $order_pivot->qty * $order_pivot->harga_diskon;
                 }
@@ -602,7 +602,7 @@ class OrderController extends Controller
                 }else{
                     $gross_amount += $service + $pb01;
                 }
-            
+
             // Set your Merchant Server Key
             \Midtrans\Config::$serverKey = config('midtrans.server_key');
             // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
@@ -636,7 +636,7 @@ class OrderController extends Controller
             $data['users'] = User::first();
             $data['orders'] = Order::where('token',$token)->get()->first();
 
-            
+
             if ($other_setting[0]->status_notifikasi == "Active") {
                 $successMessage = $other_setting[0]->description_notifikasi;
                 session()->flash('notifikasi', $successMessage);
@@ -660,9 +660,9 @@ class OrderController extends Controller
             return redirect()->back()->with('failed', $th->getMessage());
 
         }
-        
+
     }
-    
+
     public function index()
     {
         return view('checkout.order');
@@ -671,7 +671,7 @@ class OrderController extends Controller
         try {
             // Dapatkan user yang sedang login
             $user = Auth::user();
-            
+
             if ($user) {
                 $user = Auth::user();
                 // User tidak ditemukan, berikan tanggapan sesuai kebutuhan
@@ -715,7 +715,7 @@ class OrderController extends Controller
             foreach ($cart as $key => $item) {
                 $restoStock = Restaurant::where('id', $item->attributes['restaurant']['id'])->first();
                 $stockAvailable = ($restoStock->current_stok - $item['quantity']);
-                
+
                 // Memperbarui stok restoran
                 $restoStock->update(['current_stok' => $stockAvailable]);
             }
@@ -724,21 +724,21 @@ class OrderController extends Controller
 
         // ====================== Kupon ==============================
         // if ($latestOrder->total_price >= 25000) {
-        //     $timestamp = time(); 
-        //     $randomSeed = $timestamp % 10000; 
+        //     $timestamp = time();
+        //     $randomSeed = $timestamp % 10000;
         //     $code = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
-            
+
         //     $kupon = [
         //         'order_id' => $latestOrder->id,
         //         'code' => 'VMND'.$code,
         //     ];
-            
+
         //     $totalKupon = ($latestOrder->total_price / 25000) - 1; // Hitung jumlah kupon tambahan
-            
+
         //     // Loop untuk membuat kupon tambahan berdasarkan kelipatan 25,000
         //     $kupons = [$kupon];
         //     for ($i = 1; $i <= $totalKupon; $i++) {
-        //         $timestamp = time(); 
+        //         $timestamp = time();
         //         $randomSeed = $timestamp % 10000;
         //         $kuponCode = 'VMND2' . str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
         //         $kupons[] = [
@@ -785,7 +785,7 @@ class OrderController extends Controller
     //     $restaurant = Restaurant::get();
     //     $orderDetail = OrderPivot::get();
     //     $orders = Order::where('status_pembayaran', 'Paid')->get();
-        
+
     //     $member = Membership::get();
     //     $other_setting = OtherSetting::get();
     //     // $other_setting = OtherSetting::first(); KOmentar pengingat untuk developer
@@ -817,7 +817,7 @@ class OrderController extends Controller
     //                 'biliard_id' => $request->biliard_id,
     //                 'meeting_room_id' => $request->meeting_room_id,
     //                 'meja_restaurant_id' => $request->meja_restaurant_id,
-    //                 'total_price' => 1, 
+    //                 'total_price' => 1,
     //                 'status_pembayaran' => 'Unpaid',
     //                 'status_pesanan' => 'process',
     //                 'tipe_pemesanan' => $request->tipe_pemesanan,
@@ -838,7 +838,7 @@ class OrderController extends Controller
     //                 'biliard_id' => $request->biliard_id,
     //                 'meeting_room_id' => $request->meeting_room_id,
     //                 'meja_restaurant_id' => $request->meja_restaurant_id,
-    //                 'total_price' =>(\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100, 
+    //                 'total_price' =>(\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100,
     //                 'status_pembayaran' => 'Unpaid',
     //                 'status_pesanan' => 'process',
     //                 'tipe_pemesanan' => $request->tipe_pemesanan,
@@ -872,20 +872,20 @@ class OrderController extends Controller
     //                                 'add_on_detail_id' => $detailAddonId,
     //                             ];
     //                         }
-                        
+
     //                         OrderAddOn::insert($orderAddOn);
     //                     }
-                        
+
     //                 }elseif ($item->conditions == 'Paket Menu') {
     //                     $paketRestaurantIds = $item->attributes->paket_restaurant_id;
     //                     $paketRestoCategory = $item->attributes->category;
-                        
+
     //                     $length = min(count($paketRestaurantIds), count($paketRestoCategory));
-                        
+
     //                     for ($i = 0; $i < $length; $i++) {
     //                         $paketRestaurantId = $paketRestaurantIds[$i];
     //                         $category = $paketRestoCategory[$i];
-                        
+
     //                         $orderBilliard[] = [
     //                             'order_id' => $order->id,
     //                             'restaurant_id' => $paketRestaurantId,
@@ -900,13 +900,13 @@ class OrderController extends Controller
     //                 } else{
     //                     $paketRestaurantIds = $item->attributes->paket_restaurant_id;
     //                     $paketRestoCategory = $item->attributes->category;
-                        
+
     //                     $length = min(count($paketRestaurantIds), count($paketRestoCategory));
-                        
+
     //                     for ($i = 0; $i < $length; $i++) {
     //                         $paketRestaurantId = $paketRestaurantIds[$i];
     //                         $category = $paketRestoCategory[$i];
-                        
+
     //                         $orderMeeting[] = [
     //                             'order_id' => $order->id,
     //                             'restaurant_id' => $paketRestaurantId,
@@ -917,11 +917,11 @@ class OrderController extends Controller
     //                             'time_to' => $time_to,
     //                         ];
     //                     }
-                        
+
     //                     OrderMeetingRoom::insert($orderMeeting);
-                        
+
     //                 }
-                    
+
     //             }
     //       }
 
@@ -1038,7 +1038,7 @@ class OrderController extends Controller
 
     public function callback(Request $request)
     {
-        
+
         $serverKey =  config('midtrans.server_key');
         $hashed = hash('sha512',$request->order_id.$request->status_code.$request->gross_amount.$serverKey);
         if ($hashed == $request->signature_key) {
@@ -1046,7 +1046,7 @@ class OrderController extends Controller
             // if ($request->transaction_status == 'settlement') {
                 $order = Order::find($request->order_id);
                 $paymentType = $request->payment_type;
-                
+
                 if ($request->transaction_status == 'settlement') {
                     $order->update(['status_pembayaran' => 'Paid', 'invoice_no' => $this->generateInvoice(), 'metode_pembayaran' => $paymentType]);
                     $orderFinishSubtotal = Order::where('user_id', $order->user_id)->where('status_pembayaran','Paid')->sum('total_price');
@@ -1055,21 +1055,21 @@ class OrderController extends Controller
                     $user_member = User::where('membership_id',5)->get()->first();
 
                     if (\Cart::getTotal() >= 100000) {
-                        $timestamp = time(); 
-                        $randomSeed = $timestamp % 10000; 
+                        $timestamp = time();
+                        $randomSeed = $timestamp % 10000;
                         $code = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
-                        
+
                         $kupon = [
                             'order_id' => $order->id,
                             'code' => 'VMND'.$code,
                         ];
-                        
+
                         $totalKupon = (\Cart::getTotal() / 100000) - 1; // Hitung jumlah kupon tambahan
-                        
+
                         // Loop untuk membuat kupon tambahan berdasarkan kelipatan 25,000
                         $kupons = [$kupon];
                         for ($i = 1; $i <= $totalKupon; $i++) {
-                            $timestamp = time(); 
+                            $timestamp = time();
                             $randomSeed = $timestamp % 10000;
                             $kuponCode = 'VMND2' . str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
                             $kupons[] = [
@@ -1077,11 +1077,11 @@ class OrderController extends Controller
                                 'code' => $kuponCode
                             ];
                         }
-        
+
                         // dd($kupons);
                         Kupon::insert($kupons);
                     }
-                    
+
                 // foreach ($user_member as $key => $value) {
                     if (!$user_member) {
                         // $user->membership_id = 5;
@@ -1098,7 +1098,7 @@ class OrderController extends Controller
                             } elseif ($orderFinishSubtotal >= $memberships[4]->minimum_transaksi) {
                                 $user->membership_id = $memberships[4]->id;
                             }
-                
+
                             $user->save();
                         }
                     }
@@ -1123,13 +1123,13 @@ class OrderController extends Controller
                 //     $user->save();
                 // }
 
-                
-                    
-                // }
-                
-                
 
-                
+
+                // }
+
+
+
+
 
                 // switch ($orderFinishSubtotal) {
                 //     case ($orderFinishSubtotal >= 1):
@@ -1152,18 +1152,18 @@ class OrderController extends Controller
             }
         }
 
-    }   
+    }
 
     public function callbackBJB(Request $request){
         try {
             $invoiceNumber = $request->input('invoiceNumber');
-    
+
             $order = Order::find($request->order_id);
-            
+
             $order->update(['status_pembayaran' => 'Paid','invoice_no' => $invoiceNumber]);
             // Lakukan sesuatu dengan $invoiceNumber, misalnya menyimpannya di database
             // ...
-    
+
             return response()->json(['message' => 'Data berhasil diproses'], 200);
         } catch (Exception $e) {
             return response()->json(['message' => 'Gagal memproses data: ' . $e->getMessage()], 500);
@@ -1215,7 +1215,7 @@ class OrderController extends Controller
             $data['other_setting'] = OtherSetting::get()->first();
             $other_setting = OtherSetting::get();
             $request->request->add(['qty' => $request->qty]);
-                
+
             $restaurant = Restaurant::get();
 
             $member = Membership::get();
@@ -1234,7 +1234,7 @@ class OrderController extends Controller
             $data['layanan'] = $layanan;
             $data['total_harga'] = $total_harga;
 
-            
+
                 if (Auth::check()) {
                     $total_price = 1;
                     $total_paket = $request->total_paket;
@@ -1272,7 +1272,7 @@ class OrderController extends Controller
                         $nama_kasir = null;
                     }
                 }
-                    
+
                     $order = Order::create([
                         'user_id' => auth()->user()->id,
                         'name' => $name,
@@ -1287,8 +1287,8 @@ class OrderController extends Controller
                         'meeting_room_id' => $request->meeting_room_id,
                         // 'meja_restaurant_id' => $request->meja_restaurant_id,
                         'token' => $token,
-                        'total_price' => $total_price, 
-                        // 'total_price' => 1, 
+                        'total_price' => $total_price,
+                        // 'total_price' => 1,
                         'status_pembayaran' => 'Unpaid',
                         'status_pesanan' => 'process',
                         'tipe_pemesanan' => $request->tipe_pemesanan,
@@ -1305,11 +1305,11 @@ class OrderController extends Controller
                         'jumlah_customer' => $request->jumlah_customer ?? 1,
 
                     ]);
-        
+
 
                     if ($request->paket_restaurant_id) {
                         $orderPaketMenu = [];
-                    
+
                         // dd($request->paket_restaurant_id);
                         foreach ($request->paket_restaurant_id as $key => $value) {
                             $restaurant = Restaurant::find($value);
@@ -1407,7 +1407,7 @@ class OrderController extends Controller
         if ($request->tipe_pemesanan == 'Edisi' && $request->metode_edisi == null) {
             return redirect()->back()->with(['failed' => 'Harap Pilih EDC !']);
         }
-        
+
         $selectedPackages = $request->input('paket_restaurant_id');
 
         foreach ($selectedPackages as $groupIdentifier => $restaurantId) {
@@ -1444,13 +1444,13 @@ class OrderController extends Controller
         $data['other_setting'] = OtherSetting::get()->first();
         $other_setting = OtherSetting::get();
         $request->request->add(['qty' => $request->qty]);
-            
+
         $restaurant = Restaurant::get();
 
         // if ($restaurant->current_stok <= 0) {
         //     return redirect()->back()->with(['failed' => 'Stok ' . $restaurant->name . ' Kurang!']);
         // }
-            
+
             $member = Membership::get();
             $time_to = date('Y-m-d', strtotime($request->date)) . ' ' . date('H:i', strtotime($request->time_from . ' + ' . $request->jam . ' hours - 2 minutes'));
             $time_from = date('Y-m-d', strtotime($request->date)) . ' ' . date('H:i', strtotime($request->time_from));
@@ -1468,7 +1468,7 @@ class OrderController extends Controller
             $data['pb01'] = $pb01;
             $data['total_harga'] = $total_harga;
 
-        
+
             if (Auth::check()) {
                 $total_price = 1;
                 # code...
@@ -1481,13 +1481,13 @@ class OrderController extends Controller
                     $phone = auth()->user()->telephone;
                     $kasir = null;
                     $nama_kasir = $request->kasir_id;
-                    
+
                 }else if(Auth::user()->telephone == '081818181847') {
                     $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $name = $request->nama_customer ?? 'Not Name';
                     $phone = $request->phone ?? '-';
                     $nama_kasir = $request->kasir_id;
-                
+
                 }elseif (Auth::user()->telephone == '081210469621') {
                     $discount = (\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $count = 0.2 * $discount;
@@ -1515,7 +1515,7 @@ class OrderController extends Controller
                     // $nama_kasir = $request->kasir_id;
                 }
             }
-                
+
                 $order = Order::create([
                     'user_id' => auth()->user()->id,
                     'name' => $name,
@@ -1530,8 +1530,8 @@ class OrderController extends Controller
                     'meeting_room_id' => $request->meeting_room_id,
                     'meja_restaurant_id' => $request->meja_restaurant_id,
                     'token' => $token,
-                    'total_price' => $total_harga, 
-                    // 'total_price' => 1, 
+                    'total_price' => $total_harga,
+                    // 'total_price' => 1,
                     'status_pembayaran' => 'Unpaid',
                     'status_lamp' => 'OFF',
                     'status_running' => 'NOT START',
@@ -1547,11 +1547,11 @@ class OrderController extends Controller
                     'harga_diskon_billiard' => $request->harga_diskon_billiard,
 
                 ]);
-    
+
 
                 if ($request->paket_restaurant_id) {
                     $orderBilliard = [];
-                
+
                     // dd($request->paket_restaurant_id);
                     foreach ($request->paket_restaurant_id as $key => $value) {
                         $restaurant = Restaurant::find($value);
@@ -1594,19 +1594,19 @@ class OrderController extends Controller
                     // $orderBilliardId = DB::getPdo()->lastInsertId();
                     // if ($request->paket_restaurant_id) {
                     //     $orderAddOn = []; // Initialize the $orderAddOn array
-                    
+
                     //     foreach ($request->harga_addmenu_1 as $groupIdentifier => $selectedItemID) {
                     //         list($groupIdentifier, $addOnID) = explode('_', $groupIdentifier);
-                            
+
                     //         $dataaddondetail = AddOnDetail::where('id', $selectedItemID)->first();
                     //         $dataaddon = AddOn::where('id', $addOnID)->first();
-                    
+
                     //         $orderAddOn[] = [
                     //             'order_billiard_id' => $orderBilliardId,
                     //             'add_on_detail_id' => $selectedItemID,
                     //         ];
                     //     }
-                    
+
                     //     OrderAddOn::insert($orderAddOn);
                     // }
 
@@ -1672,19 +1672,19 @@ class OrderController extends Controller
             if (count($checkToken) != 0) {
                 return redirect()->route('homepage')->with(['failed' => 'Tidak dapat mengulang transaksi!']);
             }
-    
+
             if ($request->time_from == null) {
                 return redirect()->back()->with(['failed' => 'Harap Isi Jam !']);
             }
-    
+
             if ($request->billiard_id == null) {
                 return redirect()->back()->with(['failed' => 'Harap Isi Meja Billiard !']);
             }
-    
+
             if ($request->paket_restaurant_id == null) {
                 return redirect()->back()->with(['failed' => 'Harap Pilih Menu !']);
             }
-            
+
             $restaurant = Restaurant::get();
 
             $selectedPackages = $request->input('paket_restaurant_id');
@@ -1702,17 +1702,17 @@ class OrderController extends Controller
                 // Process the selected package
                 // ... (your existing code to process the selected package)
             }
-            
+
             $data['other_setting'] = OtherSetting::get()->first();
             $other_setting = OtherSetting::get();
             $request->request->add(['qty' => $request->qty]);
             // dd($request->all());
             $price = 1;
             $user = User::where('username', $request->nama_user)->first();
-    
+
             $today = Carbon::today();
             $formattedDate = $today->format('ymd');
-    
+
             $lastOrder = Order::whereDate('created_at',$today)->orderBy('id','desc')->first();
             if ($lastOrder) {
                 // Cek apakah order dibuat pada tanggal yang sama dengan hari ini
@@ -1723,10 +1723,10 @@ class OrderController extends Controller
             } else {
                 $nextOrderNumber = 1;
             }
-    
+
             $paddedOrderNumber = str_pad($nextOrderNumber, 3, '0', STR_PAD_LEFT);
             $invoiceNumber = $formattedDate . '-' . $paddedOrderNumber;
-    
+
             if (!$user) {
                 $user = new User();
                 $user->username = $request->nama_user;
@@ -1735,15 +1735,15 @@ class OrderController extends Controller
                 $user->password = Hash::make($request->phone);
                 $user->save();
             }
-    
-    
+
+
             $currentYear = date('YmdHis');
             $orderInvoice = Order::orderBy('id', 'desc')->first();
-    
+
             if ($orderInvoice) {
                 $lastInvoiceNumber = $orderInvoice->invoice_no;
                 $lastInvoiceYear = substr($lastInvoiceNumber, 0, 4);
-    
+
                 if ($lastInvoiceYear == $currentYear) {
                     $lastInvoiceIncrement = (int) substr($lastInvoiceNumber, 4);
                     $newInvoiceNumber = $currentYear . str_pad($lastInvoiceIncrement + 1, 4, '0', STR_PAD_LEFT);
@@ -1753,28 +1753,28 @@ class OrderController extends Controller
             } else {
                 $newInvoiceNumber = $currentYear . '1';
             }
-                
-                
-                
+
+
+
                 $member = Membership::get();
                 $time_to = date('Y-m-d', strtotime($request->date)) . ' ' . date('H:i', strtotime($request->time_from . ' + ' . $request->jam . ' hours - 2 minutes'));
                 $time_from = date('Y-m-d', strtotime($request->date)) . ' ' . date('H:i', strtotime($request->time_from));
-    
+
                 // Harga
                 $harga = $request->total_paket;
                 $layanan = (($request->total_paket ?? 0) * $other_setting[0]->layanan/100);
                 $pb01 = ($harga + $layanan) * ($other_setting[0]->pb01 / 100);
                 $total_harga = $harga + $layanan + $pb01;
-    
+
                 // Passing Harga
                 $data['harga'] = $harga;
                 $data['layanan'] = $layanan;
                 $data['pb01'] = $pb01;
                 $data['total_harga'] = $total_harga;
-    
+
                 $nama = $request->nama_user;
                 $phone = $request->phone;
-              
+
                 $order = Order::create([
                     'user_id' => auth()->guest(),
                     'name' => $nama,
@@ -1789,11 +1789,11 @@ class OrderController extends Controller
                     'meeting_room_id' => $request->meeting_room_id,
                     'token' => $token,
                     'meja_restaurant_id' => $request->meja_restaurant_id,
-                    // 'total_price' => \Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan, 
-                    // 'total_price' =>  \Cart::getTotal(), 
-                    // 'total_price' => $request->total_paket + ($request->total_paket *10/100) + $biaya_layanan, 
-                    'total_price' => $total_harga, 
-                    // 'total_price' => 1, 
+                    // 'total_price' => \Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan,
+                    // 'total_price' =>  \Cart::getTotal(),
+                    // 'total_price' => $request->total_paket + ($request->total_paket *10/100) + $biaya_layanan,
+                    'total_price' => $total_harga,
+                    // 'total_price' => 1,
                     'status_pembayaran' => 'Unpaid',
                     'status_pesanan' => 'process',
                     'tipe_pemesanan' => $request->tipe_pemesanan,
@@ -1802,7 +1802,7 @@ class OrderController extends Controller
                     'invoice_no' => 'draft',
                     'created_at' => date('Y-m-d H:i:s'),
                 ]);
-                
+
                 // if ($request->paket_restaurant_id) {
                     $orderBilliard = [];
                     $orderBiliardIDTemp = [];
@@ -1833,11 +1833,11 @@ class OrderController extends Controller
 
                         // $orderBilliard = OrderBilliard::insert($orderBilliard);
                     }
-                    
+
                     // dd($orderBilliard);
                     // $orderBilliard = DB::getPdo()->lastInsertId();
                     // }
-                    
+
                     // dd($request->all());
                     // $orderBilliardId = DB::getPdo()->lastInsertId();
                     // foreach ($orderBiliardIDTemp as $key => $value) {
@@ -1874,7 +1874,7 @@ class OrderController extends Controller
                         //     ];
                         // }
                         // // OrderAddOn::insert($orderAddOn);
-                        
+
                         // $orderAddOn2 = []; // Initialize the $orderAddOn array
                         // foreach ($request->harga_addmenu_2 as $key => $addOns2) {
                         //     $addOnsData2 = AddOn::where('id', $addOns2)->first();
@@ -1889,10 +1889,10 @@ class OrderController extends Controller
                         // OrderAddOn::insert($orderAddOn2);
                     // }
                     // foreach ($request->harga_addmenu_1 as $groupIdentifier => $selectedItemID) {
-                        
+
                     //     $dataaddondetail = AddOnDetail::where('id', $selectedItemID)->first();
                     //     $dataaddon = AddOn::where('id', $addOnID)->first();
-                
+
                     //     $orderAddOn[] = [
                     //         'order_billiard_id' => $orderBilliardId,
                     //         // 'add_on_id' => $dataaddon->id,
@@ -1900,13 +1900,13 @@ class OrderController extends Controller
                     //         // 'add_on_detail_id' => $request->harga_addmenu_2,
                     //     ];
                     // }
-                
+
                     // OrderAddOn::insert($orderAddOn);
                 }
-                
-    
+
+
                 // $orderPivotId = DB::getPdo()->lastInsertId();
-    
+
                 //         if (is_iterable($item->attributes['harga_add']) && is_iterable($item->attributes['add_on_title'])) {
                 //             $orderAddOn = []; // Initialize the $orderAddOn array
                 //             foreach ($item->attributes['detail_addon_id'] as $innerKey => $detailAddonID) {
@@ -1920,13 +1920,13 @@ class OrderController extends Controller
                 //                     'add_on_detail_id' => $detailAddonId,
                 //                 ];
                 //             }
-                        
+
                 //             OrderAddOn::insert($orderAddOn);
                 //         }
-    
+
                 $checkToken2 = Order::where('token',$token)->get();
                 $data['token'] = $checkToken2->pluck('token');
-    
+
             // Set your Merchant Server Key
             \Midtrans\Config::$serverKey = config('midtrans.server_key');
             // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
@@ -1935,7 +1935,7 @@ class OrderController extends Controller
             \Midtrans\Config::$isSanitized = true;
             // Set 3DS transaction for credit card to true
             \Midtrans\Config::$is3ds = true;
-            
+
                 $params = array(
                     'transaction_details' => array(
                         'order_id' => $order->id,
@@ -1950,7 +1950,7 @@ class OrderController extends Controller
                         // 'code' => rand(),
                     ),
                 );
-    
+
             $snapToken = \Midtrans\Snap::getSnapToken($params);
             // dd($snapToken);
             $data['data_carts'] = \Cart::session(Auth::guest())->getContent();
@@ -2013,9 +2013,9 @@ class OrderController extends Controller
         } else {
             $newInvoiceNumber = $currentYear . '1';
         }
-            
+
             $restaurant = Restaurant::get();
-            
+
             $member = Membership::get();
             $time_to = date('Y-m-d', strtotime($request->date)) . ' ' . date('H:i', strtotime($request->time_from . ' + ' . $request->jam . ' hours - 2 minutes'));
             // dd($request->all());
@@ -2033,9 +2033,9 @@ class OrderController extends Controller
                     'time_to' => $time_to ,
                     'biliard_id' => $request->biliard_id,
                     'meeting_room_id' => $request->meeting_room_id,
-                    // 'total_price' => \Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan, 
-                    // 'total_price' =>  \Cart::getTotal(), 
-                    'total_price' => 0, 
+                    // 'total_price' => \Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan,
+                    // 'total_price' =>  \Cart::getTotal(),
+                    'total_price' => 0,
                     'status_pembayaran' => 'Unpaid',
                     'status_pesanan' => 'process',
                     'tipe_pemesanan' => $request->tipe_pemesanan,
@@ -2057,10 +2057,10 @@ class OrderController extends Controller
                     'biliard_id' => $request->biliard_id,
                     'meeting_room_id' => $request->meeting_room_id,
                     'meja_restaurant_id' => $request->meja_restaurant_id,
-                    // 'total_price' => \Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan, 
-                    // 'total_price' =>  \Cart::getTotal(), 
-                    // 'total_price' => $request->total_paket + ($request->total_paket *10/100) + $biaya_layanan, 
-                    'total_price' =>(\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100, 
+                    // 'total_price' => \Cart::getTotal() *11/100 + \Cart::getTotal() + $biaya_layanan,
+                    // 'total_price' =>  \Cart::getTotal(),
+                    // 'total_price' => $request->total_paket + ($request->total_paket *10/100) + $biaya_layanan,
+                    'total_price' =>(\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100,
                     'status_pembayaran' => 'Unpaid',
                     'status_pesanan' => 'process',
                     'tipe_pemesanan' => $request->tipe_pemesanan,
@@ -2071,13 +2071,13 @@ class OrderController extends Controller
                 // foreach ($session_cart as $key => $item) {
                 //     $paketRestaurantIds = $item->attributes->paket_restaurant_id;
                 //     $paketRestoCategory = $item->attributes->category;
-                        
+
                 //     $length = min(count($paketRestaurantIds), count($paketRestoCategory));
-                    
+
                 //     for ($i = 0; $i < $length; $i++) {
                 //         $paketRestaurantId = $paketRestaurantIds[$i];
                 //         $category = $paketRestoCategory[$i];
-                    
+
                 //         $orderMeeting[] = [
                 //             'order_id' => $order->id,
                 //             'restaurant_id' => $paketRestaurantId,
@@ -2088,7 +2088,7 @@ class OrderController extends Controller
                 //             'time_to' => $time_to,
                 //         ];
                 //     }
-                    
+
                 //     OrderMeetingRoom::insert($orderMeeting);
                 // }
 
@@ -2110,7 +2110,7 @@ class OrderController extends Controller
 
                 if ($request->paket_restaurant_id) {
                     $orderMeeting = [];
-                
+
                     foreach ($request->paket_restaurant_id as $key => $value) {
                         $orderMeeting[] = [
                             'order_id' => $order->id,
@@ -2121,10 +2121,10 @@ class OrderController extends Controller
                             'time_to' => $time_to,
                         ];
                     }
-                
+
                     OrderMeetingRoom::insert($orderMeeting);
                 }
-                
+
           }
 
 
@@ -2196,7 +2196,7 @@ class OrderController extends Controller
 
         //     if ($order->meja_restaurant_id != null || $order->category == 'Takeaway') {
         //         $userID = $order->user_id;
-                
+
         //         if (auth()->guest() == true) {
         //             $userUpdate = auth()->guest() ? 'guest' : auth()->user()->id;
         //             $cart = \Cart::session($userUpdate)->getContent();
@@ -2208,23 +2208,23 @@ class OrderController extends Controller
         //             foreach ($cart as $key => $item) {
         //                 $restoStock = Restaurant::where('id', $item->attributes['restaurant']['id'])->first();
         //                 $stockAvailable = ($restoStock->current_stok - $item->quantity);
-                        
+
         //                 // Memperbarui stok restoran
         //                 $restoStock->update(['current_stok' => $stockAvailable,]);
 
         //         }
         //         }else{
         //             $cart = \Cart::session($userID)->getContent();
-                    
+
         //             // Menghapus item dari session cart
         //             foreach ($cart as $item) {
         //                 \Cart::session($userID)->remove($item->id);
         //             }
-            
+
         //             foreach ($cart as $key => $item) {
         //                 $restoStock = Restaurant::where('id', $item->attributes['restaurant']['id'])->first();
         //                 $stockAvailable = ($restoStock->current_stok - $item->quantity);
-                        
+
         //                 // Memperbarui stok restoran
         //                 $restoStock->update(['current_stok' => $stockAvailable]);
         //             }
@@ -2236,18 +2236,18 @@ class OrderController extends Controller
         //         foreach ($orderBilliard as $key => $item) {
         //             $restoStock = Restaurant::where('id', $orderBilliard->restaurant_id)->first();
         //             $stockAvailable = ($restoStock->current_stok - $item->quantity);
-                    
+
         //             // Memperbarui stok restoran
         //             $restoStock->update(['current_stok' => $stockAvailable]);
         //         }
         //     }
-    
+
         //     $responseData = [
         //         'code' => 200,
         //         'updateStock' => true,
         //         'deleteCart' => true,
         //     ];
-    
+
         //     return $responseData;
         // } catch (\Throwable $th) {
         //     $responseData = [
@@ -2263,21 +2263,21 @@ class OrderController extends Controller
             $order = Order::find($request->data['order_id']);
 
             if (\Cart::getTotal() >= 100000) {
-                $timestamp = time(); 
-                $randomSeed = $timestamp % 10000; 
+                $timestamp = time();
+                $randomSeed = $timestamp % 10000;
                 $code = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
-                
+
                 $kupon = [
                     'order_id' => $order->id,
                     'code' => 'VMND'.$code,
                 ];
-                
+
                 $totalKupon = (\Cart::getTotal() / 100000) - 1; // Hitung jumlah kupon tambahan
-                
+
                 // Loop untuk membuat kupon tambahan berdasarkan kelipatan 25,000
                 $kupons = [$kupon];
                 for ($i = 1; $i <= $totalKupon; $i++) {
-                    $timestamp = time(); 
+                    $timestamp = time();
                     $randomSeed = $timestamp % 10000;
                     $kuponCode = 'VMND2' . str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
                     $kupons[] = [
@@ -2289,9 +2289,9 @@ class OrderController extends Controller
                 // dd($kupons);
                 Kupon::insert($kupons);
             }
-            
+
             if ($order->kode_meja != null || $order->category == 'Takeaway') {
-                
+
                 if (auth()->guest() == true) {
                     $userUpdate = auth()->guest() ? 'guest' : auth()->user()->id;
                     $cart = \Cart::session($userUpdate)->getContent();
@@ -2303,7 +2303,7 @@ class OrderController extends Controller
                     foreach ($cart as $key => $item) {
                         $restoStock = Restaurant::where('id', $item->attributes['restaurant']['id'])->first();
                         $stockAvailable = ($restoStock->current_stok - $item->quantity);
-                        
+
                         // Memperbarui stok restoran
                         $restoStock->update(['current_stok' => $stockAvailable,]);
 
@@ -2314,16 +2314,16 @@ class OrderController extends Controller
                     $userID = $order->user_id;
 
                     $cart = \Cart::session($userID)->getContent();
-                    
+
                     // Menghapus item dari session cart
                     foreach ($cart as $item) {
                         \Cart::session($userID)->remove($item->id);
                     }
-            
+
                    foreach ($cart as $key => $item) {
                         $restoStock = Restaurant::where('id', $item->attributes['restaurant']['id'])->first();
                         $stockAvailable = ($restoStock->current_stok - $item['quantity']);
-                        
+
                         // Memperbarui stok restoran
                         $restoStock->update(['current_stok' => $stockAvailable]);
                     }
@@ -2335,7 +2335,7 @@ class OrderController extends Controller
                 foreach ($orderBilliard as $key => $item) {
                     $restoStock = Restaurant::where('id', $orderBilliard->restaurant_id)->first();
                     $stockAvailable = ($restoStock->current_stok - $item->quantity);
-                    
+
                     // Memperbarui stok restoran
                     $restoStock->update(['current_stok' => $stockAvailable]);
                 }
@@ -2343,15 +2343,15 @@ class OrderController extends Controller
 
 
         // dd($latestOrder);
-        
-    
+
+
             $responseData = [
                 'code' => 200,
                 'updateStock' => true,
                 'deleteCart' => true,
                 'cart' => $order,
             ];
-    
+
             return $responseData;
         } catch (\Throwable $th) {
             $responseData = [
@@ -2509,7 +2509,7 @@ class OrderController extends Controller
 
     private function generateInvoice()
     {
-        
+
         $today = Carbon::today();
         $formattedDate = $today->format('ymd');
 
@@ -2555,7 +2555,7 @@ class OrderController extends Controller
                 'updateStock' => true,
                 'deleteCart' => true,
             ];
-    
+
             return $responseData;
 
         } catch (\Throwable $th) {
@@ -2579,21 +2579,21 @@ class OrderController extends Controller
                 $kuponCode += $value->harga_diskon * $value->qty;
             }
             if ($kuponCode >= 100000) {
-                $timestamp = time(); 
-                $randomSeed = $timestamp % 10000; 
+                $timestamp = time();
+                $randomSeed = $timestamp % 10000;
                 $code = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
-                
+
                 $kupon = [
                     'order_id' => $updateStatus->id,
                     'code' => 'VMND'.$code,
                 ];
-                
+
                 $totalKupon = ($kuponCode / 100000) - 1; // Hitung jumlah kupon tambahan
-                
+
                 // Loop untuk membuat kupon tambahan berdasarkan kelipatan 25,000
                 $kupons = [$kupon];
                 for ($i = 1; $i <= $totalKupon; $i++) {
-                    $timestamp = time(); 
+                    $timestamp = time();
                     $randomSeed = $timestamp % 10000;
                     $kuponCode = 'VMND2' . str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
                     $kupons[] = [
@@ -2615,7 +2615,7 @@ class OrderController extends Controller
                 'updateStock' => true,
                 'deleteCart' => true,
             ];
-    
+
             return $responseData;
 
         } catch (\Throwable $th) {
@@ -2631,7 +2631,7 @@ class OrderController extends Controller
     public function checkData(Request $request){
         try {
             $order = Order::where('invoice_id', $request->datas)->first();
-            
+
             if ($order) {
                 return $order->id;
             }
@@ -2650,23 +2650,23 @@ class OrderController extends Controller
 
                 // $userID = $order->user_id;
                 // $cart = \Cart::session($userID)->getContent();
-    
+
                 //  // Menghapus item dari session cart
                 //  foreach ($cart as $item) {
                 //     \Cart::session($userID)->remove($item->id);
                 // }
-    
+
                 // foreach ($cart as $key => $item) {
                 //     $restoStock = Restaurant::where('id', $item->attributes['restaurant']['id'])->first();
                 //     $stockAvailable = ($restoStock->current_stok - $item['quantity']);
-                    
+
                 //     // Memperbarui stok restoran
                 //     $restoStock->update(['current_stok' => $stockAvailable]);
                 // }
-    
+
 
             if ($order->kode_meja != null || $order->category == 'Takeaway') {
-                
+
                 if (auth()->guest() == true) {
                     $userUpdate = auth()->guest() ? 'guest' : auth()->user()->id;
                     $cart = \Cart::session($userUpdate)->getContent();
@@ -2678,7 +2678,7 @@ class OrderController extends Controller
                     foreach ($cart as $key => $item) {
                         $restoStock = Restaurant::where('id', $item->attributes['restaurant']['id'])->first();
                         $stockAvailable = ($restoStock->current_stok - $item->quantity);
-                        
+
                         // Memperbarui stok restoran
                         $restoStock->update(['current_stok' => $stockAvailable,]);
 
@@ -2687,16 +2687,16 @@ class OrderController extends Controller
                     $userID = $order->user_id;
 
                     $cart = \Cart::session($userID)->getContent();
-                    
+
                     // Menghapus item dari session cart
                     foreach ($cart as $item) {
                         \Cart::session($userID)->remove($item->id);
                     }
-            
+
                    foreach ($cart as $key => $item) {
                         $restoStock = Restaurant::where('id', $item->attributes['restaurant']['id'])->first();
                         $stockAvailable = ($restoStock->current_stok - $item['quantity']);
-                        
+
                         // Memperbarui stok restoran
                         $restoStock->update(['current_stok' => $stockAvailable]);
                     }
@@ -2708,7 +2708,7 @@ class OrderController extends Controller
                 foreach ($orderBilliard as $key => $item) {
                     $restoStock = Restaurant::where('id', $orderBilliard->restaurant_id)->first();
                     $stockAvailable = ($restoStock->current_stok - $item->quantity);
-                    
+
                     // Memperbarui stok restoran
                     $restoStock->update(['current_stok' => $stockAvailable]);
                 }
@@ -2716,15 +2716,15 @@ class OrderController extends Controller
 
 
         // dd($latestOrder);
-        
-    
+
+
             $responseData = [
                 'code' => 200,
                 'updateStock' => true,
                 'deleteCart' => true,
                 'cart' => $cart,
             ];
-    
+
             return $responseData;
         } catch (\Throwable $th) {
             $responseData = [
@@ -2744,7 +2744,7 @@ class OrderController extends Controller
             $order = Order::find($request->datas);
 
             if ($order->kode_meja != null || $order->category == 'Takeaway') {
-                
+
                 if (auth()->guest() == true) {
                     $userUpdate = auth()->guest() ? 'guest' : auth()->user()->id;
                     $cart = \Cart::session($userUpdate)->getContent();
@@ -2756,7 +2756,7 @@ class OrderController extends Controller
                     foreach ($cart as $key => $item) {
                         $restoStock = Restaurant::where('id', $item->attributes['restaurant']['id'])->first();
                         $stockAvailable = ($restoStock->current_stok - $item->quantity);
-                        
+
                         // Memperbarui stok restoran
                         $restoStock->update(['current_stok' => $stockAvailable,]);
 
@@ -2765,16 +2765,16 @@ class OrderController extends Controller
                     $userID = $order->user_id;
 
                     $cart = \Cart::session($userID)->getContent();
-                    
+
                     // Menghapus item dari session cart
                     foreach ($cart as $item) {
                         \Cart::session($userID)->remove($item->id);
                     }
-            
+
                    foreach ($cart as $key => $item) {
                         $restoStock = Restaurant::where('id', $item->attributes['restaurant']['id'])->first();
                         $stockAvailable = ($restoStock->current_stok - $item['quantity']);
-                        
+
                         // Memperbarui stok restoran
                         $restoStock->update(['current_stok' => $stockAvailable]);
                     }
@@ -2786,7 +2786,7 @@ class OrderController extends Controller
                 foreach ($orderBilliard as $key => $item) {
                     $restoStock = Restaurant::where('id', $orderBilliard->restaurant_id)->first();
                     $stockAvailable = ($restoStock->current_stok - $item->quantity);
-                    
+
                     // Memperbarui stok restoran
                     $restoStock->update(['current_stok' => $stockAvailable]);
                 }
@@ -2794,15 +2794,15 @@ class OrderController extends Controller
 
 
         // dd($latestOrder);
-        
-    
+
+
             $responseData = [
                 'code' => 200,
                 'updateStock' => true,
                 'deleteCart' => true,
                 'cart' => $cart,
             ];
-    
+
             return $responseData;
         } catch (\Throwable $th) {
             $responseData = [
@@ -2815,5 +2815,5 @@ class OrderController extends Controller
             return $responseData;
         }
     }
-    
+
 }

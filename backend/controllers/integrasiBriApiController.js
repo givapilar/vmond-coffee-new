@@ -38,13 +38,13 @@ const callbackFromBRI = async (req, res) => {
         const now = new Date();
         const offset = now.getTimezoneOffset();
         const expiresIn = 899;
-        
+
         // Menghitung offset dalam format yang diinginkan (contoh: +07:00)
         const offsetHours = Math.floor(Math.abs(offset) / 60);
         const offsetMinutes = Math.abs(offset) % 60;
         const offsetSign = offset >= 0 ? '-' : '+';
         const offsetFormatted = `${offsetSign}${String(offsetHours).padStart(2, '0')}:${String(offsetMinutes).padStart(2, '0')}`;
-        
+
         // Mengambil komponen tanggal dan waktu dalam format yang diinginkan
         const year = now.getFullYear();
         const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -52,7 +52,7 @@ const callbackFromBRI = async (req, res) => {
         const hours = String(now.getHours()).padStart(2, '0');
         const minutes = String(now.getMinutes()).padStart(2, '0');
         const seconds = String(now.getSeconds()).padStart(2, '0');
-        
+
         // Membentuk tanggal dan waktu dalam format yang diinginkan
         const formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}${offsetFormatted}`;
         // if (req.headers['x-client-key'] !== '1DhFVj7GA8bfll4tLJuD3KzHxPO3tzCb' ) {
@@ -129,14 +129,10 @@ const callbackFromBRI = async (req, res) => {
 const qrMpmNotify = async (req, res) => {
     // try {
         try {
-            // Di sini, Anda dapat melakukan operasi atau pemrosesan yang mungkin dapat memunculkan kesalahan
-            
             const responseData = {
                 code: 200,
                 message: 'Successfully!',
             };
-            console.log("Get Request", req);
-            console.log("Get Status Transaction", req.body.transactionStatusDesc);
 
             if (req.body.transactionStatusDesc === 'success') {
                 try {
@@ -144,34 +140,34 @@ const qrMpmNotify = async (req, res) => {
                         invoiceID: req.body.originalPartnerReferenceNo,
                         status: req.body.transactionStatusDesc,
                         customerNumber: req.body.customerNumber,
+                        bankCode: req.body.bankCode,
+                        issuerName: req.body.additionalInfo.issuerName,
+                        amount: req.body.amount.value,
                     };
+
                     const result = await axios.post('https://vmondcoffee.controlindo.com/api/data/success-order-bri', bodyData)
-                        .then((response) => {
-                            console.log(response);
-                            // Mendengarkan pesan dari server
-    
-                        })
-                        .catch((error) => {
-                            console.error('Axios request error:', error);
-                        });
+                    .then((response) => {
+                        console.log('Success Callback for API VMOND');
+                    })
+                    .catch((error) => {
+                        console.error('Axios request error:', error);
+                    });
                     socket.emit('notif-bri', req.body.originalPartnerReferenceNo);
-                    console.log('RESULT JS:: ',result)
-                    console.log("Customer number", req.body.customerNumber);
-                    console.log("Bodyy", req.body);
+                    console.log(bodyData);
                 } catch (error) {
                     console.log('ERROR!!!', error.message);
                 }
             }
 
             res.status(200).json(responseData);
-            
+
         } catch (error) {
             const errorResponse = {
                 code: 500,
                 message: 'An error occurred',
-                error: error.message 
+                error: error.message
             };
-            
+
             res.status(500).json(errorResponse);
         }
         // Memeriksa header Authorization
@@ -225,7 +221,7 @@ const qrMpmNotify = async (req, res) => {
     //     } else {
     //         res.sendStatus(403);
     //     }
-        
+
     // } catch (error) {
     //     const errorResponse = {
     //         code: 500,
@@ -238,7 +234,7 @@ const qrMpmNotify = async (req, res) => {
 
 
 
-  
+
   module.exports = {
     getURL,
     callbackFromBRI,
