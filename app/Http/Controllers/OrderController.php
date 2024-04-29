@@ -2495,9 +2495,9 @@ class OrderController extends Controller
             $getToken = explode('-',$getToken);
             $getToken = (int)$getToken[1];
 
-            if (!$getID && !$getDataFeedback && !$getToken) {
-                return redirect()->route('homepage')->with(['failed' => 'Send feedback failed!', 'auth' => Auth::user()->id, 'menu' => 'feedback']);
-            }
+            // if (!$getID && !$getDataFeedback && !$getToken) {
+            //     return redirect()->route('homepage')->with(['failed' => 'Send feedback failed!', 'auth' => Auth::user()->id, 'menu' => 'feedback']);
+            // }
 
             Order::where("id", $getID)->update(["status_feedback" => true, "feedback"  => $getDataFeedback, "description_feedback" => $getDataFeedbackdescription]);
 
