@@ -36,7 +36,7 @@
                                 </textarea>
                             </div>
                             <button type="submit" class="font-semibold text-sm inline-flex items-center justify-center px-3 py-2 border border-transparent rounded leading-5 shadow transition duration-150 ease-in-out w-full bg-indigo-500 hover:bg-indigo-600 text-white focus:outline-none focus-visible:ring-2">Send Feedback</button>
-                            <button type="button" class="font-semibold text-sm inline-flex items-center justify-center px-3 py-2 border border-transparent rounded leading-5 shadow transition duration-150 ease-in-out w-full bg-red-500 hover:bg-red-600 text-white focus:outline-none focus-visible:ring-2" data-modal-target="history-detail-modal{{ $item->invoice_no }}"  data-modal-toggle="history-detail-modal{{ $item->invoice_no }}" onclick="closeModal('{{ $item->code }}')">Close</button>
+                            <button type="button" class="font-semibold text-sm inline-flex items-center justify-center px-3 py-2 border border-transparent rounded leading-5 shadow transition duration-150 ease-in-out w-full bg-red-500 hover:bg-red-600 text-white focus:outline-none focus-visible:ring-2" data-modal-target="history-detail-modal{{ $item->invoice_no }}"  data-modal-toggle="history-detail-modal{{ $item->invoice_no }}" onclick="closeModal('{{ $item->code }}')" data-modal-hide="history-detail-modal{{ $item->invoice_no }}">Close</button>
                         </form>
                     </div>
                 </div>
