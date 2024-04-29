@@ -2599,10 +2599,10 @@ class OrderController extends Controller
                 $totalKupon = floor($kuponCode / 10000);
 
                 $kupons = [];
-                for ($i = 0; $i <= $totalKupon; $i++) {
+                for ($i = 1; $i <= $totalKupon; $i++) {
                     $timestamp = time();
                     $randomSeed = $timestamp % 10000;
-                    $code = 'VMND-BRI-'.($i+1).'-'. str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
+                    $code = 'VMND-BRI-'.($i).'-'. str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
                     $kupons[] = [
                         'order_id' => $updateStatus->id,
                         'category' => 'BRI',
