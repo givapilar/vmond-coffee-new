@@ -275,8 +275,6 @@
                                                                                                 </tr>
                                                                                             </tbody>
                                                                                         </table>
-
-                                                                                        
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -285,6 +283,43 @@
                                                                 </div>
                                                             </div>
 
+                                                            @if ($orders->biliard_id)
+                                                            <?php
+                                                                $totalHargaBilliard = $orders->total_price;
+                                                                $firstOrderBilliard = $orders->orderBilliard->first();
+                                                                $harga_billiard  =  $firstOrderBilliard->paketMenu->harga_diskon ?? 0;
+                                                            ?>
+                                                            <table>
+                                                
+                                                                <tr style="margin-top: 20px !important;">
+                                                                    <td class="quantity"></td>
+                                                                    <td class="description">Service</td>
+                                                                    <?php
+                                                                        $biaya_layanan = number_format(($harga_billiard ?? 0) * $otherSetting[0]->layanan/100,0 );
+                                                                    ?>
+                                                                    <td class="price" style="text-align: right">Rp.{{ number_format($biaya_layanan,0) }}</td>
+                                                                </tr>
+
+                                                                <tr style="margin-top: 20px !important;">
+                                                                    <td class="quantity"></td>
+                                                                    <td class="description">PB01</td>
+                                                                    <?php
+                                                                        $biaya_pb01 = number_format((($harga_billiard  ?? 0) + ($harga_billiard ?? 0) * $otherSetting[0]->layanan/100) * $otherSetting[0]->pb01/100,0);
+                                                                    ?>
+                                                                    <td class="price" style="text-align: right">Rp.{{ number_format($biaya_pb01,0) }}</td>
+                                                                </tr>
+
+                                                                <tr style="margin-top: 20px !important;">
+                                                                    <td class="quantity"></td>
+                                                                    <td class="description">PB01</td>
+                                                                    <td class="price" style="text-align: right">Rp.{{ number_format(($harga_billiard + (($harga_billiard ?? '0') * $otherSetting[0]->layanan/100)) + (($firstOrderBilliard->paketMenu->harga_diskon  ?? '0') + ($firstOrderBilliard->paketMenu->harga_diskon ?? '0') * $otherSetting[0]->layanan/100) * $otherSetting[0]->pb01/100,0)}}
+                                                                    </td>
+                                                                </tr>
+
+                                                               
+                                                            </table>
+                                                            @else
+                                                            
                                                             @php
                                                             // Calculate the running total for each item
                                                             $totalPrice = 0;
@@ -349,6 +384,7 @@
                                                                 </tr>
                                                                 @endif
                                                             </table>
+                                                            @endif
 
                                                             {{-- <div class="u-row-container" style="padding: 0px;background-color: transparent">
                                                                 <div class="u-row no-stack" style="margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
