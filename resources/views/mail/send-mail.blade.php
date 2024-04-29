@@ -279,8 +279,9 @@
                                                                                 </div>
                                                                             </div>
 
-                                                                            @php
+                                                                            {{-- @php
                                                                             // Calculate the running total for each item
+                                                                            $totalPrice = 0;
                                                                             $totalPrice += $order_detail->price_discount * $order_detail->qty ;
                                                                             @endphp
                                                                             <table>
@@ -341,14 +342,14 @@
                                                                                     <td class="price" style="text-align: right">Rp.{{ number_format($orderTotal,0) }}</td>
                                                                                 </tr>
                                                                                 @endif
-                                                                            </table>
+                                                                            </table> --}}
 
                                                                         @endforeach
                                                                     </div>
                                                                 </div>
                                                             </div>
 
-                                                            <div class="u-row-container" style="padding: 0px;background-color: transparent">
+                                                            {{-- <div class="u-row-container" style="padding: 0px;background-color: transparent">
                                                                 <div class="u-row no-stack" style="margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
                                                                     <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
                                                                         <div class="u-col u-col-66p67" style="max-width: 320px;min-width: 400px;display: table-cell;vertical-align: top;">
@@ -388,7 +389,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
+                                                            </div> --}}
                                                         </td>
                                                     </tr>
                                                 </tbody>
