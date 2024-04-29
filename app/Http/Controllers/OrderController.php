@@ -2573,36 +2573,43 @@ class OrderController extends Controller
         try {
             $updateStatus = Order::where('invoice_id', $request->invoiceID)->first();
 
-            $total = 1;
-            $kuponCode = 0;
-            foreach ($updateStatus->orderPivot as $key => $value) {
-                $kuponCode += $value->harga_diskon * $value->qty;
-            }
+            $kuponCode = $updateStatus->orderPivot->sum(function ($pivot) {
+                return $pivot->harga_diskon * $pivot->qty;
+            });
+
             if ($kuponCode >= 100000) {
-                $timestamp = time();
-                $randomSeed = $timestamp % 10000;
-                $code = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
+                $totalKupon = floor($kuponCode / 100000);
 
-                $kupon = [
-                    'order_id' => $updateStatus->id,
-                    'code' => 'VMND'.$code,
-                ];
-
-                $totalKupon = ($kuponCode / 100000) - 1; // Hitung jumlah kupon tambahan
-
-                // Loop untuk membuat kupon tambahan berdasarkan kelipatan 25,000
-                $kupons = [$kupon];
-                for ($i = 1; $i <= $totalKupon; $i++) {
+                $kupons = [];
+                for ($i = 0; $i <= $totalKupon; $i++) {
                     $timestamp = time();
                     $randomSeed = $timestamp % 10000;
-                    $kuponCode = 'VMND2' . str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
+                    $code = 'VMND-'.($i+1).'-'. str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
                     $kupons[] = [
                         'order_id' => $updateStatus->id,
-                        'code' => $kuponCode
+                        'category' => 'all',
+                        'code' => $code,
                     ];
                 }
 
-                // dd($kupons);
+                Kupon::insert($kupons);
+            }
+            
+            if ($kuponCode >= 10000 && ($request->issuerName == 'Bank BRI' || $request->issuerName == 'BRI' || $request->issuerName == 'Dana')) {
+                $totalKupon = floor($kuponCode / 10000);
+
+                $kupons = [];
+                for ($i = 0; $i <= $totalKupon; $i++) {
+                    $timestamp = time();
+                    $randomSeed = $timestamp % 10000;
+                    $code = 'VMND-BRI-'.($i+1).'-'. str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
+                    $kupons[] = [
+                        'order_id' => $updateStatus->id,
+                        'category' => 'BRI',
+                        'code' => $code,
+                    ];
+                }
+
                 Kupon::insert($kupons);
             }
 
