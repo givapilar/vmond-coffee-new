@@ -398,7 +398,7 @@ class OrderController extends Controller
             // Untuk Kirim Email
             return view('checkout.index',$data,compact('snapToken','order'));
         } catch (\Throwable $th) {
-            // dd($th->getMessage());
+            dd($th->getMessage());
             DB::rollback();
             return redirect()->back()->with('failed', $th->getMessage());
         }
