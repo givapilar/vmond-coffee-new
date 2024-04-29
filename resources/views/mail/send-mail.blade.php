@@ -295,7 +295,7 @@
                                                                     <td class="quantity"></td>
                                                                     <td class="description">Service</td>
                                                                     <?php
-                                                                        $biaya_layanan = number_format(($harga_billiard ?? 0) * $otherSetting[0]->layanan/100,0 );
+                                                                        $biaya_layanan = ($harga_billiard ?? 0) * $otherSetting[0]->layanan/100;
                                                                     ?>
                                                                     <td class="price" style="text-align: right">Rp.{{ number_format($biaya_layanan,0) }}</td>
                                                                 </tr>
@@ -304,7 +304,7 @@
                                                                     <td class="quantity"></td>
                                                                     <td class="description">PB01</td>
                                                                     <?php
-                                                                        $biaya_pb01 = number_format((($harga_billiard  ?? 0) + ($harga_billiard ?? 0) * $otherSetting[0]->layanan/100) * $otherSetting[0]->pb01/100,0);
+                                                                        $biaya_pb01 = (($harga_billiard  ?? 0) + ($harga_billiard ?? 0) * $otherSetting[0]->layanan/100) * $otherSetting[0]->pb01/100;
                                                                     ?>
                                                                     <td class="price" style="text-align: right">Rp.{{ number_format($biaya_pb01,0) }}</td>
                                                                 </tr>
