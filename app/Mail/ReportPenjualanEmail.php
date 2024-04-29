@@ -36,6 +36,6 @@ class ReportPenjualanEmail extends Mailable
 
         $data['orders'] = $this->updateStatus;
 
-        return $this->view('homepage', $data)->from('portfoliowebsite0505@gmail.com', 'Controlindo');
+        return $this->view('mail.send-mail', $data)->from('portfoliowebsite0505@gmail.com', 'Controlindo');
     }
 }
