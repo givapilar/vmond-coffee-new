@@ -301,7 +301,7 @@
                                                                     <td class="quantity"></td>
                                                                     <td class="description">Service</td>
                                                                     <?php
-                                                                        $biaya_layanan = number_format(($totalPrice ) * $otherSetting[0]->layanan/100,0 );
+                                                                        $biaya_layanan = ($totalPrice ) * $otherSetting[0]->layanan/100;
                                                                     ?>
                                                                     <td class="price" style="text-align: right">Rp.{{ number_format($biaya_layanan,0) }}</td>
                                                                 </tr>
@@ -310,7 +310,7 @@
                                                                     <td class="quantity"></td>
                                                                     <td class="description">PB01</td>
                                                                     <?php
-                                                                        $biaya_pb01 = number_format((($totalPrice ) + ($totalPrice) * $otherSetting[0]->layanan/100) * $otherSetting[0]->pb01/100,0);
+                                                                        $biaya_pb01 = (($totalPrice ) + ($totalPrice) * $otherSetting[0]->layanan/100) * $otherSetting[0]->pb01/100;
                                                                     ?>
                                                                     <td class="price" style="text-align: right">Rp.{{ number_format($biaya_pb01,0) }}</td>
                                                                 </tr>
@@ -320,7 +320,7 @@
                                                                     <td class="quantity"></td>
                                                                     <td class="description">Packing</td>
                                                                     <?php
-                                                                        $biaya_packing = number_format($otherSetting[0]->biaya_packing,0);
+                                                                        $biaya_packing = $otherSetting[0]->biaya_packing;
                                                                     ?>
                                                                     <td class="price" style="text-align: right">Rp.{{ number_format($biaya_packing,0) }}</td>
                                                                 </tr>
