@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ReportPenjualanEmail;
 use App\Models\AddOn;
 use App\Models\AddOnDetail;
 use App\Models\Kupon;
@@ -29,6 +30,8 @@ use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Writer;
 use Exception;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\Mail;
+
 
 class OrderController extends Controller
 {
@@ -181,7 +184,7 @@ class OrderController extends Controller
                     $name = auth()->user()->username ?? 'Not Name';
                     $phone = $request->phone ?? '-';
                     $nama_kasir = null;
-                }elseif (Auth::user()->username == 'syahrul') {
+                }elseif (Auth::user()->telephone == '089629600054') {
                     // $discount = (\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $discount = (\Cart::getTotal());
                     $count = 0.2 * $discount;
@@ -220,6 +223,7 @@ class OrderController extends Controller
                 $order = Order::create([
                     'user_id' => auth()->user()->id,
                     'name' => $name,
+                    'email' => $request->email,
                     'phone' => $phone,
                     'qty' => array_sum($request->qty),
                     'code' => 'draft',
@@ -1396,6 +1400,10 @@ class OrderController extends Controller
             return redirect()->back()->with(['failed' => 'Harap Isi Jam !']);
         }
 
+        if ($request->email == null) {
+            return redirect()->back()->with(['failed' => 'Harap Isi Email !']);
+        }
+
         if ($request->billiard_id == null) {
             return redirect()->back()->with(['failed' => 'Harap Isi Meja Billiard !']);
         }
@@ -1498,7 +1506,7 @@ class OrderController extends Controller
                     $nama_kasir = null;
                     // $kasir = $request->kasir_id;
                     // $nama_kasir = $request->kasir_id;
-                }elseif (Auth::user()->username == 'syahrul') {
+                }elseif (Auth::user()->telephone == '089629600054') {
                     $total_harga = 1;
                     $service = 0;
                     $pb01 = 0;
@@ -1519,6 +1527,7 @@ class OrderController extends Controller
                 $order = Order::create([
                     'user_id' => auth()->user()->id,
                     'name' => $name,
+                    'email' => $request->email,
                     'phone' => $phone,
                     'qty' => 1,
                     'code' => 'draft',
@@ -2572,6 +2581,10 @@ class OrderController extends Controller
 
         try {
             $updateStatus = Order::where('invoice_id', $request->invoiceID)->first();
+
+            // Untuk Kirim Email
+            $mail = $updateStatus->email ?? '';
+            Mail::to($mail)->send(new ReportPenjualanEmail($updateStatus));
 
             $total = 1;
             $kuponCode = 0;

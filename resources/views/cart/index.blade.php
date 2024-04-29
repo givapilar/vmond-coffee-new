@@ -16,7 +16,7 @@
 @section('content')
 <section class="p-3">
     @if ($data_carts->count() >= 1)
-        @if (Auth::user()->username == 'syahrul')
+        @if (Auth::user()->telephone == '089629600054')
             {{-- <form method="POST" action="{{ route('create-token-bri') }}"> --}}
             <form action="{{ route('checkout-order', md5(strtotime("now"))) }}" method="POST">
         @else
@@ -262,13 +262,25 @@
                             </div>
                         </li>
 
+                        <li>
+                            <div class="flex items-center space-x-4" style="margin-top: 20px;">
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                        Email 
+                                    </p>
+                                </div>
+                            </div>
+                            <input required placeholder="Ex: xxx@gmail.com" name="email" value="{{ old('email') }}" id="" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2 mt-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('password') is-invalid @enderror">
+                        </li>
                         </ul>
                     </div>
+                    
                 @else
                 <div class="text-left max-w-sm h-96 bg-white border border-gray-200 rounded-[30px] shadow overflow-y-auto dark:bg-gray-800 dark:border-gray-700 mb-2">
                     <div class="p-2 space-x-4">
                         <p class="text-lg font-semibold text-center dark:text-white">Pilih Category</p>
                     </div>
+                    
                     <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
                     <ul class="max-w-sm divide-y divide-gray-200 dark:divide-gray-700 px-3">
                         @if($meja == "takeaway")
@@ -402,10 +414,9 @@
                         </li>
 
                     </ul>
+                    
                 </div>
-
                 @endif
-
 
                 {{-- Untuk Waiters --}}
                 @if (Auth::user()->is_worker == true )
