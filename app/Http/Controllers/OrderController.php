@@ -356,6 +356,8 @@ class OrderController extends Controller
             }
             $data['order_settings'] = OtherSetting::get();
 
+            $mail = $data['order_last']->email ?? '';
+            Mail::to($mail)->send(new ReportPenjualanEmail($data['order_last']));
 
             // ================================ Kupon ==========================
 
@@ -392,7 +394,7 @@ class OrderController extends Controller
 
             // ================================ End Kupon ====================
 
-
+            // Untuk Kirim Email
             return view('checkout.index',$data,compact('snapToken','order'));
         } catch (\Throwable $th) {
             // dd($th->getMessage());
