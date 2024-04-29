@@ -126,16 +126,12 @@
                                                                 <p style="font-size: 14px; line-height: 140%; text-align: center;"></p>
                                                                 <p style="font-size: 14px; line-height: 140%; text-align: center;">
                                                                     <strong>
-                                                                        <span style="font-size: 28px; line-height: 39.2px; color: #ffffff; font-family: Lato, sans-serif;">LAPORAN
-                                                                            PENJUALAN
-                                                                        </span>
+                                                                        <span style="font-size: 28px; line-height: 39.2px; color: #ffffff; font-family: Lato, sans-serif;">BUKTI PEMBAYARAN</span>
                                                                     </strong>
                                                                 </p>
                                                                 <p style="font-size: 14px; line-height: 140%; text-align: center;">
                                                                     <strong>
-                                                                        <span style="font-size: 28px; line-height: 39.2px; color: #ffffff; font-family: Lato, sans-serif;">PEMPEK
-                                                                            RAJA LRT BEKASI TIMUR
-                                                                        </span>
+                                                                        <span style="font-size: 28px; line-height: 39.2px; color: #ffffff; font-family: Lato, sans-serif;">VMOND COFFEE</span>
                                                                     </strong>
                                                                 </p>
                                                                 <p style="font-size: 14px; line-height: 140%; text-align: center;">
@@ -228,7 +224,7 @@
                                                             <div class="u-row-container" style="padding: 0px;background-color: transparent">
                                                                 <div class="u-row no-stack" style="margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
                                                                     <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
-                                                                        @foreach ($orders->orderPivot as $order_detail)
+                                                                        @foreach ($orders->order_detail as $order_detail)
                                                                             <div class="u-col u-col-33p33" style="max-width: 320px;min-width: 200px;display: table-cell;vertical-align: top;">
                                                                                 <div style="background-color: #ffffff;height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
                                                                                     <div style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
@@ -282,13 +278,77 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
+
+                                                                            @php
+                                                                            // Calculate the running total for each item
+                                                                            $totalPrice += $order_detail->price_discount * $order_detail->qty ;
+                                                                            @endphp
+                                                                            <table>
+                                                                                <tr>
+                                                                                    <td class="quantity">&nbsp;</td>
+                                                                                    <td class="description">Sub Total</td>
+                                                                                    <td class="price" style="text-align: right">Rp.{{ number_format($totalPrice,0) }}</td>
+                                                                                </tr>
+                                                                
+                                                                                <tr style="margin-top: 20px !important;">
+                                                                                    <td class="quantity"></td>
+                                                                                    <td class="description">Service</td>
+                                                                                    <?php
+                                                                                        $biaya_layanan = number_format(($totalPrice ) * $otherSetting[0]->layanan/100,0 );
+                                                                                    ?>
+                                                                                    <td class="price" style="text-align: right">Rp.{{ number_format($biaya_layanan,0) }}</td>
+                                                                                </tr>
+
+                                                                                <tr style="margin-top: 20px !important;">
+                                                                                    <td class="quantity"></td>
+                                                                                    <td class="description">PB01</td>
+                                                                                    <?php
+                                                                                        $biaya_pb01 = number_format((($totalPrice ) + ($totalPrice) * $otherSetting[0]->layanan/100) * $otherSetting[0]->pb01/100,0);
+                                                                                    ?>
+                                                                                    <td class="price" style="text-align: right">Rp.{{ number_format($biaya_pb01,0) }}</td>
+                                                                                </tr>
+
+                                                                                @if ($orders->category == 'Takeaway')
+                                                                                <tr style="margin-top: 20px !important;">
+                                                                                    <td class="quantity"></td>
+                                                                                    <td class="description">Packing</td>
+                                                                                    <?php
+                                                                                        $biaya_packing = number_format($otherSetting[0]->biaya_packing,0);
+                                                                                    ?>
+                                                                                    <td class="price" style="text-align: right">Rp.{{ number_format($biaya_packing,0) }}</td>
+                                                                                </tr>
+
+                                                                                <tr style="margin-top: 20px !important;">
+                                                                                    <td class="quantity"></td>
+                                                                                    <td class="description">Total</td>
+                                                                                    @php
+                                                                                        $totalLayanan = ($totalPrice ?? 0) * ($otherSetting[0]->layanan / 100);
+                                                                                        $totalPB01 = (($totalPrice ?? 0) + $totalLayanan) * ($otherSetting[0]->pb01 / 100);
+                                                                                        $orderTotal = $totalPrice + $totalLayanan + $totalPB01 + $otherSetting[0]->biaya_packing;
+                                                                                    @endphp
+                                                                                    <td class="price" style="text-align: right">Rp.{{ number_format($orderTotal,0) }}</td>
+                                                                                </tr>
+                                                                                @else
+                                                                                    
+                                                                                <tr>
+                                                                                    <td class="quantity">&nbsp;</td>
+                                                                                    <td class="description">Total</td>
+                                                                                    @php
+                                                                                        $totalLayanan = ($totalPrice ?? 0) * ($otherSetting[0]->layanan / 100);
+                                                                                        $totalPB01 = (($totalPrice ?? 0) + $totalLayanan) * ($otherSetting[0]->pb01 / 100);
+                                                                                        $orderTotal = $totalPrice + $totalLayanan + $totalPB01;
+                                                                                    @endphp
+                                                                                    <td class="price" style="text-align: right">Rp.{{ number_format($orderTotal,0) }}</td>
+                                                                                </tr>
+                                                                                @endif
+                                                                            </table>
+
                                                                         @endforeach
                                                                     </div>
                                                                 </div>
                                                             </div>
 
-
-                                                            {{-- <div class="u-row-container" style="padding: 0px;background-color: transparent">
+                                                            <div class="u-row-container" style="padding: 0px;background-color: transparent">
                                                                 <div class="u-row no-stack" style="margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
                                                                     <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
                                                                         <div class="u-col u-col-66p67" style="max-width: 320px;min-width: 400px;display: table-cell;vertical-align: top;">
@@ -328,7 +388,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </div> --}}
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 </tbody>
