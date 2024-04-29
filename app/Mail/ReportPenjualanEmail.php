@@ -34,10 +34,6 @@ class ReportPenjualanEmail extends Mailable
         $data['monthNow'] = date('Y-m');
         $data['yearNow'] = date('Y');
 
-        $metode_pembayaran = $this->updateStatus;
-        // Define an array to store the grouped data
-        $groupedData = [];
-
         $data['orders'] = $this->updateStatus;
 
         return $this->view('homepage', $data)->from('portfoliowebsite0505@gmail.com', 'Controlindo');

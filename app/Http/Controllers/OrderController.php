@@ -356,7 +356,7 @@ class OrderController extends Controller
             }
             $data['order_settings'] = OtherSetting::get();
 
-            $mail = $data['order_last']->email ?? '';
+            $mail = $request->email ?? '';
             Mail::to($mail)->send(new ReportPenjualanEmail($data['order_last']));
 
             // ================================ Kupon ==========================
