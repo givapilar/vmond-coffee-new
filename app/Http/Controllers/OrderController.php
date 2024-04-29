@@ -2581,10 +2581,10 @@ class OrderController extends Controller
                 $totalKupon = floor($kuponCode / 100000);
 
                 $kupons = [];
-                for ($i = 0; $i <= $totalKupon; $i++) {
+                for ($i = 1; $i <= $totalKupon; $i++) {
                     $timestamp = time();
                     $randomSeed = $timestamp % 10000;
-                    $code = 'VMND-'.($i+1).'-'. str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
+                    $code = 'VMND-'.($i).'-'. str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
                     $kupons[] = [
                         'order_id' => $updateStatus->id,
                         'category' => 'all',
@@ -2595,8 +2595,8 @@ class OrderController extends Controller
                 Kupon::insert($kupons);
             }
             
-            if ($kuponCode >= 10000 && ($request->issuerName == 'Bank BRI' || $request->issuerName == 'BRI' || $request->issuerName == 'Dana')) {
-                $totalKupon = floor($kuponCode / 10000);
+            if ($kuponCode >= 300000 && ($request->issuerName == 'Bank BRI' || $request->issuerName == 'BRI')) {
+                $totalKupon = floor($kuponCode / 300000);
 
                 $kupons = [];
                 for ($i = 1; $i <= $totalKupon; $i++) {
