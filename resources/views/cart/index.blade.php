@@ -499,7 +499,11 @@
                                     <option value="EDC MANDIRI">EDC MANDIRI</option>
                                     <option value="EDC BCA">EDC BCA</option>
                                     <option value="EDC BRI">EDC BRI</option>
-                                    <option value="EDC BNI">EDC BNI</option>
+                                    <option value="BANK BRI">BANK BRI</option>
+                                    <option value="BANK BNI">BANK BNI</option>
+                                    <option value="BANK BCA">BANK BCA</option>
+                                    <option value="BANK MANDIRI">BANK MANDIRI</option>
+                                    <option value="BANK BJB">BANK BJB</option>
                                 </select>
                             </div>
                         </li>
