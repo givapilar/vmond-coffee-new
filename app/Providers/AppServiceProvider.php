@@ -59,8 +59,8 @@ class AppServiceProvider extends ServiceProvider
             
                     $orderTable = $query->get();
                 }else{
-                    $orderTable = $query->get();
-                    // $orderTable = Order::orderBy('id','desc')->where('user_id', Auth::user()->id)->where('status_pembayaran', 'Paid')->get();
+                    // $orderTable = $query->get();
+                    $orderTable = Order::orderBy('id','desc')->where('user_id', Auth::user()->id)->where('status_pembayaran', 'Paid')->get();
                 }
             }else{
                 $orderTable = [];
