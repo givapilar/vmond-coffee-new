@@ -256,7 +256,6 @@ class OrderController extends Controller
                     'jumlah_customer' => $request->jumlah_customer ?? 1,
                 ]);
 
-                dd($session_cart);
                     foreach ($session_cart as $key => $item) {
                         $orderPivot = [];
                         if ($item->conditions == 'Restaurant') {
@@ -353,7 +352,7 @@ class OrderController extends Controller
 
 
             $snapToken = \Midtrans\Snap::getSnapToken($params);
-            $data['order_last'] = Order::where('token', $token)->get()->first();
+            $data['order_last'] = Order::where('token', $token)->latest()->first();
             if ($data['order_last']) {
                 $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
             }
@@ -644,7 +643,8 @@ class OrderController extends Controller
             // $data['order_last'] = Order::latest()->first();
             $data['order_settings'] = OtherSetting::get();
             $data['users'] = User::first();
-            $data['orders'] = Order::where('token',$token)->get()->first();
+            $data['orders'] = Order::where('token', $token)->latest()->first();
+            // $data['orders'] = Order::where('token',$token)->get()->first();
 
 
             if ($other_setting[0]->status_notifikasi == "Active") {
