@@ -74,6 +74,11 @@ class OrderController extends Controller
             $packing = 5000;
 
             $checkToken = Order::where('token',$token)->where('status_pembayaran', 'Paid')->get();
+
+            if ($checkToken) {
+                return back()->with(['failed' => 'Tidak dapat mengulang transaksi!']);
+            }
+            
             if (count($checkToken) != 0) {
                 return redirect()->route('homepage')->with(['failed' => 'Tidak dapat mengulang transaksi!']);
             }
