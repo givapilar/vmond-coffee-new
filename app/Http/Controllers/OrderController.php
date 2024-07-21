@@ -75,10 +75,6 @@ class OrderController extends Controller
 
             $checkToken = Order::where('token',$token)->where('status_pembayaran', 'Paid')->get();
 
-            if ($checkToken) {
-                return back()->with(['failed' => 'Tidak dapat mengulang transaksi!']);
-            }
-            
             if (count($checkToken) != 0) {
                 return redirect()->route('homepage')->with(['failed' => 'Tidak dapat mengulang transaksi!']);
             }
@@ -356,6 +352,9 @@ class OrderController extends Controller
 
             $snapToken = \Midtrans\Snap::getSnapToken($params);
             $data['order_last'] = Order::where('token', $token)->get()->first();
+            if ($data['order_last']) {
+                return back()->with(['failed' => 'Tidak dapat mengulang transaksi!']);
+            }
             if ($data['order_last']) {
                 $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
             }
