@@ -65,8 +65,6 @@
                                     {{ $paket_menu->nama_paket }}
                                 </p>
 
-
-
                                 <p class="text-xs text-gray-500 truncate dark:text-red-500">
                                     Rp. {{ number_format($paket_menu->harga_diskon) }}
                                 </p>

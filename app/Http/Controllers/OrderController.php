@@ -67,6 +67,7 @@ class OrderController extends Controller
     public function checkout(Request $request, $token)
     {
         try {
+            // dd($request->all());
 
             $session_cart = \Cart::session(Auth::user()->id)->getContent();
             $other_setting = OtherSetting::get();
@@ -219,6 +220,7 @@ class OrderController extends Controller
                     $kasir = null;
                     $nama_kasir = null;
                 }
+
             }
 
                 $order = Order::create([
@@ -254,8 +256,8 @@ class OrderController extends Controller
                     'jumlah_customer' => $request->jumlah_customer ?? 1,
                 ]);
 
+                dd($session_cart);
                     foreach ($session_cart as $key => $item) {
-                        // dd($item);
                         $orderPivot = [];
                         if ($item->conditions == 'Restaurant') {
                             // $orderPivot[] = [
@@ -352,9 +354,6 @@ class OrderController extends Controller
 
             $snapToken = \Midtrans\Snap::getSnapToken($params);
             $data['order_last'] = Order::where('token', $token)->get()->first();
-            if ($data['order_last']) {
-                return back()->with(['failed' => 'Tidak dapat mengulang transaksi!']);
-            }
             if ($data['order_last']) {
                 $data['data_carts'] = \Cart::session(Auth::user()->id)->getContent();
             }
@@ -968,7 +967,6 @@ class OrderController extends Controller
             $data['layanan'] = $layanan;
             $data['total_harga'] = $total_harga;
 
-
                 if (Auth::check()) {
                     $total_price = 1;
                     $total_paket = $request->total_paket;
@@ -1005,10 +1003,21 @@ class OrderController extends Controller
                         $kasir = null;
                         $nama_kasir = null;
                     }
+                }else{
+                    $total_price = 1;
+                    $total_paket = $request->total_paket;
+                    $layanan = $total_paket * $other_setting[0]->layanan/100;
+                    $pb01 = $total_paket * $other_setting[0]->pb01/100;
+                    $order_total = $total_paket + $layanan + $pb01;
+
+                    $total_price = $order_total;
+                    $name = '2';
+                    $phone = $request->phone ?? '-';
+                    $nama_kasir = null;
                 }
 
                     $order = Order::create([
-                        'user_id' => auth()->user()->id,
+                        'user_id' => $name,
                         'name' => $name,
                         'phone' => $phone,
                         'qty' => $request->qty,
@@ -1049,19 +1058,22 @@ class OrderController extends Controller
                             $restaurant = Restaurant::find($value);
                             if ($restaurant) {
                                 $category = $restaurant->category;
+                                $harga = $restaurant->harga;
+                                $harga_diskon = $restaurant->harga_diskon;
                                 $orderPaketMenu[] = [
                                     'order_id' => $order->id,
                                     'restaurant_id' => $value,
                                     'category' => $category,
                                     // 'paket_menu_id' => $request->paket_menu_id[0],
                                     'qty' => $request->quantity, // Use $key to access the corresponding quantity
+                                    'harga' => $harga, // Use $key to access the corresponding quantity
+                                    'harga_diskon' => $harga_diskon, // Use $key to access the corresponding quantity
                                 ];
                             }
                         }
                         OrderPivot::insert($orderPaketMenu);
                         // dd($orderPaketMenu);
                     }
-                    // dd('masuk');
 
                 $checkToken2 = Order::where('token',$token)->get();
                 $data['token'] = $checkToken2->pluck('token');
@@ -1075,21 +1087,39 @@ class OrderController extends Controller
             // Set 3DS transaction for credit card to true
             \Midtrans\Config::$is3ds = true;
             // dd(number_format($order->total_price, 0));
-            if (Auth::user()->membership->level == 'Super Platinum') {
-                # code...
-                $params = array(
-                    'transaction_details' => array(
-                        'order_id' => $order->id,
-                        // 'gross_amount' => $order->total_price,
-                        'gross_amount' => 1,
-                    ),
-                    'customer_details' => array(
-                        'first_name' => auth()->user()->username,
-                        'phone' => $request->phone,
-                        // 'code' => rand(),
-                    ),
-                );
-            } else {
+            
+            if (Auth::check()) {
+                if (Auth::user()->membership->level == 'Super Platinum') {
+                    # code...
+                    $params = array(
+                        'transaction_details' => array(
+                            'order_id' => $order->id,
+                            // 'gross_amount' => $order->total_price,
+                            'gross_amount' => 1,
+                        ),
+                        'customer_details' => array(
+                            'first_name' => auth()->user()->username,
+                            'phone' => $request->phone,
+                            // 'code' => rand(),
+                        ),
+                    );
+                } else {
+                    $params = array(
+                        'transaction_details' => array(
+                            'order_id' => $order->id,
+                            // 'gross_amount' => $order->total_price,
+                            // 'gross_amount' => str_replace(',','',number_format($order->total_price, 0)),
+                            // 'gross_amount' => 1,
+                            'gross_amount' => $total_harga,
+                        ),
+                        'customer_details' => array(
+                            'first_name' => auth()->user()->username,
+                            'phone' => $request->phone,
+                            // 'code' => rand(),
+                        ),
+                    );
+                }
+            }else{
                 $params = array(
                     'transaction_details' => array(
                         'order_id' => $order->id,
@@ -1099,13 +1129,14 @@ class OrderController extends Controller
                         'gross_amount' => $total_harga,
                     ),
                     'customer_details' => array(
-                        'first_name' => auth()->user()->username,
+                        'first_name' => $name,
                         'phone' => $request->phone,
                         // 'code' => rand(),
                     ),
                 );
                 # code...
             }
+
 
             $snapToken = \Midtrans\Snap::getSnapToken($params);
             $data['order_last'] = Order::latest()->first();
