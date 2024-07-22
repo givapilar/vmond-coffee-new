@@ -68,9 +68,9 @@
                 <div class="mt-4" id="timeFromContainer" style="display: none;">
                     <label for="time_from_weekdays" class="mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Time From</label>
                     <select id="time_from_weekdays" required name="time_from" class="time_from bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option disabled selected>Select Time From</option>
+                        <option disabled>Select Time From</option>
                         @for ($time = strtotime('07:00'); $time <= strtotime('22:00'); $time = strtotime('+15 minutes', $time))
-                            <option value="{{ date('H:i', $time) }}">{{ date('H:i', $time) }}</option>
+                            <option value="{{ date('H:i', $time) }}" {{ old('time_from') == date('H:i', $time) ? 'selected' : '' }}>{{ date('H:i', $time) }}</option>
                         @endfor
                     </select>
                 </div>
@@ -127,113 +127,648 @@
 
 @push('script-bot')
 <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
+<script>
+    function pad(number) {
+   return (number < 10) ? '0' + number : number;
+ }
+
+ // Function to generate time options for every 15 minutes
+//   function generateTimeOptions() {
+//     const startTime = 9; // Start hour (09:00)
+//     const endTime = 23; // End hour (23:00)
+//     const interval = 15; // Interval in minutes
+
+//     const selectElement = document.getElementById("time_from_weekdays");
+
+//     for (let hour = startTime; hour <= endTime; hour++) {
+//       for (let minute = 0; minute < 60; minute += interval) {
+//         const timeString = pad(hour) + ':' + pad(minute);
+//         const option = document.createElement("option");
+//         option.value = timeString;
+//         option.text = timeString;
+//         selectElement.appendChild(option);
+//       }
+//     }
+//   }
+
+//   // Call the function to generate time options
+//   generateTimeOptions();
+</script>
+<script>
+   disableByCurrentTimeWith15MinuteInterval()
+   function disableByCurrentTimeWith15MinuteInterval() {
+       const timeFromSelect = $("#time_from_weekdays");
+
+       // Get the current time
+       const currentTime = new Date();
+       const currentHour = currentTime.getHours();
+       const currentMinute = currentTime.getMinutes();
+
+       // Calculate the nearest 15-minute interval in the future
+       const intervalInMinutes = 15;
+       let nearestInterval = Math.ceil(currentMinute / intervalInMinutes) * intervalInMinutes;
+       if (nearestInterval === 60) {
+           nearestInterval = 0;
+       }
+
+       // Loop through options and disable past hours and minutes
+       timeFromSelect.find("option").each(function(i, elem) {
+           const elHour = parseInt($(elem).val().split(":")[0]);
+           const elMinute = parseInt($(elem).val().split(":")[1]);
+           // console.log(elHour, elMinute);
+           if (!isNaN(elHour) && !isNaN(elMinute)) {
+               if (elHour < (currentHour -1) || (elHour === (currentHour -1) && elMinute < nearestInterval)) {
+                   $(elem).attr('disabled', 'disabled');
+               } else {
+                   $(elem).removeAttr('disabled');
+               }
+           }
+       });
+       // Weekend
+       const timeFromSelect2 = $("#time_from_weekend");
+
+       // Get the current time
+       const currentTime2 = new Date();
+       const currentHour2 = currentTime2.getHours();
+       const currentMinute2 = currentTime2.getMinutes();
+
+       // Calculate the nearest 15-minute interval in the future
+       const intervalInMinutes2 = 15;
+       let nearestInterval2 = Math.ceil(currentMinute2 / intervalInMinutes2) * intervalInMinutes2;
+       if (nearestInterval2 === 60) {
+           nearestInterval2 = 0;
+       }
+
+       // Loop through options and disable past hours and minutes
+       timeFromSelect2.find("option").each(function(i, elem) {
+           const elHour2 = parseInt($(elem).val().split(":")[0]);
+           const elMinute2 = parseInt($(elem).val().split(":")[1]);
+           // console.log(elHour2, elMinute2);
+           if (!isNaN(elHour2) && !isNaN(elMinute2)) {
+               if (elHour2 < (currentHour2 -1) || (elHour2 === (currentHour2 -1) && elMinute2 < nearestInterval2)) {
+                   $(elem).attr('disabled', 'disabled');
+               } else {
+                   $(elem).removeAttr('disabled');
+               }
+           }
+       });
+
+       // Select the first available future hour and minute (if any)
+       // const firstEnabledOption = timeFromSelect.find("option:not(:disabled)").first();
+       // if (firstEnabledOption.length > 0) {
+       //     timeFromSelect.val(firstEnabledOption.val());
+       // }
+   }
+// });
+</script>
 
 <script>
-    function disableByCurrentTimeWith15MinuteInterval() {
-        const timeFromSelect = $('#time_from_weekdays, #time_from_weekend');
-        const currentTime = new Date();
-        const currentHour = currentTime.getHours();
-        const currentMinute = currentTime.getMinutes();
-        const nearestInterval = Math.ceil(currentMinute / 15) * 15 % 60;
+   function handleCheckboxChange(checkbox) {
+       const maxChecks = parseInt(checkbox.dataset.maxChecks);
+       const checkboxes = document.querySelectorAll('.checkbox-limit');
 
-        timeFromSelect.find('option').each(function() {
-            const [elHour, elMinute] = $(this).val().split(':').map(Number);
-            if ((elHour < currentHour) || (elHour === currentHour && elMinute < nearestInterval)) {
-                $(this).attr('disabled', 'disabled');
-            } else {
-                $(this).removeAttr('disabled');
-            }
-        });
+       let checkedCount = 0;
+       checkboxes.forEach((cb) => {
+           if (cb.checked) checkedCount++;
+       });
+
+       if (checkedCount > maxChecks) {
+           checkbox.checked = false; // Prevent checking the checkbox if it exceeds the maximum limit
+       }
+   }
+
+   // Add event listeners to all checkboxes with the 'checkbox-limit' class
+   const checkboxes = document.querySelectorAll('.checkbox-limit');
+   checkboxes.forEach((checkbox) => {
+       checkbox.addEventListener('change', () => handleCheckboxChange(checkbox));
+   });
+   // Get the minimum limit from PHP variable or set a default value of 0
+   // const minimumChecked = {{ $paket_menu->minimal ?? 0 }};
+
+   // // Function to handle checkbox changes
+   // function handleCheckboxChange(checkbox) {
+   //     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+   //     let checkedCount = 0;
+   //     for (const cb of checkboxes) {
+   //         if (cb.checked) checkedCount++;
+   //     }
+
+   //     for (const cb of checkboxes) {
+   //         if (cb !== checkbox) {
+   //             if (checkbox.checked && checkedCount >= minimumChecked) {
+   //                 cb.disabled = true;
+   //             } else {
+   //                 cb.disabled = false;
+   //             }
+   //         }
+   //     }
+   // }
+
+   // // Add event listeners to all checkboxes
+   // const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+   // checkboxes.forEach((checkbox) => {
+   //     checkbox.addEventListener('change', () => handleCheckboxChange(checkbox));
+   // });
+</script>
+<script>
+   function toggleTimeFrom() {
+   const dateInput = document.getElementById('date');
+   console.log(dateInput.value, 'tes');
+   const dayOfWeek = new Date(dateInput.value).getDay();
+   const timeFromContainer = document.getElementById('timeFromContainer');
+   const weekend = document.getElementById('weekend');
+   const timeFromWeekdaysSelect = document.getElementById('time_from_weekdays');
+   const timeFromWeekendSelect = document.getElementById('time_from_weekend');
+   var billiardSelect = document.getElementById('billiard_id');
+
+   // if (billiardSelect.value != '') {
+   //         timeFromContainer.style.display = 'block';
+   //         weekendContainer.style.display = 'block';
+   // }
+   if (dayOfWeek >= 1 && dayOfWeek <= 5) { // Monday to Friday (0 is Sunday, 1 is Monday, and so on)
+       timeFromWeekendSelect.disabled = true;
+       timeFromWeekdaysSelect.disabled = false;
+       timeFromContainer.style.display = 'block';
+       weekend.style.display = 'none';
+   } else { // Saturday or Sunday
+       timeFromWeekendSelect.disabled = false;
+       timeFromWeekdaysSelect.disabled = true;
+       timeFromContainer.style.display = 'none';
+       weekend.style.display = 'block';
+   }
+}
+
+// Call the function on page load to initialize the visibility of the "Select Time From" dropdown
+// disableTimeFromIfNoBilliard();
+toggleTimeFrom();
+
+</script>
+
+
+<script>
+   // code sahri
+   // function disableHour(){
+   //     var valueDate = $('#date').val();
+   //     var billiardId = $('#billiard_id').val();
+
+   //     var getJam = {!! json_encode($paket_menu) !!};
+
+   //     $.ajax({
+   //         type: 'POST',
+   //         url: "{{ route('check-schedule') }}",
+   //         headers: {
+   //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+   //         },
+   //         data: {
+   //             "_token": "{{ csrf_token() }}",
+   //             "date": valueDate,
+   //             "billiard_id": billiardId
+   //         },
+   //         success: function (data) {
+   //             console.log(data);
+   //             $("#time_from option").prop('disabled', false); // Use prop() instead of attr()
+
+   //             // Get the current time
+   //             const currentTime = new Date();
+   //             const currentHour = currentTime.getHours();
+   //             console.log(billiardId, valueDate);
+   //             // data.times.forEach(element => {
+   //             //     let valHourFrom = element.substring(0, 5);
+   //             //     console.log((valHourFrom + getJam.jam));
+   //             //     const hourPart = parseInt(valHourFrom.substring(0, 2), 10);
+   //             //     console.log((hourPart + getJam.jam), currentHour);
+
+   //             //     // Loop through options and disable past hours and the current hour
+   //             //     const timeFromSelect = $(".time_from");
+   //             //     timeFromSelect.find("option").each(function (i, elem) {
+   //             //         const elid = parseInt($(elem).val());
+   //             //         if (!isNaN(elid)) {
+   //             //             if (elid < currentHour || hourPart === elid) {
+   //             //                 console.log('test' + elid, 'test' + i, elem);
+   //             //                 $(elem).prop('disabled', true); // Use prop() instead of attr()
+   //             //             } else {
+   //             //                 $(elem).prop('disabled', false); // Use prop() instead of removeAttr()
+   //             //             }
+   //             //         }
+   //             //     });
+
+   //             //     // Select the first available future hour (if any)
+   //             //     const firstEnabledOption = timeFromSelect.find("option:not(:disabled)").first();
+   //             //     if (firstEnabledOption.length > 0) {
+   //             //         timeFromSelect.val(firstEnabledOption.val());
+   //             //     }
+
+   //             //     // Disable the option with the same value as valHourFrom
+   //             //     $("#time_from option[value='" + valHourFrom + "']").prop('disabled', true); // Use prop() instead of attr()
+   //             // });
+   //         },
+   //         error: function (data) {
+   //             $.alert('Failed!');
+   //             console.log(data);
+   //         }
+   //     });
+   // }
+
+   // var valueDate = $('#date').val();
+   // var getJam = {!! json_encode($paket_menu) !!};
+   // const timeFromSelect = $(".time_from");
+   //             // Get the current time
+   // const currentTime = new Date();
+   // const currentHour = currentTime.getHours();
+   // const hourPart = parseInt(valHourFrom.substring(0, 2), 10);
+   // console.log((hourPart + getJam.jam) , currentHour);
+   // // Loop through options and disable past hours
+   // timeFromSelect.find("option").each(function(i, elem) {
+   //     const elid = parseInt($(elem).val());
+   //     if (elid != null && elid != NaN) {
+   //         if (elid < currentHour - 1 || hourPart == elid ) {
+   //             console.log('test'+elid, 'test'+i, elem);
+   //             $(elem).attr('disabled', 'disabled');
+   //         } else {
+   //             $(elem).removeAttr('disabled');
+   //         }
+   //     }
+   // });
+
+   //     // Select the first available future hour (if any)
+   // const firstEnabledOption = timeFromSelect.find("option:not(:disabled)").first();
+   // if (firstEnabledOption.length > 0) {
+   //     timeFromSelect.val(firstEnabledOption.val());
+   // }
+   // $("#time_from option[value='"+ valHourFrom + "']").attr('disabled', true);
+
+
+   function disableHour() {
+       var valueDate = $('#date').val();
+       var billiardId = $('#billiard_id').val();
+
+       // Your AJAX code here to fetch data and perform necessary actions
+       $.ajax({
+           type: 'POST',
+           url: "{{ route('check-schedule') }}",
+           headers: {
+               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+           },
+           data: {
+               "_token": "{{ csrf_token() }}",
+               "date": valueDate,
+               "billiard_id": billiardId
+           },
+           success: function (data) {
+            //    console.log(data);
+               // Enable all options before disabling the appropriate ones
+               $("#time_from_weekdays option").prop('disabled', false);
+               $("#time_from_weekend option").prop('disabled', false);
+               disableByCurrentTimeWith15MinuteInterval()
+               // Get the current time
+               const currentTime = new Date();
+               const currentHour = currentTime.getHours();
+
+               for (const index in data.timeFrom) {
+                   const dateFrom = data.timeFrom[index];
+                //    console.log(dateFrom);
+                   const dateTo = data.timeTo[index];
+                   let valHourFrom = dateFrom.substring(0, 5);
+                   let valHourTo = dateTo.substring(0, 5);
+                   const hourPart = parseInt(valHourFrom.substring(0, 2), 10);
+
+                   // Loop through options and disable past hours and the current hour for weekdays
+                    // ubah manual
+                   const timeFromWeekdaysSelect = $("#time_from_weekend");
+                   for (const i in timeFromWeekdaysSelect[0].options) {
+                       const elem = timeFromWeekdaysSelect[0].options[i];
+                       const elid = parseInt($(elem).val());
+                       if (!isNaN(elid)) {
+                           if (elid < currentHour || hourPart === elid) {
+                               $(elem).prop('disabled', true);
+                           } else {
+                               $(elem).prop('disabled', false);
+                           }
+
+                           // Check if there are dateFrom and dateTo
+                           if (dateFrom && dateTo) {
+                               const elemHour = parseInt($(elem).val().split(":")[0]);
+                               const elemMinute = parseInt($(elem).val().split(":")[1]);
+
+                               const fromHour = parseInt(dateFrom.split(":")[0]);
+                               const fromMinute = parseInt(dateFrom.split(":")[1]);
+
+                               const toHour = parseInt(dateTo.split(":")[0]);
+                               const toMinute = parseInt(dateTo.split(":")[1]);
+                            //    console.log('From',fromHour);
+
+                               // Check if the current option time is within the dateFrom and dateTo range
+                               if (
+                                   (elemHour === fromHour && elemMinute >= fromMinute) ||
+                                   (elemHour === toHour && elemMinute <= toMinute) ||
+                                   (elemHour > fromHour && elemHour < toHour)
+                               ) {
+                                   console.log(fromHour, fromMinute, fromMinute, toMinute, elem);
+                                   $(elem).prop('disabled', true);
+                               }
+                           }
+                       }
+                   }
+
+                   // Loop through options and disable past hours and the current hour for weekends
+                   const timeFromWeekendSelect = $("#time_from_weekend");
+                   for (const i in timeFromWeekendSelect[0].options) {
+                       const elem = timeFromWeekendSelect[0].options[i];
+                       const elid = parseInt($(elem).val());
+                       if (!isNaN(elid)) {
+                           if (elid < currentHour || hourPart === elid) {
+                               $(elem).prop('disabled', true);
+                           } else {
+                               $(elem).prop('disabled', false);
+                           }
+
+                           // Check if there are dateFrom and dateTo (similar to the weekdays section)
+                           if (dateFrom && dateTo) {
+                               const elemHour = parseInt($(elem).val().split(":")[0]);
+                               const elemMinute = parseInt($(elem).val().split(":")[1]);
+
+                               const fromHour = parseInt(dateFrom.split(":")[0]);
+                               const fromMinute = parseInt(dateFrom.split(":")[1]);
+
+                               const toHour = parseInt(dateTo.split(":")[0]);
+                               const toMinute = parseInt(dateTo.split(":")[1]);
+
+                               // Check if the current option time is within the dateFrom and dateTo range
+                               if (
+                                   (elemHour === fromHour && elemMinute >= fromMinute) ||
+                                   (elemHour === toHour && elemMinute <= toMinute) ||
+                                   (elemHour > fromHour && elemHour < toHour)
+                               ) {
+                                   $(elem).prop('disabled', true);
+                               }
+                           }
+                       }
+                   }
+
+                   // Select the first available future hour (if any) for weekdays
+                   const firstEnabledOptionWeekdays = timeFromWeekdaysSelect.find("option:not(:disabled)").first();
+                   if (firstEnabledOptionWeekdays.length > 0) {
+                       timeFromWeekdaysSelect.val(firstEnabledOptionWeekdays.val());
+                   }
+
+                   // Select the first available future hour (if any) for weekends
+                   const firstEnabledOptionWeekend = timeFromWeekendSelect.find("option:not(:disabled)").first();
+                   if (firstEnabledOptionWeekend.length > 0) {
+                       timeFromWeekendSelect.val(firstEnabledOptionWeekend.val());
+                   }
+
+                   // Disable the option with the same value as valHourFrom for weekdays
+                   $("#time_from_weekdays option[value='" + valHourFrom + "']").prop('disabled', true);
+                   // Disable the option with the same value as valHourFrom for weekends
+                   $("#time_from_weekend option[value='" + valHourFrom + "']").prop('disabled', true);
+               }
+
+
+           },
+           error: function (data) {
+               console.log(data);
+           }
+       });
+   }
+
+
+
+
+
+
+
+   // $.ajax({
+   //     type: 'POST',
+   //     url: "{{ route('check-schedule') }}",
+   //     headers: {
+   //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+   //     },
+   //     data: {
+   //         "_token": "{{ csrf_token() }}",
+   //         "date": valueDate
+   //     },
+   //     success: function (data) {
+   //         console.log(data);
+   //         $("#time_from option").attr('disabled', false);
+   //         data.times.forEach(element => {
+   //             let valHourFrom = element.substring(0, 5);
+   //             console.log((valHourFrom + getJam.jam));
+   //             // console.log(element);
+
+   //     },
+   //     error: function (data) {
+   //         $.alert('Failed!');
+   //         console.log(data);
+   //     }
+   // });
+   // });
+
+
+   // function disableHour() {
+   //     var valueDate = $('#date').val();
+   //     var billiardId = $('#billiard_id').val();
+
+   //     $.ajax({
+   //         type: 'POST',
+   //         url: "{{ route('check-schedule') }}",
+   //         headers: {
+   //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+   //         },
+   //         data: {
+   //         "_token": "{{ csrf_token() }}",
+   //         "date": valueDate,
+   //         "billiard_id": billiardId
+   //         },
+   //         success: function (data) {
+   //             console.log(data);
+   //             $("#time_from option").attr('disabled', false);
+
+   //             // Disable hours based on date
+   //             data.times.forEach(element => {
+   //                 $("#time_from option").attr('selected', false);
+   //                 let valHourFrom = element.substring(0, 5);
+   //                 $("#time_from option[value='" + valHourFrom + "']").attr('disabled', true);
+   //             });
+
+   //             // Disable hours based on billiard ID
+   //             // data.billiards.forEach(billiard => {
+   //             //     let valHourFrom = billiard.substring(0, 5);
+   //             //     $("#time_from option[value='" + valHourFrom + "']").attr('disabled', true);
+   //             // });
+   //         },
+   //         error: function (data) {
+   //         $.alert('Failed!');
+   //         console.log(data);
+   //         }
+   //     });
+   // }
+
+
+
+</script>
+{{-- <script>
+   function disableHour() {
+       const dateInput = document.getElementById('date');
+       const dayOfWeek = new Date(dateInput.value).getDay();
+       const timeFromSelect = document.getElementById('time_from');
+
+       // Enable all options by default
+       timeFromSelect.querySelectorAll('option').forEach(option => {
+           option.disabled = false;
+       });
+
+       if (dayOfWeek === 0 || dayOfWeek === 6) { // Saturday (0) and Sunday (6)
+           // Disable options before 7 AM (07:00)
+           timeFromSelect.querySelectorAll('option').forEach(option => {
+               if (option.value < '07:00') {
+                   option.disabled = true;
+               }
+           });
+       }
+   }
+</script> --}}
+<script>
+   // sahri
+   // Mendapatkan elemen input date dari dokumen
+   // const inputDate = document.getElementById('date');
+
+   // // Mendapatkan tanggal saat ini
+   // const today = new Date();
+
+   // // Menambahkan satu hari ke tanggal saat ini
+   // const tomorrow = new Date(today);
+   // tomorrow.setDate(tomorrow.getDate() + 1);
+
+   // // Format tanggal menjadi YYYY-MM-DD untuk input date
+   // const formattedTomorrow = tomorrow.toISOString().split('T')[0];
+   // // console.log(inputDate.value);
+   // // Tetapkan tanggal saat ini sebagai nilai minimal
+   // inputDate.min = today.toISOString().split('T')[0];
+
+   // // Tetapkan tanggal +1 hari sebagai nilai maksimal
+   // inputDate.max = formattedTomorrow;
+
+   // const inputDate = document.getElementById('date');
+   // const today = new Date();
+   // const tomorrow = new Date(today);
+   // tomorrow.setDate(tomorrow.getDate() + 1);
+
+   // // Format tanggal menjadi YYYY-MM-DD untuk input date
+   // const formattedToday = today.toISOString().split('T')[0];
+   // // console.log(formattedToday);
+   // const formattedTomorrow = tomorrow.toISOString().split('T')[0];
+
+   // // Tetapkan tanggal saat ini sebagai nilai minimal
+   // inputDate.min = formattedToday;
+
+   // // Tetapkan tanggal +1 hari sebagai nilai maksimal
+   // inputDate.max = formattedTomorrow;
+
+
+
+</script>
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.7.0/datepicker.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/flatpickr.min.js"></script> --}}
+{{-- <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script> --}}
+{{-- <script src="https://unpkg.com/js-datepicker/dist/datepicker.min.js"></script> --}}
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/2.2.0/luxon.min.js"></script> --}}
+{{-- <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/js/main.js"></script> --}}
+<script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
+<script>
+   // Step 3: Initialize Flatpickr on the input field
+   // const inputDate = document.getElementById('date');
+   // const today = new Date();
+   // const tomorrow = new Date(today);
+   // tomorrow.setDate(tomorrow.getDate() + 1);
+
+   // // Format tanggal menjadi YYYY-MM-DD untuk input date
+   // const formattedToday = today.toISOString().split('T')[0];
+   // const formattedTomorrow = tomorrow.toISOString().split('T')[0];
+
+   // // Initialize Flatpickr
+   // flatpickr(inputDate, {
+   //     minDate: formattedToday,
+   //     maxDate: formattedTomorrow,
+   //     dateFormat: "Y-m-d",
+   //     disableMobile: true, // To ensure a better experience on mobile devices
+   // });
+
+   // flatpickr('#date', {
+   //     minDate: 'today', // Today's date as the minimum date
+   //     maxDate: new Date().fp_incr(1), // Tomorrow's date as the maximum date
+   //     disable: [
+   //         function(date) {
+   //             // Disable all dates before today
+   //             return date < new Date();
+   //         },
+   //         function(date) {
+   //             // Disable all dates after tomorrow
+   //             const tomorrow = new Date();
+   //             tomorrow.setDate(tomorrow.getDate() + 1);
+   //             return date > tomorrow;
+   //         }
+   //     ],
+   //     dateFormat: "Y-m-d",
+   //     disableMobile: true // To ensure a better experience on mobile devices
+   // });
+
+
+
+       document.addEventListener("DOMContentLoaded", function () {
+           // Initialize Litepicker with date restrictions
+           const inputDate = document.getElementById('date');
+           const today = new Date();
+           const tomorrow = new Date(today);
+           tomorrow.setDate(tomorrow.getDate() + 1);
+
+           // Format tanggal menjadi YYYY-MM-DD untuk input date
+           const formattedToday = today.toISOString().split('T')[0];
+           const formattedTomorrow = tomorrow.toISOString().split('T')[0];
+
+           // Initialize Litepicker
+           new Litepicker({
+               element: inputDate,
+               singleMode: true, // Single date selection
+               minDate: formattedToday, // Today's date as the minimum date
+               maxDate: formattedTomorrow, // Tomorrow's date as the maximum date
+               format: 'YYYY-MM-DD', // Updated Date format to "27/07/2023"
+               setup: (picker) => {
+                   picker.on('selected', (el) => {
+                       toggleTimeFrom();
+                   });
+               }
+           });
+           // console.log(picker);
+            // Tambahkan event listener "select" ke objek Litepicker untuk memanggil fungsi onDateSelect
+           // picker.on('select', () => {
+           //     toggleTimeFrom();
+           // });
+
+       });
+
+       // document.getElementById('date').addEventListener('change', toggleTimeFrom);
+</script>
+
+{{-- Get The Detail Add On --}}
+<script>
+    function getAddOn(id, no) {
+        console.log('masuk');
+        $('.add-ons-list-' + no).css('display', 'none');
+        $('#add-ons-' + id).css('display', 'block');
+        // Remove All selected add on
+        $('.typeAddOn'+no).prop('checked', false);
+        $('.detail-add-ons-'+no).css('display', 'none');
+        $('.detail-add-ons-input-'+no).prop('checked', false);
     }
-
-    function disableHour() {
-        const valueDate = $('#date').val();
-        const billiardId = $('#billiard_id').val();
-        console.log(valueDate, billiardId);
-        $.ajax({
-            type: 'POST',
-            url: "{{ route('check-schedule') }}",
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            data: {
-                _token: "{{ csrf_token() }}",
-                date: valueDate,
-                billiard_id: billiardId
-            },
-            success: function(data) {
-                const timeFromSelect = $('#time_from_weekdays, #time_from_weekend');
-                timeFromSelect.find('option').prop('disabled', false); // Enable all options first
-                disableByCurrentTimeWith15MinuteInterval();
-                console.log(data);
-
-                // Disable already booked time slots
-                let disableAll = false;
-                data.timeFrom.forEach((dateFrom, index) => {
-                    const dateTo = data.timeTo[index];
-                    const fromHour = parseInt(dateFrom.split(':')[0]);
-                    const fromMinute = parseInt(dateFrom.split(':')[1]);
-
-                    if (!dateTo) { // If dateTo is empty
-                        disableAll = true;
-                    } else {
-                        const toHour = parseInt(dateTo.split(':')[0]);
-                        const toMinute = parseInt(dateTo.split(':')[1]);
-
-                        timeFromSelect.find('option').each(function() {
-                            const [elHour, elMinute] = $(this).val().split(':').map(Number);
-                            if ((elHour > fromHour && elHour < toHour) ||
-                                (elHour === fromHour && elMinute >= fromMinute) ||
-                                (elHour === toHour && elMinute <= toMinute)) {
-                                $(this).attr('disabled', 'disabled');
-                            }
-                        });
-                    }
-                });
-
-                if (disableAll) {
-                    timeFromSelect.find('option').each(function() {
-                        $(this).attr('disabled', 'disabled');
-                    });
-                }
-            }
-        });
-    }
-
-    $('#date').on('change', function() {
-        toggleTimeFrom();
-        disableHour();
-    });
-
-    $('#billiard_id').on('change', disableHour);
-
-    function toggleTimeFrom() {
-        const dayOfWeek = new Date($('#date').val()).getDay();
-        const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-        $('#timeFromContainer').toggle(!isWeekend);
-        $('#weekend').toggle(isWeekend);
-    }
-
-    // Initialize Litepicker
-    const picker = new Litepicker({
-        element: document.getElementById('date'),
-        singleMode: true,
-        minDate: new Date().toISOString().split('T')[0],
-        maxDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split('T')[0],
-        format: 'YYYY-MM-DD',
-        setup: (picker) => {
-            picker.on('selected', function() {
-                toggleTimeFrom();
-                disableHour();
-            });
+    function getAddOnDetail(id, type)
+    {
+        if (type === 'normal') {
+            $('#detail-add-ons-'+id).css('display', 'block');
         }
-    });
-
-    // Initial call to toggleTimeFrom to set the correct display state on page load
-    $(document).ready(function() {
-        toggleTimeFrom();
-        disableHour();
-    });
-
+        // else {
+        //     $('#detail-add-ons-'+id).css('display', 'none');
+        // }
+    }
 </script>
 @endpush

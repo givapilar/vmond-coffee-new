@@ -1460,6 +1460,7 @@ class OrderController extends Controller
 
     public function checkoutBilliardOpenbill(Request $request, $token)
     {
+        dd($request->all());
         $checkToken = Order::where('token', $token)->where('status_pembayaran', 'Paid')->exists();
         if ($checkToken) {
             return redirect()->route('homepage')->with(['failed' => 'Tidak dapat mengulang transaksi!']);
@@ -1474,7 +1475,7 @@ class OrderController extends Controller
         $nama_kasir = Auth::user()->id;
 
         $lastOrder = Order::whereDate('created_at', $today)->where('token', $token)->first();
-        $time_from = date('Y-m-d H:i', strtotime("{$request->date} {$request->time_from}"));
+        $time_from = date('H:i:s', strtotime($request->time_from));
 
         if (!$lastOrder) {
             $order = Order::create([
