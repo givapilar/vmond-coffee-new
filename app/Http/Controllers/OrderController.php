@@ -1460,7 +1460,7 @@ class OrderController extends Controller
 
     public function checkoutBilliardOpenbill(Request $request, $token)
     {
-        dd($request->all());
+        // dd($request->all());
         $checkToken = Order::where('token', $token)->where('status_pembayaran', 'Paid')->exists();
         if ($checkToken) {
             return redirect()->route('homepage')->with(['failed' => 'Tidak dapat mengulang transaksi!']);
