@@ -41,14 +41,14 @@
                             <p class="text-sm font-medium text-gray-900 truncate dark:text-white">EDC</p>
                         </div>
                         <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                            <input required type="radio" class="edisi-radio w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <input required type="radio" id="edisi-radio-{{ $item->id }}" class="edisi-radio w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" value="EDC">
                         </div>
                     </div>
                 </li>
-                <li class="py-3 sm:py-2 edisi-pembayaran-wrapper" style="display:none;">
+                <li class="py-3 sm:py-2 edisi-pembayaran-wrapper-{{ $item->id }}" style="display:none;">
                     <div id="select-input-wrapper">
-                        <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih EDC</label>
-                        <select id="countries" name="metode_edisi" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <label for="countries-{{ $item->id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih EDC</label>
+                        <select id="countries-{{ $item->id }}" name="metode_edisi" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option disabled selected>Pilih EDC</option>
                             <option value="EDC MANDIRI">EDC MANDIRI</option>
                             <option value="EDC BCA">EDC BCA</option>
@@ -74,15 +74,20 @@
 <script src="{{ asset('assetku/dataku/js/socket.io.js') }}"></script> --}}
 <script>
     // const paymentGatewayRadio = document.getElementById('payment_gateaway');
-    const edcRadio = document.querySelector('.edisi-radio');
-    const edisiPembayaranWrapper = document.querySelector('.edisi-pembayaran-wrapper');
+    // Replace with the actual ID or a way to dynamically fetch it
+    const itemId = '{{ $item->id }}';
 
-    edcRadio.addEventListener('change', function() {
-        if (this.checked) {
-            edisiPembayaranWrapper.style.display = 'block';
-        } else {
-            edisiPembayaranWrapper.style.display = 'none';
-        }
-    });
+    const edcRadio = document.getElementById(`edisi-radio-${itemId}`);
+    const edisiPembayaranWrapper = document.querySelector(`.edisi-pembayaran-wrapper-${itemId}`);
+
+    if (edcRadio && edisiPembayaranWrapper) {
+        edcRadio.addEventListener('change', function() {
+            if (this.checked) {
+                edisiPembayaranWrapper.style.display = 'block';
+            } else {
+                edisiPembayaranWrapper.style.display = 'none';
+            }
+        });
+    }
 
 </script>
