@@ -94,7 +94,7 @@ class DetailController extends Controller
     public function detailBilliardOpenbill()
     {
         $data ['image'] = 'https://managementvmond.controlindo.com/assets/images/paket-menu/';
-        $data ['billiard'] = Biliard::get();
+        $data ['billiard'] = Biliard::orderBy('nama','asc')->get();
         return view('daftarmenu.billiard.detail-open-bill',$data);
     }
 
