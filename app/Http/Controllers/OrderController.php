@@ -781,7 +781,7 @@ class OrderController extends Controller
 
         if ($latestOrder) {
             // Generate No Invoice
-            $latestOrder->update(['invoice_no' => $this->generateInvoice()]);
+            $latestOrder->update(['invoice_no' => $this->generateInvoice(), 'code' => 'Open']);
 
             $userID = $latestOrder->user_id;
             $cart = \Cart::session($userID)->getContent();
@@ -1111,7 +1111,7 @@ class OrderController extends Controller
             // Set 3DS transaction for credit card to true
             \Midtrans\Config::$is3ds = true;
             // dd(number_format($order->total_price, 0));
-            
+
             if (Auth::check()) {
                 if (Auth::user()->membership->level == 'Super Platinum') {
                     # code...
@@ -1473,47 +1473,51 @@ class OrderController extends Controller
         $formattedDate = $today->format('ymd');
         $nama_kasir = Auth::user()->id;
 
-        $lastOrder = Order::whereDate('created_at', $today)->orderBy('id', 'desc')->first();
-        $nextOrderNumber = $lastOrder ? ((int)substr($lastOrder->invoice_no, 7) + 1) : 1;
-        $paddedOrderNumber = str_pad($nextOrderNumber, 3, '0', STR_PAD_LEFT);
-        $invoiceNumber = $formattedDate . '-' . $paddedOrderNumber;
-
+        $lastOrder = Order::whereDate('created_at', $today)->where('token', $token)->first();
         $time_from = date('Y-m-d H:i', strtotime("{$request->date} {$request->time_from}"));
 
-        $order = Order::create([
-            'user_id' => auth()->user()->id,
-            'name' => $request->nama_customer,
-            'email' => $request->email ?? null,
-            'phone' => $request->phone ?? '',
-            'qty' => 1,
-            'code' => 'draft',
-            'date' => $request->date,
-            'category' => $request->category,
-            'time_from' => $time_from,
-            'time_to' => null,
-            'biliard_id' => $request->billiard_id,
-            'meeting_room_id' => $request->meeting_room_id,
-            'meja_restaurant_id' => $request->meja_restaurant_id,
-            'token' => $token,
-            'total_price' => 0,
-            'status_pembayaran' => 'Unpaid',
-            'status_lamp' => 'OFF',
-            'status_running' => 'NOT START',
-            'status_pesanan' => 'process',
-            'tipe_pemesanan' => 'OpenBill',
-            'invoice_no' => 'draft',
-            'created_at' => now(),
-            'service' => 0,
-            'pb01' => 0,
-            'nama_kasir' => $nama_kasir,
-            'metode_edisi' => null,
-            'harga_diskon_billiard' => 0,
-        ]);
+        if (!$lastOrder) {
+            $order = Order::create([
+                'user_id' => auth()->user()->id,
+                'name' => $request->nama_customer,
+                'email' => $request->email ?? null,
+                'phone' => $request->phone ?? '',
+                'qty' => 1,
+                'code' => 'draft',
+                'date' => $request->date,
+                'category' => $request->category,
+                'time_from' => $time_from,
+                'time_to' => null,
+                'biliard_id' => $request->billiard_id,
+                'meeting_room_id' => $request->meeting_room_id,
+                'meja_restaurant_id' => $request->meja_restaurant_id,
+                'token' => $token,
+                'total_price' => 0,
+                'status_pembayaran' => 'Unpaid',
+                'status_lamp' => 'OFF',
+                'status_running' => 'NOT START',
+                'status_pesanan' => 'process',
+                'tipe_pemesanan' => 'OpenBill',
+                'invoice_no' => 'draft',
+                'created_at' => now(),
+                'service' => 0,
+                'pb01' => 0,
+                'nama_kasir' => $nama_kasir,
+                'metode_edisi' => null,
+                'harga_diskon_billiard' => 0,
+            ]);
+            $data = [
+                'other_setting' => OtherSetting::first(),
+                'token' => Order::where('token', $token)->pluck('token')
+            ];
+        } else {
+            $order = Order::where('token', $token)->first();
+            $data = [
+                'other_setting' => OtherSetting::first(),
+                'token' => Order::where('token', $token)->pluck('token')
+            ];
+        }
 
-        $data = [
-            'other_setting' => OtherSetting::first(),
-            'token' => Order::where('token', $token)->pluck('token')
-        ];
 
         return view('checkout.billiard.billiard-openbill', $data, compact('order'));
     }
@@ -1542,7 +1546,7 @@ class OrderController extends Controller
         $other_setting = OtherSetting::first();
 
         // Hitung harga layanan dan pajak
-        $harga = $hoursDiff * $getBilliardPrice->harga_diskon;
+        $harga = ($hoursDiff + 1) * $getBilliardPrice->harga_diskon;
         $layanan = ($harga * $other_setting->layanan / 100);
         $pb01 = ($harga + $layanan) * ($other_setting->pb01 / 100);
 
@@ -1552,6 +1556,7 @@ class OrderController extends Controller
         // Update data order
         $getOrder->time_to = $time_to;
         $getOrder->status_pembayaran = 'Paid';
+        $getOrder->code = 'Close';
         $getOrder->service = $layanan;
         $getOrder->pb01 = $pb01;
         $getOrder->total_price = $total_harga;
