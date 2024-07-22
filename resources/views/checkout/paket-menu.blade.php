@@ -188,8 +188,6 @@
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script src="{{ asset('assetku/dataku/js/socket.io.js') }}"></script>
 <script>
-    //  var username = {{ \Cart::session(Auth::user()->id)->getContent() }};
-        // console.log(username);
     $('.slick1').slick({
         infinite:false,
         arrows: false,
@@ -230,7 +228,7 @@
     })
  </script>
 
-<script type="text/javascript">
+{{-- <script type="text/javascript">
     // For example trigger on button clicked, or any time you need
     var payButton = document.getElementById('pay-button');
     payButton.addEventListener('click', function () {
@@ -280,7 +278,7 @@
         }
       })
     });
-  </script>
+</script> --}}
 
 <script>
     let socket = window.socketio;
