@@ -2420,7 +2420,17 @@ class OrderController extends Controller
         $today = Carbon::today();
         $formattedDate = $today->format('ymd');
 
-        $lastOrder = Order::whereDate('updated_at', $today)->where('status_pembayaran', 'Paid')->orderBy('id','desc')->first();
+        $lastOrder = Order::where(function($query) {
+            $query->where('status_pembayaran', 'Paid')
+                  ->orWhere(function($query) {
+                      $query->where('status_pembayaran', 'Unpaid')
+                            ->where('tipe_pemesanan', 'OpenBill')
+                            ->where('invoice_no', '!=', 'draft');
+                  });
+        })
+        ->whereDate('updated_at', $today)
+        ->orderBy('id','desc')->first();
+
         if ($lastOrder) {
             // Cek apakah order dibuat pada tanggal yang sama dengan hari ini
             $lastInvoiceNumber = $lastOrder->invoice_no;
