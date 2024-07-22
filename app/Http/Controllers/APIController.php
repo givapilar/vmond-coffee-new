@@ -32,16 +32,23 @@ class APIController extends Controller
     //     }
 
     // }
-    
+
     public function checkDateSchedule(Request $request)
     {
         try {
             // billiard_id
-            $orders = Order::where('status_pembayaran', 'Paid')
-                ->whereDate('date', $request->date)
-                ->where('biliard_id', $request->billiard_id)
-                ->select('time_from', 'time_to', 'biliard_id')
-                ->get();
+            $orders = Order::where(function($query) {
+                $query->where('status_pembayaran', 'Paid')
+                      ->orWhere(function($query) {
+                          $query->where('status_pembayaran', 'Unpaid')
+                                ->where('tipe_pemesanan', 'OpenBill')
+                                ->where('invoice_no', '!=', 'draft');
+                      });
+            })
+            ->whereDate('date', $request->date)
+            ->where('biliard_id', $request->billiard_id)
+            ->select('time_from', 'time_to', 'biliard_id')
+            ->get();
 
             $timeFrom = [];
             $timeTo = [];
@@ -109,19 +116,19 @@ class APIController extends Controller
                 'msisdnDev' => $request->msisdn,
                 'passwordDev' => $request->password,
             ];
-    
+
             // Lakukan permintaan HTTP POST ke URL tertentu dengan data dalam body
             $response = $client->post('http://172.31.32.85:2222/v1/api/get-token-fintech', [
                 'json' => $dataToSend, // Data yang akan dikirim dalam format JSON
             ]);
-    
+
             // Ambil isi respons sebagai string
             $data = $response->getBody()->getContents();
-    
+
             // Sekarang Anda dapat melakukan sesuatu dengan data yang diterima
             // Konversi respons JSON menjadi array asosiatif
             $responseData = json_decode($data, true);
-    
+
             // Kembalikan respons JSON
             return response()->json(['data' => $responseData]);
         } catch (\Exception $e) {
@@ -139,19 +146,19 @@ class APIController extends Controller
                 'dttoken' => $request->dttoken,
                 'notelp' => $request->notelp,
             ];
-    
+
             // Lakukan permintaan HTTP POST ke URL tertentu dengan data dalam body
             $response = $client->post('http://172.31.32.85:2222/v1/api/send-otp-fintech', [
                 'json' => $dataToSend, // Data yang akan dikirim dalam format JSON
             ]);
-    
+
             // Ambil isi respons sebagai string
             $data = $response->getBody()->getContents();
-    
+
             // Sekarang Anda dapat melakukan sesuatu dengan data yang diterima
             // Konversi respons JSON menjadi array asosiatif
             $responseData = json_decode($data, true);
-    
+
             // Kembalikan respons JSON
             return response()->json(['data' => $responseData]);
         } catch (\Exception $e) {
@@ -169,19 +176,19 @@ class APIController extends Controller
                 'amount' => $request->amount,
                 'expired' => $request->expired,
             ];
-    
+
             // Lakukan permintaan HTTP POST ke URL tertentu dengan data dalam body
             $response = $client->post('http://172.31.32.85:2222/v1/api/create-qr', [
                 'json' => $dataToSend, // Data yang akan dikirim dalam format JSON
             ]);
-    
+
             // Ambil isi respons sebagai string
             $data = $response->getBody()->getContents();
-    
+
             // Sekarang Anda dapat melakukan sesuatu dengan data yang diterima
             // Konversi respons JSON menjadi array asosiatif
             $responseData = json_decode($data, true);
-    
+
             // Kembalikan respons JSON
             return response()->json(['data' => $responseData]);
         } catch (\Exception $e) {
@@ -202,19 +209,19 @@ class APIController extends Controller
                 'product' => $request->product,
                 'dtreference' => $request->dtreference,
             ];
-    
+
             // Lakukan permintaan HTTP POST ke URL tertentu dengan data dalam body
             $response = $client->post('http://172.31.32.85:2222/v1/api/aktivasi', [
                 'json' => $dataToSend, // Data yang akan dikirim dalam format JSON
             ]);
-    
+
             // Ambil isi respons sebagai string
             $data = $response->getBody()->getContents();
-    
+
             // Sekarang Anda dapat melakukan sesuatu dengan data yang diterima
             // Konversi respons JSON menjadi array asosiatif
             $responseData = json_decode($data, true);
-    
+
             // Kembalikan respons JSON
             return response()->json(['data' => $responseData]);
         } catch (\Exception $e) {
@@ -232,19 +239,19 @@ class APIController extends Controller
                 'amount' => $request->dttoken,
                 'expired' => $request->msisdn,
             ];
-    
+
             // Lakukan permintaan HTTP POST ke URL tertentu dengan data dalam body
             $response = $client->post('http://172.31.32.85:2222/v1/api/create-qr', [
                 'json' => $dataToSend, // Data yang akan dikirim dalam format JSON
             ]);
-    
+
             // Ambil isi respons sebagai string
             $data = $response->getBody()->getContents();
-    
+
             // Sekarang Anda dapat melakukan sesuatu dengan data yang diterima
             // Konversi respons JSON menjadi array asosiatif
             $responseData = json_decode($data, true);
-    
+
             // Kembalikan respons JSON
             return response()->json(['data' => $responseData]);
         } catch (\Exception $e) {
@@ -263,19 +270,19 @@ class APIController extends Controller
             $dataToSend = [
                 'qrid' => $getOrderByID->invoice_id,
             ];
-    
+
             // Lakukan permintaan HTTP POST ke URL tertentu dengan data dalam body
             $response = $client->post('http://172.31.32.85:2222/v1/api/check-status-pay', [
                 'json' => $dataToSend, // Data yang akan dikirim dalam format JSON
             ]);
-    
+
             // Ambil isi respons sebagai string
             $data = $response->getBody()->getContents();
-    
+
             // Sekarang Anda dapat melakukan sesuatu dengan data yang diterima
             // Konversi respons JSON menjadi array asosiatif
             $responseData = json_decode($data, true);
-    
+
             // Kembalikan respons JSON
             return response()->json(['data' => $responseData]);
         } catch (\Exception $e) {
@@ -299,9 +306,9 @@ class APIController extends Controller
         $requestData = [
             'grantType' => 'client_credentials',
         ];
-        
-        $currentDatetime = new DateTime('now', new DateTimeZone('UTC')); 
-        $microseconds = substr((string) $currentDatetime->format('u'), 0, 3); 
+
+        $currentDatetime = new DateTime('now', new DateTimeZone('UTC'));
+        $microseconds = substr((string) $currentDatetime->format('u'), 0, 3);
         $timestamp = $currentDatetime->format('Y-m-d\TH:i:s') . '.' . $microseconds . 'Z';
 
         // $dataToSign = '1DhFVj7GA8bfll4tLJuD3KzHxPO3tzCb|' . $timestamp;
@@ -316,16 +323,16 @@ class APIController extends Controller
         if ($privateKey === false) {
             die("Failed to load private key: " . openssl_error_string());
         }
-        
+
         $signature = '';
         // Melakukan tanda-tangan dengan metode SHA256withRSA
         openssl_sign($dataToSign, $signature, $privateKey, OPENSSL_ALGO_SHA256);
-        
+
         openssl_free_key($privateKey);
 
         // Konversi tanda-tangan ke bentuk base64
         $signatureBase64 = base64_encode($signature);
-        
+
         $headers = [
             'X-SIGNATURE' => $signatureBase64,
             // 'X-CLIENT-KEY' => '1DhFVj7GA8bfll4tLJuD3KzHxPO3tzCb',
@@ -334,13 +341,13 @@ class APIController extends Controller
             'Content-Type' => 'application/json',
         ];
 
-        
+
         // Membuat permintaan POST
         $response = $client->post($url, [
             RequestOptions::HEADERS => $headers,
             RequestOptions::JSON => $requestData, // Mengirim data dalam format JSON
         ]);
-        
+
         // Mendapatkan respons dari API
         $responseData = json_decode($response->getBody(), true);
 
@@ -360,7 +367,7 @@ class APIController extends Controller
 
         // return $formattedInt;
         // 444431007182
-        
+
         $requestDataQr = [
             'partnerReferenceNo' => '4444'.$randomDigits,
             'amount' => [
@@ -378,12 +385,12 @@ class APIController extends Controller
         $timestamp->setTimezone(new DateTimeZone('Asia/Jakarta'));
         $timestampQr = $timestamp-> format('Y-m-d\TH:i:sP');
 
-        $method = 'POST'; 
-        $endpointUrl = '/v1.0/qr-dynamic-mpm/qr-mpm-generate-qr'; 
+        $method = 'POST';
+        $endpointUrl = '/v1.0/qr-dynamic-mpm/qr-mpm-generate-qr';
         $requestBodyQr = json_encode($requestDataQr);
         $minifiedRequestBody = strtolower(preg_replace('/\s+/', '', hash('sha256', $requestBodyQr)));
-        
-        
+
+
         $stringToSign = $method.':'.$endpointUrl .':'.$token . ':'.$minifiedRequestBody .':'.'2023-10-16T23:29:36+07:00';
 
         $privateKeyPath = realpath(public_path('assetku/dataku/public-key/public-key-bri.pem'));
@@ -402,8 +409,8 @@ class APIController extends Controller
 
         $hmacSignature = hash_hmac('sha512', $payload, $clientId);
 
-        $timestamp = time(); 
-        $randomSeed = $timestamp % 10000; 
+        $timestamp = time();
+        $randomSeed = $timestamp % 10000;
         // $externalId = str_pad(mt_rand($randomSeed, 9999), 6, '0', STR_PAD_LEFT);
         $externalId = str_pad(mt_rand($randomSeed, 99999999), 6, '0', STR_PAD_LEFT);
 

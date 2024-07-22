@@ -75,6 +75,7 @@ Route::post('/checkout-paket-menu/{token}',[OrderController::class,'checkoutPake
 // Route::get('/daftarmenu/detail-resto/{$id}', [DetailController::class, 'restaurant'])->name('detail-resto');
 Route::get('/daftarmenu/restaurant/{id}/{category}', [DetailController::class, 'detailRestaurant'])->name('detail-resto');
 Route::get('/daftarmenu/billiard/{id}', [DetailController::class, 'detailBilliard'])->name('detail-billiard');
+Route::get('/daftarmenu/billiard/vmond/openbill', [DetailController::class, 'detailBilliardOpenbill'])->name('detail-billiard-openbill');
 Route::get('/daftarmenu/billiard-guest/{id}', [DetailController::class, 'detailBilliardGuest'])->name('detail-billiard-guest');
 Route::get('/daftarmenu/meeting-room/{id}', [DetailController::class, 'detailMeeting'])->name('detail-meeting');
 
@@ -94,7 +95,7 @@ Route::get('/detailmenu/{type}/{slug}', function (Request $request,$type, $slug)
     $rest_api_url = $global_url.$type.'/'.$slug;
     // Belum selesai
     $getData = file_get_contents($rest_api_url);
-    try {   
+    try {
         $getJSON = json_decode($getData);
         // $getJSON = $getJSON->data;
     } catch (\Throwable $th) {
@@ -183,6 +184,8 @@ Route::get('orders',[OrderController::class,'index'])->name('order.index');
 Route::post('/checkout/{token}',[OrderController::class,'checkout'])->name('checkout-order');
 Route::post('/checkout-guest/{token}',[OrderController::class,'checkoutGuest'])->name('checkout-order-guest');
 Route::post('/checkout-billiard/{token}',[OrderController::class,'checkoutBilliard'])->name('checkout-billiard');
+Route::post('/checkout-billiard-openbill/{token}',[OrderController::class,'checkoutBilliardOpenbill'])->name('checkout-billiard-openbill');
+Route::post('/checkout-billiard-openbill-update/{id}',[OrderController::class,'checkoutBilliardOpenbillUpdate'])->name('checkout-billiard-openbill-update');
 Route::post('/checkout-billiard-guest/{token}',[OrderController::class,'checkoutBilliardGuest'])->name('checkout-billiard-guest');
 Route::post('/checkout-meeting',[OrderController::class,'checkoutMeeting'])->name('checkout-meeting');
 Route::get('/invoice/{id}',[OrderController::class,'invoice'])->name('invoice');
@@ -217,6 +220,7 @@ Route::post('/data/update-stock-bri',[OrderController::class,'updateStockBRI'])-
 
 // Success order Waiters
 Route::post('/checkout/checkout-waiters/{token}',[OrderController::class,'checkoutWaiters'])->name('checkout-waiters');
+Route::post('/checkout/checkout-waiters-openbill/{token}',[OrderController::class,'checkoutWaitersBilliardOpenbill'])->name('checkout-waiters-openbill');
 
 // delete meja id
 Route::get('/checkout/destroy',[OrderController::class,'resetMeja'])->name('reset-meja');

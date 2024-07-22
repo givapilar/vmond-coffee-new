@@ -7,6 +7,7 @@ use App\Models\AddOn;
 use App\Models\AddOnDetail;
 use App\Models\Kupon;
 use App\Models\Membership;
+use App\Models\MenuPackages;
 use App\Models\Order;
 use App\Models\OrderAddOn;
 use App\Models\OrderBilliard;
@@ -738,7 +739,7 @@ class OrderController extends Controller
                 Kupon::insert($kupons);
             }
         }
-        
+
         // dd($latestOrder);
         if ($latestOrder) {
             // Ubah status pembayaran menjadi "Paid"
@@ -764,6 +765,29 @@ class OrderController extends Controller
 
         return redirect()->route('homepage')->with('success', 'Order Telah berhasil');
 
+    }
+
+    public function checkoutWaitersBilliardOpenbill(Request $request, $token)
+    {
+        $checkToken = Order::where('token', $token)->where('status_pembayaran', 'Paid')->exists();
+        if ($checkToken) {
+            return redirect()->route('homepage')->with(['failed' => 'Tidak dapat mengulang transaksi!']);
+        }
+
+        $latestOrder = Order::where('token', $token)->latest('id')->first();
+
+        if ($latestOrder) {
+            // Generate No Invoice
+            $latestOrder->update(['invoice_no' => $this->generateInvoice()]);
+
+            $userID = $latestOrder->user_id;
+            $cart = \Cart::session($userID)->getContent();
+
+            // Menghapus item dari session cart
+            \Cart::session($userID)->clear();
+        }
+
+        return redirect()->route('homepage')->with('success', 'Order Telah berhasil');
     }
 
     public function callback(Request $request)
@@ -1397,6 +1421,113 @@ class OrderController extends Controller
         $data['orders'] = Order::latest()->first();
         $data['order_last'] = Order::latest()->first();
         return view('checkout.billiard-index',$data,compact('snapToken','order'));
+    }
+
+    public function checkoutBilliardOpenbill(Request $request, $token)
+    {
+        $checkToken = Order::where('token', $token)->where('status_pembayaran', 'Paid')->exists();
+        if ($checkToken) {
+            return redirect()->route('homepage')->with(['failed' => 'Tidak dapat mengulang transaksi!']);
+        }
+
+        if (!$request->time_from || !$request->billiard_id) {
+            return redirect()->back()->with(['failed' => 'Harap Isi Jam dan Meja Billiard!']);
+        }
+
+        $today = Carbon::today();
+        $formattedDate = $today->format('ymd');
+        $nama_kasir = Auth::user()->id;
+
+        $lastOrder = Order::whereDate('created_at', $today)->orderBy('id', 'desc')->first();
+        $nextOrderNumber = $lastOrder ? ((int)substr($lastOrder->invoice_no, 7) + 1) : 1;
+        $paddedOrderNumber = str_pad($nextOrderNumber, 3, '0', STR_PAD_LEFT);
+        $invoiceNumber = $formattedDate . '-' . $paddedOrderNumber;
+
+        $time_from = date('Y-m-d H:i', strtotime("{$request->date} {$request->time_from}"));
+
+        $order = Order::create([
+            'user_id' => auth()->user()->id,
+            'name' => $request->nama_customer,
+            'email' => $request->email ?? null,
+            'phone' => $request->phone ?? '',
+            'qty' => 1,
+            'code' => 'draft',
+            'date' => $request->date,
+            'category' => $request->category,
+            'time_from' => $time_from,
+            'time_to' => null,
+            'biliard_id' => $request->billiard_id,
+            'meeting_room_id' => $request->meeting_room_id,
+            'meja_restaurant_id' => $request->meja_restaurant_id,
+            'token' => $token,
+            'total_price' => 0,
+            'status_pembayaran' => 'Unpaid',
+            'status_lamp' => 'OFF',
+            'status_running' => 'NOT START',
+            'status_pesanan' => 'process',
+            'tipe_pemesanan' => 'OpenBill',
+            'invoice_no' => 'draft',
+            'created_at' => now(),
+            'service' => 0,
+            'pb01' => 0,
+            'nama_kasir' => $nama_kasir,
+            'metode_edisi' => null,
+            'harga_diskon_billiard' => 0,
+        ]);
+
+        $data = [
+            'other_setting' => OtherSetting::first(),
+            'token' => Order::where('token', $token)->pluck('token')
+        ];
+
+        return view('checkout.billiard.billiard-openbill', $data, compact('order'));
+    }
+
+    public function checkoutBilliardOpenbillUpdate(Request $request, $id)
+    {
+        $checkToken = Order::where('id', $id)->where('status_pembayaran', 'Paid')->exists();
+        if ($checkToken) {
+            return redirect()->route('homepage')->with(['failed' => 'Tidak dapat mengulang transaksi!']);
+        }
+
+        $today = Carbon::today();
+        $formattedDate = $today->format('ymd');
+        $nama_kasir = Auth::user()->id;
+
+        $getOrder = Order::whereDate('created_at', $today)->where('id', $id)->first();
+        $getBilliardPrice = MenuPackages::where('id', 8)->first();
+
+        $time_from = Carbon::createFromFormat('H:i:s', $getOrder->time_from);
+        $time_to = Carbon::now();
+
+        // Hitung selisih waktu dalam jam
+        $hoursDiff = $time_from->diffInHours($time_to);
+
+        // Ambil data other_setting
+        $other_setting = OtherSetting::first();
+
+        // Hitung harga layanan dan pajak
+        $harga = $hoursDiff * $getBilliardPrice->harga_diskon;
+        $layanan = ($harga * $other_setting->layanan / 100);
+        $pb01 = ($harga + $layanan) * ($other_setting->pb01 / 100);
+
+        // Hitung total harga
+        $total_harga = $harga + $layanan + $pb01;
+
+        // Update data order
+        $getOrder->time_to = $time_to;
+        $getOrder->status_pembayaran = 'Paid';
+        $getOrder->service = $layanan;
+        $getOrder->pb01 = $pb01;
+        $getOrder->total_price = $total_harga;
+        $getOrder->save();
+
+        $data = [
+            'other_setting' => $other_setting,
+            'order' => $getOrder
+        ];
+
+        return redirect()->back()->with(['success' => 'Berhasil close bill']);
     }
 
     public function checkoutBilliardGuest(Request $request, $token){
@@ -2338,7 +2469,7 @@ class OrderController extends Controller
 
             //     Kupon::insert($kupons);
             // }
-            
+
             if ($kuponCode >= 300000 && ($request->issuerName == 'Bank BRI' || $request->issuerName == 'BRI')) {
                 $totalKupon = floor($kuponCode / 300000);
 

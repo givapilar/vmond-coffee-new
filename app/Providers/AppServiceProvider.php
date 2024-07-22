@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -48,16 +49,19 @@ class AppServiceProvider extends ServiceProvider
             if (Auth::user()) {
                 $today = Carbon::tomorrow();
                 $query = Order::query();
+                $now = Carbon::now();
 
                 if (Auth::user()->telephone == '081818181847') {
-                    $oneHourAgo = Carbon::now()->subHour();
-                    $query->where('created_at', '>=', $oneHourAgo);
-            
-                    $query->where('status_pembayaran', 'Paid')->where('user_id', Auth::user()->id);
-                    $query->orderBy('id','desc');
-                    $query->limit(10);
-            
-                    $orderTable = $query->get();
+                    // Query untuk data dengan billiard_id tidak null dalam satu hari terakhir
+                    $orderTable = Order::where(function($query) {
+                        $query->Where(function($query) {
+                                  $query->where('status_pembayaran', 'Unpaid')
+                                        ->where('tipe_pemesanan', 'OpenBill')
+                                        ->where('invoice_no', '!=', 'draft');
+                              });
+                    })
+                    ->whereDate('date', $now)->get();
+
                 }else{
                     // $orderTable = $query->get();
                     $orderTable = Order::orderBy('id','desc')->where('user_id', Auth::user()->id)->where('status_pembayaran', 'Paid')->limit(1)->get();
@@ -70,7 +74,7 @@ class AppServiceProvider extends ServiceProvider
                 $otherSetting = OtherSetting::get();
                 $kodeMeja = User::where('id', Auth::user()->id)->get()->pluck('kode_meja')->first();
                 $ipAddress = request()->ip();
-                
+
                 if (request()->query('meja')) {
                     $Meja = request()->query('meja');
                 }else{
@@ -85,9 +89,9 @@ class AppServiceProvider extends ServiceProvider
 
 
 
-                // Image Banner 
-               
-                
+                // Image Banner
+
+
                 View::share('kodeMeja', $kodeMeja);
                 View::share('meja', $getMeja);
                 View::share('restaurantMenu',$restaurantMenu);

@@ -1,6 +1,6 @@
 
 <!-- Main modal -->
-<div id="description-modal{{ $item->id }}" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full overflow-x-hidden overflow-y-auto md:inset-0 h-full max-h-full">
+<div id="description-modal-billiard" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full overflow-x-hidden overflow-y-auto md:inset-0 h-full max-h-full">
     <div class="relative w-full h-full max-h-full">
         <!-- Modal content -->
         <div class="relative bg-white shadow h-full dark:bg-gray-700">

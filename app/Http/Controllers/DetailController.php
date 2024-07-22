@@ -31,7 +31,7 @@ class DetailController extends Controller
         ->all();
         $category = $category;
         $data['category'] = $category;
-        
+
         $data['users'] = User::first();
 
         // dd($restaurant);
@@ -87,8 +87,15 @@ class DetailController extends Controller
         } catch (\Throwable $th) {
             $role = [];
         }
-        
+
         return view('daftarmenu.detail-billiard',$data,compact(['role']));
+    }
+
+    public function detailBilliardOpenbill()
+    {
+        $data ['image'] = 'https://managementvmond.controlindo.com/assets/images/paket-menu/';
+        $data ['billiard'] = Biliard::get();
+        return view('daftarmenu.billiard.detail-open-bill',$data);
     }
 
     public function detailBilliardGuest($id)
@@ -122,7 +129,7 @@ class DetailController extends Controller
         } catch (\Throwable $th) {
             $role = [];
         }
-        
+
         return view('daftarmenu.detail-billiard-guest',$data,compact(['role']));
     }
 
@@ -138,7 +145,7 @@ class DetailController extends Controller
         $data['menu_package_pivots'] = MenuPackagePivots::where('menu_packages_id', $id)
         ->pluck('restaurant_id')
         ->all();
-        
+
         return view('daftarmenu.detail-meeting',$data);
     }
 

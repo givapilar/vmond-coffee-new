@@ -38,13 +38,13 @@
 
 
                         @if ($item->status_pesanan == 'selesai')
-                        
+
                         <div class="">
                             <div class="w-10 h-10 bg-green-400 mx-auto rounded-full text-lg text-white flex items-center">
                                 <svg class="w-5 h-5 text-gray-500 block mx-auto" fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512"><path d="M32 0C14.3 0 0 14.3 0 32S14.3 64 32 64V75c0 42.4 16.9 83.1 46.9 113.1L146.7 256 78.9 323.9C48.9 353.9 32 394.6 32 437v11c-17.7 0-32 14.3-32 32s14.3 32 32 32H64 320h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V437c0-42.4-16.9-83.1-46.9-113.1L237.3 256l67.9-67.9c30-30 46.9-70.7 46.9-113.1V64c17.7 0 32-14.3 32-32s-14.3-32-32-32H320 64 32zM288 437v11H96V437c0-25.5 10.1-49.9 28.1-67.9L192 301.3l67.9 67.9c18 18 28.1 42.4 28.1 67.9z"/></svg>
                             </div>
                         </div>
-                        @else       
+                        @else
                         <div class="">
                             <div class="w-10 h-10 bg-white border-2 border-grey-light mx-auto rounded-full text-md text-white flex items-center">
                                 <svg class="w-5 h-5 text-gray-500 block mx-auto" fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512"><path d="M32 0C14.3 0 0 14.3 0 32S14.3 64 32 64V75c0 42.4 16.9 83.1 46.9 113.1L146.7 256 78.9 323.9C48.9 353.9 32 394.6 32 437v11c-17.7 0-32 14.3-32 32s14.3 32 32 32H64 320h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V437c0-42.4-16.9-83.1-46.9-113.1L237.3 256l67.9-67.9c30-30 46.9-70.7 46.9-113.1V64c17.7 0 32-14.3 32-32s-14.3-32-32-32H320 64 32zM288 437v11H96V437c0-25.5 10.1-49.9 28.1-67.9L192 301.3l67.9 67.9c18 18 28.1 42.4 28.1 67.9z"/></svg>
@@ -70,7 +70,7 @@
 
 
                         @if ($item->status_pesanan == 'selesai')
-                            
+
                         <div class="">
                             <div class="w-10 h-10 bg-green-400 mx-auto rounded-full text-lg text-white flex items-center">
                                 <svg class="w-5 h-5 text-gray-500 block mx-auto" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L369 209z"/></svg>
@@ -137,11 +137,15 @@
                     @endif
                 </div>
             </div>
+
+            @if ($item->status_pembayaran == 'Unpaid' && $item->invoice_no != 'draft' && $item->biliard_id != null &&  $item->time_to == null && $item->tipe_pemesanan == 'OpenBill')
             <!-- Modal footer -->
-            {{-- <div class="fixed bottom-0 w-full h-auto">
+            <div class="fixed bottom-0 w-full h-auto">
                 <div class="flex items-center px-6 py-4 space-x-2 border-t border-gray-200 dark:border-gray-600">
-                    <button data-modal-hide="defaultModal" type="button" class="text-white w-full bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Konfirmasi</button>
+                    <button type="button" class="text-white w-full bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" data-modal-toggle="modal-openbill-{{ $item->id }}">Close Bill</button>
                 </div>
-            </div> --}}
+            </div>
+            @endif
+            @include('modal.modal-openbill')
     </div>
 </div>
