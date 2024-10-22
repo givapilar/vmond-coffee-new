@@ -399,7 +399,7 @@ class OrderController extends Controller
             // ================================ End Kupon ====================
 
             // Untuk Kirim Email
-            return view('checkout.iebndex',$data,compact('snapToken','order'));
+            return view('checkout.index',$data,compact('snapToken','order'));
         } catch (\Throwable $th) {
             dd($th->getMessage());
             DB::rollback();
