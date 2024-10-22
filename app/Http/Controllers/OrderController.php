@@ -191,7 +191,7 @@ class OrderController extends Controller
                     // $discount = (\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $discount = (\Cart::getTotal());
                     $count = 0.2 * $discount;
-                    $total_price = 1;
+                    $total_price = 1000;
                     // $service = (\Cart::getTotal() ) * $other_setting[0]->layanan/100;
                     // $pb01 = ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $service = 0;
@@ -399,7 +399,7 @@ class OrderController extends Controller
             // ================================ End Kupon ====================
 
             // Untuk Kirim Email
-            return view('checkout.index',$data,compact('snapToken','order'));
+            return view('checkout.iebndex',$data,compact('snapToken','order'));
         } catch (\Throwable $th) {
             dd($th->getMessage());
             DB::rollback();
