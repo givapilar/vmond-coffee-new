@@ -136,7 +136,7 @@ class OrderController extends Controller
                 $total_price = 1;
 
                 if (Auth::user()->membership->level == 'Super Platinum') {
-                    $total_price = 1;
+                    $total_price = 1000;
                     // $total_price = (\Cart::getTotal() + ((\Cart::getTotal() ) * $other_setting[0]->layanan/100)) + ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
                     $service = (\Cart::getTotal() ) * $other_setting[0]->layanan/100;
                     $pb01 = ((\Cart::getTotal()  ) + (\Cart::getTotal() ) * $other_setting[0]->layanan/100) * $other_setting[0]->pb01/100;
@@ -330,7 +330,7 @@ class OrderController extends Controller
                 $params = array(
                     'transaction_details' => array(
                         'order_id' => $order->id,
-                        'gross_amount' => 1,
+                        'gross_amount' => 1000,
                     ),
                     'customer_details' => array(
                         'first_name' => auth()->user()->username,
