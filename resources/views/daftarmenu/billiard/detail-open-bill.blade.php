@@ -242,34 +242,6 @@
    checkboxes.forEach((checkbox) => {
        checkbox.addEventListener('change', () => handleCheckboxChange(checkbox));
    });
-   // Get the minimum limit from PHP variable or set a default value of 0
-   // const minimumChecked = {{ $paket_menu->minimal ?? 0 }};
-
-   // // Function to handle checkbox changes
-   // function handleCheckboxChange(checkbox) {
-   //     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-
-   //     let checkedCount = 0;
-   //     for (const cb of checkboxes) {
-   //         if (cb.checked) checkedCount++;
-   //     }
-
-   //     for (const cb of checkboxes) {
-   //         if (cb !== checkbox) {
-   //             if (checkbox.checked && checkedCount >= minimumChecked) {
-   //                 cb.disabled = true;
-   //             } else {
-   //                 cb.disabled = false;
-   //             }
-   //         }
-   //     }
-   // }
-
-   // // Add event listeners to all checkboxes
-   // const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-   // checkboxes.forEach((checkbox) => {
-   //     checkbox.addEventListener('change', () => handleCheckboxChange(checkbox));
-   // });
 </script>
 <script>
    function toggleTimeFrom() {
@@ -307,98 +279,6 @@ toggleTimeFrom();
 
 
 <script>
-   // code sahri
-   // function disableHour(){
-   //     var valueDate = $('#date').val();
-   //     var billiardId = $('#billiard_id').val();
-
-   //     var getJam = {!! json_encode($paket_menu) !!};
-
-   //     $.ajax({
-   //         type: 'POST',
-   //         url: "{{ route('check-schedule') }}",
-   //         headers: {
-   //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-   //         },
-   //         data: {
-   //             "_token": "{{ csrf_token() }}",
-   //             "date": valueDate,
-   //             "billiard_id": billiardId
-   //         },
-   //         success: function (data) {
-   //             console.log(data);
-   //             $("#time_from option").prop('disabled', false); // Use prop() instead of attr()
-
-   //             // Get the current time
-   //             const currentTime = new Date();
-   //             const currentHour = currentTime.getHours();
-   //             console.log(billiardId, valueDate);
-   //             // data.times.forEach(element => {
-   //             //     let valHourFrom = element.substring(0, 5);
-   //             //     console.log((valHourFrom + getJam.jam));
-   //             //     const hourPart = parseInt(valHourFrom.substring(0, 2), 10);
-   //             //     console.log((hourPart + getJam.jam), currentHour);
-
-   //             //     // Loop through options and disable past hours and the current hour
-   //             //     const timeFromSelect = $(".time_from");
-   //             //     timeFromSelect.find("option").each(function (i, elem) {
-   //             //         const elid = parseInt($(elem).val());
-   //             //         if (!isNaN(elid)) {
-   //             //             if (elid < currentHour || hourPart === elid) {
-   //             //                 console.log('test' + elid, 'test' + i, elem);
-   //             //                 $(elem).prop('disabled', true); // Use prop() instead of attr()
-   //             //             } else {
-   //             //                 $(elem).prop('disabled', false); // Use prop() instead of removeAttr()
-   //             //             }
-   //             //         }
-   //             //     });
-
-   //             //     // Select the first available future hour (if any)
-   //             //     const firstEnabledOption = timeFromSelect.find("option:not(:disabled)").first();
-   //             //     if (firstEnabledOption.length > 0) {
-   //             //         timeFromSelect.val(firstEnabledOption.val());
-   //             //     }
-
-   //             //     // Disable the option with the same value as valHourFrom
-   //             //     $("#time_from option[value='" + valHourFrom + "']").prop('disabled', true); // Use prop() instead of attr()
-   //             // });
-   //         },
-   //         error: function (data) {
-   //             $.alert('Failed!');
-   //             console.log(data);
-   //         }
-   //     });
-   // }
-
-   // var valueDate = $('#date').val();
-   // var getJam = {!! json_encode($paket_menu) !!};
-   // const timeFromSelect = $(".time_from");
-   //             // Get the current time
-   // const currentTime = new Date();
-   // const currentHour = currentTime.getHours();
-   // const hourPart = parseInt(valHourFrom.substring(0, 2), 10);
-   // console.log((hourPart + getJam.jam) , currentHour);
-   // // Loop through options and disable past hours
-   // timeFromSelect.find("option").each(function(i, elem) {
-   //     const elid = parseInt($(elem).val());
-   //     if (elid != null && elid != NaN) {
-   //         if (elid < currentHour - 1 || hourPart == elid ) {
-   //             console.log('test'+elid, 'test'+i, elem);
-   //             $(elem).attr('disabled', 'disabled');
-   //         } else {
-   //             $(elem).removeAttr('disabled');
-   //         }
-   //     }
-   // });
-
-   //     // Select the first available future hour (if any)
-   // const firstEnabledOption = timeFromSelect.find("option:not(:disabled)").first();
-   // if (firstEnabledOption.length > 0) {
-   //     timeFromSelect.val(firstEnabledOption.val());
-   // }
-   // $("#time_from option[value='"+ valHourFrom + "']").attr('disabled', true);
-
-
    function disableHour() {
        var valueDate = $('#date').val();
        var billiardId = $('#billiard_id').val();

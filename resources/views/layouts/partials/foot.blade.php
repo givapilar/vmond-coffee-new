@@ -13,7 +13,7 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.3/dist/alpine.min.js" defer></script>
 @stack('script-top')
- 
+
 <!-- from cdn -->
 <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/tabs.js"></script>
 
@@ -371,5 +371,19 @@
 		duration: 8000
 	}).showToast();
 </script>
+
 @endif
+<script>
+    const $edcRadio = $(`.edisi-radio`);
+    const $edisiPembayaranWrapper = $(`.edisi-pembayaran-wrapper`);
+
+    // Handle change event for the EDC radio button
+    $edcRadio.on('change', function() {
+        if ($(this).is(':checked')) {
+            $edisiPembayaranWrapper.show();
+        } else {
+            $edisiPembayaranWrapper.hide();
+        }
+    });
+</script>
 @stack('script-bot')
