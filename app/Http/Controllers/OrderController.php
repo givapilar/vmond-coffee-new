@@ -1008,7 +1008,7 @@ class OrderController extends Controller
                         $nama_kasir = $request->kasir_id;
                     }else if(Auth::user()->telephone == '081818181847') {
                         $total_price = $order_total;
-                        $name = auth()->user()->username;
+                        $name = auth()->user()->id;
                         $phone = $request->phone ?? '-';
                         $nama_kasir = $request->kasir_id;
                     }elseif (Auth::user()->telephone == '081210469621') {
