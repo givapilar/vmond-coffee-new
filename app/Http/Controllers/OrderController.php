@@ -995,7 +995,7 @@ class OrderController extends Controller
                     $total_price = 1;
                     $total_paket = $request->total_paket;
                     $layanan = $total_paket * $other_setting[0]->layanan/100;
-                    $pb01 = $total_paket * $other_setting[0]->pb01/100;
+                    $pb01 = ($total_paket + $layanan) * $other_setting[0]->pb01/100;
                     $order_total = $total_paket + $layanan + $pb01;
                     // dd($order_total);
                     # code...
@@ -1031,7 +1031,7 @@ class OrderController extends Controller
                     $total_price = 1;
                     $total_paket = $request->total_paket;
                     $layanan = $total_paket * $other_setting[0]->layanan/100;
-                    $pb01 = $total_paket * $other_setting[0]->pb01/100;
+                    $pb01 = ($total_paket + $layanan) * $other_setting[0]->pb01/100;
                     $order_total = $total_paket + $layanan + $pb01;
 
                     $total_price = $order_total;
@@ -1167,7 +1167,7 @@ class OrderController extends Controller
 
             return view('checkout.paket-menu',$data,compact('snapToken','order'));
         } catch (\Throwable $th) {
-            dd($th->getMessage());
+            // dd($th->getMessage());
             return  redirect()->back();
             //throw $th;
         }
